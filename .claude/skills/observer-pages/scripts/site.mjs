@@ -5,19 +5,22 @@
 // That split exists because a print run also writes corpus.json (megabytes of
 // other people's posts) next to the HTML. Deploying "the output folder"
 // would publish the corpus. dist/ is allowed to contain only edition HTML,
-// index.html, and vercel.json. check() is the gate in front of `vercel`.
+// index.html, vercel.json, and favicon.svg. check() is the gate in front of
+// `vercel`.
 //
 // This script does not talk to Vercel. The skill runs `npx vercel deploy`
 // after check exits 0, so a missing login is a visible stop rather than a
 // swallowed spawn.
 
 import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
-import { basename, join, resolve } from 'node:path'
-import { pathToFileURL } from 'node:url'
+import { basename, dirname, join, resolve } from 'node:path'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 export const EDITION_RE = /^observer-(\d{4}-\d{2}-\d{2})-([0-9A-Fa-f]+)\.html$/
 
-const SITE_FILES = new Set(['index.html', 'vercel.json'])
+const SITE_FILES = new Set(['index.html', 'vercel.json', 'favicon.svg'])
+const FAVICON_SRC = join(dirname(fileURLToPath(import.meta.url)), '..', 'favicon.svg')
+export const FAVICON_LINK = '<link rel="icon" href="/favicon.svg" type="image/svg+xml">'
 
 export function localToday (now = new Date()) {
   const y = now.getFullYear()
@@ -159,6 +162,7 @@ export function renderIndex (papers) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>The Nostr Observer — editions</title>
+  ${FAVICON_LINK}
   <style>
     :root {
       color-scheme: light;
@@ -245,7 +249,7 @@ export const VERCEL_JSON = {
       headers: [
         {
           key: 'Content-Security-Policy',
-          value: "default-src 'none'; img-src https: data:; style-src 'unsafe-inline'; script-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+          value: "default-src 'none'; img-src 'self' https: data:; style-src 'unsafe-inline'; script-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
         },
         { key: 'X-Content-Type-Options', value: 'nosniff' },
         { key: 'Referrer-Policy', value: 'no-referrer' },
@@ -254,11 +258,24 @@ export const VERCEL_JSON = {
   ],
 }
 
+export function withFavicon (html) {
+  if (/rel\s*=\s*["']icon["']/i.test(html)) return html
+  if (/<\/title>/i.test(html)) return html.replace(/<\/title>/i, `</title>\n  ${FAVICON_LINK}`)
+  if (/<head[^>]*>/i.test(html)) return html.replace(/<head([^>]*)>/i, `<head$1>\n  ${FAVICON_LINK}`)
+  return html
+}
+
 export function writeSite (distDir) {
   mkdirSync(distDir, { recursive: true })
   const papers = papersIn(distDir)
   writeFileSync(join(distDir, 'index.html'), renderIndex(papers))
   writeFileSync(join(distDir, 'vercel.json'), JSON.stringify(VERCEL_JSON, null, 2) + '\n')
+  copyFileSync(FAVICON_SRC, join(distDir, 'favicon.svg'))
+  for (const paper of papers) {
+    const path = join(distDir, paper.file)
+    const stamped = withFavicon(readFileSync(path, 'utf8'))
+    writeFileSync(path, stamped)
+  }
   return papers
 }
 

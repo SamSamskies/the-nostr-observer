@@ -32,3 +32,7 @@ integration: later papers go live only when you ask.
 
 Preview the shelf locally with `npx serve dist`. All printed papers, including
 unpublished ones: `npx serve editions`.
+
+The tab icon is `favicon.svg`: a cream tile, a masthead rule, and an Observer
+O. `site.mjs` copies it into `dist/` and stamps a link into each published
+page.

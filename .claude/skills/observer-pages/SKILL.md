@@ -75,8 +75,9 @@ node <skill>/scripts/site.mjs check
 ```
 
 **Exit 0 or do not deploy.** A non-zero check means `dist/` contains something
-that is not an edition — usually `corpus.json`. Fix that before Vercel sees
-the folder. Do not pass `--force`. Do not point Vercel at `editions/`.
+that is not an edition — usually `corpus.json`. `favicon.svg` is site
+furniture and is allowed. Fix junk before Vercel sees the folder. Do not
+pass `--force`. Do not point Vercel at `editions/`.
 
 Local preview, optional:
 

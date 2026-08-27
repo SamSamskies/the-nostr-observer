@@ -14,6 +14,7 @@ import {
   check,
   writeSite,
   renderIndex,
+  withFavicon,
   localToday,
 } from '../scripts/site.mjs'
 
@@ -124,6 +125,22 @@ test('index lists newest first and escapes a headline', () => {
   assert.ok(html.indexOf('href="observer-2026-08-27-1EAF35.html"') > -1)
   assert.ok(html.indexOf('Thursday, August 27, 2026') > -1)
   assert.ok(html.indexOf('The shelf is empty') === -1)
+})
+
+test('index and a stamped edition both point at the site favicon', () => {
+  const html = renderIndex([])
+  assert.ok(html.includes('href="/favicon.svg"'))
+  const stamped = withFavicon('<!doctype html><html><head><title>T</title></head><body></body></html>')
+  assert.ok(stamped.includes('href="/favicon.svg"'))
+  assert.equal(withFavicon(stamped), stamped, 'stamping twice must not duplicate the link')
+})
+
+test('writeSite copies the favicon into dist', () => {
+  const { dist } = stage()
+  writeSite(dist)
+  assert.equal(existsSync(join(dist, 'favicon.svg')), true)
+  const result = check(dist)
+  assert.equal(result.ok, true)
 })
 
 test('index is newsprint, not the browser dark scheme', () => {
