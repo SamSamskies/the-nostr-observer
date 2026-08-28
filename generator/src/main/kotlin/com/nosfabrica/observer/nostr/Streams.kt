@@ -19,8 +19,7 @@ object Streams {
     private val EVENT_ID = Regex("^[0-9a-f]{64}$")
 
     /** Live streams with a `d` tag — the only ones a watch link may name. */
-    fun live(corpus: Corpus): List<Event> =
-        corpus.ranked[Desk.LIVE].orEmpty().filter { !it.value("d").isNullOrBlank() }
+    fun live(corpus: Corpus): List<Event> = corpus.ranked[Desk.LIVE].orEmpty().filter { !it.value("d").isNullOrBlank() }
 
     /** Writer form: event id hex. The sanitizer encodes the naddr afterwards. */
     fun writerUrl(eventId: String): String {

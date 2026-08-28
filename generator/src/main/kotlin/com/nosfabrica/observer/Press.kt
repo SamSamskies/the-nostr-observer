@@ -5,12 +5,12 @@ import com.nosfabrica.observer.corpus.Art
 import com.nosfabrica.observer.corpus.ArtDesk
 import com.nosfabrica.observer.corpus.Digest
 import com.nosfabrica.observer.nostr.Corpus
-import com.nosfabrica.observer.nostr.Streams
 import com.nosfabrica.observer.nostr.Names
 import com.nosfabrica.observer.nostr.Pull
 import com.nosfabrica.observer.nostr.Readiness
 import com.nosfabrica.observer.nostr.ReadinessProbe
 import com.nosfabrica.observer.nostr.Relays
+import com.nosfabrica.observer.nostr.Streams
 import com.nosfabrica.observer.safe.Proof
 import com.nosfabrica.observer.safe.Sanitizer
 import com.nosfabrica.observer.safe.Validator
