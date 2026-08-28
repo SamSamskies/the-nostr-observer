@@ -20,7 +20,7 @@ object Fixtures {
     const val OBSERVER = "460c25e682fda7832b52d1f22d3d22b3176d972f60dcdc3212ed8c92ef85065c"
 
     const val ART_URL = "https://blossom.example.com/abc123.jpg"
-    const val STREAM_ID = "cc33".repeat(16)
+    val STREAM_ID = "cc33".repeat(16)
     const val STREAM_D = "nogood-radio"
 
     fun event(
