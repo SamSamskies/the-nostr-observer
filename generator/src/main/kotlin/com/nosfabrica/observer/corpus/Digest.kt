@@ -3,6 +3,7 @@ package com.nosfabrica.observer.corpus
 import com.nosfabrica.observer.nostr.Corpus
 import com.nosfabrica.observer.nostr.Desk
 import com.nosfabrica.observer.nostr.Names
+import com.nosfabrica.observer.nostr.Streams
 import com.nosfabrica.observer.nostr.client
 import com.nosfabrica.observer.nostr.hashtags
 import com.nosfabrica.observer.nostr.value
@@ -220,6 +221,7 @@ class Digest(
             sb.append("ON AIR SINCE: ").append(stamp.format(Instant.ofEpochSecond(it))).append("Z\n")
         }
         event.value("current_participants")?.let { sb.append("WATCHING: ").append(it).append("\n") }
+        sb.append("watch: ").append(Streams.writerUrl(event.id)).append("\n")
     }
 
     /**

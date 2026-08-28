@@ -5,6 +5,7 @@ import com.nosfabrica.observer.corpus.Art
 import com.nosfabrica.observer.corpus.ArtDesk
 import com.nosfabrica.observer.corpus.Digest
 import com.nosfabrica.observer.nostr.Corpus
+import com.nosfabrica.observer.nostr.Streams
 import com.nosfabrica.observer.nostr.Names
 import com.nosfabrica.observer.nostr.Pull
 import com.nosfabrica.observer.nostr.Readiness
@@ -326,7 +327,8 @@ class Press(
     ): Edition {
         val (corpus, art, digest) = gather(observer, until, onStep)
 
-        val sanitizer = Sanitizer(art, corpus.all().map { it.id }.toSet())
+        val live = Streams.live(corpus).associateBy { it.id.lowercase() }
+        val sanitizer = Sanitizer(art, corpus.all().map { it.id }.toSet(), live)
 
         // WRITE, THEN OPEN IT.
         //
