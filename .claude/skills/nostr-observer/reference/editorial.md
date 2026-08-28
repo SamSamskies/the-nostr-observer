@@ -109,7 +109,7 @@ Set them exactly like this, with nothing else in them:
     <div class="folio">
       <span>No. 4F2A9C</span>
       <span>Tuesday, August 18, 2026</span>
-      <span>24h to 22:04 UTC</span>
+      <span>24h to 22:04</span>
     </div>
 
     <header class="masthead"> … </header>
@@ -133,17 +133,17 @@ runs to a sentence wraps and takes the row with it.
 - **The date carries its day of the week.** "Tuesday, August 18, 2026" — a
   front page says what day it is, and a reader opening yesterday's edition
   should be able to tell at a glance.
-- **The window is a stamp, not a sentence.** "24h to 22:04 UTC" means the
-  fixed 24-hour window *ending* at that time — not a countdown. Keep that
-  form.
+- **The window is a stamp, not a sentence.** "24h to 22:04" means the fixed
+  24-hour window *ending* at that time — not a countdown. Keep that form; the
+  zone (or its absence) comes from the next rule, not from this example.
 - **The dateline's middle span is `N of M events`.** Those exact words: a real
   edition wrote "562 of 14,793 surfaced", which reads as a verb doing a noun's
   job and leaves the reader guessing what was surfaced.
 - **Print the closing time with the zone the digest labelled.** A window ending
   in `Z`, or marked UTC, becomes `24h to HH:MM UTC`. Reader-local times come
-  already converted — print them as handed over and do not invent a zone.
-  Never convert between zones yourself: the page has no script, and a wrong
-  offset dates the paper for the wrong day.
+  already converted — print them as handed over (`24h to HH:MM`) and do not
+  invent a zone. Never convert between zones yourself: the page has no script,
+  and a wrong offset dates the paper for the wrong day.
 - **Name the reader, by name only.** They know who they are.
 - **No prices, no tickers, no block heights on the folio or dateline.** A number
   that moves is a story or a table row. It is not part of the paper's name.
@@ -158,8 +158,8 @@ similar readings into the corpus. Putting them in a table or a Conditions box is
 fine — that is what "a table row" above means — but they are **readings from the
 window, not live figures**. Without a stamp they look like a ticker.
 
-- Stamp the box with the same closing time as the folio: `As of HH:MM UTC`
-  (or whatever zone the folio used), and say they are not live.
+- Stamp the box with the same closing time and zone as the folio: `As of HH:MM`
+  (add `UTC` only when the folio carried it), and say they are not live.
 - Attribute the source when the digest names one (Clark Moody, a chart bot).
 - Do not park corpus-size or Instrument overlap stats under that stamp — those
   belong with The Instrument, not under a market table.
