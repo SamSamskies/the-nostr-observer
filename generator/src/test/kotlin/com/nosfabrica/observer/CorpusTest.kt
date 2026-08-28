@@ -635,6 +635,20 @@ class ListingTest {
     }
 
     @Test
+    fun `a live stream without a d tag has no watch url`() {
+        val bare =
+            Fixtures.event(
+                Fixtures.STREAM_ID,
+                Fixtures.ALICE,
+                "",
+                kind = 30311,
+                tags = listOf(listOf("title", "NoGood Radio"), listOf("status", "live")),
+            )
+        val text = render(Desk.LIVE, bare)
+        assertFalse(text.contains("watch:"), text)
+    }
+
+    @Test
     fun `a classified carries its price`() {
         val listing =
             Fixtures.event(

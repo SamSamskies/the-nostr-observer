@@ -221,7 +221,12 @@ class Digest(
             sb.append("ON AIR SINCE: ").append(stamp.format(Instant.ofEpochSecond(it))).append("Z\n")
         }
         event.value("current_participants")?.let { sb.append("WATCHING: ").append(it).append("\n") }
-        sb.append("watch: ").append(Streams.writerUrl(event.id)).append("\n")
+        // Streams.live / Sanitizer / Validator only allowlist events with a `d`
+        // tag; printing a watch URL without one invites a link the sanitizer
+        // unwraps before publish.
+        if (!event.value("d").isNullOrBlank()) {
+            sb.append("watch: ").append(Streams.writerUrl(event.id)).append("\n")
+        }
     }
 
     /**
