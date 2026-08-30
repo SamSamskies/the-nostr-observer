@@ -1,0 +1,17 @@
+---
+description: Open GitHub PRs against the SamSamskies fork, not NosFabrica upstream
+alwaysApply: true
+---
+
+# Pull requests target this fork
+
+`origin` is **SamSamskies/the-nostr-observer**. `upstream` is NosFabrica (read/sync only).
+
+When creating a pull request:
+
+- Base: `SamSamskies/the-nostr-observer` `main` (or the branch the user names on **this** fork)
+- Head: the current feature branch on `origin`
+- Always pass `--repo SamSamskies/the-nostr-observer` to `gh pr create` / `gh pr view` / `gh pr list` so `gh` cannot prefer `upstream`
+- Push with `git push -u origin HEAD` (never push feature work to `upstream` unless asked)
+
+Do **not** open a PR against NosFabrica/the-nostr-observer unless the user explicitly asks to contribute upstream.
