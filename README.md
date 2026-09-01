@@ -65,7 +65,9 @@ checkout of this repo already has it; there is nothing to install. To have it
 everywhere instead of only here, copy it into your own skills directory:
 
 ```bash
+mkdir -p ~/.agents/skills ~/.claude/skills
 cp -r .agents/skills/nostr-observer ~/.agents/skills/
+ln -sfn "$HOME/.agents/skills/nostr-observer" "$HOME/.claude/skills/nostr-observer"
 ```
 
 It prints today's paper once; it does not publish to your media servers, keep an

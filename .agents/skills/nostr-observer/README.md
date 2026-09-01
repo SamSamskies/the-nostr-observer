@@ -26,8 +26,9 @@ Or install it globally, so it works in any directory:
 
 ```bash
 git clone https://github.com/NosFabrica/the-nostr-observer
-mkdir -p ~/.agents/skills
+mkdir -p ~/.agents/skills ~/.claude/skills
 cp -r the-nostr-observer/.agents/skills/nostr-observer ~/.agents/skills/
+ln -sfn "$HOME/.agents/skills/nostr-observer" "$HOME/.claude/skills/nostr-observer"
 ```
 
 Either way it is Claude Code, which is the terminal, the desktop app, or
