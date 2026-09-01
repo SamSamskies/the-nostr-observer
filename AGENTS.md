@@ -154,18 +154,20 @@ API key. A full run reads `ANTHROPIC_API_KEY` from the environment.
   message cap, filter count, subscription count and default limit. All of the
   above was one `curl -H "Accept: application/nostr+json"` away.
 
-## The Claude Code skill (`.claude/skills/`)
+## The agent skills (`.agents/skills/`)
 
-**It lives in `.claude/skills/` and not in a `plugin/` wrapper, deliberately.**
+**The canonical tree is `.agents/skills/`; `.claude/skills` is a symlink to
+it.** Cursor, Codex, Antigravity, and Gemini CLI read `.agents/skills/`; Claude
+Code reads `.claude/skills/`. One tree, two discovery paths, nothing to drift.
+
 It was a plugin first. That bought nothing: no `marketplace.json` existed
 anywhere, so nobody could install it as one, and the skill ships no commands,
 agents, hooks or MCP servers — the only things a plugin adds over a skill. What
-it cost was the install step. `.claude/skills/` is where Claude Code looks for
-PROJECT skills, so a checkout of this repository now has the Observer skill
-loaded already, in the terminal, in the desktop app, and at claude.ai/code —
-which is the whole browser path, and it needs no terminal at all. One copy, so
-nothing to mirror and nothing to drift. If a marketplace listing is ever wanted,
-a `.claude-plugin/plugin.json` is ten lines and can be added then.
+it cost was the install step. A checkout of this repository now has the
+Observer skill loaded already in any harness that reads either path — Claude
+Code in the terminal, the desktop app, and at claude.ai/code included — and
+it needs no terminal at all. If a marketplace listing is ever wanted, a
+`.claude-plugin/plugin.json` is ten lines and can be added then.
 
 Plain claude.ai chat is NOT a substitute, and the blocker has no workaround.
 Custom skills do upload there (Customize → Skills, as a ZIP, with code
@@ -252,7 +254,7 @@ would a `CLAUDE_CODE_OAUTH_TOKEN` pasted into anything of ours.
   or an unwrapped link is the visible edge of an injection attempt and a
   sanitizer that tidies up in silence hides the one event worth seeing.
 
-- **Tests: `node --test ".claude/skills/nostr-observer/test/*.test.mjs"`,** wired
+- **Tests: `node --test ".agents/skills/nostr-observer/test/*.test.mjs"`,** wired
   into `build.yml` alongside a `git diff --exit-code` on the generated
   `reference/`. `test/fakerelay.mjs` is a dependency-free websocket server that
   reproduces the AUTH-before-answer challenge, a mid-stream NOTICE, a silent
