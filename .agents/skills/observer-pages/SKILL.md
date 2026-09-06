@@ -21,7 +21,7 @@ working directory, so a relative `node scripts/…` will fail. Resolve the
 absolute path now and write it literally into every command afterwards.
 
 ```bash
-find . ~/.claude -name SKILL.md -path '*observer-pages*' 2>/dev/null | head -5
+find . ~/.agents ~/.claude -name SKILL.md -path '*observer-pages*' 2>/dev/null | head -5
 ```
 
 Take the directory containing that `SKILL.md` as the prefix for every script

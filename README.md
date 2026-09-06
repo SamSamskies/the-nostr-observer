@@ -59,12 +59,15 @@ Open this repository in Claude Code — the terminal, the desktop app, or
 print my Nostr Observer
 ```
 
-The skill lives at [`.claude/skills/nostr-observer`](.claude/skills/nostr-observer),
-so a checkout of this repo already has it; there is nothing to install. To have
-it everywhere instead of only here, copy it into your own skills directory:
+The skill lives at [`.agents/skills/nostr-observer`](.agents/skills/nostr-observer)
+(`.claude/skills/` is a symlink to the same tree for Claude Code), so a
+checkout of this repo already has it; there is nothing to install. To have it
+everywhere instead of only here, copy it into your own skills directory:
 
 ```bash
-cp -r .claude/skills/nostr-observer ~/.claude/skills/
+mkdir -p ~/.agents/skills ~/.claude/skills
+cp -r .agents/skills/nostr-observer ~/.agents/skills/
+ln -sfn "$HOME/.agents/skills/nostr-observer" "$HOME/.claude/skills/nostr-observer"
 ```
 
 It prints today's paper once; it does not publish to your media servers, keep an

@@ -25,24 +25,25 @@ survive to the next one.
 
 ```bash
 node --version
-find . ~/.claude -name SKILL.md -path '*nostr-observer*' 2>/dev/null | head -5
+find . ~/.agents ~/.claude -name SKILL.md -path '*nostr-observer*' 2>/dev/null | head -5
 ```
 
-Two places it can be: `.claude/skills/nostr-observer/` inside a checkout of the
-Observer repository, or `~/.claude/skills/nostr-observer/` if it was installed
-globally. Either is fine — take whichever the search finds.
+It can live in `.agents/skills/nostr-observer/` inside a checkout of the
+Observer repository (`.claude/skills/` is the same tree via symlink), or in
+`~/.agents/skills/nostr-observer/` or `~/.claude/skills/nostr-observer/` if
+installed globally. Either is fine — take whichever the search finds.
 
 Node must be **22 or newer** — the scripts use the built-in `WebSocket`, which
 is why they have no dependencies and nothing to install. If it is older, say so
 and stop; nothing below will work.
 
 Take the directory containing that `SKILL.md` and use it as the prefix for
-every script call below. So if it is `/home/you/.claude/skills/nostr-observer`,
+every script call below. So if it is `/home/you/.agents/skills/nostr-observer`,
 Step 2 is:
 
 ```bash
 mkdir -p editions
-node /home/you/.claude/skills/nostr-observer/scripts/readiness.mjs <npub> --json editions/readiness.json
+node /home/you/.agents/skills/nostr-observer/scripts/readiness.mjs <npub> --json editions/readiness.json
 ```
 
 Everything the run produces — `readiness.json`, `corpus.json`, `digest.md` and
