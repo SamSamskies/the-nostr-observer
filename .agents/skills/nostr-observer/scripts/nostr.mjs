@@ -70,12 +70,32 @@ function convertBits (data, from, to, pad) {
   return out
 }
 
-/** `npub1…` (or bare 64-hex) to lowercase hex. Throws with a readable sentence. */
+/** `npub1…`, `nprofile1…` (or bare 64-hex) to lowercase hex. Throws with a readable sentence. */
 export function toHex (input) {
   const value = String(input || '').trim()
   if (/^[0-9a-f]{64}$/i.test(value)) return value.toLowerCase()
+  if (value.toLowerCase().startsWith('nprofile1')) {
+    const { hrp, bytes } = decodeBech32(value)
+    if (hrp !== 'nprofile') throw new Error(`Not an nprofile: ${value.slice(0, 24)}`)
+    let i = 0
+    let pubkey = null
+    while (i + 2 <= bytes.length) {
+      const type = bytes[i]
+      const len = bytes[i + 1]
+      i += 2
+      if (i + len > bytes.length) break
+      const payload = bytes.slice(i, i + len)
+      i += len
+      if (type === 0) {
+        if (payload.length !== 32) throw new Error('That nprofile names a pubkey of the wrong length.')
+        pubkey = Buffer.from(payload).toString('hex')
+      }
+    }
+    if (!pubkey) throw new Error('That nprofile does not name a pubkey.')
+    return pubkey
+  }
   if (!value.startsWith('npub1')) {
-    throw new Error(`Not an npub: ${value.slice(0, 24)}. Expected something starting with npub1.`)
+    throw new Error(`Not an npub: ${value.slice(0, 24)}. Expected something starting with npub1 or nprofile1.`)
   }
   const lower = value.toLowerCase()
   const split = lower.lastIndexOf('1')

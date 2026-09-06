@@ -1,0 +1,22 @@
+---
+description: Java/Gradle for git hooks in agent shells
+alwaysApply: true
+---
+
+# Agent shells and the Gradle hooks
+
+Pre-commit runs `./gradlew spotlessCheck`; pre-push runs `./gradlew build`. Agent shells often skip the user's zshrc, so Homebrew OpenJDK is installed but invisible.
+
+## When committing or pushing
+
+1. Pass `required_permissions: ["all"]` on the **first** `git commit` / `git push` that will fire hooks. The sandbox blocks a usable JDK lookup and can force a needless Gradle re-download.
+2. If a hook still fails with "Unable to locate a Java Runtime", export before retrying:
+
+```bash
+export JAVA_HOME="/opt/homebrew/opt/openjdk"
+export PATH="$JAVA_HOME/bin:$PATH"
+```
+
+(On Intel Homebrew, use `/usr/local/opt/openjdk`.)
+
+3. Do **not** skip hooks (`--no-verify`). Do **not** treat a Gradle distribution fetch (`Downloading https://downloads.gradle.org/...`) as "downloading Java" — the JDK is local; the wrapper is fetching Gradle itself (cached under `~/.gradle/wrapper/dists/` after the first success).

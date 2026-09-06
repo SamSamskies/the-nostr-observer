@@ -50,6 +50,11 @@ test('a short name is an npub, never hex', () => {
   assert.ok(short.length < 20)
 })
 
+test('an nprofile decodes to the pubkey hex', () => {
+  const nprofile = 'nprofile1qqsxqn5kuzvex6ssfzpetzcypdrkwts0qjxf3tre8umllex8yqneavsprpmhxue69uhhyetvv9ujuan9wf6x27rvv93zu6t0uyasy5'
+  assert.equal(toHex(nprofile), '604e96e099936a104883958b040b47672e0f048c98ac793f37ffe4c720279eb2')
+})
+
 test('an nevent round-trips an event id, and extra TLV fields still yield the id', () => {
   const id = 'a'.repeat(64)
   assert.equal(fromNevent(toNevent(id)), id)
