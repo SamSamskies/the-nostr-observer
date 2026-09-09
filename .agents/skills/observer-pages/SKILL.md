@@ -119,6 +119,25 @@ link, so later prints do not go live until someone asks this skill again.
 Give them https://thenostrobserver.vercel.app. Mention that pictures load here (unlike the
 artifact viewer) because this is a real host.
 
+### When the CLI fails from the agent shell
+
+`npx vercel whoami` / `deploy` is the only deploy path. If either fails
+unexpectedly — `fetch failed`, DNS errors, sandbox/proxy errors, a "token
+not valid" that contradicts a whoami the reader just ran in their own
+terminal, an approval block, anything else — **stop and ask them for help**.
+
+Say what already succeeded (usually `add` + `check`), paste the exact
+command they should run in their terminal, and end the turn:
+
+```bash
+npx vercel deploy dist --prod --yes --project thenostrobserver
+```
+
+Do **not** work around a broken agent shell. That means no Vercel MCP
+deploy, no uploading `dist/` through another API, no token refresh scripts,
+no alternate hosts, and no second deploy attempt through a different tool.
+One failed CLI deploy is enough — hand it to the reader.
+
 ---
 
 ## Hard rules
@@ -130,3 +149,5 @@ artifact viewer) because this is a real host.
    would deploy the source tree. CLI deploy of `dist/` is the whole path.
 5. Removing a paper from `dist/` and redeploying takes it off the live site.
    Vercel keeps old deployment URLs; say so if they ask about unpublishing.
+6. **CLI only; ask on failure.** Never use MCP or other back-channels to
+   deploy. If `vercel` does not work from the agent shell, ask the reader.
