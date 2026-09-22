@@ -1,7 +1,9 @@
 package com.nosfabrica.observer
 
+import com.nosfabrica.observer.nostr.Apps
 import com.nosfabrica.observer.nostr.Calendar
 import com.nosfabrica.observer.nostr.Classifieds
+import com.nosfabrica.observer.nostr.Repos
 import com.nosfabrica.observer.nostr.Streams
 import com.nosfabrica.observer.safe.Sanitizer
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -137,6 +139,47 @@ class SanitizerTest {
     }
 
     @Test
+    fun `keeps a verified zapstore app link and rewrites it`() {
+        val app = Fixtures.appRelease()
+        val sanitizer =
+            Sanitizer(
+                art = Fixtures.art(),
+                apps = mapOf(app.id.lowercase() to app),
+            )
+        val writer = Apps.writerUrl(app.id)
+        val r =
+            sanitizer.sanitize(
+                """<!doctype html><html><head><title>T</title></head><body>
+               <a href="$writer">Tenna</a></body></html>""",
+            )
+        assertTrue(r.html.contains("zapstore.dev/apps/${Fixtures.APP_D}"), "writer form becomes the d tag")
+        assertFalse(r.html.contains("zapstore.dev/apps/${app.id}"), "bare hex must not survive")
+        assertTrue(r.html.contains("Tenna"), "the title stays linked")
+        assertTrue(r.clean, r.removed.toString())
+    }
+
+    @Test
+    fun `keeps a verified gitworkshop repo link and rewrites it`() {
+        val repo = Fixtures.gitRepo()
+        val sanitizer =
+            Sanitizer(
+                art = Fixtures.art(),
+                repos = mapOf(repo.id.lowercase() to repo),
+            )
+        val writer = Repos.writerUrl(repo.id)
+        val r =
+            sanitizer.sanitize(
+                """<!doctype html><html><head><title>T</title></head><body>
+               <a href="$writer">gitnostr</a></body></html>""",
+            )
+        assertTrue(r.html.contains("gitworkshop.dev/npub"), "writer form becomes npub/d")
+        assertTrue(r.html.contains("/${Fixtures.REPO_D}"), "d tag is the path")
+        assertFalse(r.html.contains("/repo/"), "writer path must not survive")
+        assertTrue(r.html.contains("gitnostr"), "the title stays linked")
+        assertTrue(r.clean, r.removed.toString())
+    }
+
+    @Test
     fun `unwraps a zap stream url that names no stream we read`() {
         val writer = Streams.writerUrl("f".repeat(64))
         val r = clean("""<p><a href="$writer">fake stream</a></p>""")
@@ -150,6 +193,22 @@ class SanitizerTest {
         val r = clean("""<p><a href="$writer">fake listing</a></p>""")
         assertFalse(r.html.contains("<a "), "no anchor survived")
         assertTrue(r.html.contains("fake listing"))
+    }
+
+    @Test
+    fun `unwraps a zapstore url that names no app we read`() {
+        val writer = Apps.writerUrl("f".repeat(64))
+        val r = clean("""<p><a href="$writer">fake app</a></p>""")
+        assertFalse(r.html.contains("<a "), "no anchor survived")
+        assertTrue(r.html.contains("fake app"))
+    }
+
+    @Test
+    fun `unwraps a gitworkshop url that names no repo we read`() {
+        val writer = Repos.writerUrl("f".repeat(64))
+        val r = clean("""<p><a href="$writer">fake repo</a></p>""")
+        assertFalse(r.html.contains("<a "), "no anchor survived")
+        assertTrue(r.html.contains("fake repo"))
     }
 
     @Test

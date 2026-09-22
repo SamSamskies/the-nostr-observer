@@ -1,8 +1,10 @@
 package com.nosfabrica.observer.safe
 
 import com.nosfabrica.observer.corpus.Art
+import com.nosfabrica.observer.nostr.Apps
 import com.nosfabrica.observer.nostr.Calendar
 import com.nosfabrica.observer.nostr.Classifieds
+import com.nosfabrica.observer.nostr.Repos
 import com.nosfabrica.observer.nostr.Streams
 import com.vitorpamplona.quartz.nip01Core.core.Event
 import org.jsoup.Jsoup
@@ -67,6 +69,20 @@ class Sanitizer(
      * is not a verified citation or calendar address is unwrapped.
      */
     private val calendars: Map<String, Event> = emptyMap(),
+    /**
+     * App releases this edition read, keyed by event id.
+     *
+     * An app link in writer form is kept and rewritten to Zapstore's `/apps/<d>`;
+     * anything else on zapstore.dev is unwrapped like any other open-web URL.
+     */
+    private val apps: Map<String, Event> = emptyMap(),
+    /**
+     * Repositories this edition read, keyed by event id.
+     *
+     * A repo link in writer form is kept and rewritten to gitworkshop's
+     * `/<npub>/<d>`; anything else on gitworkshop.dev is unwrapped.
+     */
+    private val repos: Map<String, Event> = emptyMap(),
     /**
      * The house stylesheet, which SHIPS WITH THE PAGE.
      *
@@ -184,8 +200,9 @@ class Sanitizer(
     /**
      * The paper prints addresses; it does not make them clickable — except
      * permalinks back to a source event, verified zap.stream watch links for
-     * live streams, verified Shopstr listing links for classifieds, and
-     * verified njump calendar links for Diary & Calendar listings.
+     * live streams, verified Shopstr listing links for classifieds,
+     * verified njump calendar links for Diary & Calendar listings, verified
+     * Zapstore app links, and verified gitworkshop repository links.
      *
      * Calendar writer form shares `njump.me/<64-hex>` with ordinary citations,
      * so it is checked before the permalink keep — otherwise a replaceable
@@ -203,6 +220,8 @@ class Sanitizer(
         val streams = liveStreams.values.toList()
         val listings = classifieds.values.toList()
         val calendarListings = calendars.values.toList()
+        val appReleases = apps.values.toList()
+        val repositories = repos.values.toList()
         for (a in doc.select("a[href]").toList()) {
             val href = a.attr("href")
             if (!href.startsWith("http", ignoreCase = true)) continue
@@ -224,6 +243,20 @@ class Sanitizer(
             val calendar = calendarId?.let { calendars[it] }
             if (calendar != null) {
                 val canonical = Calendar.canonicalUrl(calendar)
+                if (href != canonical) a.attr("href", canonical)
+                continue
+            }
+            val appId = Apps.appLinkTarget(href, appReleases)
+            val app = appId?.let { apps[it] }
+            if (app != null) {
+                val canonical = Apps.canonicalUrl(app)
+                if (href != canonical) a.attr("href", canonical)
+                continue
+            }
+            val gitId = Repos.gitLinkTarget(href, repositories)
+            val repo = gitId?.let { repos[it] }
+            if (repo != null) {
+                val canonical = Repos.canonicalUrl(repo)
                 if (href != canonical) a.attr("href", canonical)
                 continue
             }

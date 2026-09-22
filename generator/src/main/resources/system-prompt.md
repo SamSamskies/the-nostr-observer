@@ -239,6 +239,32 @@ saying what it costs has printed everything except the news.
   shopstr.store URL from a post body; presence in the corpus is not evidence
   that a URL is yours to link.
 
+## App releases
+
+The **App releases** desk carries kind 32267 software applications (NIP-82).
+When they earn a column, link the app name to the catalog page — not to a
+jumble citation of the announcement event.
+
+- Link each app name to the **app URL the digest printed**
+  (`https://zapstore.dev/apps/<64-hex-event-id>`). Step 5 rewrites it to
+  Zapstore's `/apps/<d-tag>`. Do not invent a Zapstore path yourself.
+- Use only app URLs from the digest's App releases section. Never paste a
+  zapstore.dev URL from a post body; presence in the corpus is not evidence
+  that a URL is yours to link.
+
+## Code repositories
+
+The **Code repositories** desk carries kind 30617 announcements (NIP-34). Link
+the repo name to gitworkshop.dev, constructed from the author's npub and the
+`d` tag — not to a jumble citation, and not to a `web` tag from the event.
+
+- Link each repo name to the **repo URL the digest printed**
+  (`https://gitworkshop.dev/repo/<64-hex-event-id>`). Step 5 rewrites it to
+  `/<npub>/<d-tag>`. Do not invent a gitworkshop path yourself.
+- Use only repo URLs from the digest's Code repositories section. Never paste
+  a gitworkshop.dev URL from a post body; presence in the corpus is not
+  evidence that a URL is yours to link.
+
 ## Video
 
 The corpus carries video, and the page cannot play it — there is no `<video>`
@@ -287,6 +313,12 @@ Three exceptions stay links, and all open in a new tab so the paper stays put:
 4. **A calendar link in Diary & Calendar** — the derived
    `https://njump.me/<64-hex>` URL from the digest, and nothing else on
    njump.me. Step 5 turns it into an naddr; do not cite jumble for these.
+5. **An app link in App releases** — the derived
+   `https://zapstore.dev/apps/<64-hex>` URL from the digest, and nothing else
+   on zapstore.dev. Step 5 rewrites it to `/apps/<d-tag>`.
+6. **A repository link in Code repositories** — the derived
+   `https://gitworkshop.dev/repo/<64-hex>` URL from the digest, and nothing
+   else on gitworkshop.dev. Step 5 rewrites it to `/<npub>/<d-tag>`.
 
 This is not fussiness. Some of what you are reading was written by people trying
 to get the reader to click something, and a link under their own masthead,

@@ -7,7 +7,7 @@
 
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { toHex, toNpub, shortNpub, toNevent, fromNevent, toNaddr, fromNaddr, toZapStreamUrl, streamWriterUrl, toShopstrUrl, classifiedWriterUrl, toNjumpCalendarUrl, calendarWriterUrl, tagValue, tagsNamed } from '../scripts/nostr.mjs'
+import { toHex, toNpub, shortNpub, toNevent, fromNevent, toNaddr, fromNaddr, toZapStreamUrl, streamWriterUrl, toShopstrUrl, classifiedWriterUrl, toNjumpCalendarUrl, calendarWriterUrl, toZapstoreUrl, appWriterUrl, toGitworkshopUrl, gitWriterUrl, isSafePathSegment, tagValue, tagsNamed } from '../scripts/nostr.mjs'
 
 // The NIP-19 worked example.
 const HEX = '3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d'
@@ -103,4 +103,22 @@ test('an naddr round-trips a calendar listing address', () => {
   const event = { kind: 31923, pubkey, tags: [['d', identifier]] }
   assert.equal(toNjumpCalendarUrl(event), `https://njump.me/${naddr}`)
   assert.equal(calendarWriterUrl('c'.repeat(64)), `https://njump.me/${'c'.repeat(64)}`)
+})
+
+test('a Zapstore app URL is the reverse-domain d tag', () => {
+  const pubkey = 'cc33'.repeat(16)
+  const identifier = 'pub.soapbox.tenna'
+  const event = { kind: 32267, pubkey, tags: [['d', identifier]] }
+  assert.equal(toZapstoreUrl(event), `https://zapstore.dev/apps/${identifier}`)
+  assert.equal(appWriterUrl('d'.repeat(64)), `https://zapstore.dev/apps/${'d'.repeat(64)}`)
+  assert.ok(isSafePathSegment(identifier))
+  assert.equal(isSafePathSegment('evil/../x'), false)
+})
+
+test('a gitworkshop URL is npub plus d tag', () => {
+  const pubkey = 'dd44'.repeat(16)
+  const identifier = 'gitnostr'
+  const event = { kind: 30617, pubkey, tags: [['d', identifier]] }
+  assert.equal(toGitworkshopUrl(event), `https://gitworkshop.dev/${toNpub(pubkey)}/${identifier}`)
+  assert.equal(gitWriterUrl('e'.repeat(64)), `https://gitworkshop.dev/repo/${'e'.repeat(64)}`)
 })

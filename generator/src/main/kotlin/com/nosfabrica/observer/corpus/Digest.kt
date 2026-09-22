@@ -1,13 +1,16 @@
 package com.nosfabrica.observer.corpus
 
+import com.nosfabrica.observer.nostr.Apps
 import com.nosfabrica.observer.nostr.Calendar
 import com.nosfabrica.observer.nostr.Classifieds
 import com.nosfabrica.observer.nostr.Corpus
 import com.nosfabrica.observer.nostr.Desk
 import com.nosfabrica.observer.nostr.Names
+import com.nosfabrica.observer.nostr.Repos
 import com.nosfabrica.observer.nostr.Streams
 import com.nosfabrica.observer.nostr.client
 import com.nosfabrica.observer.nostr.hashtags
+import com.nosfabrica.observer.nostr.isSafePathSegment
 import com.nosfabrica.observer.nostr.value
 import com.nosfabrica.observer.nostr.values
 import com.vitorpamplona.quartz.nip01Core.core.Event
@@ -156,6 +159,8 @@ class Digest(
         if (desk == Desk.POLLS) poll(sb, event)
         if (desk == Desk.CALENDAR) calendar(sb, event)
         if (desk == Desk.CLASSIFIEDS) classified(sb, event)
+        if (desk == Desk.APPS) app(sb, event)
+        if (desk == Desk.GIT) repo(sb, event)
         event.value("location")?.let { sb.append("LOCATION: ").append(it.take(120)).append("\n") }
         // Length is most of what a reader needs to decide about a video, and
         // it is the one fact the body text never carries.
@@ -350,6 +355,37 @@ class Digest(
         // sanitizer unwraps before publish.
         if (!event.value("d").isNullOrBlank()) {
             sb.append("listing: ").append(Classifieds.writerUrl(event.id)).append("\n")
+        }
+    }
+
+    /**
+     * Zapstore's catalog page for a NIP-82 app release.
+     *
+     * The `d` tag is the reverse-domain app id. Writer form is event-id hex;
+     * Step 5 rewrites it to `/apps/<d>`. Only path-safe ids get a line — a
+     * slash in `d` would invent a different URL.
+     */
+    private fun app(
+        sb: StringBuilder,
+        event: Event,
+    ) {
+        if (isSafePathSegment(event.value("d"))) {
+            sb.append("app: ").append(Apps.writerUrl(event.id)).append("\n")
+        }
+    }
+
+    /**
+     * gitworkshop.dev for a NIP-34 repository announcement.
+     *
+     * Built from author npub + `d`, not the publisher's `web` tag — fixed host,
+     * derived fields, same allowlist story as Zapstore.
+     */
+    private fun repo(
+        sb: StringBuilder,
+        event: Event,
+    ) {
+        if (isSafePathSegment(event.value("d"))) {
+            sb.append("repo: ").append(Repos.writerUrl(event.id)).append("\n")
         }
     }
 

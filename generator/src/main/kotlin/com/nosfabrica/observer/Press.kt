@@ -4,6 +4,7 @@ import com.anthropic.models.messages.OutputConfig
 import com.nosfabrica.observer.corpus.Art
 import com.nosfabrica.observer.corpus.ArtDesk
 import com.nosfabrica.observer.corpus.Digest
+import com.nosfabrica.observer.nostr.Apps
 import com.nosfabrica.observer.nostr.Calendar
 import com.nosfabrica.observer.nostr.Classifieds
 import com.nosfabrica.observer.nostr.Corpus
@@ -12,6 +13,7 @@ import com.nosfabrica.observer.nostr.Pull
 import com.nosfabrica.observer.nostr.Readiness
 import com.nosfabrica.observer.nostr.ReadinessProbe
 import com.nosfabrica.observer.nostr.Relays
+import com.nosfabrica.observer.nostr.Repos
 import com.nosfabrica.observer.nostr.Streams
 import com.nosfabrica.observer.safe.Proof
 import com.nosfabrica.observer.safe.Sanitizer
@@ -332,7 +334,9 @@ class Press(
         val live = Streams.live(corpus).associateBy { it.id.lowercase() }
         val classifieds = Classifieds.listed(corpus).associateBy { it.id.lowercase() }
         val calendars = Calendar.listed(corpus).associateBy { it.id.lowercase() }
-        val sanitizer = Sanitizer(art, corpus.all().map { it.id }.toSet(), live, classifieds, calendars)
+        val apps = Apps.released(corpus).associateBy { it.id.lowercase() }
+        val repos = Repos.announced(corpus).associateBy { it.id.lowercase() }
+        val sanitizer = Sanitizer(art, corpus.all().map { it.id }.toSet(), live, classifieds, calendars, apps, repos)
 
         // WRITE, THEN OPEN IT.
         //
