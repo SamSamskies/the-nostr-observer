@@ -23,7 +23,11 @@
 import { readFileSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
 import { tags, attributes as attrsOf, textIn } from './html.mjs'
-import { toNevent, fromNevent, fromNaddr, toZapStreamUrl, LIVE_KIND, toShopstrUrl, CLASSIFIED_KIND, toNjumpCalendarUrl, CALENDAR_KINDS, tagValue } from './nostr.mjs'
+import {
+  toNevent, fromNevent, fromNaddr, toZapStreamUrl, LIVE_KIND, toShopstrUrl, CLASSIFIED_KIND,
+  toNjumpCalendarUrl, CALENDAR_KINDS, toZapstoreUrl, APP_KIND, toGitworkshopUrl, GIT_KIND,
+  toNpub, isSafePathSegment, tagValue,
+} from './nostr.mjs'
 
 function arg (name, fallback = null) {
   const at = process.argv.indexOf(name)
@@ -147,6 +151,12 @@ export const LISTING_NADDR = /^https:\/\/shopstr\.store\/listing\/(naddr1[0-9a-z
 export const CALENDAR_WRITER = /^https:\/\/njump\.me\/([0-9a-f]{64})(?:[/?#].*)?$/i
 export const CALENDAR_NADDR = /^https:\/\/njump\.me\/(naddr1[0-9a-z]+)(?:[/?#].*)?$/i
 
+export const APP_WRITER = /^https:\/\/zapstore\.dev\/apps\/([0-9a-f]{64})(?:[/?#].*)?$/i
+export const APP_CANONICAL = /^https:\/\/zapstore\.dev\/apps\/([A-Za-z0-9][A-Za-z0-9._-]{0,200})(?:[/?#].*)?$/i
+
+export const GIT_WRITER = /^https:\/\/gitworkshop\.dev\/repo\/([0-9a-f]{64})(?:[/?#].*)?$/i
+export const GIT_CANONICAL = /^https:\/\/gitworkshop\.dev\/(npub1[0-9a-z]+)\/([A-Za-z0-9][A-Za-z0-9._-]{0,200})(?:[/?#].*)?$/i
+
 /** Live-stream events from the corpus — the only streams a watch link may name. */
 export function liveStreams (corpus) {
   return Object.values(corpus.desks).flat().filter((e) => e.kind === LIVE_KIND && tagValue(e, 'd'))
@@ -160,6 +170,20 @@ export function classifiedListings (corpus) {
 /** Calendar events from the corpus — the only listings an njump calendar link may name. */
 export function calendarListings (corpus) {
   return Object.values(corpus.desks).flat().filter((e) => CALENDAR_KINDS.has(e.kind) && tagValue(e, 'd'))
+}
+
+/** App releases from the corpus — the only Zapstore links that may ship. */
+export function appReleases (corpus) {
+  return Object.values(corpus.desks).flat().filter((e) =>
+    e.kind === APP_KIND && isSafePathSegment(tagValue(e, 'd')),
+  )
+}
+
+/** Repositories from the corpus — the only gitworkshop links that may ship. */
+export function gitRepos (corpus) {
+  return Object.values(corpus.desks).flat().filter((e) =>
+    e.kind === GIT_KIND && isSafePathSegment(tagValue(e, 'd')),
+  )
 }
 
 /**
@@ -280,6 +304,69 @@ export function toCalendarLink (event) {
   return toNjumpCalendarUrl(event)
 }
 
+/**
+ * Event id if `href` is a verified Zapstore app link for a release we read;
+ * otherwise null.
+ *
+ * Canonical form only (`/apps/<d-tag>`). Writer form (`/apps/<64-hex>`) is for
+ * resolve.mjs — same split as zap.stream watch links.
+ */
+export function appLinkTarget (href, corpus) {
+  const apps = appReleases(corpus)
+  const canonical = APP_CANONICAL.exec(href)
+  if (!canonical) return null
+  const d = canonical[1]
+  // A 64-hex segment is the writer form; resolve must rewrite it first.
+  if (/^[0-9a-f]{64}$/i.test(d)) return null
+  const event = apps.find((e) => tagValue(e, 'd') === d)
+  return event?.id || null
+}
+
+/** Writer form, for resolve.mjs only. */
+export function appWriterTarget (href, corpus) {
+  const apps = appReleases(corpus)
+  const byId = new Map(apps.map((e) => [e.id, e]))
+  const writer = APP_WRITER.exec(href)
+  if (!writer) return null
+  const id = writer[1].toLowerCase()
+  return byId.has(id) ? id : null
+}
+
+export function toAppLink (event) {
+  return toZapstoreUrl(event)
+}
+
+/**
+ * Event id if `href` is a verified gitworkshop link for a repository we read;
+ * otherwise null.
+ *
+ * Canonical form only (`/<npub>/<d-tag>`). Writer form (`/repo/<64-hex>`) is
+ * for resolve.mjs.
+ */
+export function gitLinkTarget (href, corpus) {
+  const repos = gitRepos(corpus)
+  const canonical = GIT_CANONICAL.exec(href)
+  if (!canonical) return null
+  const npub = canonical[1]
+  const d = canonical[2]
+  const event = repos.find((e) => toNpub(e.pubkey) === npub && tagValue(e, 'd') === d)
+  return event?.id || null
+}
+
+/** Writer form, for resolve.mjs only. */
+export function gitWriterTarget (href, corpus) {
+  const repos = gitRepos(corpus)
+  const byId = new Map(repos.map((e) => [e.id, e]))
+  const writer = GIT_WRITER.exec(href)
+  if (!writer) return null
+  const id = writer[1].toLowerCase()
+  return byId.has(id) ? id : null
+}
+
+export function toGitLink (event) {
+  return toGitworkshopUrl(event)
+}
+
 // Things there is no sanitizer to strip, so they are refused instead.
 //
 // Checked against PARSED TAGS, never against the raw document. The first
@@ -377,6 +464,8 @@ export function check (html, corpus) {
     if (streamLinkTarget(href, corpus)) continue
     if (listingLinkTarget(href, corpus)) continue
     if (calendarLinkTarget(href, corpus)) continue
+    if (appLinkTarget(href, corpus)) continue
+    if (gitLinkTarget(href, corpus)) continue
     // Presence in the corpus is evidence of NOTHING. An earlier version of
     // this rule allowlisted every URL that appeared in the corpus, on the
     // theory that a link nobody posted must have been invented. The corpus
@@ -384,9 +473,9 @@ export function check (html, corpus) {
     // put that URL on the allowlist, and an injected instruction to link
     // every story to it then passed cleanly — a phishing link under the
     // reader's masthead. So the paper does not link to the open web at all,
-    // except verified zap.stream / Shopstr / njump-calendar links for events
-    // in the corpus.
-    flag('LINK', 'only source citations, verified zap.stream watch links, Shopstr listing links, and njump calendar links may be links', href.slice(0, 120))
+    // except verified zap.stream / Shopstr / njump-calendar / Zapstore /
+    // gitworkshop links for events in the corpus.
+    flag('LINK', 'only source citations, verified zap.stream / Shopstr / njump calendar / Zapstore / gitworkshop links may be links', href.slice(0, 120))
   }
 
   return { violations, quotes, events: events.length, images: allowedImages.size }

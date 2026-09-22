@@ -264,6 +264,53 @@ export function calendarWriterUrl (eventId) {
   return `https://njump.me/${id}`
 }
 
+/** NIP-82 software application — Zapstore's catalog entry. */
+export const APP_KIND = 32267
+
+/**
+ * Path segment safe for zapstore / gitworkshop URLs.
+ *
+ * Reverse-domain app ids and kebab-case repo ids are fine. A `d` with a slash
+ * or query character would invent a different path; refuse those rather than
+ * percent-encode a publisher-controlled string into an open redirect shape.
+ */
+export function isSafePathSegment (value) {
+  return typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9._-]{0,200}$/.test(value)
+}
+
+/** Canonical Zapstore app page for a kind 32267. */
+export function toZapstoreUrl (event) {
+  const d = tagValue(event, 'd')
+  if (!d || event.kind !== APP_KIND) throw new Error('Not an app address')
+  if (!isSafePathSegment(d)) throw new Error('App id is not a safe path segment')
+  return `https://zapstore.dev/apps/${d}`
+}
+
+/** Writer form: event id hex. resolve.mjs rewrites to the app id afterwards. */
+export function appWriterUrl (eventId) {
+  const id = String(eventId || '').toLowerCase()
+  if (!/^[0-9a-f]{64}$/.test(id)) throw new Error(`Not an event id: ${String(eventId).slice(0, 16)}`)
+  return `https://zapstore.dev/apps/${id}`
+}
+
+/** NIP-34 repository announcement. */
+export const GIT_KIND = 30617
+
+/** Canonical gitworkshop.dev page for a kind 30617. */
+export function toGitworkshopUrl (event) {
+  const d = tagValue(event, 'd')
+  if (!d || event.kind !== GIT_KIND) throw new Error('Not a repository address')
+  if (!isSafePathSegment(d)) throw new Error('Repo id is not a safe path segment')
+  return `https://gitworkshop.dev/${toNpub(event.pubkey)}/${d}`
+}
+
+/** Writer form: event id hex. resolve.mjs rewrites to npub/d afterwards. */
+export function gitWriterUrl (eventId) {
+  const id = String(eventId || '').toLowerCase()
+  if (!/^[0-9a-f]{64}$/.test(id)) throw new Error(`Not an event id: ${String(eventId).slice(0, 16)}`)
+  return `https://gitworkshop.dev/repo/${id}`
+}
+
 /** `nevent1…` to lowercase event-id hex. Throws if it is not an nevent that names an id. */
 export function fromNevent (input) {
   const value = String(input || '').trim()

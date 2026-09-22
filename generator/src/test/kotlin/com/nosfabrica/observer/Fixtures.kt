@@ -125,6 +125,39 @@ object Fixtures {
                 ),
         )
 
+    val APP_ID = "ff66".repeat(16)
+    const val APP_D = "pub.soapbox.tenna"
+
+    fun appRelease() =
+        event(
+            APP_ID,
+            ALICE,
+            "A browser for nsites.",
+            kind = 32267,
+            tags =
+                listOf(
+                    listOf("d", APP_D),
+                    listOf("name", "Tenna"),
+                ),
+        )
+
+    val REPO_ID = "aabb".repeat(16)
+    const val REPO_D = "gitnostr"
+
+    fun gitRepo() =
+        event(
+            REPO_ID,
+            ALICE,
+            "",
+            kind = 30617,
+            tags =
+                listOf(
+                    listOf("d", REPO_D),
+                    listOf("name", "gitnostr"),
+                    listOf("description", "Git bridge to Nostr"),
+                ),
+        )
+
     /**
      * A corpus of one desk.
      *

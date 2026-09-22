@@ -1,9 +1,11 @@
 package com.nosfabrica.observer.safe
 
 import com.nosfabrica.observer.corpus.Art
+import com.nosfabrica.observer.nostr.Apps
 import com.nosfabrica.observer.nostr.Calendar
 import com.nosfabrica.observer.nostr.Classifieds
 import com.nosfabrica.observer.nostr.Corpus
+import com.nosfabrica.observer.nostr.Repos
 import com.nosfabrica.observer.nostr.Streams
 import com.vitorpamplona.quartz.nip01Core.core.Event
 import com.vitorpamplona.quartz.nip19Bech32.Nip19Parser
@@ -52,8 +54,9 @@ class Validator(
      *
      * So the paper does not link to the open web at all, except permalinks back
      * to Nostr events we read, verified zap.stream watch links for live streams,
-     * verified Shopstr listing links for classifieds, and verified njump
-     * calendar links for Diary & Calendar listings in the digest.
+     * verified Shopstr listing links for classifieds, verified njump
+     * calendar links for Diary & Calendar listings, verified Zapstore app
+     * links, and verified gitworkshop repository links in the digest.
      * [Sanitizer] unwraps the rest to plain text; this is the second line, in
      * case that ever regresses.
      */
@@ -67,6 +70,12 @@ class Validator(
 
     /** Calendar listings we read — the only events an njump calendar link may name. */
     private val calendars: List<Event> = Calendar.listed(corpus)
+
+    /** App releases we read — the only Zapstore links that may ship. */
+    private val apps: List<Event> = Apps.released(corpus)
+
+    /** Repositories we read — the only gitworkshop links that may ship. */
+    private val repos: List<Event> = Repos.announced(corpus)
 
     /** Event ids of calendar listings — bare njump hex for these is not enough. */
     private val calendarIds: Set<String> = calendars.map { it.id.lowercase() }.toSet()
@@ -166,12 +175,16 @@ class Validator(
             // calendar ids so a regression fails closed.
             val calendarId = Calendar.calendarLinkTarget(href, calendars)
             if (calendarId != null && href.contains("naddr1", ignoreCase = true)) continue
+            val appId = Apps.appLinkTarget(href, apps)
+            if (appId != null && apps.any { it.id.equals(appId, ignoreCase = true) }) continue
+            val gitId = Repos.gitLinkTarget(href, repos)
+            if (gitId != null && repos.any { it.id.equals(gitId, ignoreCase = true) }) continue
             val id = permalinkTarget(href)
             if (id != null && id in corpusEventIds && id !in calendarIds) continue
             violations.add(
                 Violation(
                     Kind.LINK,
-                    "only source citations, verified zap.stream watch links, verified Shopstr listing links, and verified njump calendar links may be links",
+                    "only source citations, verified zap.stream / Shopstr / njump calendar / Zapstore / gitworkshop links may be links",
                     href.take(120),
                 ),
             )

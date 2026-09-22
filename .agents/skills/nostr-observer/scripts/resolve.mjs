@@ -21,8 +21,8 @@
 
 import { readFileSync, writeFileSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
-import { permalinkTarget, toPermalink, streamLinkTarget, streamWriterTarget, toStreamLink, listingLinkTarget, listingWriterTarget, toListingLink, calendarLinkTarget, calendarWriterTarget, toCalendarLink } from './validate.mjs'
-import { fromNevent, CALENDAR_KINDS, tagValue } from './nostr.mjs'
+import { permalinkTarget, toPermalink, streamLinkTarget, streamWriterTarget, toStreamLink, listingLinkTarget, listingWriterTarget, toListingLink, calendarLinkTarget, calendarWriterTarget, toCalendarLink, appLinkTarget, appWriterTarget, toAppLink, gitLinkTarget, gitWriterTarget, toGitLink } from './validate.mjs'
+import { fromNevent, CALENDAR_KINDS, APP_KIND, GIT_KIND, tagValue } from './nostr.mjs'
 import { tags, attributes } from './html.mjs'
 
 /**
@@ -116,12 +116,14 @@ export function resolve (html, corpus) {
   // --- links to the open web ----------------------------------------------
   // The paper prints addresses; it does not make them clickable — except
   // source citations, verified zap.stream watch links, verified Shopstr
-  // listing links, and verified njump calendar links. A permalink back to an
+  // listing links, verified njump calendar links, verified Zapstore app
+  // links, and verified gitworkshop repo links. A permalink back to an
   // event we read is rewritten to jumble.social's nevent URL (the writer cites
   // hex; this is the afterwards) — unless it is a calendar listing, which
   // becomes an njump naddr, because jumble has no calendar view and an nevent
   // freezes one revision of a replaceable event. Stream / classified /
-  // calendar writer forms are encoded to their host's naddr. Everything else
+  // calendar writer forms are encoded to their host's naddr; app / git writer
+  // forms are rewritten to their host's derived path. Everything else
   // is unwrapped to its own text. Rebuilt back to front so each edit leaves
   // earlier offsets untouched.
   const streams = new Map(Object.values(corpus.desks).flat()
@@ -132,6 +134,12 @@ export function resolve (html, corpus) {
     .map((e) => [e.id, e]))
   const calendars = new Map(Object.values(corpus.desks).flat()
     .filter((e) => CALENDAR_KINDS.has(e.kind) && tagValue(e, 'd'))
+    .map((e) => [e.id, e]))
+  const apps = new Map(Object.values(corpus.desks).flat()
+    .filter((e) => e.kind === APP_KIND && tagValue(e, 'd'))
+    .map((e) => [e.id, e]))
+  const repos = new Map(Object.values(corpus.desks).flat()
+    .filter((e) => e.kind === GIT_KIND && tagValue(e, 'd'))
     .map((e) => [e.id, e]))
   const anchors = tags(out, 'a').reverse()
   for (const anchor of anchors) {
@@ -189,6 +197,38 @@ export function resolve (html, corpus) {
       }
       continue
     }
+    const appId = appWriterTarget(url, corpus) || appLinkTarget(url, corpus)
+    if (appId && apps.has(appId)) {
+      const canonical = toAppLink(apps.get(appId))
+      let tag = anchor.raw
+      if (url !== canonical) {
+        tag = tag.replace(/(\bhref\s*=\s*)("[^"]*"|'[^']*'|[^\s>]+)/i, `$1"${canonical}"`)
+      }
+      tag = openInNewTab(tag)
+      if (tag !== anchor.raw) {
+        out = out.slice(0, anchor.start) + tag + out.slice(anchor.end)
+        if (url !== canonical) {
+          changes.push({ kind: 'app', detail: `${url} -> ${canonical}` })
+        }
+      }
+      continue
+    }
+    const gitId = gitWriterTarget(url, corpus) || gitLinkTarget(url, corpus)
+    if (gitId && repos.has(gitId)) {
+      const canonical = toGitLink(repos.get(gitId))
+      let tag = anchor.raw
+      if (url !== canonical) {
+        tag = tag.replace(/(\bhref\s*=\s*)("[^"]*"|'[^']*'|[^\s>]+)/i, `$1"${canonical}"`)
+      }
+      tag = openInNewTab(tag)
+      if (tag !== anchor.raw) {
+        out = out.slice(0, anchor.start) + tag + out.slice(anchor.end)
+        if (url !== canonical) {
+          changes.push({ kind: 'git', detail: `${url} -> ${canonical}` })
+        }
+      }
+      continue
+    }
     if (id && eventIds.has(id)) {
       const canonical = toPermalink(id)
       let tag = anchor.raw
@@ -231,12 +271,14 @@ function main () {
   if (counts.stream) console.log(`  Encoded ${counts.stream} stream watch link(s) to zap.stream.`)
   if (counts.listing) console.log(`  Encoded ${counts.listing} classified listing link(s) to Shopstr.`)
   if (counts.calendar) console.log(`  Encoded ${counts.calendar} calendar link(s) to njump.`)
+  if (counts.app) console.log(`  Encoded ${counts.app} app link(s) to Zapstore.`)
+  if (counts.git) console.log(`  Encoded ${counts.git} repository link(s) to gitworkshop.`)
   if (counts.dropped || counts.unwrapped) {
     console.log('')
     console.log('  CHANGES WORTH READING - each of these is the page trying to do something')
     console.log('  the paper does not do. Look at them before you ship:')
     console.log('')
-    for (const change of changes.filter((c) => c.kind !== 'resolved' && c.kind !== 'permalink' && c.kind !== 'stream' && c.kind !== 'listing' && c.kind !== 'calendar')) {
+    for (const change of changes.filter((c) => c.kind !== 'resolved' && c.kind !== 'permalink' && c.kind !== 'stream' && c.kind !== 'listing' && c.kind !== 'calendar' && c.kind !== 'app' && c.kind !== 'git')) {
       console.log(`  ${change.kind.toUpperCase()}: ${change.detail}`)
     }
   }

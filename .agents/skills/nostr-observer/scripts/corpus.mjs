@@ -13,7 +13,7 @@
 //
 // Usage: node corpus.mjs <npub> [--relay wss://…] [--out corpus.json] [--floor 20]
 
-import { req, toHex, toNpub, shortNpub, streamWriterUrl, classifiedWriterUrl, calendarWriterUrl, tagValue, tagsNamed, closeAll, MAX_REQ_BYTES, INCLUDE_SPAM } from './nostr.mjs'
+import { req, toHex, toNpub, shortNpub, streamWriterUrl, classifiedWriterUrl, calendarWriterUrl, appWriterUrl, gitWriterUrl, isSafePathSegment, tagValue, tagsNamed, closeAll, MAX_REQ_BYTES, INCLUDE_SPAM } from './nostr.mjs'
 import { writeFileSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
 import { createHash } from 'node:crypto'
@@ -339,6 +339,12 @@ export function digest (corpus, budget = DEFAULT_DIGEST_BUDGET) {
       }
       if (desk.key === 'calendar' && tagValue(event, 'd')) {
         p(`  calendar: ${calendarWriterUrl(event.id)}`)
+      }
+      if (desk.key === 'apps' && isSafePathSegment(tagValue(event, 'd'))) {
+        p(`  app: ${appWriterUrl(event.id)}`)
+      }
+      if (desk.key === 'git' && isSafePathSegment(tagValue(event, 'd'))) {
+        p(`  repo: ${gitWriterUrl(event.id)}`)
       }
       const text = body(event, EXCERPT[desk.key] ?? DEFAULT_EXCERPT)
       if (text) p(`  ${text}`)

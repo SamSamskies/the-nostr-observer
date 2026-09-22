@@ -190,6 +190,17 @@ Shopstr naddr. Link the listing title. Do not compose an `naddr1` yourself, and
 do not use a shopstr.store URL copied from a post body — only the derived
 listing line from Classifieds.
 
+**Link app releases** using the `app:` URL the digest printed
+(`https://zapstore.dev/apps/<64-hex-event-id>`). Step 5 rewrites it to
+`/apps/<d-tag>`. Link the app name. Do not invent a Zapstore URL, and do not
+use one copied from a post body — only the derived app line from App releases.
+
+**Link code repositories** using the `repo:` URL the digest printed
+(`https://gitworkshop.dev/repo/<64-hex-event-id>`). Step 5 rewrites it to
+`/<npub>/<d-tag>`. Link the repo name. Do not invent a gitworkshop URL, and do
+not use one copied from a post body — only the derived repo line from Code
+repositories.
+
 Save it as `editions/observer-<YYYY-MM-DD>-<code>.html`, using the edition code the
 corpus digest printed.
 
@@ -203,8 +214,9 @@ node <skill>/scripts/resolve.mjs editions/observer-<date>-<code>.html --corpus e
 
 This is the "afterwards" the editorial brief refers to. It swaps every
 `art-N` for its real URL, removes any `<figure>` whose id is not on the
-shortlist, encodes source citations, stream watch links, and classified
-listing links, and unwraps every other link to the open web into plain text.
+shortlist, encodes source citations, stream watch links, classified
+listing links, calendar links, Zapstore app links, and gitworkshop repo
+links, and unwraps every other link to the open web into plain text.
 
 **Read what it reports.** It prints every change that was not a plain id
 resolution. A dropped figure or an unwrapped link is the visible edge of
@@ -231,7 +243,7 @@ even when it is inconvenient.
 |---|---|
 | **QUOTE** | Anything in `<q>` or `<blockquote>` must appear verbatim in a source event. Elision with `…` is allowed; the fragments must appear in order in **one** event. Paraphrase is not checked, because paraphrase is journalism — so paraphrase freely, and quote only what was said. |
 | **IMAGE** | After Step 5 every `<img src>` must be a shortlist URL. That happens by itself if you wrote ids; it fails if you wrote a URL yourself. |
-| **LINK** | After Step 5, permitted links are: `https://jumble.social/notes/<nevent1…>` for a source event in the corpus, `https://zap.stream/<naddr1…>` for a live stream from Live now, and `https://shopstr.store/listing/<naddr1…>` for a classified from Classifieds. Write citations as `https://jumble.social/notes/<64-hex-event-id>`, stream watch links as `https://zap.stream/stream/<64-hex-event-id>`, and listing links as `https://shopstr.store/listing/<64-hex-event-id>` from the digest; resolve encodes all three. Do not compose an `nevent1` or `naddr1` yourself. Everything else — including a URL that appeared in the corpus — is refused. |
+| **LINK** | After Step 5, permitted links are: `https://jumble.social/notes/<nevent1…>` for a source event in the corpus, `https://zap.stream/<naddr1…>` for a live stream from Live now, `https://shopstr.store/listing/<naddr1…>` for a classified from Classifieds, `https://zapstore.dev/apps/<d-tag>` for an app from App releases, and `https://gitworkshop.dev/<npub>/<d-tag>` for a repository from Code repositories. Write citations as `https://jumble.social/notes/<64-hex-event-id>`, stream watch links as `https://zap.stream/stream/<64-hex-event-id>`, listing links as `https://shopstr.store/listing/<64-hex-event-id>`, app links as `https://zapstore.dev/apps/<64-hex-event-id>`, and repo links as `https://gitworkshop.dev/repo/<64-hex-event-id>` from the digest; resolve encodes all five. Do not compose an `nevent1` or `naddr1` yourself. Everything else — including a URL that appeared in the corpus — is refused. |
 | **MARKUP** | No `<script>`, no `<iframe>`, no `on…=` handlers, no `javascript:`, no forms. The paper collects nothing and runs nothing. |
 
 The link rule is the one that looks too strict. It is not: an early version

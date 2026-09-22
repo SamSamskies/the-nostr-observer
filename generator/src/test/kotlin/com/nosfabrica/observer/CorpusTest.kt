@@ -712,6 +712,18 @@ class ListingTest {
     }
 
     @Test
+    fun `an app release carries its zapstore writer url`() {
+        val text = render(Desk.APPS, Fixtures.appRelease())
+        assertTrue(text.contains("app: https://zapstore.dev/apps/${Fixtures.APP_ID}"), text)
+    }
+
+    @Test
+    fun `a repository carries its gitworkshop writer url`() {
+        val text = render(Desk.GIT, Fixtures.gitRepo())
+        assertTrue(text.contains("repo: https://gitworkshop.dev/repo/${Fixtures.REPO_ID}"), text)
+    }
+
+    @Test
     fun `a classified without a d tag has no listing url`() {
         val bare =
             Fixtures.event(

@@ -1,8 +1,10 @@
 package com.nosfabrica.observer
 
+import com.nosfabrica.observer.nostr.Apps
 import com.nosfabrica.observer.nostr.Calendar
 import com.nosfabrica.observer.nostr.Classifieds
 import com.nosfabrica.observer.nostr.Desk
+import com.nosfabrica.observer.nostr.Repos
 import com.nosfabrica.observer.nostr.Streams
 import com.nosfabrica.observer.safe.Validator
 import com.vitorpamplona.quartz.nip01Core.relay.normalizer.NormalizedRelayUrl
@@ -138,6 +140,24 @@ class ValidatorTest {
     }
 
     @Test
+    fun `accepts a verified zapstore app link after rewriting`() {
+        val app = Fixtures.appRelease()
+        val validator = Validator(Fixtures.corpus(listOf(app), Desk.APPS), Fixtures.art())
+        val canonical = Apps.canonicalUrl(app)
+        val r = validator.validate("""<html><body><a href="$canonical">Tenna</a></body></html>""")
+        assertTrue(r.ok, r.summary())
+    }
+
+    @Test
+    fun `accepts a verified gitworkshop repo link after rewriting`() {
+        val repo = Fixtures.gitRepo()
+        val validator = Validator(Fixtures.corpus(listOf(repo), Desk.GIT), Fixtures.art())
+        val canonical = Repos.canonicalUrl(repo)
+        val r = validator.validate("""<html><body><a href="$canonical">gitnostr</a></body></html>""")
+        assertTrue(r.ok, r.summary())
+    }
+
+    @Test
     fun `rejects bare hex for a calendar listing we read`() {
         // Writer form shares the host with ordinary citations. Sanitizer must
         // encode it; if that regresses, this refuses rather than freezing a
@@ -202,6 +222,44 @@ class ValidatorTest {
             )
         val listing = Fixtures.calendarEntry()
         val validator = Validator(Fixtures.corpus(listOf(listing), Desk.CALENDAR), Fixtures.art())
+        val r = validator.validate("""<html><body><a href="$invented">fake</a></body></html>""")
+        assertFalse(r.ok)
+        assertTrue(r.violations.single().kind == Validator.Kind.LINK)
+    }
+
+    @Test
+    fun `rejects a zapstore url copied from a post body`() {
+        val invented =
+            Apps.canonicalUrl(
+                Fixtures.event(
+                    "f".repeat(64),
+                    "dd44".repeat(16),
+                    "",
+                    kind = 32267,
+                    tags = listOf(listOf("d", "com.evil.app")),
+                ),
+            )
+        val app = Fixtures.appRelease()
+        val validator = Validator(Fixtures.corpus(listOf(app), Desk.APPS), Fixtures.art())
+        val r = validator.validate("""<html><body><a href="$invented">fake</a></body></html>""")
+        assertFalse(r.ok)
+        assertTrue(r.violations.single().kind == Validator.Kind.LINK)
+    }
+
+    @Test
+    fun `rejects a gitworkshop url copied from a post body`() {
+        val invented =
+            Repos.canonicalUrl(
+                Fixtures.event(
+                    "f".repeat(64),
+                    "dd44".repeat(16),
+                    "",
+                    kind = 30617,
+                    tags = listOf(listOf("d", "fake-repo")),
+                ),
+            )
+        val repo = Fixtures.gitRepo()
+        val validator = Validator(Fixtures.corpus(listOf(repo), Desk.GIT), Fixtures.art())
         val r = validator.validate("""<html><body><a href="$invented">fake</a></body></html>""")
         assertFalse(r.ok)
         assertTrue(r.violations.single().kind == Validator.Kind.LINK)

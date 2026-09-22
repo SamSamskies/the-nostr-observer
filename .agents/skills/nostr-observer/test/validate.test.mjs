@@ -10,7 +10,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { check, quotedText, attributes, normalize, isQuoted, PERMALINK, toPermalink, permalinkTarget, streamLinkTarget, toStreamLink, listingLinkTarget, toListingLink, calendarLinkTarget, toCalendarLink } from '../scripts/validate.mjs'
+import { check, quotedText, attributes, normalize, isQuoted, PERMALINK, toPermalink, permalinkTarget, streamLinkTarget, toStreamLink, listingLinkTarget, toListingLink, calendarLinkTarget, toCalendarLink, appLinkTarget, toAppLink, gitLinkTarget, toGitLink } from '../scripts/validate.mjs'
 import { resolve } from '../scripts/resolve.mjs'
 
 const EVENT_ID = 'a'.repeat(64)
@@ -28,6 +28,14 @@ const CALENDAR_ID = '22'.repeat(32)
 const CALENDAR_PK = 'bb22'.repeat(16)
 const CALENDAR_D = 'porto-meetup'
 
+const APP_ID = '33'.repeat(32)
+const APP_PK = 'cc33'.repeat(16)
+const APP_D = 'pub.soapbox.tenna'
+
+const GIT_ID = '44'.repeat(32)
+const GIT_PK = 'dd44'.repeat(16)
+const GIT_D = 'gitnostr'
+
 const corpus = {
   desks: {
     notes: [
@@ -42,6 +50,12 @@ const corpus = {
     ],
     calendar: [
       { id: CALENDAR_ID, kind: 31923, pubkey: CALENDAR_PK, tags: [['d', CALENDAR_D], ['title', 'Bitcoin Meetup in Porto']], content: '' },
+    ],
+    apps: [
+      { id: APP_ID, kind: 32267, pubkey: APP_PK, tags: [['d', APP_D], ['name', 'Tenna']], content: 'A browser for nsites.' },
+    ],
+    git: [
+      { id: GIT_ID, kind: 30617, pubkey: GIT_PK, tags: [['d', GIT_D], ['name', 'gitnostr']], content: '' },
     ],
   },
   control: [{ id: 'c'.repeat(64), pubkey: 'cc', content: 'Only the anonymous read ever saw this sentence.' }],
@@ -231,6 +245,44 @@ test('a jumble citation of a calendar event is rewritten to an njump naddr', () 
 test('an njump calendar URL copied from a post body is still refused', () => {
   const invented = toCalendarLink({ kind: 31923, pubkey: 'd'.repeat(64), tags: [['d', 'fake-meetup']] })
   assert.deepEqual(kinds(`<a href="${invented}">meetup</a>`), ['LINK'])
+})
+
+test('a verified Zapstore app link is allowed after resolve', () => {
+  const writer = `https://zapstore.dev/apps/${APP_ID}`
+  const canonical = toAppLink(corpus.desks.apps[0])
+  const { html, changes } = resolve(`<a href="${writer}">Tenna</a>`, corpus)
+  assert.match(html, new RegExp(`href="${canonical.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`))
+  assert.match(html, /target="_blank"/)
+  assert.deepEqual(changes.map((c) => c.kind), ['app'])
+  assert.deepEqual(check(html, corpus).violations, [])
+  assert.equal(appLinkTarget(canonical, corpus), APP_ID)
+  assert.equal(appLinkTarget('https://zapstore.dev/apps/' + 'a'.repeat(64), corpus), null)
+  assert.deepEqual(kinds(`<a href="${writer}">Tenna</a>`), ['LINK'],
+    'writer form must be rewritten before validate')
+})
+
+test('a zapstore URL copied from a post body is still refused', () => {
+  const invented = toAppLink({ kind: 32267, pubkey: 'd'.repeat(64), tags: [['d', 'com.evil.app']] })
+  assert.deepEqual(kinds(`<a href="${invented}">install</a>`), ['LINK'])
+})
+
+test('a verified gitworkshop repo link is allowed after resolve', () => {
+  const writer = `https://gitworkshop.dev/repo/${GIT_ID}`
+  const canonical = toGitLink(corpus.desks.git[0])
+  const { html, changes } = resolve(`<a href="${writer}">gitnostr</a>`, corpus)
+  assert.match(html, new RegExp(`href="${canonical.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`))
+  assert.match(html, /target="_blank"/)
+  assert.deepEqual(changes.map((c) => c.kind), ['git'])
+  assert.deepEqual(check(html, corpus).violations, [])
+  assert.equal(gitLinkTarget(canonical, corpus), GIT_ID)
+  assert.equal(gitLinkTarget('https://gitworkshop.dev/repo/' + 'a'.repeat(64), corpus), null)
+  assert.deepEqual(kinds(`<a href="${writer}">gitnostr</a>`), ['LINK'],
+    'writer form must be rewritten before validate')
+})
+
+test('a gitworkshop URL copied from a post body is still refused', () => {
+  const invented = toGitLink({ kind: 30617, pubkey: 'd'.repeat(64), tags: [['d', 'fake-repo']] })
+  assert.deepEqual(kinds(`<a href="${invented}">clone</a>`), ['LINK'])
 })
 
 test('resolve then validate leaves nothing for validate to complain about', () => {
