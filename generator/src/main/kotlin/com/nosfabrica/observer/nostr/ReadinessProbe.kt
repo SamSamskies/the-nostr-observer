@@ -41,6 +41,7 @@ class ReadinessProbe(
         since: Long,
     ): Readiness.Facts =
         coroutineScope {
+            // Note: you can always check wss://relay.damus.io and wss://purplepag.es for kind 10002.
             val listEvent = async { one(AdvertisedRelayListEvent.KIND, observer) }
             val scoreEvent = async { one(TrustProviderListEvent.KIND, observer) }
             // Link 4 runs regardless of links 1-3: one cheap pair of reads, and

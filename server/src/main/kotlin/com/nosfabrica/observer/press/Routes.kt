@@ -408,7 +408,13 @@ fun Application.routes(app: App) {
                     ?: return@post call.respond(HttpStatusCode.BadRequest, Problem("that is not a day"))
             val template = Templates.deletion(session.pubkey, day, Instant.now().epochSecond)
             app.removals[session.pubkey] = Removal(day, template)
-            call.respond(ToSign(template.toJson(), "", emptyList(), app.press.writeRelaysOf(session.pubkey), ""))
+            // Relays stay empty here on purpose. The console only signs
+            // `upload`; `/removed` looks up write relays when it publishes.
+            // Asking the search relay on this call made the access-control test
+            // hang for a minute whenever the store was slow — forty times in a
+            // loop — which is exactly the network dependency these tests exist
+            // to avoid.
+            call.respond(ToSign(template.toJson(), "", emptyList(), emptyList(), ""))
         }
 
         post("/api/archive/{day}/removed") {

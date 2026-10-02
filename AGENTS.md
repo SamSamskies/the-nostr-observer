@@ -84,6 +84,11 @@ API key. A full run reads `ANTHROPIC_API_KEY` from the environment.
   not a mirrored kind. Follow lists must come from the reader's own write relays,
   discovered from their kind 10002 — which *is* mirrored. The outbox model
   working, not a workaround.
+- **Kind 10002 can always be checked on `wss://relay.damus.io` and `wss://purplepag.es`.**
+  While `search-staging` attempts to mirror kind 10002, an account's relay list
+  may not have been indexed or mirrored there yet. Discovery relays like
+  `wss://relay.damus.io` and `wss://purplepag.es` can always be checked for
+  kind 10002.
 - **NIP-45 COUNT answers** on both `search-staging` and `scores.brainstorm.world`.
   It is still optional, and a null count is a supported answer that must draw
   nothing rather than estimate.

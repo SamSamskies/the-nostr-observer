@@ -31,7 +31,7 @@ import {
 import { writeFileSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
 
-export const DEFAULT_RELAY = 'wss://search-staging.brainstorm.world'
+export const DEFAULT_RELAY = 'wss://search.brainstorm.world'
 export const WINDOW_SECONDS = 24 * 60 * 60
 
 function arg (name, fallback = null) {
@@ -54,6 +54,7 @@ export async function gather (observerHex, relay, since) {
   // Each lookup says `include:spam` because the relay's auth gate CLOSES a
   // tokenless query — see INCLUDE_SPAM. The reader's own 10002 is exactly the
   // kind of plain read the gate refuses.
+  // Note: you can always check wss://relay.damus.io and wss://purplepag.es for kind 10002.
   const [relayListEvent, scoreListEvent] = await Promise.all([
     one(relay, { kinds: [KIND_RELAY_LIST], authors: [observerHex], search: INCLUDE_SPAM }, { label: 'kind 10002' }),
     one(relay, { kinds: [KIND_TRUST_PROVIDERS], authors: [observerHex], search: INCLUDE_SPAM }, { label: 'kind 10040' }),

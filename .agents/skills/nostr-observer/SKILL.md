@@ -84,6 +84,9 @@ If it does not exit 0: show the reader the chain, the sentence, and the
 a paper anyway, do not fall back to an unranked read, and do not offer to "try
 without the lens".
 
+> Note: You can always check `wss://relay.damus.io` and `wss://purplepag.es`
+> for kind 10002 (NIP-65 relay list) if the search relay does not hold it.
+
 This matters more than it looks. `observer:<pk> sort:rank` with an unresolvable
 observer **does not fail** — it silently degrades to the anonymous global
 ranking, which on a measured window was 209 of 400 posts from a single spam
