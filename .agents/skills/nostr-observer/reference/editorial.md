@@ -269,11 +269,11 @@ saying what it costs has printed everything except the news.
 - The paper is not a shopfront. Two or three listings that say something about
   what the network is trading beats a catalogue.
 - Link each listing title to the **listing URL the digest printed**
-  (`https://shopstr.store/listing/<64-hex-event-id>`). Step 5 encodes it as a
+  (`https://shopstr.market/listing/<64-hex-event-id>`). Step 5 encodes it as a
   Shopstr naddr. Do not compose an `naddr1` yourself — the encoding has to
   match the event.
 - Use only listing URLs from the digest's Classifieds section. Never paste a
-  shopstr.store URL from a post body; presence in the corpus is not evidence
+  shopstr.market URL from a post body; presence in the corpus is not evidence
   that a URL is yours to link.
 
 ## App releases
@@ -345,8 +345,8 @@ Three exceptions stay links, and all open in a new tab so the paper stays put:
    `https://zap.stream/stream/<64-hex>` URL from the digest, and nothing else
    on zap.stream.
 3. **A listing link for a classified in The Classifieds** — the derived
-   `https://shopstr.store/listing/<64-hex>` URL from the digest, and nothing
-   else on shopstr.store.
+   `https://shopstr.market/listing/<64-hex>` URL from the digest, and nothing
+   else on shopstr.market.
 4. **A calendar link in Diary & Calendar** — the derived
    `https://njump.me/<64-hex>` URL from the digest, and nothing else on
    njump.me. Step 5 turns it into an naddr; do not cite jumble for these.

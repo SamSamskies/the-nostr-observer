@@ -145,8 +145,8 @@ export function permalinkTarget (href) {
 export const STREAM_WRITER = /^https:\/\/zap\.stream\/stream\/([0-9a-f]{64})(?:[/?#].*)?$/i
 export const STREAM_NADDR = /^https:\/\/zap\.stream\/(naddr1[0-9a-z]+)(?:[/?#].*)?$/i
 
-export const LISTING_WRITER = /^https:\/\/shopstr\.store\/listing\/([0-9a-f]{64})(?:[/?#].*)?$/i
-export const LISTING_NADDR = /^https:\/\/shopstr\.store\/listing\/(naddr1[0-9a-z]+)(?:[/?#].*)?$/i
+export const LISTING_WRITER = /^https:\/\/shopstr\.market\/listing\/([0-9a-f]{64})(?:[/?#].*)?$/i
+export const LISTING_NADDR = /^https:\/\/shopstr\.market\/listing\/(naddr1[0-9a-z]+)(?:[/?#].*)?$/i
 
 export const CALENDAR_WRITER = /^https:\/\/njump\.me\/([0-9a-f]{64})(?:[/?#].*)?$/i
 export const CALENDAR_NADDR = /^https:\/\/njump\.me\/(naddr1[0-9a-z]+)(?:[/?#].*)?$/i
@@ -274,7 +274,7 @@ export function toStreamLink (event) {
  * read; otherwise null.
  *
  * Two shapes after resolve: canonical naddr, or the writer form
- * `shopstr.store/listing/<64-hex>` which resolve encodes. Either way the
+ * `shopstr.market/listing/<64-hex>` which resolve encodes. Either way the
  * naddr must decode to the same pubkey + d-tag as a kind 30402 in the corpus.
  */
 export function listingLinkTarget (href, corpus) {

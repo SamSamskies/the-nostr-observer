@@ -188,9 +188,9 @@ Do not compose an `naddr1` yourself, and do not use a zap.stream URL copied
 from a post body — only the derived watch line from Live now.
 
 **Link classifieds** using the `listing:` URL the digest printed
-(`https://shopstr.store/listing/<64-hex-event-id>`). Step 5 encodes it as a
+(`https://shopstr.market/listing/<64-hex-event-id>`). Step 5 encodes it as a
 Shopstr naddr. Link the listing title. Do not compose an `naddr1` yourself, and
-do not use a shopstr.store URL copied from a post body — only the derived
+do not use a shopstr.market URL copied from a post body — only the derived
 listing line from Classifieds.
 
 **Link app releases** using the `app:` URL the digest printed
@@ -246,7 +246,7 @@ even when it is inconvenient.
 |---|---|
 | **QUOTE** | Anything in `<q>` or `<blockquote>` must appear verbatim in a source event. Elision with `…` is allowed; the fragments must appear in order in **one** event. Paraphrase is not checked, because paraphrase is journalism — so paraphrase freely, and quote only what was said. |
 | **IMAGE** | After Step 5 every `<img src>` must be a shortlist URL. That happens by itself if you wrote ids; it fails if you wrote a URL yourself. |
-| **LINK** | After Step 5, permitted links are: `https://jumble.social/notes/<nevent1…>` for a source event in the corpus, `https://zap.stream/<naddr1…>` for a live stream from Live now, `https://shopstr.store/listing/<naddr1…>` for a classified from Classifieds, `https://zapstore.dev/apps/<d-tag>` for an app from App releases, and `https://gitworkshop.dev/<npub>/<d-tag>` for a repository from Code repositories. Write citations as `https://jumble.social/notes/<64-hex-event-id>`, stream watch links as `https://zap.stream/stream/<64-hex-event-id>`, listing links as `https://shopstr.store/listing/<64-hex-event-id>`, app links as `https://zapstore.dev/apps/<64-hex-event-id>`, and repo links as `https://gitworkshop.dev/repo/<64-hex-event-id>` from the digest; resolve encodes all five. Do not compose an `nevent1` or `naddr1` yourself. Everything else — including a URL that appeared in the corpus — is refused. |
+| **LINK** | After Step 5, permitted links are: `https://jumble.social/notes/<nevent1…>` for a source event in the corpus, `https://zap.stream/<naddr1…>` for a live stream from Live now, `https://shopstr.market/listing/<naddr1…>` for a classified from Classifieds, `https://zapstore.dev/apps/<d-tag>` for an app from App releases, and `https://gitworkshop.dev/<npub>/<d-tag>` for a repository from Code repositories. Write citations as `https://jumble.social/notes/<64-hex-event-id>`, stream watch links as `https://zap.stream/stream/<64-hex-event-id>`, listing links as `https://shopstr.market/listing/<64-hex-event-id>`, app links as `https://zapstore.dev/apps/<64-hex-event-id>`, and repo links as `https://gitworkshop.dev/repo/<64-hex-event-id>` from the digest; resolve encodes all five. Do not compose an `nevent1` or `naddr1` yourself. Everything else — including a URL that appeared in the corpus — is refused. |
 | **MARKUP** | No `<script>`, no `<iframe>`, no `on…=` handlers, no `javascript:`, no forms. The paper collects nothing and runs nothing. |
 
 The link rule is the one that looks too strict. It is not: an early version

@@ -14,8 +14,8 @@ const val CLASSIFIED_KIND = 30402
  * encodes that to Shopstr's canonical naddr form afterwards.
  */
 object Classifieds {
-    private val WRITER = Regex("""^https://shopstr\.store/listing/([0-9a-f]{64})(?:[/?#].*)?$""", RegexOption.IGNORE_CASE)
-    private val NADDR = Regex("""^https://shopstr\.store/listing/(naddr1[0-9a-z]+)(?:[/?#].*)?$""", RegexOption.IGNORE_CASE)
+    private val WRITER = Regex("""^https://shopstr\.market/listing/([0-9a-f]{64})(?:[/?#].*)?$""", RegexOption.IGNORE_CASE)
+    private val NADDR = Regex("""^https://shopstr\.market/listing/(naddr1[0-9a-z]+)(?:[/?#].*)?$""", RegexOption.IGNORE_CASE)
     private val EVENT_ID = Regex("^[0-9a-f]{64}$")
 
     /** Classifieds with a `d` tag — the only ones a listing link may name. */
@@ -25,7 +25,7 @@ object Classifieds {
     fun writerUrl(eventId: String): String {
         val id = eventId.lowercase()
         require(EVENT_ID.matches(id)) { "Not an event id: ${eventId.take(16)}" }
-        return "https://shopstr.store/listing/$id"
+        return "https://shopstr.market/listing/$id"
     }
 
     /** Canonical Shopstr listing page for a classified. */
@@ -33,7 +33,7 @@ object Classifieds {
         val d = event.value("d") ?: error("Not a classified address")
         require(event.kind == CLASSIFIED_KIND) { "Not a classified address" }
         val naddr = NAddress.create(CLASSIFIED_KIND, event.pubKey, d, emptyList())
-        return "https://shopstr.store/listing/$naddr"
+        return "https://shopstr.market/listing/$naddr"
     }
 
     /**

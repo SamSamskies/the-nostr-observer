@@ -15,7 +15,7 @@ class ClassifiedsTest {
     @Test
     fun `writer url is event id hex`() {
         assertEquals(
-            "https://shopstr.store/listing/${Fixtures.LISTING_ID}",
+            "https://shopstr.market/listing/${Fixtures.LISTING_ID}",
             Classifieds.writerUrl(Fixtures.LISTING_ID),
         )
     }
