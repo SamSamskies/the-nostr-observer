@@ -21,7 +21,16 @@ export const EDITION_RE = /^observer-(\d{4}-\d{2}-\d{2})-([0-9A-Fa-f]+)\.html$/
 const SITE_FILES = new Set(['index.html', 'vercel.json', 'favicon.svg'])
 const FAVICON_SRC = join(dirname(fileURLToPath(import.meta.url)), '..', 'favicon.svg')
 export const FAVICON_LINK = '<link rel="icon" href="/favicon.svg" type="image/svg+xml">'
-export const PUBLIC_ORIGIN = 'https://thenostrobserver.vercel.app'
+// Open Graph needs ABSOLUTE urls, so the shelf has to know its own hostname
+// before it can stamp a single page — and a wrong `og:url` is worse than none,
+// because it hands every reader who shares a paper a link to somebody else's
+// site. There is no way to derive it: the project is created in the reader's
+// own Vercel account, under a name only they choose. So the skill asks, and
+// passes it in. The default is this fork's shelf; override with OBSERVER_ORIGIN
+// when deploying under another project name.
+export const PUBLIC_ORIGIN = (process.env.OBSERVER_ORIGIN || 'https://thenostrobserver.vercel.app')
+  .trim()
+  .replace(/\/+$/, '')
 
 export function localToday (now = new Date()) {
   const y = now.getFullYear()
@@ -110,11 +119,105 @@ export function socialMetaBlock ({ headline, description, url, image }) {
   ].join('\n  ')
 }
 
+/**
+ * Every `<meta …>` in `html`, with the span it occupies.
+ *
+ * A scanner and not a regex, for the reason the 2026-08-22 audit wrote down:
+ * `<meta\b[^>]*>` ends at the first `>` wherever it is, so a headline
+ * containing one — `content="A > B"` — has half its tag cut out and the
+ * document is corrupted on the way to press. Knowing where a tag ends means
+ * tracking whether you are inside a quoted value.
+ */
+function metaTags (html) {
+  const out = []
+  const open = /<meta(?=[\s/>])/gi
+  let match
+  while ((match = open.exec(html)) !== null) {
+    let at = match.index + match[0].length
+    let quote = null
+    while (at < html.length) {
+      const ch = html[at]
+      if (quote) {
+        if (ch === quote) quote = null
+      } else if (ch === '"' || ch === "'") {
+        quote = ch
+      } else if (ch === '>') {
+        break
+      }
+      at++
+    }
+    if (at >= html.length) break // an unterminated tag is the end of what we can read
+    out.push({ start: match.index, end: at + 1, raw: html.slice(match.index, at + 1) })
+    open.lastIndex = at + 1
+  }
+  return out
+}
+
+/** One tag's attributes, read in order. Names lowercased, values as written. */
+function attributesOf (raw) {
+  const out = {}
+  const head = /^<meta/i.exec(raw)
+  if (!head) return out
+  let at = head[0].length
+  const end = raw.length - 1
+  const skip = () => { while (at < end && /\s/.test(raw[at])) at++ }
+  while (at < end) {
+    skip()
+    if (at >= end || raw[at] === '/') break
+    const nameStart = at
+    while (at < end && !/[\s=/>]/.test(raw[at])) at++
+    const name = raw.slice(nameStart, at).toLowerCase()
+    if (!name) { at++; continue }
+    skip()
+    if (raw[at] !== '=') { out[name] = ''; continue }
+    at++
+    skip()
+    if (raw[at] === '"' || raw[at] === "'") {
+      const quote = raw[at++]
+      const valueStart = at
+      while (at < end && raw[at] !== quote) at++
+      out[name] = raw.slice(valueStart, at)
+      at++
+    } else {
+      const valueStart = at
+      while (at < end && !/\s/.test(raw[at])) at++
+      out[name] = raw.slice(valueStart, at)
+    }
+  }
+  return out
+}
+
+function isSocialMeta (raw) {
+  const attrs = attributesOf(raw)
+  const name = (attrs.name || '').toLowerCase()
+  const property = (attrs.property || '').toLowerCase()
+  return name === 'description' || name.startsWith('twitter:') || property.startsWith('og:')
+}
+
+/**
+ * Remove the link-preview tags, wherever they sit.
+ *
+ * The first version anchored to line boundaries (`^\s*<meta …>\s*$`), which
+ * made stamping non-idempotent for any paper whose writer put its tags inline:
+ * the stale ones survived, `add` inserted a fresh set, and the page went to
+ * press carrying two `og:url` values — one of them the `observer.invalid`
+ * placeholder a freshly printed edition is born with. The brief's example
+ * shows one tag per line; the model writes the markup, and an indented example
+ * is not a guarantee.
+ */
 export function stripSocialMeta (html) {
-  return html
-    .replace(/^\s*<meta\b[^>]*\bname=["']description["'][^>]*>\s*$/gim, '')
-    .replace(/^\s*<meta\b[^>]*\bproperty=["']og:[^"']+["'][^>]*>\s*$/gim, '')
-    .replace(/^\s*<meta\b[^>]*\bname=["']twitter:[^"']+["'][^>]*>\s*$/gim, '')
+  let out = html
+  // Back to front, so each removal leaves the earlier offsets valid.
+  for (const tag of metaTags(html).filter((m) => isSocialMeta(m.raw)).reverse()) {
+    let start = tag.start
+    let end = tag.end
+    while (start > 0 && (out[start - 1] === ' ' || out[start - 1] === '\t')) start--
+    // A tag that owned a line takes the line with it; an inline one does not
+    // drag its neighbour's newline away.
+    if ((start === 0 || out[start - 1] === '\n') && out[end] === '\n') end++
+    out = out.slice(0, start) + out.slice(end)
+  }
+  return out
 }
 
 export function formatDate (iso) {

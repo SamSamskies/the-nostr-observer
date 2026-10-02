@@ -73,6 +73,14 @@ ln -sfn "$HOME/.agents/skills/nostr-observer" "$HOME/.claude/skills/nostr-observ
 It prints today's paper once; it does not publish to your media servers, keep an
 archive, or arrive every morning.
 
+A second skill, [`.agents/skills/observer-pages`](.agents/skills/observer-pages),
+puts named editions onto Vercel as a static shelf. That one does need an
+account: a free Vercel Hobby account and `npx vercel login` once per machine.
+You pick the project name and it becomes the address. Nothing there needs an
+agent either — `site.mjs` is an ordinary CLI and the whole path is a handful of
+commands. Both routes, and what gets published versus what stays on your disk,
+are written up in [the skill's README](.agents/skills/observer-pages/README.md).
+
 The design is written up in [`docs/PLAN.md`](docs/PLAN.md).
 
 ---

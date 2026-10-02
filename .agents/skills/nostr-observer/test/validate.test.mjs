@@ -285,6 +285,35 @@ test('a gitworkshop URL copied from a post body is still refused', () => {
   assert.deepEqual(kinds(`<a href="${invented}">clone</a>`), ['LINK'])
 })
 
+test('desk link targets match byId even when the corpus id is mixed-case', () => {
+  // byId is keyed lower(e.id); returning the raw id used to make resolve miss
+  // the lookup and unwrap a verified desk link.
+  const mixed = {
+    desks: {
+      live: [{
+        id: STREAM_ID.toUpperCase(),
+        kind: 30311,
+        pubkey: STREAM_PK,
+        tags: [['d', STREAM_D], ['title', 'NoGood Radio'], ['status', 'live']],
+        content: '',
+      }],
+      notes: [{ id: EVENT_ID.toUpperCase(), pubkey: 'aa', content: 'hello' }],
+    },
+    control: [],
+    art: [],
+  }
+  const canonical = toStreamLink(mixed.desks.live[0])
+  assert.equal(streamLinkTarget(canonical, mixed), STREAM_ID)
+  const stream = resolve(`<a href="${canonical}">listen</a>`, mixed)
+  assert.match(stream.html, /href=/)
+  assert.deepEqual(stream.changes.map((c) => c.kind).filter((k) => k === 'unwrapped'), [])
+  assert.deepEqual(check(stream.html, mixed).violations, [])
+
+  const note = resolve(`<a href="https://jumble.social/notes/${EVENT_ID}">source</a>`, mixed)
+  assert.deepEqual(note.changes.map((c) => c.kind), ['permalink'])
+  assert.deepEqual(check(note.html, mixed).violations, [])
+})
+
 test('resolve then validate leaves nothing for validate to complain about', () => {
   const page = `<figure><img src="art-1"><figcaption>c</figcaption></figure>`
     + `<p>see <a href="https://evil.example.com/drain">free sats</a></p>`
@@ -347,4 +376,61 @@ test('a real page head is not an attack', async () => {
   assert.deepEqual(kinds('<meta http-equiv="refresh" content="0;url=https://evil.example">'), ['MARKUP'])
   assert.deepEqual(kinds('<base href="https://evil.example/">'), ['MARKUP'],
     '<base> rewrites every relative URL on the page and is refused outright')
+})
+
+// --- Audit, 2026-09-21 ------------------------------------------------------
+
+test('a jumble nevent naming a CALENDAR listing is refused, not cited', () => {
+  // An nevent freezes one revision of an event whose whole nature is to be
+  // replaced, so the reader clicks through to a meetup whose time has moved.
+  // resolve.mjs rewrites these to njump naddrs; this is the half that makes a
+  // regression there fail closed, and it is what Validator.kt already did.
+  const frozen = toPermalink(CALENDAR_ID)
+  assert.deepEqual(kinds(`<a href="${frozen}">the meetup</a>`), ['LINK'])
+  // An ordinary note is still citable the normal way.
+  assert.deepEqual(kinds(`<a href="${toPermalink(EVENT_ID)}">source</a>`), [])
+})
+
+test('resolve turns that frozen citation into the njump address', () => {
+  const page = `<a href="${toPermalink(CALENDAR_ID)}">the meetup</a>`
+  const { html, changes } = resolve(page, corpus)
+  assert.deepEqual(changes.map((c) => c.kind), ['calendar'])
+  assert.match(html, /njump\.me\/naddr1/)
+  assert.deepEqual(check(html, corpus).violations, [])
+})
+
+test('a link helper does not read the corpus to answer about a url it cannot parse', () => {
+  // The scan used to run BEFORE the regex, so every anchor on the page cost
+  // a pass over every desk per helper. Measured at 4,800 events and 528
+  // anchors that was 585 ms in resolve, ~440 ms of it for urls that never
+  // matched.
+  let reads = 0
+  const counted = { get desks () { reads++; return corpus.desks }, art: corpus.art }
+  for (const href of ['https://example.test/x', 'mailto:a@b.c', 'https://njump.me/not-an-naddr']) {
+    streamLinkTarget(href, counted)
+    listingLinkTarget(href, counted)
+    calendarLinkTarget(href, counted)
+  }
+  assert.equal(reads, 0)
+})
+
+test('the corpus is indexed once, however many links ask about it', () => {
+  let reads = 0
+  const counted = { get desks () { reads++; return corpus.desks }, art: corpus.art }
+  const stream = toStreamLink(corpus.desks.live[0])
+  for (let i = 0; i < 50; i++) assert.ok(streamLinkTarget(stream, counted))
+  assert.equal(reads, 1)
+})
+
+test('unwrapping an open-web link does not depend on the case of its closing tag', () => {
+  // The old search lowercased the WHOLE document once per anchor — 54 MB of
+  // copies on a 102 KB page with 528 of them. The sticky search that replaced
+  // it also accepts `</a >`, which the literal missed.
+  for (const close of ['</a>', '</A>', '</a >']) {
+    const page = `<p>before <a href="https://evil.example/x">text${close} after</p>`
+    const { html, changes } = resolve(page, corpus)
+    assert.deepEqual(changes.map((c) => c.kind), ['unwrapped'])
+    assert.match(html, /before text after/)
+    assert.doesNotMatch(html, /<a\b/i)
+  }
 })
