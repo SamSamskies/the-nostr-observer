@@ -250,7 +250,8 @@ export function streamLinkTarget (href, corpus) {
     const { kind, pubkey, identifier } = fromNaddr(naddr[1])
     if (kind !== LIVE_KIND) return null
     const event = indexOf(corpus).streams.byAddress.get(addressKey(kind, pubkey, identifier))
-    return event?.id || null
+    // Lowercase: byId is keyed that way, and resolve looks the id up there.
+    return event ? lower(event.id) : null
   } catch {
     return null
   }
@@ -283,7 +284,7 @@ export function listingLinkTarget (href, corpus) {
     const { kind, pubkey, identifier } = fromNaddr(naddr[1])
     if (kind !== CLASSIFIED_KIND) return null
     const event = indexOf(corpus).listings.byAddress.get(addressKey(kind, pubkey, identifier))
-    return event?.id || null
+    return event ? lower(event.id) : null
   } catch {
     return null
   }
@@ -319,7 +320,7 @@ export function calendarLinkTarget (href, corpus) {
     // The kind is part of the key, so 31922 and 31923 cannot answer for each
     // other even when a pubkey reuses a d-tag across both.
     const event = indexOf(corpus).calendars.byAddress.get(addressKey(kind, pubkey, identifier))
-    return event?.id || null
+    return event ? lower(event.id) : null
   } catch {
     return null
   }
@@ -351,7 +352,7 @@ export function appLinkTarget (href, corpus) {
   // A 64-hex segment is the writer form; resolve must rewrite it first.
   if (/^[0-9a-f]{64}$/i.test(d)) return null
   const event = indexOf(corpus).apps.list.find((e) => tagValue(e, 'd') === d)
-  return event?.id || null
+  return event ? lower(event.id) : null
 }
 
 /** Writer form, for resolve.mjs only. */
@@ -379,7 +380,7 @@ export function gitLinkTarget (href, corpus) {
   const npub = canonical[1]
   const d = canonical[2]
   const event = indexOf(corpus).repos.list.find((e) => toNpub(e.pubkey) === npub && tagValue(e, 'd') === d)
-  return event?.id || null
+  return event ? lower(event.id) : null
 }
 
 /** Writer form, for resolve.mjs only. */
@@ -463,7 +464,8 @@ export function check (html, corpus) {
   // a quote verify against something the edition never had access to.
   const events = Object.values(corpus.desks).flat()
   const haystack = events.map((e) => normalize(e.content || ''))
-  const eventIds = new Set(events.map((e) => e.id))
+  // Lowercase: permalinkTarget returns lower hex, and calendarIds is keyed that way.
+  const eventIds = new Set(events.map((e) => lower(e.id)))
   const allowedImages = new Set((corpus.art || []).map((a) => a.url))
   const calendarIds = indexOf(corpus).calendars.byId
 

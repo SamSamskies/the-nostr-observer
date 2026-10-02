@@ -95,7 +95,9 @@ function dropFigure (html, start, end) {
  */
 export function resolve (html, corpus) {
   const byId = new Map((corpus.art || []).map((a) => [a.id, a]))
-  const eventIds = new Set(Object.values(corpus.desks).flat().map((e) => e.id))
+  // Lowercase: citedEventId always returns lower hex, and the desk byId maps
+  // are keyed the same way. A mixed-case corpus id must still resolve.
+  const eventIds = new Set(Object.values(corpus.desks).flat().map((e) => String(e.id || '').toLowerCase()))
   const changes = []
   let out = html
 

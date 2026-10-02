@@ -285,6 +285,35 @@ test('a gitworkshop URL copied from a post body is still refused', () => {
   assert.deepEqual(kinds(`<a href="${invented}">clone</a>`), ['LINK'])
 })
 
+test('desk link targets match byId even when the corpus id is mixed-case', () => {
+  // byId is keyed lower(e.id); returning the raw id used to make resolve miss
+  // the lookup and unwrap a verified desk link.
+  const mixed = {
+    desks: {
+      live: [{
+        id: STREAM_ID.toUpperCase(),
+        kind: 30311,
+        pubkey: STREAM_PK,
+        tags: [['d', STREAM_D], ['title', 'NoGood Radio'], ['status', 'live']],
+        content: '',
+      }],
+      notes: [{ id: EVENT_ID.toUpperCase(), pubkey: 'aa', content: 'hello' }],
+    },
+    control: [],
+    art: [],
+  }
+  const canonical = toStreamLink(mixed.desks.live[0])
+  assert.equal(streamLinkTarget(canonical, mixed), STREAM_ID)
+  const stream = resolve(`<a href="${canonical}">listen</a>`, mixed)
+  assert.match(stream.html, /href=/)
+  assert.deepEqual(stream.changes.map((c) => c.kind).filter((k) => k === 'unwrapped'), [])
+  assert.deepEqual(check(stream.html, mixed).violations, [])
+
+  const note = resolve(`<a href="https://jumble.social/notes/${EVENT_ID}">source</a>`, mixed)
+  assert.deepEqual(note.changes.map((c) => c.kind), ['permalink'])
+  assert.deepEqual(check(note.html, mixed).violations, [])
+})
+
 test('resolve then validate leaves nothing for validate to complain about', () => {
   const page = `<figure><img src="art-1"><figcaption>c</figcaption></figure>`
     + `<p>see <a href="https://evil.example.com/drain">free sats</a></p>`
