@@ -21,8 +21,8 @@
 
 import { readFileSync, writeFileSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
-import { permalinkTarget, toPermalink, streamLinkTarget, streamWriterTarget, toStreamLink, listingLinkTarget, listingWriterTarget, toListingLink, calendarLinkTarget, calendarWriterTarget, toCalendarLink, appLinkTarget, appWriterTarget, toAppLink, gitLinkTarget, gitWriterTarget, toGitLink } from './validate.mjs'
-import { fromNevent, CALENDAR_KINDS, APP_KIND, GIT_KIND, tagValue } from './nostr.mjs'
+import { permalinkTarget, toPermalink, streamLinkTarget, streamWriterTarget, toStreamLink, listingLinkTarget, listingWriterTarget, toListingLink, calendarLinkTarget, calendarWriterTarget, toCalendarLink, appLinkTarget, appWriterTarget, toAppLink, gitLinkTarget, gitWriterTarget, toGitLink, corpusIndex } from './validate.mjs'
+import { fromNevent } from './nostr.mjs'
 import { tags, attributes } from './html.mjs'
 
 /**
@@ -64,6 +64,14 @@ function citedEventId (href) {
 function arg (name, fallback = null) {
   const at = process.argv.indexOf(name)
   return at > -1 ? process.argv[at + 1] : fallback
+}
+
+/** The first `</a>` at or after `from`, or null. */
+function closeAnchor (html, from) {
+  const close = /<\/a\s*>/gi
+  close.lastIndex = from
+  const match = close.exec(html)
+  return match ? { start: match.index, end: match.index + match[0].length } : null
 }
 
 /** Drop the `<figure>` around `at`, or just the tag if there is no figure. */
@@ -126,31 +134,25 @@ export function resolve (html, corpus) {
   // forms are rewritten to their host's derived path. Everything else
   // is unwrapped to its own text. Rebuilt back to front so each edit leaves
   // earlier offsets untouched.
-  const streams = new Map(Object.values(corpus.desks).flat()
-    .filter((e) => e.kind === 30311)
-    .map((e) => [e.id, e]))
-  const listings = new Map(Object.values(corpus.desks).flat()
-    .filter((e) => e.kind === 30402)
-    .map((e) => [e.id, e]))
-  const calendars = new Map(Object.values(corpus.desks).flat()
-    .filter((e) => CALENDAR_KINDS.has(e.kind) && tagValue(e, 'd'))
-    .map((e) => [e.id, e]))
-  const apps = new Map(Object.values(corpus.desks).flat()
-    .filter((e) => e.kind === APP_KIND && tagValue(e, 'd'))
-    .map((e) => [e.id, e]))
-  const repos = new Map(Object.values(corpus.desks).flat()
-    .filter((e) => e.kind === GIT_KIND && tagValue(e, 'd'))
-    .map((e) => [e.id, e]))
+  // From the shared index rather than more passes over every desk — the
+  // target helpers below already consult it, and a second set of maps built
+  // here is both the same work twice and a chance for the two to disagree
+  // about what counts as linkable.
+  const { streams, listings, calendars, apps, repos } = corpusIndex(corpus)
   const anchors = tags(out, 'a').reverse()
   for (const anchor of anchors) {
     const url = attributes(anchor.raw).href || ''
     if (!/^https?:/i.test(url)) continue
     const id = citedEventId(url)
-    const close = out.toLowerCase().indexOf('</a>', anchor.end)
-    if (close === -1) continue
+    // Not `out.toLowerCase().indexOf(…)`: that copied the whole document once
+    // per anchor, which on a 102 KB page with 528 anchors is 54 MB of string
+    // nobody reads twice. A sticky case-insensitive search costs nothing and
+    // also accepts `</a >`, which the literal missed.
+    const closing = closeAnchor(out, anchor.end)
+    if (!closing) continue
     const streamId = streamWriterTarget(url, corpus) || streamLinkTarget(url, corpus)
-    if (streamId && streams.has(streamId)) {
-      const canonical = toStreamLink(streams.get(streamId))
+    if (streamId && streams.byId.has(streamId)) {
+      const canonical = toStreamLink(streams.byId.get(streamId))
       let tag = anchor.raw
       if (url !== canonical) {
         tag = tag.replace(/(\bhref\s*=\s*)("[^"]*"|'[^']*'|[^\s>]+)/i, `$1"${canonical}"`)
@@ -165,8 +167,8 @@ export function resolve (html, corpus) {
       continue
     }
     const listingId = listingWriterTarget(url, corpus) || listingLinkTarget(url, corpus)
-    if (listingId && listings.has(listingId)) {
-      const canonical = toListingLink(listings.get(listingId))
+    if (listingId && listings.byId.has(listingId)) {
+      const canonical = toListingLink(listings.byId.get(listingId))
       let tag = anchor.raw
       if (url !== canonical) {
         tag = tag.replace(/(\bhref\s*=\s*)("[^"]*"|'[^']*'|[^\s>]+)/i, `$1"${canonical}"`)
@@ -181,9 +183,9 @@ export function resolve (html, corpus) {
       continue
     }
     const calendarId = calendarWriterTarget(url, corpus) || calendarLinkTarget(url, corpus)
-      || (id && calendars.has(id) ? id : null)
-    if (calendarId && calendars.has(calendarId)) {
-      const canonical = toCalendarLink(calendars.get(calendarId))
+      || (id && calendars.byId.has(id) ? id : null)
+    if (calendarId && calendars.byId.has(calendarId)) {
+      const canonical = toCalendarLink(calendars.byId.get(calendarId))
       let tag = anchor.raw
       if (url !== canonical) {
         tag = tag.replace(/(\bhref\s*=\s*)("[^"]*"|'[^']*'|[^\s>]+)/i, `$1"${canonical}"`)
@@ -198,8 +200,8 @@ export function resolve (html, corpus) {
       continue
     }
     const appId = appWriterTarget(url, corpus) || appLinkTarget(url, corpus)
-    if (appId && apps.has(appId)) {
-      const canonical = toAppLink(apps.get(appId))
+    if (appId && apps.byId.has(appId)) {
+      const canonical = toAppLink(apps.byId.get(appId))
       let tag = anchor.raw
       if (url !== canonical) {
         tag = tag.replace(/(\bhref\s*=\s*)("[^"]*"|'[^']*'|[^\s>]+)/i, `$1"${canonical}"`)
@@ -214,8 +216,8 @@ export function resolve (html, corpus) {
       continue
     }
     const gitId = gitWriterTarget(url, corpus) || gitLinkTarget(url, corpus)
-    if (gitId && repos.has(gitId)) {
-      const canonical = toGitLink(repos.get(gitId))
+    if (gitId && repos.byId.has(gitId)) {
+      const canonical = toGitLink(repos.byId.get(gitId))
       let tag = anchor.raw
       if (url !== canonical) {
         tag = tag.replace(/(\bhref\s*=\s*)("[^"]*"|'[^']*'|[^\s>]+)/i, `$1"${canonical}"`)
@@ -246,7 +248,7 @@ export function resolve (html, corpus) {
       }
       continue
     }
-    out = out.slice(0, anchor.start) + out.slice(anchor.end, close) + out.slice(close + 4)
+    out = out.slice(0, anchor.start) + out.slice(anchor.end, closing.start) + out.slice(closing.end)
     changes.push({ kind: 'unwrapped', detail: url.slice(0, 120) })
   }
   changes.reverse()

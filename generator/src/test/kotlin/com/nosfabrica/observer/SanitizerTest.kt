@@ -3,9 +3,12 @@ package com.nosfabrica.observer
 import com.nosfabrica.observer.nostr.Apps
 import com.nosfabrica.observer.nostr.Calendar
 import com.nosfabrica.observer.nostr.Classifieds
+import com.nosfabrica.observer.nostr.Desk
 import com.nosfabrica.observer.nostr.Repos
 import com.nosfabrica.observer.nostr.Streams
 import com.nosfabrica.observer.safe.Sanitizer
+import com.nosfabrica.observer.safe.Validator
+import com.vitorpamplona.quartz.nip19Bech32.entities.NEvent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -177,6 +180,32 @@ class SanitizerTest {
         assertFalse(r.html.contains("/repo/"), "writer path must not survive")
         assertTrue(r.html.contains("gitnostr"), "the title stays linked")
         assertTrue(r.clean, r.removed.toString())
+    }
+
+    @Test
+    fun `encodes an ordinary permalink to a calendar listing instead of freezing it`() {
+        // The writer is told to cite sources with njump permalinks, and njump's
+        // canonical form is an nevent. Pointing one at a CALENDAR listing is the
+        // natural thing to write and the wrong thing to ship: an nevent freezes
+        // one revision of an event whose whole nature is to be replaced.
+        //
+        // The sanitizer kept it and `Validator` refused it, so an edition that
+        // cited a meetup the ordinary way was thrown away rather than repaired
+        // — the same two-halves-disagreeing failure `permalinkTarget` records.
+        val listing = Fixtures.calendarEntry()
+        val calendars = mapOf(listing.id.lowercase() to listing)
+        val sanitizer = Sanitizer(Fixtures.art(), setOf(listing.id.lowercase()), emptyMap(), emptyMap(), calendars)
+        val nevent = "https://njump.me/${NEvent.create(listing.id, null, null, null)}"
+        val r =
+            sanitizer.sanitize(
+                """<!doctype html><html><head><title>T</title></head><body>
+               <a href="$nevent">Bitcoin Meetup in Porto</a></body></html>""",
+            )
+        assertTrue(r.html.contains("njump.me/naddr1"), "the citation is encoded to the listing's address")
+        assertTrue(r.html.contains("Bitcoin Meetup in Porto"), "the title stays linked")
+
+        val report = Validator(Fixtures.corpus(listOf(listing), Desk.CALENDAR), Fixtures.art()).validate(r.html)
+        assertTrue(report.violations.isEmpty(), report.violations.toString())
     }
 
     @Test
