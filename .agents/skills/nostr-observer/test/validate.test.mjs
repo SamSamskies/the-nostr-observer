@@ -203,7 +203,7 @@ test('a zap.stream URL copied from a post body is still refused', () => {
 })
 
 test('a verified Shopstr listing link is allowed after resolve', () => {
-  const writer = `https://shopstr.store/listing/${LISTING_ID}`
+  const writer = `https://shopstr.market/listing/${LISTING_ID}`
   const canonical = toListingLink(corpus.desks.classifieds[0])
   const { html, changes } = resolve(`<a href="${writer}">4 Bars Rough Cut Tallow</a>`, corpus)
   assert.match(html, new RegExp(`href="${canonical.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`))
@@ -211,7 +211,7 @@ test('a verified Shopstr listing link is allowed after resolve', () => {
   assert.deepEqual(changes.map((c) => c.kind), ['listing'])
   assert.deepEqual(check(html, corpus).violations, [])
   assert.equal(listingLinkTarget(canonical, corpus), LISTING_ID)
-  assert.equal(listingLinkTarget('https://shopstr.store/listing/' + 'a'.repeat(64), corpus), null)
+  assert.equal(listingLinkTarget('https://shopstr.market/listing/' + 'a'.repeat(64), corpus), null)
   assert.deepEqual(kinds(`<a href="${writer}">4 Bars Rough Cut Tallow</a>`), ['LINK'],
     'writer form must be encoded before validate')
 })

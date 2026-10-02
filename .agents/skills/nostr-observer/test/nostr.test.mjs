@@ -90,8 +90,8 @@ test('an naddr round-trips a classified listing address', () => {
   assert.match(naddr, /^naddr1/)
   assert.deepEqual(fromNaddr(naddr), { kind: 30402, pubkey, identifier })
   const event = { kind: 30402, pubkey, tags: [['d', identifier]] }
-  assert.equal(toShopstrUrl(event), `https://shopstr.store/listing/${naddr}`)
-  assert.equal(classifiedWriterUrl('b'.repeat(64)), `https://shopstr.store/listing/${'b'.repeat(64)}`)
+  assert.equal(toShopstrUrl(event), `https://shopstr.market/listing/${naddr}`)
+  assert.equal(classifiedWriterUrl('b'.repeat(64)), `https://shopstr.market/listing/${'b'.repeat(64)}`)
 })
 
 test('an naddr round-trips a calendar listing address', () => {

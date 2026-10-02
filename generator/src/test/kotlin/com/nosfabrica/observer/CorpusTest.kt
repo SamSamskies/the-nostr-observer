@@ -708,7 +708,7 @@ class ListingTest {
         assertTrue(text.contains("PRICE: 210000 SATS"), text)
         assertTrue(text.contains("STATUS: active"), text)
         assertTrue(text.contains("CONDITION: used"), text)
-        assertTrue(text.contains("listing: https://shopstr.store/listing/${Fixtures.LISTING_ID}"), text)
+        assertTrue(text.contains("listing: https://shopstr.market/listing/${Fixtures.LISTING_ID}"), text)
     }
 
     @Test

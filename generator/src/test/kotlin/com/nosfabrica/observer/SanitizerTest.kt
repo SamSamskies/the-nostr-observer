@@ -113,7 +113,7 @@ class SanitizerTest {
                 """<!doctype html><html><head><title>T</title></head><body>
                <a href="$writer">4 Bars Rough Cut Tallow</a></body></html>""",
             )
-        assertTrue(r.html.contains("shopstr.store/listing/naddr1"), "writer form is encoded to naddr")
+        assertTrue(r.html.contains("shopstr.market/listing/naddr1"), "writer form is encoded to naddr")
         assertTrue(r.html.contains("4 Bars Rough Cut Tallow"), "the title stays linked")
         assertTrue(r.clean, r.removed.toString())
     }

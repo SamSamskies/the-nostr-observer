@@ -57,7 +57,7 @@ class Sanitizer(
      * Classifieds this edition read, keyed by event id.
      *
      * A listing link in writer form is kept and encoded to Shopstr's naddr;
-     * anything else on shopstr.store is unwrapped like any other open-web URL.
+     * anything else on shopstr.market is unwrapped like any other open-web URL.
      */
     private val classifieds: Map<String, Event> = emptyMap(),
     /**
