@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Wednesday, September 16, 2026</title>
+  <meta name="description" content="Six weeks after quietly decommissioning api.routstr.com, the routing project confirms full client autonomy across Nostr without a central server dependency.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="Zero Downtime: Routstr Sunsets Last Official Node as Network Turns 100% Community-Run">
+  <meta property="og:description" content="Six weeks after quietly decommissioning api.routstr.com, the routing project confirms full client autonomy across Nostr without a central server dependency.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-09-16-98552F.html">
+  <meta property="og:image" content="https://blossom.ditto.pub/1b033f324ab6999aa7d81b07bf66766c0d2da7c48def56b270549691b50ef962.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Zero Downtime: Routstr Sunsets Last Official Node as Network Turns 100% Community-Run">
+  <meta name="twitter:description" content="Six weeks after quietly decommissioning api.routstr.com, the routing project confirms full client autonomy across Nostr without a central server dependency.">
+  <meta name="twitter:image" content="https://blossom.ditto.pub/1b033f324ab6999aa7d81b07bf66766c0d2da7c48def56b270549691b50ef962.png">
+
+
+
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+
+
+
+  <style>
+/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="folio">
+      <span>No. 98552F</span>
+      <span>Wednesday, September 16, 2026</span>
+      <span>24h to 14:19 UTC</span>
+    </div>
+
+    <header class="masthead">
+      <h1><span class="the">The</span>Nostr Observer</h1>
+      <div class="motto">An edition of one · Ranked through your web of trust</div>
+    </header>
+
+    <div class="dateline">
+      <span>Ranked as NotBiebs</span>
+      <span>624 events through your lens</span>
+      <span>228 voices</span>
+    </div>
+
+    <!-- ABOVE THE FOLD: 12-column grid -->
+    <main class="fold">
+      <!-- LEAD STORY: span-8 -->
+      <article class="col span-8 story">
+        <div class="kicker">Decentralized Infrastructure</div>
+        <h2 class="lead-head">Zero Downtime: Routstr Sunsets Last Official Node as Network Turns 100% Community-Run</h2>
+        <p class="dek">Six weeks after quietly decommissioning api.routstr.com, the routing project confirms full client autonomy across Nostr without a central server dependency.</p>
+        <p class="byline">By Staff</p>
+        <p class="first">For protocols whose defining promise is resilience against capture, centralized bootstrap servers have long remained an awkward compromise. Today, routing protocol Routstr confirmed that the network has quietly crossed a significant milestone: its last official server, api.routstr.com, was retired a month and a half ago, and the network transitioned entirely to community-run infrastructure without a flicker of interruption.</p>
+        <p><q>We Sunset Our Official Node. Zero Downtime.</q> the project declared, noting that in the six weeks since shutting down the official endpoint, <q>Nobody noticed a thing.</q> Instead of pinging a core server, client software now coordinates peer discovery natively across relays: <q>routstrd and routstr-sdk discover nodes on Nostr and pick the cheapest one for you automatically.</q> The result is a system insulated from platform capture: <q>No one can rugpull you. No one can capture you. Your client truly works for you.</q> Project maintainers added: <q>We&apos;re removing the team as a dependency.</q> <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsp6jtadcn9hsuawhhl3pv4hqan0ttx2d8ankl9ayph24m9j5njqagvxt6rd">routstr</a></p>
+        
+        <figure>
+          <img src="https://blossom.ditto.pub/1b033f324ab6999aa7d81b07bf66766c0d2da7c48def56b270549691b50ef962.png" alt="Announcement graphic for the Mostro Community Program for running local Bitcoin peer-to-peer trade nodes">
+          <figcaption>The Mostro Community Program provides local groups with open-source tooling to run independent Bitcoin peer-to-peer trading nodes without requiring a dedicated development team. <span class="credit">Mostro</span></figcaption>
+        </figure>
+
+        <div class="story">
+          <div class="kicker">Sovereign Hardware</div>
+          <h3 class="main-head">Legacy Mode on Passport Prime: Open-Source KeyOS Bridges Existing Wallets</h3>
+          <p class="dek">Foundation brings open-source Ledger apps to its flagship hardware, allowing seed migration without moving balances on-chain.</p>
+          <p class="byline">By Staff</p>
+          <p>Hardware manufacturer Foundation announced the public beta of Legacy Mode for its Passport Prime device, aiming to streamline the migration path for users seeking fully open-source hardware without breaking existing accounts. <q>Legacy Mode is live in beta on Passport Prime.</q> the team announced, adding that KeyOS has incorporated supported open-source applications to enable USB connectivity with multi-asset browser wallets: <q>We’ve brought supported open source Ledger apps to KeyOS, our open source operating system.</q> For users concerned with transaction fees and privacy, <q>Restore your existing recovery phrase directly on Passport Prime and keep your accounts for supported assets.</q> The migration preserves ledger state: <q>Same addresses. Same balances. Same transaction history. Nothing moves on-chain.</q> <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs8nxk8aa6rpkysx4y0u0sezey9a633a4xqsv09kxqxch8zu6eu7yqy2t72j">Foundation</a></p>
+        </div>
+      </article>
+
+      <!-- SIDEBAR: span-4 -->
+      <aside class="col span-4">
+        <div class="story">
+          <div class="kicker">Hardware &amp; Hacks</div>
+          <h3 class="sub-head">Protocol on E-Ink: Publishing to Nostr from a Digital Reader</h3>
+          <p class="dek">Taking decentralized social networking off glossy screens and onto low-power electronic paper.</p>
+          <p class="byline">By Joel 🇨🇭</p>
+          <p class="first">While developers race to build richer mobile clients and animated feeds, Joel demonstrated that the bare text primitives of Nostr lend themselves naturally to the simplest screens. <q>Nice this was posted from my e-reader running KOReader</q> he reported, broadcasting an event directly from his digital reader device.</p>
+          <figure>
+            <img src="https://cdn.hzrd149.com/039ba25908a13f9f0b7e4ae3da75a56cbf6a494e21b9e3e72a28d442845525da.jpeg" alt="An e-reader device running KOReader displaying and posting to the Nostr network">
+            <figcaption>A note posted directly to the Nostr network from an electronic-ink reader running KOReader. <span class="credit">Joel 🇨🇭</span></figcaption>
+          </figure>
+          <p class="note">Citing note by <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqswac8fg4nl6kd0pmr8ls95ku2uy5nyfvas57uktpt0yp45czltzsczfgy9l">Joel 🇨🇭</a> on KOReader integration.</p>
+        </div>
+
+        <div class="box">
+          <div class="box-head">Market &amp; Network Readings</div>
+          <p class="note">As of 14:19 UTC · Readings from window, not live figures</p>
+          <div class="tablewrap">
+            <table>
+              <thead>
+                <tr><th>Metric</th><th style="text-align:right">Reading</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Bitcoin Spot (PowerLaw Bot)</td><td class="num">$76,899</td></tr>
+                <tr><td>Power Law Model Price</td><td class="num">$140,538</td></tr>
+                <tr><td>Model Trajectory</td><td class="num">-45.28%</td></tr>
+                <tr><td>Trend Offset</td><td class="num">655 days</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="note">Reported by <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsyskdlsj2np8uwcyra5zf7gtpjxpvktgtvzd5mg63lx4ejymgmskqfyvfgz">ChartsBTC</a>.</p>
+        </div>
+      </aside>
+    </main>
+
+    <!-- BAND 1: Protocol Architecture, Custody & Security -->
+    <section class="band">
+      <div class="band-head">
+        <h2>Dispatches &amp; Infrastructure</h2>
+      </div>
+      <div class="cols3">
+        <div class="cell story">
+          <div class="kicker">Protocol Economics</div>
+          <h3 class="sub-head">Relay Economics: fiatjaf on the Limits of Altruism</h3>
+          <p class="byline">By Staff</p>
+          <p class="first">The chronic question of who finances the storage and bandwidth of Nostr relays resurfaced today in a series of incisive reflections from protocol creator fiatjaf, who warned against the expectation that volunteer server operators should bear unbounded compute loads.</p>
+          <p><q>Why would a business pay for a relay either? That doesn&apos;t make sense either. If they can write to nos.lol for free.</q> fiatjaf noted, observing that commercial entities and automated bots routinely treat public relays as open dumping grounds. <q>To some people Nostr is defined as a collection of free servers anyone can write anything to, as long as that anything is formatted as a weird JSON string with a meaningless signature.</q> Confronting large web-of-trust spiders that maintain permanent connections to ingest firehoses of unrelated traffic, he questioned the architectural premise: <q>Do you really want to ingest millions of events from people who don&apos;t even know your relay exists?</q> <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqst7m39zysm38egpy2ya0ckcx5y0f5dp9x5xsm2vqm2euvn0h4zleqag3zun">fiatjaf</a></p>
+        </div>
+
+        <div class="cell story">
+          <div class="kicker">Privacy &amp; Custody</div>
+          <h3 class="sub-head">The Wrench Hazard: Ungovernable on KYC Leaks and Ashigaru</h3>
+          <p class="byline">By Staff</p>
+          <p class="first">Recent corporate data breaches stemming from fraudulent government subpoenas prompted sharp reflections on the physical risks generated by centralized compliance databases. Host Ungovernable outlined the stark threat model facing exchange customers whose withdrawal histories are compromised.</p>
+          <p><q>KYC: kill your customer.</q> he warned. <q>An attacker now holds your personal information and your Bitcoin withdrawal history in the same file. They do not have to guess whether you are worth robbing, and they do not have to guess where you live.</q> Crucially, he noted that this exposure was systematically imposed: <q>None of this was a choice anybody made. The data existed because a regulator required it to be collected, from people who had no way to opt out, in the name of protecting them.</q> Turning to practical remediation, he highlighted the automated cold-storage sweep in Ashigaru Desktop: <q>Mix To is the feature more people should know about.</q> <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs8e5vu9letqj8cnu9mc6je7dl8pgj3emfsd4nqa56pmjm75f6k45c3rvr2r">Ungovernable</a></p>
+        </div>
+
+        <div class="cell story">
+          <div class="kicker">Software Security</div>
+          <h3 class="sub-head">Tor Advisory: Bisq 2 Rolls Out Mandatory v2.1.13 Patch</h3>
+          <p class="byline">By Bisq</p>
+          <p class="first">The Bisq peer-to-peer trading network issued an urgent update for all Bisq 2 desktop users following an upstream security vulnerability discovered in the Tor anonymity network.</p>
+          <p><q>Bisq 2 v2.1.13 is released</q> the project notified users, warning that the release addresses an essential network component: <q>This is an important security update which includes the latest Tor security release.</q> Because peer-to-peer settlement relies entirely on onion routing, <q>Updating to this version is required to continue trading.</q> Traders are urged to upgrade before opening new offers on the book. <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsteu5q4dr93llmknchyhrvsjp7dcw984ulu7fzeg2d7v8v4wdrwasm2jvzy">Bisq</a></p>
+          <figure>
+            <img src="https://blossom.primal.net/4a49b75eda53358f7408605cbacc29483da4cc3660068cfd50491157601c379b.png" alt="Bisq 2 version 2.1.13 release notice regarding the upstream Tor security update">
+            <figcaption>The Bisq 2 v2.1.13 release package incorporating critical Tor security fixes for peer-to-peer exchange operations. <span class="credit">Bisq</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAND 2: Cultural Columns, Classifieds, Broadcasting & Calendar -->
+    <section class="band">
+      <div class="cols4">
+        <div class="cell">
+          <div class="box-head">Broadcasting Wire</div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjrvc3exqmrgdtx95unsv3j956rqv3s94snqdrr95mxzenzx33rxcesvgmxzq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwt3n5zz">AI doesn&apos;t scare me, this does</a></strong></p>
+            <p class="note">Adam O&apos;Brien Show 012 on zap.stream · Started 14:18 UTC</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqf8x7tww35xgunpvahkuttxd9jhycm9qgsqtespt8c7pfktvna9w07pa034lxz6jaw7le7h2cplmw0gelfcxdqrqsqqqan8lyq2ya">Synthdragon Radio — FIERCE</a></strong></p>
+            <p class="note">Continuous broadcast · Lucian Pyre, Kodex Arkanam</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqghx7tww35xgunpvahkuttrdp5kcmqzyqz7vq2e78s2djmylftnls0tud0esk5hthh7046kq07mn6x06wpngqcyqqq8vec4f5fl5">Synthdragon Radio — CHILL</a></strong></p>
+            <p class="note">Ambient stream on zap.stream</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al">NoGood Radio</a></strong></p>
+            <p class="note">Community radio stream on zap.stream</p>
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="box-head">Diary &amp; Calendar</div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqsxzwpnxdjryv34v9nrxdfkxe3ngdtzvsunyvfsxcmrgwtrxq6nzdgzyzjazcjlcm0zd2nlflr2hzpn6x76kacd570kacm2dksse5f7gnr2vqcyqqq8evc6ht0hf">Bitcoin im Unternehmen</a></strong></p>
+            <p class="note">Mon, Sep 21, 2026 · Dornbirn, Austria · Vortrag von Joachim (Coinfinity) in der Gelben Fabrik.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctp8yenwctpxajryetpvsuxvdfexvcrwct9xypzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukveymq7u">Bitcoin in Denmark: Community</a></strong></p>
+            <p class="note">Tue, Sep 22, 2026 · Tallinn, Estonia · Fireside chat at Vabaduse Tuba with Rasmus, Jake, and Peter.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctp89jrgvrrv5eryc3sv3nr2cesvycnxd34vcpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvrr44ee">Redding Bitcoin Gathering</a></strong></p>
+            <p class="note">Tue, Sep 22, 2026 · Redding, CA · Monthly meetup at Pourboys Tapyard.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctp89jkydp58yck2d3jxc6kxwpkx5urzetpvspzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvymkf6l">Bitcoin Kalmar MeetUp</a></strong></p>
+            <p class="note">Fri, Sep 25, 2026 · Kalmar, Sweden · Stammis Pub &amp; Restaurang.</p>
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="box-head">The Classifieds</div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqrhx6edxu6nsdszyqlr6ujzsy62jkjpsln27l7yx80u93ku4neg705rurkmalgyx3x47qcyqqq8dssn0pfja">Adria Action 361LH Caravan</a></strong></p>
+            <p class="note">21,000,000 SATS · Upgraded caravan with mover, 200Ah battery, awning, 100km/h approved. Ronin.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqskx6rfvdskwmedvfjkzunn94kx7em094ek6ctvdskk2dm9v5ervdt9qgs9kr5d5m7lhfnrqwrfpvmay9kcx3dxy0xr8cg34lg0ww8dw7ftc4qrqsqqqakzf7ske3">Chicago Bears 3D Logo</a></strong></p>
+            <p class="note">8,000 SATS · Small 3D printed desk emblem. Keith Mukai.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qq5xw6r0wd6z6urfwpjj6ctwvskhxetvvckksetpdskhg6twvd682un9944nyvmrwqcqygzk823swk6hu4l2hh5ycjcclpzxdxt5kr8p6cud8nej7cgetjefxypsgqqqwmpqqjr8n7">Ghost Pipe &amp; Self Heal Tincture</a></strong></p>
+            <p class="note">10,000 SATS · Handcrafted small-batch herbal tincture for physical tension. Elizabeth.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqlnyttnwajk2ar9wgkhqetjw4mxjctw945x7apdwdsh2cm9943k7un0wp6kucfdvfuj6er9d3nkzer094ej6en4v4nk7ttvx4mkcapjqgsfp2qjpydppsq9sw5c05z6pnmms48vf3lpwq5d487jcqklq75rt0srqsqqqakzgdl0wf">Coropuna Peruvian Hot Sauce</a></strong></p>
+            <p class="note">$16 USD · Sweet gourmet hot sauce made with authentic Rocoto and Aji Amarillo peppers. Delgado&apos;s Fuego.</p>
+          </div>
+        </div>
+
+        <div class="cell story">
+          <div class="box-head">Marginalia</div>
+          <p class="byline">Curated by Gigi</p>
+          <p class="first">Gigi highlighted several acute reflections from Constant&apos;s essay on the structural traps of centralized internet platforms:</p>
+          <p>Looking back at the trajectory of the commercial web, Constant observed how <q>time and space were condensed to irrelevance</q> and noted that while <q>Going viral leveled a playing field otherwise determined by privileged access</q>, the underlying architecture soon devoured its users: <q>the platform way of organizing ourselves on the internet created a whole list of problems of its own</q>.</p>
+          <p>Yet critique alone achieves little without alternative architectures: <q>Any complaint is only relevant in light of a solution.</q> <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs059zglqcekgkaujd6f5fujdv9n4xh483sst4nnuvmf76zg3y04asppwdpq">Constant</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER: The Instrument -->
+    <footer class="reverse" style="margin-top: 24px;">
+      <div class="kicker">The Instrument</div>
+      <h3 class="small-head" style="margin-top: 6px;">Web of Trust Dispersion Measurement</h3>
+      <p class="dek" style="margin-top: 8px;">624 events across 14 desks selected by your web of trust. In an unranked control reading of 400 notes over the identical 24-hour window, exactly 1 note overlapped the 384 notes surfaced by your lens. Overlap: 1 of 400 (0.25%). The lens is doing its work.</p>
+    </footer>
+  </div>
+</body>
+</html>

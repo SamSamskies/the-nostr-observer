@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Nostr Observer — Sunday, September 27, 2026</title>
+  <meta name="description" content="As engineers push back against the tide of LLM-generated complexity, terminal minimalism and voluntary protocol conventions find fresh momentum across the network.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="The Discipline of Code: Engineering Backlash Meets Tiling Terminals">
+  <meta property="og:description" content="As engineers push back against the tide of LLM-generated complexity, terminal minimalism and voluntary protocol conventions find fresh momentum across the network.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-09-27-F39E00.html">
+  <meta property="og:image" content="https://blossom.jumble.social/6e826f832edd7b0293dd63d504e20c4d38463a1cbc6835ed286072977656ff3a.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Discipline of Code: Engineering Backlash Meets Tiling Terminals">
+  <meta name="twitter:description" content="As engineers push back against the tide of LLM-generated complexity, terminal minimalism and voluntary protocol conventions find fresh momentum across the network.">
+  <meta name="twitter:image" content="https://blossom.jumble.social/6e826f832edd7b0293dd63d504e20c4d38463a1cbc6835ed286072977656ff3a.png">
+
+
+
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+
+
+
+<style>
+/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="folio">
+    <span>No. F39E00</span>
+    <span>Sunday, September 27, 2026</span>
+    <span>24h to 13:50 UTC</span>
+  </div>
+
+  <header class="masthead">
+    <h1><span class="the">The</span> Nostr Observer</h1>
+    <p class="motto">All the news surfaced by your web of trust</p>
+  </header>
+
+  <div class="dateline">
+    <span>Ranked as NotBiebs</span>
+    <span>561 events through your lens</span>
+    <span>210 voices</span>
+  </div>
+
+  <main class="fold">
+    <div class="col span-5">
+      <article class="story">
+        <span class="kicker">Software Craft &amp; System Design</span>
+        <h2 class="lead-head">The Discipline of Code: Engineering Backlash Meets Tiling Terminals</h2>
+        <p class="dek">As engineers push back against the tide of LLM-generated complexity, terminal minimalism and voluntary protocol conventions find fresh momentum across the network.</p>
+        <p class="byline">By Our Systems Correspondent</p>
+        <p class="first">A sharp skepticism toward conversational code generation broke across developer circles today, as the industry rush toward prompt-driven development met resistance from systems engineers weary of runaway complexity and opaque abstractions.</p>
+        <p>The critique was articulated by systems engineer Nour, who questioned the long-term viability of delegating software comprehension to statistical language models: <q>Waste of time hearing a Viber scream.</q> Reflecting on the accumulation of uninspected dependencies and imprecise specifications, Nour warned: <q>The amount of insanity about adding more complexity, not reading or even understanding what a software you build does, using English as a language, not being explicit, building shit load of crappy apps, ... is beyond me.</q> The danger, Nour observed, is a generational loss of technical mastery: <q>If everyone moved to building on top of vibe coded libraries and OSes we are fucked in the motherboard because nobody knows shit about that spaghetti generated by LLMs trained on stackoverflow tutorials.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqay6kfhtqdtvlhqr2yg7nfal4uwjffnez577fsqqf58r3u86fd7csyap7y">Nour</a>).</p>
+        <p>Yet across the network, developers building focused consumer utilities demonstrated a pragmatic alternative. Rather than leaning on sprawling web frameworks, engineer notmandatory noted that automated assistants could help assemble lightweight terminal user interfaces: <q>This is the way… I've been playing with the ratatui (rust) and the 🤖s have built me some nice little TUIs for data entry and display.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs0kg4u2hcq6sn4k3drlhaql2qc20mvrm6z63xnqd4d2edv85acsqc006w6w">notmandatory</a>).</p>
+        <figure>
+          <img src="https://blossom.jumble.social/6e826f832edd7b0293dd63d504e20c4d38463a1cbc6835ed286072977656ff3a.png" alt="Screenshot filed with reya's note announcing the v0.2.0-alpha release of Signed.">
+          <figcaption>Interface layout from the Signed v0.2.0-alpha release, establishing development momentum for open-source identity tooling. <span class="credit">Photograph by reya</span></figcaption>
+        </figure>
+        <p>The pursuit of keyboard-driven precision was echoed by IT veteran Derek Ross, who documented his transition from decades of conventional graphical environments to Omarchy, an Arch-based Linux desktop built on the Hyprland tiling window manager. Recalling the initial friction, Ross wrote: <q>There was no dock. My windows refused to be dragged. Everything tiled itself whether I asked permission or not. My first honest thought: this is broken. My second, more honest thought: this is a different paradigm, and the problem is my muscle memory, so I had better learn it.</q> After twenty years of administrative computing, Ross found that abandoning floating desktop clutter unlocked a faster workflow: <q>Stop arranging windows. Start assigning workspaces.</q> Within days, the muscle memory shifted: <q>Twenty years of dragging windows, retired in a week. I still catch myself reaching for a dock that is not there. Then I hit Super + 2 and stop missing it.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqspkmzpxcxf262a7ag7933enyuff6efmyuvzwf0ymkk0eh7jhw94vctsl7da">Derek Ross</a>).</p>
+        <p>At the protocol level, architectural clarity required solving cross-application coordination rather than multiplying features. Protocol developer lostcause outlined a framework for Nostr Community Conventions (NCCs), designed to bridge the gap between core NIP protocol specifications and isolated application silos: <q>Two applications can both use valid Nostr events, valid signatures and valid relays, yet still be unable to understand each other because they chose different ways to represent the same higher-level idea.</q> Rather than overburdening base relays with bespoke governance, NCCs propose an optional layer of shared conventions: <q>A NIP describes part of the Nostr protocol or a broadly reusable protocol extension. An NCC describes how applications can compose existing pieces into a higher-level convention.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsxxq894gdh0pvxcf9wudxd7sha0ex9lnawrgprrf68sdrl0adrgrgv3zfam">lostcause</a>). Meanwhile, independent desktop tooling gained speed as reya rolled out an updated preview of Signed: <q>I've pushed a new release for Signed, still very early but I've laid out a solid plan and direction, so development progress will speed up a lot.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsfuvxrlckkuphmcy00neng8ckxhk7jde0lq4eapvsh6j38wa8f0zqvepzkk">reya</a>).</p>
+      </article>
+    </div>
+
+    <div class="col span-4">
+      <article class="story">
+        <span class="kicker">Monetary Theory &amp; Protocols</span>
+        <h2 class="main-head">The Stablecoin Trojan Horse: Inviting the Fed into the House?</h2>
+        <p class="dek">Celebrations over USDT deployment on Lightning and RGB provoke fierce debate over whether fiat debt instruments undermine Bitcoin’s founding purpose.</p>
+        <p class="byline">By Our Monetary Economics Desk</p>
+        <p class="first">Announcements from Tether leadership that USDT will be issued directly atop Bitcoin rails—leveraging the Lightning Network and RGB client-side validation—sparked an intense ideological debate over the purpose of censorship-resistant payment infrastructure.</p>
+        <p>Economic commentator Kudzai Kutukwa published an unsparing critique of the celebration, questioning whether routing centralized fiat liabilities on peer-to-peer rails serves monetary sovereignty: <q>Who on earth, apart from Paolo of course, thinks that putting dollar liabilities on Bitcoin is somehow a triumph for Bitcoin?</q> Pointing to the systemic harms of monetary intervention, Kutukwa argued that state-backed credit cannot be redeemed by faster transport: <q>Monetary intervention distorts prices, misallocates capital, encourages malinvestment, socializes losses and silently transfers purchasing power from those who earn and save money toward those closest to the monetary spigot.</q></p>
+        <p>The fundamental objection, Kutukwa insisted, is that tokenized dollars import counterparty risk, blacklists, and regulatory leverage into a network designed to obsolete them: <q>A dollar sent over Lightning is still a dollar. Putting a centralized financial instrument onto decentralized infrastructure does not magically transfer Bitcoin's monetary properties to that instrument.</q> Addressing the ecosystem, he urged caution: <q>So when Paolo tells us that USDT is “coming home” to Bitcoin, perhaps we should ask whether USDT is really coming home or whether we are inviting the dollar into the house Bitcoin was built to escape.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsrgvulptac6fmwl6sfqhcwg2jfc0wvgpyfuaegmjlxrxya540yh8gyj5p9y">Kudzai Kutukwa</a>).</p>
+        <p>The passage was circulated widely on the wire, where Henrique highlighted Kutukwa’s analysis (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqszjnrjh43q3xc6eu3tde28nt9kpf67mafy5auxp32gtgqxvm9qrvq32452x">Henrique⚡️</a>). However, from an operational perspective, protocol observers noted that demand for alternative layers stems directly from base Lightning liquidity hurdles. Commentator Five observed: <q>Yes the narrative has been misleading it's not ideal.</q> Even so, Five argued that real-world frictions inevitably drive architectural innovation: <q>To some extent Spark, Ark and even #Cashu came about for exactly these reasons.</q> Facing a protracted adoption cycle, Five emphasized fortitude: <q>Endurance and timing are most relevant in this situation.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqqq9s9mz0dkpma9u7rf95mmpaxvvy0mm4m7039cj04wtpan9l72g9seuu4">Five</a>).</p>
+      </article>
+    </div>
+
+    <div class="col span-3">
+      <div class="box">
+        <div class="box-head">The Instrument</div>
+        <div class="wire-item">
+          <p>Window read without lens returned <strong>400 notes</strong>.</p>
+          <p>Of those, <strong>1 note</strong> appears among the 379 ranked notes surfaced today.</p>
+          <p><strong>Overlap: 0.25%</strong>. A near-zero overlap demonstrates the reader’s web of trust filtering 99.75% of uncurated global relay traffic.</p>
+        </div>
+      </div>
+
+      <div class="box" style="margin-top: 18px;">
+        <div class="box-head">Market Readings</div>
+        <p class="note">As of 13:50 UTC · Readings from the window, not live</p>
+        <div class="tablewrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th style="text-align: right;">Reading</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Bitcoin Price</td>
+                <td class="num">$84,297</td>
+              </tr>
+              <tr>
+                <td>Sats per USD</td>
+                <td class="num">1,185 sats</td>
+              </tr>
+              <tr>
+                <td>Unmoved 4+ Years</td>
+                <td class="num">37.6%</td>
+              </tr>
+              <tr>
+                <td>Supply &lt; 2 Years</td>
+                <td class="num">51.4%</td>
+              </tr>
+              <tr>
+                <td>Supply &ge; 2 Years</td>
+                <td class="num">48.6%</td>
+              </tr>
+              <tr>
+                <td>100-Week Average</td>
+                <td class="num">$89,616</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Compiled from network observations by ChartsBTC.</p>
+      </div>
+    </div>
+  </main>
+
+  <section class="band">
+    <div class="band-head">
+      <h2>Deep Dives &amp; The Sunday Chronicle</h2>
+    </div>
+    <div class="cols3">
+      <div class="cell">
+        <article class="story">
+          <span class="kicker">Personal Finance &amp; Stacking</span>
+          <h3 class="sub-head">Retirement Arithmetic: Why Thirty-Four Coins Is Not Enough</h3>
+          <p class="byline">By Our Financial Desk</p>
+          <p>A listener inquiry regarding early retirement prompted financial analyst Trey to examine the arithmetic of living off digital assets. Modeling an aggressive scenario, Trey noted: <q>A 26-year-old wants to retire at 40 and spend $100,000 a year. The traditional 25x rule gives him a $2.5 million target.</q></p>
+          <p>While modeling long-term appreciation might suggest a modest coin balance suffices for accumulation, Trey warned that post-retirement bear markets present severe sequencing risk: <q>Bitcoin had four declines greater than 50% between 2014 and 2024. The three largest averaged roughly 80%, and three of the four took nearly three years to recover. If bitcoin gets cut in half after you quit, the same $100,000 withdrawal costs twice as much bitcoin. Every sale leaves fewer sats for the recovery.</q></p>
+          <p>Rather than relying on isolated multi-year cash reserves or risky collateral borrowing, Trey advocated preserving flexible alternatives: <q>A retirement plan needs enough margin for you to choose whether to spend, earn, sell, or wait.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsv068kqyrtul4nwhs9gmrsu5xj7x8srkp6n9pea7zlrq0e862ae7qk5udm2">Trey</a>).</p>
+        </article>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <span class="kicker">Field Reports &amp; Gatherings</span>
+          <h3 class="sub-head">Rings, Roasts, and Island Cabins</h3>
+          <p class="byline">By Our Social Desk</p>
+          <p>The weekend brought celebrations both public and domestic across the network. At a conference hall in Nashville, attendee Jimmy Kostro reported an unexpected scene during the proceedings: <q>None of us saw this coming, a surprise proposal at today’s Bitcoin event. Congratulations to the happy couple!</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsw75u4h4gh3uarw7mggusfevtsucdr2xavvy9zk3rmell4jukwepcdltk2u">Jimmy Kostro</a>).</p>
+          <p>Culinary ambition was on display as Dany celebrated the arrival of custom outdoor cooking equipment settled directly in cryptocurrency: <q>I bought this beauty at @TodoParrillasAr (on X) and paid with Bitcoin.</q> Recommending the manufacturer, Dany noted: <q>So now you know, fellow carnivorous bitcoiners, here you get the best grills on earth and pay with the best currency on history.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsfcp969ng0aamq9fvxcl2nvmga3tuqegfl4rw6atlzla7e52v7c8qpmhak8">Dany</a>). In the kitchen, Odie prepared the traditional Norwegian mutton and cabbage staple fårikål (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsz7lc9p3xc383jw785p8u0hyg8eqsz6wkhwchg7haqrhxntyfgqzscj4jeh">Odie 40HPW</a>), while V3spering oversaw family dinner: <q>Portuguese chicken still on the grill, in-laws already seated. When the mother in law goes for seconds tonight, no words needed. Just nod and enjoy the silence.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsryl03252pnxhtgatyl0jfksw0lwpc8m5nz4r0ghrwrs0jy7r8trcwkd64c">V3spering</a>).</p>
+          <p>Further out on the perimeter, HodlHomestead polled the network on remote living alongside an isolated river cabin: <q>Only accessed by boat. Would any of you live here?</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsgdkzsrf5q7j6x8zvqch7se4e3ss7z3mqvukl9u46rr97junk475s039qmx">HodlHomestead</a>). Meanwhile in Tokyo, photographer muneomi navigated weekend crowds: <q>Shibuya is way too crowded for me. I’ll get what I came for and get out of here. 😅 It might be a great place for street photography, though.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsxpr9hlal3axzc75elhs8mdsmep3yhmk99htua6v6fztcerxwtthgckntm2">muneomi 📷</a>).</p>
+        </article>
+      </div>
+
+      <div class="cell">
+        <figure>
+          <img src="https://blossom.primal.net/041eb69cf56e80d20ff69b678c357553aab77444697eeed44c7fe8c67e127c7c.jpg" alt="Filed with HodlHomestead's note asking who would live at an island cabin only accessed by boat.">
+          <figcaption>A waterside homestead accessible only by boat along the riverbanks. <span class="credit">Photograph by HodlHomestead</span></figcaption>
+        </figure>
+        <figure>
+          <img src="https://media.poster.place/dda386035df2b22751259a2a641e8ae5e416b38bc8bae1f2695294951911c40d.jpg" alt="Filed with V3spering's note about Portuguese chicken grilling while the in-laws take their seats.">
+          <figcaption>Portuguese chicken searing over grill coals ahead of a quiet family dinner. <span class="credit">Photograph by V3spering</span></figcaption>
+        </figure>
+        <figure>
+          <img src="https://blossom.primal.net/cc043ebe46466eeace719677c2c67cbe5338b1d62b4433d21317f8d710224e9c.jpg" alt="Filed with Dany's note announcing a custom grill purchased with Bitcoin.">
+          <figcaption>Custom heavy-duty Argentine parrilla grill acquired using Bitcoin. <span class="credit">Photograph by Dany</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="band-head">
+      <h2>Network Wire &amp; Gazettes</h2>
+    </div>
+    <div class="cols3">
+      <div class="cell">
+        <h3 class="small-head" style="margin-bottom: 8px;">Broadcasting (Live Now)</h3>
+        <p class="note" style="margin-bottom: 12px;">Kind 30311 streams active at edition close; air times UTC.</p>
+        <div class="wire-item">
+          <p><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al">NoGood Radio</a></p>
+          <p class="note">Music broadcast hosted by zap.stream (on air since 13:49 UTC).</p>
+        </div>
+        <div class="wire-item">
+          <p><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjrswpk8q6rydfh94skyvt9956r2vfj95urvdr994jnqd3jvymnvvf4vycrjq3q7639hplhu7lvnf53udu9rvd40fa5n7sqhdp39qpsxqp28672fzgsxpqqqpmxwp8u8pc">Grand Theft Altman</a></p>
+          <p class="note">Gaming and commentary stream hosted on streamstr (started 13:49 UTC).</p>
+        </div>
+        <div class="wire-item">
+          <p><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqf8x7tww35xgunpvahkuttxd9jhycm9qgsqtespt8c7pfktvna9w07pa034lxz6jaw7le7h2cplmw0gelfcxdqrqsqqqan8lyq2ya">Synthdragon Radio — FIERCE</a></p>
+          <p class="note">Electronic music radio featuring Crimson Racer (started 13:48 UTC).</p>
+        </div>
+        <div class="wire-item">
+          <p><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqghx7tww35xgunpvahkuttrdp5kcmqzyqz7vq2e78s2djmylftnls0tud0esk5hthh7046kq07mn6x06wpngqcyqqq8vec4f5fl5">Synthdragon Radio — CHILL</a></p>
+          <p class="note">Downtempo ambient stream featuring Glaciella (started 13:46 UTC).</p>
+        </div>
+        <div class="wire-item">
+          <p><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjrgepcx5crjdr995exydn9956rve3k94snjcf495cxydfhxdjxverpxsexgq3qsjf300tngygmqtfkpyd0vcglld2msksjxe9fsjduzn2pccqjl9wsxpqqqpmxwr0l5xz">ScardustTV</a></p>
+          <p class="note">Stream Road live broadcast announcing their upcoming United States tour (started 13:50 UTC).</p>
+        </div>
+      </div>
+
+      <div class="cell">
+        <h3 class="small-head" style="margin-bottom: 8px;">Software &amp; Repositories</h3>
+        <p class="note" style="margin-bottom: 12px;">New releases on Zapstore (NIP-82) and GitWorkshop (NIP-34).</p>
+        <div class="wire-item">
+          <p><a rel="noopener noreferrer" target="_blank" href="https://zapstore.dev/apps/pub.soapbox.tenna">Tenna</a></p>
+          <p class="note">Dedicated browser from Team Soapbox for browsing serverless nsites via signed manifests.</p>
+        </div>
+        <div class="wire-item">
+          <p><a rel="noopener noreferrer" target="_blank" href="https://zapstore.dev/apps/dev.uint.qrserv">QRServ</a></p>
+          <p class="note">Lightweight Android HTTP server allowing quick file downloads over a local network.</p>
+        </div>
+        <div class="wire-item">
+          <p><a rel="noopener noreferrer" target="_blank" href="https://zapstore.dev/apps/com.zaneschepke.wireguardautotunnel">WG Tunnel</a></p>
+          <p class="note">Streamlined WireGuard VPN client balancing simple setup with robust automation.</p>
+        </div>
+        <div class="wire-item">
+          <p><a rel="noopener noreferrer" target="_blank" href="https://zapstore.dev/apps/org.alieninvestor.pass">Alien Pass</a></p>
+          <p class="note">Local, encrypted password manager running fully offline without internet permissions.</p>
+        </div>
+        <div class="wire-item">
+          <p><a rel="noopener noreferrer" target="_blank" href="https://gitworkshop.dev/npub1ven4zk8xxw873876gx8y9g9l9fazkye9qnwnglcptgvfwxmygscqsxddfh/darkmatter-linux">Whitenoise Linux</a> &middot; <a rel="noopener noreferrer" target="_blank" href="https://gitworkshop.dev/npub1n2ph08n4pqz4d3jk6n2p35p2f4ldhc5g5tu7dhftfpueajf4rpxqfjhzmc/gittr">gittr</a></p>
+          <p class="note">Distribution tooling by Danny the Cyber Guy alongside arbadacarba’s Git sync protocol client.</p>
+        </div>
+      </div>
+
+      <div class="cell">
+        <h3 class="small-head" style="margin-bottom: 8px;">Diary &amp; Calendar</h3>
+        <p class="note" style="margin-bottom: 12px;">Upcoming community events and developer seminars.</p>
+        <div class="wire-item">
+          <p><strong>Thursday, Oct 1 &middot; Brisbane</strong></p>
+          <p><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctzxa3nzepcvgckvvtzvyukzvfex9jrwvn9vcpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvxsk3nq">Bitcoin Brisbane #65</a> &mdash; evening gathering and sunset meetup at Lucid Apartments Sky Lounge.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong>Thursday, Oct 1 &middot; San Francisco</strong></p>
+          <p><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctz8qcnvwpjvgckvvtzvyukzvfex9jxxenzxupzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv84028m">Socratic Seminar 74</a> &mdash; protocol engineering debate and reading review at Digital Garage (6:30 PM).</p>
+        </div>
+        <div class="wire-item">
+          <p><strong>Sunday, Oct 4 &middot; Agra, India</strong></p>
+          <p><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctzxa3nyepevgckvvtzvyukzvfex9jrwefkxcpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvtzj9ye">Road to Bitmela: Agra</a> &mdash; pre-conference community and developer assembly in Uttar Pradesh.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong>Thursday, Oct 15 &middot; Birmingham</strong></p>
+          <p><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctz8qcnwde5vgckvvtzvyukzvfex9jx2wpnxypzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvzlvf25">Brum Bitcoin &amp; Beer</a> &mdash; monthly open meetup on the top floor of The Wellington on Bennetts Hill.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong>Thursday, Oct 22 &middot; New York</strong></p>
+          <p><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctz8qcnvwpsvgckvvtzvyukzvfex9jxxenpvcpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvpwus54">Bitcoin Developers’ Socratic Seminar 163</a> &mdash; technical seminar at Chaincode Labs.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong>Wednesday, Nov 25 &middot; Funchal, Madeira</strong></p>
+          <p><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctz8qcnwd3hvgckvvtzvyukzvfex9jx2d3n8qpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvmunt6v">FREE Madeira Bitcoin Meetup</a> &mdash; monthly community discussion at Cowork Funchal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Tuesday, September 15, 2026</title>
+  <meta name="description" content="Moving beyond centralized web silos, reya releases a standalone collaboration platform for Nostr Git and the Grasp protocol across desktop platforms.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="The Sovereign Code Forge: “Signed” Alpha Launches Native Git on Nostr">
+  <meta property="og:description" content="Moving beyond centralized web silos, reya releases a standalone collaboration platform for Nostr Git and the Grasp protocol across desktop platforms.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-09-15-7FDA1E.html">
+  <meta property="og:image" content="https://blossom.jumble.social/8ec2a21db6041b62d3fbdfac4ac5c061ae474d9ee5d100622f592bb75724c56e.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Sovereign Code Forge: “Signed” Alpha Launches Native Git on Nostr">
+  <meta name="twitter:description" content="Moving beyond centralized web silos, reya releases a standalone collaboration platform for Nostr Git and the Grasp protocol across desktop platforms.">
+  <meta name="twitter:image" content="https://blossom.jumble.social/8ec2a21db6041b62d3fbdfac4ac5c061ae474d9ee5d100622f592bb75724c56e.png">
+
+
+
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+
+
+
+  <style>
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="folio">
+      <span>No. 7FDA1E</span>
+      <span>Tuesday, September 15, 2026</span>
+      <span>24h to 12:19 UTC</span>
+    </div>
+
+    <header class="masthead">
+      <h1><span class="the">The</span>Nostr Observer</h1>
+      <div class="motto">An edition of one · Ranked through your web of trust</div>
+    </header>
+
+    <div class="dateline">
+      <span>Ranked as NotBiebs and 69 others</span>
+      <span>526 events through your lens</span>
+      <span>196 voices</span>
+    </div>
+
+    <!-- ABOVE THE FOLD: 12-column grid -->
+    <main class="fold">
+      <!-- LEAD STORY: span-8 -->
+      <article class="col span-8 story">
+        <div class="kicker">Decentralized Software</div>
+        <h2 class="lead-head">The Sovereign Code Forge: “Signed” Alpha Launches Native Git on Nostr</h2>
+        <p class="dek">Moving beyond centralized web silos, reya releases a standalone collaboration platform for Nostr Git and the Grasp protocol across desktop platforms.</p>
+        <p class="byline">By reya and Staff</p>
+        <p class="first">For years, decentralized software development has lived in a curious contradiction: developers build permissionless protocols while coordinating their code inside proprietary centralized platforms. That compromise took another step toward obsolescence today with the alpha rollout of Signed, a dedicated desktop collaboration suite built directly on Nostr Git and the Grasp Protocol.</p>
+        <figure>
+          <img src="https://blossom.jumble.social/8ec2a21db6041b62d3fbdfac4ac5c061ae474d9ee5d100622f592bb75724c56e.png" alt="Screenshot of Signed, a collaboration platform for Nostr Git and Grasp Protocol">
+          <figcaption>An alpha build of Signed, showing repository exploration and patch review built over Nostr Git and the Grasp Protocol, released across macOS, Windows, and Linux. <span class="credit">reya</span></figcaption>
+        </figure>
+        <p>Announcing the initial release, <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsyscuv0vn46esem0ywe83p62r73qep76uyws2ts9zqudxgzdntxeg93hl62">reya</a> laid out a roadmap aimed at displacing commercial git hosting services with cryptographic keys and relay distribution: <q>I've released an alpha build of "Signed", a collaboration platform for Nostr Git or Grasp Protocol. If you're bored today, please give it a try and send me some feedback or bug reports. It's still very early and rough, my vision is a fully batteries-included git client as well as a collaboration platform.</q></p>
+        <p>The release coincides with growing experimentation around sovereign development tooling across the network. Developer arbadacarba published both a git forge wrapper, gittr, and an Android client on Zapstore, while arguing in a separate essay that command-line interfaces should give way to sovereign graphical tools and model context integrations rather than forcing everyday developers to navigate terminal arcana.</p>
+        <p>With Signed shipping native binaries for macOS, Windows, and Linux—and a web version on the near horizon—the shift toward protocol-level code hosting is moving from an experimental curiosity into an accessible everyday reality.</p>
+      </article>
+
+      <!-- SECOND COLUMN / SIDEBAR: span-4 -->
+      <div class="col span-4">
+        <!-- The Instrument Box -->
+        <div class="box">
+          <div class="box-head">The Instrument</div>
+          <p class="note">A window read with and without your lens</p>
+          <div class="wire-item">
+            <p>A reading of the last 24 hours without an observer returned <strong>400 notes</strong>. Of those, exactly <strong>1</strong> appeared in the <strong>377 notes</strong> surfaced through your web of trust.</p>
+            <p>That 0.25% overlap is the lens at work: an unranked feed was 99.75% noise that never touched your paper.</p>
+          </div>
+        </div>
+
+        <!-- SECONDARY STORY: 90s FORUM REVIVAL -->
+        <article class="story">
+          <div class="kicker">Group Architecture</div>
+          <h3 class="main-head">90s Etiquette in the Relay Age: fiatjaf Reimagines Forums for NIP-29</h3>
+          <p class="dek">A text-focused topic layout in Hallway brings bulletin-board discipline and linear threading to modern Nostr groups.</p>
+          <p class="byline">By fiatjaf and Staff</p>
+          <figure>
+            <img src="https://nostr.download/fa5a70fe736b51b10e8be2163051c84a408efa2babef0ce0974db45d25d84a10.png" alt="Text-focused forum topic list when browsing a NIP-29 group in Hallway">
+            <figcaption>Old-school text-focused forum topic list when browsing a NIP-29 group in Hallway, filed by fiatjaf. <span class="credit">fiatjaf</span></figcaption>
+          </figure>
+          <p class="first">As public feeds grow louder and more fragmented, protocol developers are reaching back to the architectural clarity of early web forums. Showcasing new interface work for Hallway, <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs0vgc4e9qh2kdre8uw3cj0u4g9j0wtamusygkn3nm4kzlz2tpl5yqd2fexr">fiatjaf</a> demonstrated how NIP-29 relayed groups can restore calm, topic-based discussions: <q>Old-school text-focused forum topic list when browsing a NIP-29 group in Hallway:</q></p>
+          <p>Rather than adopting the infinite-scroll nesting of modern social platforms, the design consciously enforces the conversational discipline of nineties bulletin boards. Pointing out the reply flow, <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsrlvje27xptcm3wmuy38jk6yy079ca0tzdp64gt6s970zugy0e4tqv5a2ne">fiatjaf</a> noted: <q>In order to reply to forum topic one must go to the end of the thread, as the 90s etiquette says:</q></p>
+          <p>The philosophical foundation remains strict interoperability across client boundaries. In a brief remark on protocol design, <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsfpjyuk49c63qweryn3zff9k0h6j40m938tzc92s4ur5a3trwtvqs0qtmap">fiatjaf</a> emphasized: <q>Interop is all that matters. Static kinds favor interop.</q> That commitment resonated across recent group discussions, with <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqspa9985hh65v2tvfaeqg327mke04zt3rwz52952jyrgq6vyr4ugpqp9smdz">fiatjaf</a> adding of community collaboration tools: <q>Thank you. I like Coop very much but it has a million bugs, so I can't use it. Now I'm hopeful the Gigi effect will make it usable for me again.</q></p>
+          <p>The broader push for reliable group communication was highlighted by <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs9gm9s2r798wmx2twe3vp4vkxaltp9v9gsd9mhs3amj02r5k57dzs42vgtc">chad</a>, observing that <q>Armada and Vector solve nostr DMs and make group chats possible.</q></p>
+        </article>
+      </div>
+    </main>
+
+    <!-- BAND 1: MIDDLE STORIES (cols3) -->
+    <section class="band">
+      <div class="band-head">
+        <h2>Dispatch &amp; Developments</h2>
+      </div>
+      <div class="cols3">
+        <!-- Cell 1: Maldon Festival Live Music -->
+        <article class="cell story">
+          <div class="kicker">Live Culture</div>
+          <h3 class="sub-head">Punks, Humans, and Relays: Live from the Maldon Festival</h3>
+          <p class="byline">By Aaron of Essex</p>
+          <figure>
+            <img src="https://image.nostr.build/28b4bf9b7c4f90beedc84bf30b580fe2cb9c576dc4f2a3918bb31bd7d10fe4d1.jpg" alt="Live music performance at the Maldon Festival livestreamed from Essex">
+            <figcaption>Stage lighting and live music from the Maldon Festival in Essex, captured during the valueverse broadcast. <span class="credit">Aaron of Essex</span></figcaption>
+          </figure>
+          <p class="first">From a crowded hall in Essex, independent live music found an immediate, global audience without tickets or gatekeepers. <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsx495e20lg2qxkjlj48nak73m960jj3t44nypyyt4hg7rcdx0xd0stm963p">Aaron of Essex</a> reported on the second consecutive evening of festival broadcasting: <q>The Maldon Festival Livestream was a lot of fun last night. And guess what we do it all again tonight… Join us tonight for some good old fashioned Punk and RocknRoll. With real instruments and humans.</q></p>
+          <p>Broadcasting over Fountain, RSS, and Nostr, the event onboarded local grassroots bands into value-for-value streaming, proving that direct audience support can fund live culture without algorithmic intermediaries.</p>
+        </article>
+
+        <!-- Cell 2: Education & Infrastructure: My First Bitcoin -->
+        <article class="cell story">
+          <div class="kicker">Education</div>
+          <h3 class="sub-head">From Classroom to Bedrock: My First Bitcoin Restructures</h3>
+          <p class="byline">By My First Bitcoin</p>
+          <p class="first">In a pivotal organizational transition, <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsr4r4ts4me6dgelrv3gg8h5yxe57qc2mlpddcpwnc6g8vrppp3lqgw9ua7j">My First Bitcoin</a> announced it is shifting its primary operational focus from direct teaching to decentralized educational infrastructure.</p>
+          <p>In a formal announcement, the organization explained: <q>My First Bitcoin is restructuring around its Education Network: a smaller team, lower costs, and a single focus—empowering those who empower others. This is how we scale the mission…</q></p>
+          <p>The restructuring supports over two hundred independent educators across forty-eight countries, equipping local leaders to teach Bitcoin in their native languages rather than running centralized classroom programs from a single hub.</p>
+          <p>Elsewhere on the protocol, <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsfh0m5m8wqg9ap5slu2uxwzcxjfmz2hvjnxt5j4r8awes4hnxfcsgaxt87z">inkan</a> published a draft proposal for cold-storage identities on Nostr, allowing private keys to remain offline permanently while delegating daily signing capabilities to active devices.</p>
+        </article>
+
+        <!-- Cell 3: Scenic photograph / Photo Desk -->
+        <div class="cell">
+          <div class="kicker">The Visual Diary</div>
+          <h3 class="small-head">Morning Light in the Desert</h3>
+          <figure>
+            <img src="https://blossom.daniel.camera/45af9ebb5d33f3cbff336b2e581f43bebf077ff7cd09a7cee1850318aed89c72.jpg" alt="Light Through Spooky Canyon">
+            <figcaption>Hike through Spooky Canyon outside of Las Vegas, where morning sunlight cuts through sculpted desert sandstone, captured on a trek by danielw. <span class="credit">danielw</span></figcaption>
+          </figure>
+          <p class="note">Filed by <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs86n8eju2w950wg00sp0lspu7eemdncdkpqandmfmnvgzwypsp76sp5msf4">danielw</a> to the photography desk.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAND 2: STANDING COLUMNS (cols3: Broadcasting, Classifieds, Calendar) -->
+    <section class="band">
+      <div class="cols3">
+        <!-- Column 1: Broadcasting -->
+        <div class="cell">
+          <div class="box-head">Broadcasting</div>
+          <p class="note">Streams on air when this edition went to press</p>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqsx5mmjwd68yttvd9mx2tfhv4jrvdecxumkzdpevs6xyvrzvyexvcczyq6ccyn56sez2q48xw543p2wfsu3rec0af5nzcankx0p4e3pzg9zyqcyqqq8vecm7r95e">BTC Beats - This Is Why We Nostr</a></strong><br>Hosted by Scottie, broadcasting morning rhythm and talk.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqghx7tww35xgunpvahkuttrdp5kcmqzyqz7vq2e78s2djmylftnls0tud0esk5hthh7046kq07mn6x06wpngqcyqqq8vec4f5fl5">Synthdragon Radio — CHILL</a></strong><br>Ambient electronic selections. Now playing Glaciella.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqf8x7tww35xgunpvahkuttxd9jhycm9qgsqtespt8c7pfktvna9w07pa034lxz6jaw7le7h2cplmw0gelfcxdqrqsqqqan8lyq2ya">Synthdragon Radio — FIERCE</a></strong><br>High-tempo synthesizer soundscapes. Now playing Lucian Pyre.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al">NoGood Radio</a></strong><br>Independent live broadcasting on zap.stream.</p>
+          </div>
+        </div>
+
+        <!-- Column 2: Classifieds -->
+        <div class="cell">
+          <div class="box-head">The Classifieds</div>
+          <p class="note">Offers and trades across the network</p>
+          <figure>
+            <img src="https://blossom.primal.net/3a728ee67cbe539464afd46142304b3e3ff76d9e520ea7390972fc4a112fd836.jpg" alt="3D printed Chicago Bears logo extruded into an STL using Claude">
+            <figcaption>Extruded Chicago Bears logo modeled with Claude and printed in 3D by Keith Mukai. <span class="credit">Keith Mukai</span></figcaption>
+          </figure>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqskx6rfvdskwmedvfjkzunn94kxzun8v5kkcmm8dukkzcf3xymnzc35qgs9kr5d5m7lhfnrqwrfpvmay9kcx3dxy0xr8cg34lg0ww8dw7ftc4qrqsqqqakzv0dyh8">Chicago Bears large logo</a></strong><br>3D printed team logo: <q>I had Claude take the Chicago Bears logo and vertically extrude it into a 3d-printable STL.</q> Offered by <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsp7sy6xdh8g8f249qjqgunsgf4ddgu2wnpq2h6j2wk7gr2fd5sf2qwce3pg">Keith Mukai</a>.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qpqrxd3kxdsnwcmy956rgeny956rzenz95ur2ctp956kxdfs8qurvc3sxqmrqwnnd4skcmpdwdjkzum0de5kueedwd38xttzv96xx6pdxspzqaf4zg3xgl9xyn8pvjch5gjkd2nhf53ldqzd2kla9a3ssug0mhx5qvzqqqrkcg4j0w6t">Small Seasoning - SBS Batch 4</a></strong><br>2.5oz sample size pouches of custom culinary blend, offered by Small Batch Steve.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqtx6etjvdshxct5wvkn2vrxxf3rqdmpxf3nydszyzdy8ulw20t8cmxzfthd5t6h24ydkdf0vrutnkvhece2n9dax5l9jqcyqqq8dss85n495">Almendras para picar</a></strong><br>Selected snacking almonds, 2€ per kilo, offered by Andro.</p>
+          </div>
+        </div>
+
+        <!-- Column 3: Calendar -->
+        <div class="cell">
+          <div class="box-head">Diary &amp; Calendar</div>
+          <p class="note">Gatherings and assemblies on the horizon</p>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctp8qersepex5cnqdmrvgcxxetpvf3n2d34xgpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvmya32d">Bitcoin &amp; Coffee #98</a></strong><br>Santa Monica · Saturday, September 19, 9:00 AM<br>Informal morning discussion at Sogno Toscano Caffè on Montana Avenue.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvcfcvdjnswfexdjxxv34xs6nqefjve3ryepcxypzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvr74jh8">Coffee at Bitcoin Park</a></strong><br>Nashville · Tuesday, September 22, 7:00 AM<br>Morning conversations on Bitcoin, healthcare, and AI hosted by Sound HSA and Unchained.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctpxajkvcfjv33nyvehxpjxzvp38qunqdrxvgpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv7z7p6c">BitcoinWalk Sonsbeekpark</a></strong><br>Arnhem · City park walk through Sonsbeek and Zypendaal followed by lunch at Le Grand Cafe.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

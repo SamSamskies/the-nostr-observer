@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Thursday, August 27, 2026</title>
+  <meta name="description" content="With local financial institutions shuttered for over a year, Gloire Kambale Wanzavalere’s Bridge Sats runs community transactions on Fedi.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="In Goma, Life Without Banks Turns to Bitcoin">
+  <meta property="og:description" content="With local financial institutions shuttered for over a year, Gloire Kambale Wanzavalere’s Bridge Sats runs community transactions on Fedi.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-08-27-1EAF35.html">
+  <meta property="og:image" content="https://blossom.primal.net/9bfeb7be343d8c6f648a2ff353d7932b5fa9dae420d2dcbd810477ce118c1ec6.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="In Goma, Life Without Banks Turns to Bitcoin">
+  <meta name="twitter:description" content="With local financial institutions shuttered for over a year, Gloire Kambale Wanzavalere’s Bridge Sats runs community transactions on Fedi.">
+  <meta name="twitter:image" content="https://blossom.primal.net/9bfeb7be343d8c6f648a2ff353d7932b5fa9dae420d2dcbd810477ce118c1ec6.png">
+
+
+
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <style>
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-7 { grid-column: span 7; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5, .span-7, .span-8 { grid-column: span 12; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+  .cols3 { grid-template-columns: repeat(1, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+  </style>
+</head>
+<body>
+  <div class="sheet">
+
+    <div class="folio">
+      <span>No. 1EAF35</span>
+      <span>Thursday, August 27, 2026</span>
+      <span>24h to 13:54</span>
+    </div>
+
+    <header class="masthead">
+      <h1><span class="the">The</span> Nostr Observer</h1>
+      <p class="motto">All the news surfaced by your web of trust</p>
+    </header>
+
+    <div class="dateline">
+      <span>Ranked as npub1vp8fdcy…</span>
+      <span>617 events through your lens</span>
+      <span>213 voices</span>
+    </div>
+
+    <!-- Above the Fold: Three Column Lead Stories -->
+    <main class="fold">
+
+      <!-- Column 1: Goma Community & Fedi Spotlight -->
+      <article class="col span-4 story">
+        <span class="kicker">COMMUNITY &amp; PAYMENTS</span>
+        <h2 class="main-head">In Goma, Life Without Banks Turns to Bitcoin</h2>
+        <p class="dek">With local financial institutions shuttered for over a year, Gloire Kambale Wanzavalere’s Bridge Sats runs community transactions on Fedi.</p>
+        
+        <figure>
+          <img src="https://blossom.primal.net/9bfeb7be343d8c6f648a2ff353d7932b5fa9dae420d2dcbd810477ce118c1ec6.png" alt="Fedi Builder Spotlight photograph of Gloire Kambale Wanzavalere in the DRC">
+          <figcaption>
+            Gloire Kambale Wanzavalere, who left law studies in 2018 to build Bitcoin infrastructure in Goma, DRC.
+            <span class="credit">Photo: Fedi</span>
+          </figcaption>
+        </figure>
+
+        <p class="first">When commercial banks in Goma shut their doors more than twelve months ago, the city’s commerce faced a total institutional freeze. Rather than waiting for traditional financial channels to resume operations, local builders stepped forward with sovereign alternatives.</p>
+        <p>Gloire Kambale Wanzavalere dropped out of his university law programme six years ago to focus entirely on Bitcoin development. Today, he operates Bridge Sats—an over-the-counter desk and settlement service serving the Democratic Republic of the Congo. The project runs an active federation on the Fedi protocol, where community payments provide an essential lifeline.</p>
+        <p><q>In Goma, the banks have been closed for over a year. Gloire Kambale Wanzavalere didn't wait for them to reopen.</q> Fedi highlighted in a builder profile on Thursday, noting that daily transaction settlement remains the primary driver behind local adoption.</p>
+        <p class="note">Source: <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs9qyau4tq205ce7pgnxqelvn5epvn5qjgjfqj0cml0m4e5pzsl7wczftlzp">Fedi on Jumble</a></p>
+      </article>
+
+      <!-- Column 2: Sparrow Wallet 2.5.4 & Lightning Advisory -->
+      <article class="col span-5 story">
+        <span class="kicker">SECURITY AUDIT</span>
+        <h2 class="lead-head">Sparrow Wallet Ships Version 2.5.4 Following Major Security Reviews</h2>
+        <p class="dek">Craig Raw publishes a hardened release incorporating extensive researcher findings and community contributions.</p>
+        
+        <p class="first">Desktop Bitcoin wallet Sparrow released version 2.5.4 on Thursday morning, concluding a comprehensive round of security audits across its codebase.</p>
+        <p>Developer Craig Raw announced the milestone alongside gratitude for the collective auditing effort: <q>Sparrow v2.5.4 has been released, delivering the results of several extensive security reviews.</q> Raw expressed thanks to all contributors and independent researchers who submitted findings.</p>
+        <p>The release follows a wave of software auditing across the ecosystem, including deterministic firmware verification in Frostsnap 0.4.0 and tenant safety warnings in Flint 1.0.1.</p>
+        <p class="note">Source: <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs8cmcdannd6f4h4z47fuwtf2qhs3s88kvp62ughrdqfsvwa2mv9yqunht03">craigraw on Jumble</a></p>
+
+        <!-- Lightning Node Offline Warning Box -->
+        <div class="reverse" style="margin-top: 12px;">
+          <span class="kicker">NODE ADVISORY</span>
+          <h3 class="sub-head" style="margin: 6px 0;">Urgent Offline Recommendation Issued for C-Lightning Nodes</h3>
+          <p class="dek" style="margin-bottom: 8px;">Operators advised to halt active nodes pending further diagnostic details.</p>
+          <p>Lightning network operators running C-Lightning (CLN) nodes received an urgent advisory early Thursday morning to temporarily halt active services.</p>
+          <p style="margin-top: 6px;">Node operator Hag₿ard circulated the alert across relays: <q>If you run a #CLN C Lightning Node, you should take it offline. Go to the Raspiblitz TG Group for further information. #lightningnode #alert #raspiblitz</q></p>
+          <p class="note" style="margin-top: 8px; color: var(--reverse-ink-2);">Source: <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsd2qn24ynxs6rhw3tcr2m5yymfvjn09hsawp4k00kdynyt4x2mtgs5ljeyz">Hag₿ard on Jumble</a></p>
+        </div>
+      </article>
+
+      <!-- Column 3: Developer Tools & The Instrument -->
+      <article class="col span-3 story">
+        <span class="kicker">DEVELOPER TOOLS</span>
+        <h2 class="sub-head">Horcrux 1.0.1 and Routstr Updates Expand Tooling</h2>
+        <p class="dek">Matt Lorentz polishes cryptographic backups while Routstr rolls out Cashu wallet migration and Pi Agent integration.</p>
+        
+        <p class="first">Following its initial major milestone, sensitive backup utility Horcrux received an update from creator Matt Lorentz. <q>Just dropped Horcrux 1.0.1 with fixes for a few bugs I found in my final testing before 1.0.</q> Lorentz noted, continuing to gather questions for the documentation FAQ.</p>
+        <p>Meanwhile, AI inference routing daemon routstrd reached version 0.4.2. Developer routstr announced that <q>This version brings brings more stability to the entire stack.</q> Key enhancements include migration to a Coco-Cashu based wallet to improve mint rate-limit resilience, Tinfoil model caching, Windows OS support, and Pi Agent integration with configurable thinking modes.</p>
+        <p class="note">Sources: <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsy9arnmmadhp7r524axuzqy3www4p802m7msdzwyhzjwlgxhudqkgy2pxuk">Matt Lorentz on Jumble</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsr6ax37gwjnqx4ucvk20q02j3h2r2e2cu7qvfth7qh6zwwgt85mccs8vqmz">routstr on Jumble</a></p>
+
+        <div class="box" style="margin-top: 14px;">
+          <div class="box-head">THE INSTRUMENT</div>
+          <p class="note">A parallel query across the same 24-hour window without web-of-trust ranking returned <strong>400</strong> unranked notes.</p>
+          <p class="note">Measured overlap between the unranked feed and your 389 ranked notes: <strong>0 of 400</strong>.</p>
+          <p class="note">A zero overlap confirms that your personal trust lens successfully filtered out the general noise and uncurated traffic of the global network.</p>
+        </div>
+      </article>
+
+    </main>
+
+    <!-- Band 1: Visual Chronicles, Gardens, & Dispatches -->
+    <section class="band">
+      <div class="band-head">
+        <h2>DISPATCHES, GARDENS &amp; FIELD NOTES</h2>
+      </div>
+      <div class="cols3">
+
+        <!-- Cell 1: Morning garden beans -->
+        <div class="cell story">
+          <span class="kicker">FIELD DISPATCH</span>
+          <h3 class="sub-head">Morning Beans and Fresh Deployments</h3>
+          <figure>
+            <img src="https://image.nostr.build/2fe97ffb32b41085ad65bd7bd2879195087ac23b01f9401938b38815e4b4cae8.jpg" alt="Bean blossoms growing in CKMe's morning garden">
+            <figcaption>
+              Bean blossoms flowering again in CKMe’s morning garden after two earlier pickings.
+              <span class="credit">Photo: CKMe</span>
+            </figcaption>
+          </figure>
+          <p class="first">In a morning garden report, CKMe shared updates on both agricultural flushes and institutional tooling: <q>Morning garden pic is beans! Nice to see the flowers again as I’ve picked these out 2x already. Gonna have another flush!</q> Alongside the garden progress, CKMe noted adopting a newly launched operating system at work, guiding their initial loan application through the fresh pipeline.</p>
+          <p class="note">Source: <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsds7efq345890mumnf6z2hakzak6vt0df3yekvvmtd3nf423rau7c4qvrqr">CKMe on Jumble</a></p>
+        </div>
+
+        <!-- Cell 2: Utah Canyonlands Retrospective -->
+        <div class="cell story">
+          <span class="kicker">PHOTOGRAPHY</span>
+          <h3 class="sub-head">Cactus Below the Rimrock</h3>
+          <figure>
+            <img src="https://blossom.daniel.camera/b00ec407d61fd0e595d284148062c975ed06ea928bbb9039ec650e5e71e0ac28.jpg" alt="Cactus Below the Rimrock in Canyonlands, Utah">
+            <figcaption>
+              A quiet frame captured beneath the rimrock during a 2023 expedition to Canyonlands.
+              <span class="credit">Photo: danielw</span>
+            </figcaption>
+          </figure>
+          <p class="first">Photographer danielw surfaced a retrospective frame from a journey through the American Southwest: <q>Exploring the Canyonlands area in Utah during 2023.</q> The study captures desert flora sheltered beneath steep sandstone formations.</p>
+          <p class="note">Source: <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsgdn2xmnltmk0fpe3gudfp53ljvjf49mu57aa3kajl4xp3d53dx2g6dk4hh">danielw on Jumble</a></p>
+        </div>
+
+        <!-- Cell 3: AI Agent Signing Site & HRF Grant -->
+        <div class="cell story">
+          <span class="kicker">EXPERIMENT &amp; GRANTS</span>
+          <h3 class="sub-head">Single-Use Signer Site and Education Grants</h3>
+          <figure>
+            <img src="https://blossom.primal.net/6c15f436e47983692994ca6462a9e6b3fe058de402e9c195ed4d6ebb95ede90d.png" alt="Screenshot of Pete Winn's single-use verification and signing interface">
+            <figcaption>
+              Pete Winn’s single-use web interface allowing browser extension signing for AI agent builds.
+              <span class="credit">Photo: Pete Winn</span>
+            </figcaption>
+          </figure>
+          <p class="first">When programming with autonomous coding agents that lack access to private signing credentials, developer Pete Winn devised an elegant bridge: <q>One challenge was the agent didn't have my keys so I had it code up a single use website that shows me the latest build and allows me to connect and sign everything with an extension 😉</q></p>
+          <p>Separately, education initiative My First Bitcoin announced receiving a third grant from the Human Rights Foundation to expand open-source educational programs across local communities: <q>A huge thank you to the Human Rights Foundation… for supporting My First Bitcoin now for the third time.</q></p>
+          <p class="note">Sources: <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsr8nlyrxdaheldzsz5pe5zgumv93ssp2hgpsmlss9yvypgzpnjwvc4cxwu2">Pete Winn on Jumble</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqszn4c7qsctt0ywx9c9pyu900trq3mq3lths6rt9rq2xcadlk9n6xq5tkw3n">My First Bitcoin on Jumble</a></p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Band 2: Classifieds, Calendar & Airwaves -->
+    <section class="band">
+      <div class="band-head">
+        <h2>THE MARKETPLACE, CALENDAR &amp; AIRWAVES</h2>
+      </div>
+      <div class="cols3">
+
+        <!-- Classifieds -->
+        <div class="cell">
+          <span class="kicker">THE CLASSIFIEDS</span>
+          <h3 class="sub-head">Apparel, Ceramic Wares &amp; Stone Crafts</h3>
+          <div class="wire-item">
+            <p><strong>Ai Robot &amp; Graphic T-Shirts</strong> · <em>$19.00 USD</em><br>
+            Lightweight breathable cotton tees with character graphics including Ai Robot, Pop Eye Heart, and Bit Pop Dancing Figure. Offered by BitPopArt.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Ceramic Art Accent Mugs</strong> · <em>$11.99 – $15.99 USD</em><br>
+            Glossy ceramic mugs in 11oz and 15oz sizes featuring Love Eye, Ai Robot Skeleton, and Stack Stats designs. Listed by BitPopArt.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Stone Table Coasters</strong> · <em>Price on inquiry</em><br>
+            Handcrafted durable stone coasters including Orenda and Geometry designs with customizable engravings. Listed by AdamKadmon.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Die-Cut Decals &amp; Caps</strong> · <em>$3.16 – $3.99 USD / 23.44 EUR</em><br>
+            Glossy vinyl kiss-cut stickers and embroidered caps (Bit Funny and Love Eye Heart). Listed by BitPopArt.</p>
+          </div>
+        </div>
+
+        <!-- Calendar Events -->
+        <div class="cell">
+          <span class="kicker">THE CALENDAR</span>
+          <h3 class="sub-head">Community Meetups &amp; Regional Assemblies</h3>
+          <div class="wire-item">
+            <p><strong>Wednesday, September 2 · Salt Lake City, UT</strong><br>
+            September Bitcoin Meetup at Fiddlers in Sugarhouse at 6:30 PM. Casual discussions on Bitcoin, AI, and games.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Saturday, September 5 · San Salvador</strong><br>
+            Rescheduled Opening Meetup at the Bitcoin Embassy from 5:00 PM to 10:00 PM featuring pupusas, coffee, music, and drinks.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Tuesday, September 8 · Tucson, AZ</strong><br>
+            Bitcoin Tucson Social Meetup at MOD Pizza (Tucson Marketplace) from 6:00 PM.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Tuesday, September 22 · Columbus, OH</strong><br>
+            Midwest Bitcoin Summit Kick Off Party at The Daily Etcetera (702 S High St) from 6:00 PM to 10:00 PM.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>October 26–31 · Jaipur, India</strong><br>
+            Bitshala BOSS Summit 2026: Six days of collaborative residency and open-source software design.</p>
+          </div>
+        </div>
+
+        <!-- Airwaves & Code -->
+        <div class="cell">
+          <span class="kicker">AIRWAVES &amp; CODE</span>
+          <h3 class="sub-head">Broadcast Streams and Fresh Repositories</h3>
+          <div class="wire-item">
+            <p><strong>Live Streams on Air</strong><br>
+            Synthdragon Radio transmitting continuous synthwave broadcasts across FIERCE and CHILL streams. zap.stream broadcasting NoGood Radio; ⚡Lightning Goats⚡ streaming live goat feeder.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>New Code Repositories</strong><br>
+            hzrd149 published <em>backyard-explorer</em> and <em>nostr-relay-tray</em>. Milo published <em>murderbot</em>, <em>NIP05-php</em>, <em>hydrofoil</em>, and <em>NightBloom</em>. ManiMe published <em>Nostr Archive Standards</em>.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>App Releases on Zapstore &amp; Hubs</strong><br>
+            Releases include RPClient (AI roleplay client), APlayer (local music player), Geotag video camera, and Hessible (encrypted Android contacts).</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Band 3: Reading Notes & Editorial Ledger -->
+    <section class="band">
+      <div class="band-head">
+        <h2>READING NOTES &amp; EDITORIAL LEDGER</h2>
+      </div>
+      <div class="cols2">
+
+        <!-- Reading Notes -->
+        <div class="cell story">
+          <span class="kicker">READING NOTES</span>
+          <h3 class="sub-head">Presbyterian Ecclesiastical Standards &amp; Fermentation</h3>
+          <p class="first">Reader Dikaios1517 marked extensive excerpts from constitutional standards of the Orthodox Presbyterian Church, focusing on ministerial qualifications, congregational nominations, and presbyterial judicatories.</p>
+          <p>In long-form writing, samhain chronicled reviving milk kefir grains during summer heat: <q>I come to you from a small blue planet called Earth to share my experiences with a groundbreaking substance known as kefir.</q> In Brazil, Otavio commemorated the 349th anniversary of the 1677 Second London Baptist Confession of Faith adopted in Petty France.</p>
+          <p class="note">Sources: <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsv55086pscypqdrvqylyqvryrvfu3zyzrsustf3gp7l0a7gqyc6dc8x573k">Dikaios1517 on Jumble</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsywsp2xuc3v0w69gqxhlcf27lhnav7krjtsslked922akuuf53rystrfp9v">samhain on Jumble</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsdmf7yk8ksca3nq9twt4mr2rt575y6acnyku0ptp6gpec5jyz8pgcetwn5h">Otavio on Jumble</a></p>
+        </div>
+
+        <!-- Editorial Ledger Table -->
+        <div class="cell">
+          <span class="kicker">NETWORK LEDGER</span>
+          <h3 class="sub-head">24-Hour Desk Distribution</h3>
+          <div class="tablewrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Desk</th>
+                  <th>Kind(s)</th>
+                  <th class="num">Events</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Short Notes</td><td>1</td><td class="num">389</td></tr>
+                <tr><td>Picture Posts</td><td>20</td><td class="num">44</td></tr>
+                <tr><td>Highlights &amp; Excerpts</td><td>9802</td><td class="num">50</td></tr>
+                <tr><td>Classified Listings</td><td>30402</td><td class="num">30</td></tr>
+                <tr><td>App Releases</td><td>32267</td><td class="num">28</td></tr>
+                <tr><td>Calendar Gatherings</td><td>31922, 31923</td><td class="num">19</td></tr>
+                <tr><td>Long-form Essays</td><td>30023</td><td class="num">14</td></tr>
+                <tr><td>Live Video &amp; Audio Streams</td><td>30311</td><td class="num">13</td></tr>
+                <tr><td>Video &amp; Short Media</td><td>21, 22, 34235, 34236</td><td class="num">14</td></tr>
+                <tr><td>Code Repositories &amp; Tools</td><td>30617</td><td class="num">7</td></tr>
+                <tr><td>Community Polls</td><td>1068</td><td class="num">5</td></tr>
+                <tr><td>File Metadata &amp; Wiki</td><td>1063, 30818</td><td class="num">4</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>

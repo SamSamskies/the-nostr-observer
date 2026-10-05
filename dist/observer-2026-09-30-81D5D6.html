@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Nostr Observer — Wednesday, September 30, 2026</title>
+  <meta name="description" content="After repeated outages at nos.lol, its operator reports that a small change inside the relay held back millions of junk read requests.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="A Relay Learns to Say No">
+  <meta property="og:description" content="After repeated outages at nos.lol, its operator reports that a small change inside the relay held back millions of junk read requests.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-09-30-81D5D6.html">
+  <meta property="og:image" content="https://blossom.jumble.social/d0b2e833c4c0de4b9f55ea2e2a6ea893af2331d00643e0166df5b2a0547e6da8.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="A Relay Learns to Say No">
+  <meta name="twitter:description" content="After repeated outages at nos.lol, its operator reports that a small change inside the relay held back millions of junk read requests.">
+  <meta name="twitter:image" content="https://blossom.jumble.social/d0b2e833c4c0de4b9f55ea2e2a6ea893af2331d00643e0166df5b2a0547e6da8.png">
+
+
+
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+
+@media (max-width: 600px) {
+  .folio { grid-template-columns: 1fr 1fr; gap: 4px 12px; }
+  .folio > :first-child { grid-column: 1; grid-row: 2; white-space: nowrap; text-align: left; }
+  .folio > :nth-child(2) { grid-column: 1 / -1; grid-row: 1; white-space: nowrap; text-align: center; }
+  .folio > :nth-child(3) { grid-column: 2; grid-row: 2; white-space: nowrap; text-align: right; }
+}
+</style></head><body><!-- restyle: A two-row folio on phones keeps the long date and UTC window stamp readable. --><div class="sheet">
+  <div class="folio"><span>No. 81D5D6</span><span>Wednesday, September 30, 2026</span><span>24h to 14:44 UTC</span></div>
+  <header class="masthead"><h1><span class="the">The</span> Nostr Observer</h1><p class="motto">All the Notes Fit to Rank</p></header>
+  <div class="dateline"><span>Ranked as NotBiebs and 69 others</span><span>629 events through your lens</span><span>199 voices</span></div>
+  <main>
+  <section class="fold" aria-label="Front page">
+    <article class="col span-8">
+      <div class="story">
+      <p class="kicker">The lead · Relay infrastructure</p>
+      <h2 class="lead-head">A Relay Learns to Say No</h2>
+      <p class="dek">After repeated outages at nos.lol, its operator reports that a small change inside the relay held back millions of junk read requests.</p>
+      <p class="byline">From the dispatches of someone</p>
+      <p class="first">The restart was becoming part of the problem. In an account posted Tuesday, the nos.lol operator writing as someone described a relay repeatedly brought down by connection floods and machine chatter. Each restart sent legitimate users rushing back alongside the attackers. The gaps between failures shrank until the service was dying in about a minute.</p>
+      <p>Firewalls bought time. Around 580 bots were identified and blocked, the operator said, but fresh addresses kept appearing. Shared VPN exits complicated the response: blocking one address could take innocent users with it. Meanwhile, a single spam-filter process became a queue that other workers could not get past.</p>
+      <p>The reported turning point was roughly fifty lines of request rate limiting inside the relay, applied per address and globally. Excess read requests were refused before reaching its internals. The operator said the relay had rejected over 12 million junk requests and run for 20 hours 50 minutes without a restart at the time of the dispatch.</p>
+      <blockquote>Requests over the limit are refused before they touch the relay's internals, so the jam has nothing to feed on.</blockquote>
+      <p class="note">— someone, <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsr5njjah72k2l0z2ycf73hyh7hk6hq2z7zhympwd8csj7w29jhkqswlrpwk">the operator’s account</a></p>
+      <p>The follow-up question reaches beyond attackers. In a later note, someone asked what normal relay use should look like as agents and applications begin treating Nostr as storage, a rendezvous point, or a message bus. The posted threshold was 200 read requests in ten seconds. An open relay still has somebody paying for the door.</p>
+      <p class="note"><a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsg4z2zrjg0e9gptdje548wkkgrzgfj9pkjqc9qt3y6dttltwwp9pgqz5xku">The follow-up on client behaviour</a> · Figures are the operator’s reported readings.</p>
+      </div>
+    </article>
+    <aside class="col span-4">
+      <article class="story">
+        <p class="kicker">Messaging</p><h3 class="sub-head">White Noise Makes Room for the Group</h3>
+        <p>White Noise’s release announcement brings polls to encrypted group chats on iOS and Android, including multiple-choice voting, changeable votes, and an optional closing time. Its larger ambition is ordinary reliability: edits surviving message confirmation, better recovery, and clearer notices when chat history may be missing.</p>
+        <p>Max said the group ceiling had moved from around 50 members to around 200 and invited users into a larger community chat to test the next limit. He also reported that Android slows considerably beyond 300 groups. Expansion is being accompanied by visible edges, rather than a claim that scale is solved.</p>
+        <p class="note"><a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs9awx3hpcwrgn67sk2dy59dgqw0zmcse9u6err6lc3tp26ya3q88qr99pjl">White Noise’s release notes</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsyq27edn6whttppsqtr0vw23w7huhwp4xnk986f8d3v2lfr6puc9q7cfjkg">Max’s group test</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs0vrlzvjm7d2lg2wkxg77t8m2nagyjkz0ct4vtdq8evlnqdme3hug4fmjfc">The Android limit</a></p>
+      </article>
+      <article class="story">
+        <p class="kicker">Release desk</p><h3 class="sub-head">Mostro Retires Its Old Protocol</h3>
+        <p>Mostro Node 0.19.0 removes protocol v1. Its announcement says orders and chat now require a client using protocol v2, with NIP-44. The release also permits makers to cancel before paying a bond and closes disputes on cooperative cancellation or seller release.</p>
+        <p class="note"><a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqst3ncps68twklswgua5cvk89gpttervjh486vpu069f2hunycutkqc6sqfm">Mostro’s announcement</a></p>
+      </article>
+      <article class="story"><h3 class="small-head">Angor Cleans Up the Plumbing</h3><p>Angor 0.2.36 reports parallel investment scanning, corrected fee estimation, recovery and founder-claim fixes, and mainnet swaps routed through SatsRouting. Quicker screens sit beside less glamorous fixes to funding and missing UTXOs.</p><p class="note"><a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqszst7vktuywfng8ap8wt5teuyh03289sxszqzfve4nj7wntl5ldlccf3484">Angor’s changelog dispatch</a></p></article>
+    </aside>
+  </section>
+  <section class="band" aria-labelledby="workbench"><div class="band-head"><h2 id="workbench">On the Workbench</h2><p class="note">New rooms, brighter pictures</p></div>
+    <div class="cols2">
+      <div class="cell"><article class="story"><p class="kicker">Community tools</p><h3 class="sub-head">The Conversation Wants More Than a Timeline</h3>
+        <figure><img src="https://blossom.jumble.social/d0b2e833c4c0de4b9f55ea2e2a6ea893af2331d00643e0166df5b2a0547e6da8.png" alt="Image shared by reya with a note about work on NIP-29 relay groups in Coop Desktop." width="2144" height="1666"><figcaption>Filed by reya with the work-in-progress note on NIP-29 relay groups in Coop Desktop. <span class="credit">reya · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs2pmxzwd3ejrwll3k9qn9n9kqphslsgzaxvvvdy3gwjvrtf6jvdtc2rnkmt">Source note</a></span></figcaption></figure>
+        <p>Reya’s Coop Desktop note put relay groups on the bench. The app catalog offered another route: Team Soapbox describes <a rel="noopener noreferrer" target="_blank" href="https://zapstore.dev/apps/buzz.armada.app">Armada</a> as community chat with servers, channels, and voice. <a rel="noopener noreferrer" target="_blank" href="https://zapstore.dev/apps/org.cordn.app">Cordn</a> presents private group messaging using MLS encryption and Nostr identity.</p>
+        <p>These are different projects, but the shared direction is clear: give people a room to stay in, alongside the public stream they pass through.</p>
+      </article></div>
+      <div class="cell"><article class="story"><p class="kicker">Photography &amp; clients</p><h3 class="sub-head">HDR Gets a Place in Amethyst</h3>
+        <figure><img src="https://fertschnigfotography.com/wp-content/uploads/nostr/9/5/9550d76703fd72311c543d906d5e0f831b9f6add710247243471e9808ced582d.jpg" alt="Photograph shared by Dee Kay while reporting an HDR photo displayed in Amethyst." width="1512" height="1008"><figcaption>Dee Kay shared this photograph while trying HDR viewing in Amethyst, then posted that the viewing change had been merged. <span class="credit">⚡ Dee Kay ⚡ · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqqqq03gfh3n4fz4rvps2tqhy90ur99dgwjgk8mkf37eayk5av8gc867szd">Photograph’s post</a></span></figcaption></figure>
+        <p>At 08:59 UTC, Dee Kay was celebrating a photograph displayed in HDR. By 12:46, the report was that HDR photo viewing had merged in Amethyst. A modest client change has an unusually direct audience: people who care what their pictures look like.</p>
+        <p class="note"><a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqqqqft5gcxnyzj60es7fcne3xhuzqn3p8kzswaucmvddaqcgy2zqrzzmny">The merge report</a> · This static edition does not establish how a viewer will display HDR.</p>
+      </article></div>
+    </div>
+  </section>
+  <section class="band" aria-labelledby="agents"><div class="band-head"><h2 id="agents">Tools &amp; Their Keepers</h2><p class="note">An agent still needs a budget, a record, and a human</p></div><div class="cols3">
+    <div class="cell"><article class="story"><h3 class="sub-head">A Phone Starts Improving Itself</h3><p>Redshift described running Pi on a Graphene phone, with a local routstrd service, a Cashu wallet funded over Lightning, and Tinfoil models. The agent helped add a feature to its own setup. The last mile remained familiar: trouble with ngit meant the pull request still had to be made on a laptop.</p><p>By the next morning, redshift was praising ngit issue-comment notifications arriving in Amethyst. The appeal was the work following its owner across tools.</p><p class="note"><a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqswmca39tsnknrzmsgkavy5dgse7rlmwwf3utgtyqc5m50fd6ham8gfkpwul">The phone experiment</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsfk43qts88snakzkxk9z8rp6nfl3aar0trcd066zynxpankq4a8us9w9n79">The ngit follow-up</a></p></article></div>
+    <div class="cell"><article class="story"><h3 class="sub-head">The Meter Becomes Part of the Desk</h3><p>Dee Kay added a pace indicator to a Claude HUD so a red reading could signal a day off. Nathan Day added OpenCode Zen/Go and usage windows to an Omarchy agent toolbar. Sudocarlos supplied the office sequel: a boss’s boss asking about more than $1,000 spent on tokens in a week.</p><p>Automation is producing its own office furniture, including the expense conversation.</p><p class="note"><a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqqqq0yzk5cjyyhuqxzwavh4gmyl5ja733mhs9sr8u69ycj0vttrsmpuayl">Dee Kay’s meter</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsz95crfrmr2argek5a06ts6js433yr5prgfu2cpeu85v4vwkzmskcdvuyua">Nathan Day’s toolbar</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsyvkezlywgeutn6a9tsnjllz7vcf4q69m748j97ckcccqhzpd03dczgjaq8">Sudocarlos’s bill</a></p></article></div>
+    <div class="cell"><article class="story"><h3 class="sub-head">Who Keeps the Research Trace?</h3><p>WendyDing’s question about machine research teams was less about their size than the record they leave. Who proposed a claim, what evidence survived, and what did humans test? She argued that a methods section should carry a linked research trace.</p><p>Nearby, Matt Lorentz reported a smaller loss of capability: <q>Today I realized I can no longer do long division by hand.</q> The day’s tools promise more reach; the people using them are still taking inventory.</p><p class="note"><a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsfvultwllkwn8n47z0p6mhx77q97qhs94dgk0lr5whxcrdrjj4lngjmyrnl">WendyDing’s argument</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsw9qqxe5ppghqhpty0eyljkjcggp8k4a5ucrtfl279mt9pwdwh2rctcrcmx">Matt Lorentz’s note</a></p></article></div>
+  </div></section>
+  <section class="band" aria-labelledby="elsewhere"><div class="band-head"><h2 id="elsewhere">Elsewhere, on Paper</h2><p class="note">Landscapes, correspondence, provisions</p></div><div class="cols2">
+    <div class="cell"><article class="story"><h3 class="sub-head">An Older Exposure, Freshly Filed</h3><figure><img src="https://blossom.daniel.camera/98fb043ab1b74d7685a27b28d723addde1f1b2df17a541eaa73df7f5f41bc35f.jpg" alt="Hoodoos of the Bisti Badlands"><figcaption>danielw’s post dates the photograph to October 14, 2020. The supplied image description names the hoodoos of the Bisti Badlands; the note tags New Mexico and black-and-white photography. <span class="credit">danielw · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsprh67f9gulvdwk4xt650ttaegw2x6exnnavkcl0m498nfcu0qg3gkyd89k">Source photograph</a></span></figcaption></figure><p>A photograph entering today’s window need not depict today. This one arrives with its capture date intact, a useful bit of provenance in a stream that otherwise looks perpetually present.</p></article></div>
+    <div class="cell"><article class="story"><h3 class="sub-head">Postcards from a Road Trip</h3><p>Jordan Miller is collecting postcards at special places on a US road trip and sending them to loved ones. Alongside notes from Colorado’s Great Sand Dunes came the question: does anyone else still write postcards in 2026? A network built around instant publication had room for the slower dispatch.</p><p class="note"><a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqswg9g9yrpdvc9rfgqvqg6l5eyu0cxm3nqkfmcddkehs2d9vkpl0dceaz7p7">Jordan Miller’s correspondence</a></p></article>
+    <article class="story"><h3 class="sub-head">Vermont’s Harvest Takes Sats</h3><p>Jsm announced the approaching 2026 lamb harvest and invited reservations for lamb boxes, with payment in sats arranged by message. A separate note offered Vermont sheepskins tanned with plant tannins. The offers put a practical meaning to the day’s arguments about using money: someone has a harvest to sell.</p><p class="note"><a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqd0zeqlgvwxeq20lw336avzzk84tchu6rpf3x592k5dv8lspj59sks75zg">Lamb harvest</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsvk9uqhgtc4u5zjhnse59styxrqdzaw988ktcugd9hrj2pmv0uftck54yvp">Sheepskins</a></p></article>
+    <article class="story"><h3 class="small-head">A Notebook for the Kitchen</h3><p>Laeserin filed a Bavarian pork-belly recipe beginning with a kilogram of pork roast with rind, a bottle of beer, and chopped vegetables. Jimble’s Jumble, meanwhile, protested that there were plenty of recipes to share. The kitchen has not run out of material.</p><p class="note"><a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqszqt5fmgqdumj8vs9vy4zuxuvtwnjw3zxh7h6d07vj7q520u2aytsw876sn">Laeserin’s recipe</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs9zd8ztcdyd8lnxrq5qsmyykkkc5f8tq9tny3fpcevh9termjmymcacwa8l">Jimble’s note</a></p></article></div>
+  </div></section>
+  <section class="band" aria-labelledby="service"><div class="band-head"><h2 id="service">The Service Columns</h2><p class="note">Offers and appointments filed in this window</p></div><div class="cols3">
+    <div class="cell"><h3 class="sub-head">The Classifieds</h3><article class="story"><h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqxkyctjv968gmmvdukngdesqgsptacwh5c0dxu9hw58c0ky2eznqrwzsddxmtprtl0czs72kh5jstqrqsqqqakz7da0j8">Xiaomi 11t Pro · 135,000 sats</a></h4><p>Epsql lists the 8/128 GB phone in Bra, Italy, in good condition, with box and USB cable, without a charger. Shipping: 7,000 sats, or local collection. Listed as active.</p></article><article class="story"><h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqxkyctjv968gmmvdukngd3eqgsptacwh5c0dxu9hw58c0ky2eznqrwzsddxmtprtl0czs72kh5jstqrqsqqqakzmva455">Dell WD19S 190W · 125,000 sats</a></h4><p>The same seller lists a docking station in like-new condition. Bra collection or shipping at €5.17. Listed as active.</p></article><p class="note">Terms and condition are the seller’s account at filing time.</p></div>
+    <div class="cell"><h3 class="sub-head">Diary &amp; Calendar</h3><article class="story"><h4 class="small-head">October 2 · Newcastle</h4><p><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctzvf3rwwf3x5unqwf5xy6kve3n8ymnvetr8ypzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv98q3yh">Bitcoin Coffee Morning</a> at Pumphrey’s Coffee, 50–53 Grainger Market. Club Orange’s listing welcomes beginners and regulars and names further Friday meetings on October 9, 16, 23, and 30.</p></article><article class="story"><h4 class="small-head">October 7 · Amsterdam</h4><p><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctzvvcxzefcx5unqwf5xy6kve3n8ymkzcnpvspzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvxcze7v">Bitcoin Wednesday #159</a>, at 19:00 as stated by the organiser, Vondelfontein, Vondelpark 5a. The listing specifies Europe/Amsterdam.</p></article><p class="note">Listings were posted in the window; the appointments are ahead.</p></div>
+    <div class="cell"><h3 class="sub-head">Broadcasting</h3><p class="note">Listed live at the 14:44 UTC close; broadcasts may have ended.</p><div class="wire-item"><p><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al">NoGood Radio</a> · listed by zap.stream.</p></div><div class="wire-item"><p><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqf8x7tww35xgunpvahkuttxd9jhycm9qgsqtespt8c7pfktvna9w07pa034lxz6jaw7le7h2cplmw0gelfcxdqrqsqqqan8lyq2ya">Synthdragon Radio — FIERCE</a> · Synthdragon Radio.</p></div><div class="wire-item"><p><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqghx7tww35xgunpvahkuttrdp5kcmqzyqz7vq2e78s2djmylftnls0tud0esk5hthh7046kq07mn6x06wpngqcyqqq8vec4f5fl5">Synthdragon Radio — CHILL</a> · Synthdragon Radio.</p></div><div class="wire-item"><p><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qq4xcmmrv9k97vp3vycxvv3exqknzdpnx5knwv35xcknjce4vgkkvdpnxejrgdn989jn2egzyq7mtcdem2jhe34864f2s6582a8w5fj7qavam6u8638qwflhnmvg6qcyqqq8vecuwdmzq">Dota: Arc Warden No.1</a> · nickydev.</p></div><div class="wire-item"><p><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjxxvn9xqmkvefe94jxzvrz956rzenr95ur2deh95ckvwfjxccr2d3cvdjkgq3qsjf300tngygmqtfkpyd0vcglld2msksjxe9fsjduzn2pccqjl9wsxpqqqpmxw80cl5t">ScardustTV 24/7</a> · Stream Road.</p></div></div>
+  </div></section>
+  <section class="band" aria-labelledby="catalog"><div class="cols2"><div class="cell"><article class="story"><p class="kicker">Code repositories</p><h3 class="sub-head" id="catalog">A New Bunker on the Shelf</h3><p>Fiatjaf published <a rel="noopener noreferrer" target="_blank" href="https://gitworkshop.dev/npub180cvv07tjdrrgpa0j7j7tmnyl2yr6yr7l8j4s3evf6u64th6gkwsyjh6w6/nostr-bunker">nostr-bunker</a> and said the app currently requires Go to install. Elsewhere, Max’s essay argues that making an Android app should not require exposing a real name. The common concern is ownership of the identity attached to the work.</p><p class="note"><a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs8p5tj5k73t97k9juqalnzyz00p3uqtcagslrpxerh6nvw94vt6lsdv8txj">Fiatjaf’s app note</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsfcua3xd7dvrlgpk9prmu9e72yrrlh5ef7zjx82yup2sgqd97nvwglf4dyz">Max’s essay</a></p></article></div><div class="cell"><article class="story"><p class="kicker">The Instrument</p><h3 class="sub-head">One Shared Note in a Different World</h3><p>The same 24-hour window, read without this lens, returned 400 notes. Just one also appeared among the 383 ranked notes. Across all fourteen desks, this reading gathered 629 events from 199 voices.</p><p>The overlap measures how the selection changes with the reader’s trust lens. It does not certify every claim in the posts. This paper’s window closed at 14:44 UTC on September 30; its pictures, appointments, and reports remain records of that reading.</p></article></div></div></section>
+  </main><footer class="band"><p class="note">The Nostr Observer · One reader’s view of the last twenty-four hours. Source links open the original dispatches. No live ticker, no running scripts.</p></footer>
+</div>
+</body></html>

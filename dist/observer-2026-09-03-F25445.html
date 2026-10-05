@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Thursday, September 3, 2026</title>
+  <meta name="description" content="Developers contrast three competing architectures — Marmot, Concord, and Cordn — navigating the unresolved tensions between serverless scaling, metadata privacy, and relay indexing.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="Encrypted Group Chat Protocols Diverge on Nostr">
+  <meta property="og:description" content="Developers contrast three competing architectures — Marmot, Concord, and Cordn — navigating the unresolved tensions between serverless scaling, metadata privacy, and relay indexing.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-09-03-F25445.html">
+  <meta property="og:image" content="https://blossom.daniel.camera/1428244a51f7090dcde5959807b9cc2d85467f0d7adff3643aad882dc3b8f830.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Encrypted Group Chat Protocols Diverge on Nostr">
+  <meta name="twitter:description" content="Developers contrast three competing architectures — Marmot, Concord, and Cordn — navigating the unresolved tensions between serverless scaling, metadata privacy, and relay indexing.">
+  <meta name="twitter:image" content="https://blossom.daniel.camera/1428244a51f7090dcde5959807b9cc2d85467f0d7adff3643aad882dc3b8f830.jpg">
+
+
+
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+
+
+
+  <style>
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.15rem; line-height: 1.35; padding-left: 12px; border-left: 3px solid var(--rule); }
+q { quotes: "“" "”"; }
+
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5, .span-6 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="folio">
+      <span>No. F25445</span>
+      <span>Thursday, September 3, 2026</span>
+      <span>24h to 11:52 UTC</span>
+    </div>
+
+    <header class="masthead">
+      <h1><span class="the">The</span> Nostr Observer</h1>
+      <div class="motto">What Your Web of Trust Surfaced in the Last Twenty-Four Hours</div>
+    </header>
+
+    <div class="dateline">
+      <span>Ranked for NOTBIEBS</span>
+      <span>558 events through your lens</span>
+      <span>213 voices</span>
+    </div>
+
+    <!-- ABOVE THE FOLD -->
+    <div class="fold">
+      <!-- LEFT COLUMN: Network Architecture & Outbox Analysis -->
+      <div class="col span-3">
+        <div class="story">
+          <div class="kicker">NETWORK PROTOCOL</div>
+          <h2 class="sub-head">The Outbox Trap: How Replies Leak Spam Across Boundaries</h2>
+          <div class="byline">Dikaios1517 reporting · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs2vyyeamxkluxt4ml6pz9ue8t5mt9zpn93xsy67mpnc8s032pa2ucfe0sre">Citing note a61099</a></div>
+          <p class="first">Client developers attempting to eliminate automated spam have run headlong into a structural limitation of the decentralized outbox model: while incoming top-level notes can be gated behind private relays, thread replies inevitably follow the author’s public distribution.</p>
+          <p><q>Even if spammers can’t write to your inbox relays, you will still see spam in the replies to other users’ notes in Nostr clients that have implemented the outbox model.</q></p>
+          <p><q>Under this model, Nostr clients no longer just connect to the relays you have listed as "read relays," now called "inbox relays." Instead, they connect to relays that other users you are following have listed as their "outbox" or "write relays" in order to fetch their notes and populate your feed.</q></p>
+          <p>When an outside user comments on a followed post, client software queries the author’s inbox relays to reconstruct the conversation. If those include unauthenticated public servers, incoming spam replies slip directly into follower viewports.</p>
+          <p>Efforts to patch the vulnerability with encrypted blocked relay lists have suffered from inconsistent client adoption, leaving operators stuck in an endless game of whack-a-mole against rotating network nodes.</p>
+        </div>
+
+        <div class="box">
+          <div class="box-head">ONBOARDING DISPATCH</div>
+          <div class="story">
+            <h3 class="small-head">Blitz Wallet Prepares Streamlined Hand-Off</h3>
+            <div class="byline">Blitz Wallet · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs0kpvdxvug52zhf7d8jwvu9rswa0nec4glqxwtj2zzzxjpp8zn79qwa5v2e">Citing note fb058d</a></div>
+            <p><q>Bitcoin was never the hard part. Handing it to someone was.</q> The mobile wallet developer signaled an upcoming transition in custody hand-off mechanisms scheduled for delivery in six days.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER COLUMN: Lead Headline & Hero Art -->
+      <div class="col span-6">
+        <article class="story">
+          <div class="kicker">PROTOCOL ARCHITECTURE</div>
+          <h2 class="lead-head">Encrypted Group Chat Protocols Diverge on Nostr</h2>
+          <p class="dek">Developers contrast three competing architectures — Marmot, Concord, and Cordn — navigating the unresolved tensions between serverless scaling, metadata privacy, and relay indexing.</p>
+          <div class="byline">Nostr Dev Team reporting · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqqqqqqh7rz9ufzrc2el420gq5lhvxvzedw7g7whkauck6r8k2f3sasmsm4">Citing note 000000</a></div>
+
+          <figure>
+            <img src="https://blossom.daniel.camera/1428244a51f7090dcde5959807b9cc2d85467f0d7adff3643aad882dc3b8f830.jpg" alt="Up Along Arrastra Creek" width="1200" height="800">
+            <figcaption>An old telegraph pole along Arrastra Creek. Heading down from Silver Lake. <span class="credit">Photograph by danielw · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqszkh8yztufg6euwg9sv30aznpkvuhqxx7gykcenyasp78aedn0v2qhr6p3s">Citing note 2b5ce4</a></span></figcaption>
+          </figure>
+
+          <p class="first"><q>Encrypted group chat on nostr is being solved three different ways.</q> The proliferation of end-to-end encrypted messaging across public relays has created a divide between lightweight peer-to-peer designs and coordinator-assisted architectures.</p>
+          <p>Engineers analyzing the protocol landscape highlighted the fundamental design trade-offs currently dividing client implementations across the ecosystem:</p>
+          <blockquote><q>Marmot (MLS for small high-stakes groups, no privileged server), Concord (Discord-style communities with shared-key streams and signed rosters, five established clients), and Cordn (MLS through a lightweight self-hostable coordinator that is blind to content, identities, and IPs, with nothing identifiable as Cordn messaging persisting on public relays).</q></blockquote>
+          <p>The distinction touches the core philosophy of open protocols. Where Marmot enforces cryptographic security without relying on specialized infrastructure, Cordn isolates messaging traffic from public relay indexes through blind coordinator nodes, preventing observers from mapping social network graphs.</p>
+        </article>
+      </div>
+
+      <!-- RIGHT COLUMN: Hardware, Escrow & Mint Upgrades -->
+      <div class="col span-3">
+        <div class="story">
+          <div class="kicker">P2P ESCROW</div>
+          <h2 class="sub-head">Mostro Pushes Node Migration to New Lightning Core</h2>
+          <div class="byline">Mostro reporting · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsr65mqmlm3xx80k6kh0k7sd432c0hkz0yeh5y32h09ef248253ehqw2merx">Citing note 3d5360</a></div>
+          <p class="first">The peer-to-peer exchange Mostro is nearing the completion of its primary Lightning node migration, urging traders with pending transactions to finalize or cancel their escrow contracts.</p>
+          <p><q>Because we need everyone with open orders to either complete or cancel them. Only once this happens can we switch over to the new Lightning node.</q></p>
+          <p>Seven independent community nodes continue operating at full volume throughout the transition, which coordinators cited as validation of their decentralized operational model: <q>From a single point of failure to multiple points of success.</q></p>
+        </div>
+
+        <div class="story">
+          <div class="kicker">ECASH INFRASTRUCTURE</div>
+          <h2 class="sub-head">Minibits Mint Deploys Automated Watchdog</h2>
+          <div class="byline">Minibits reporting · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsgeql5kvf26g5tqrtlalxn7fguer8q36z34sp5d4q0ewg4y46dpwq34cya0">Citing note 8c83f4</a></div>
+          <figure>
+            <img src="https://blossom.primal.net/2140f8368a3f5d16f728d63ffc54252f0e02342be79cac92b06177bf5e97de64.png" alt="Minibits mint Watchdog metrics monitor graphic" width="1284" height="975">
+            <figcaption>Minibits Watchdog continuously tracking reserves and ecash balances. <span class="credit">Graphic by Minibits · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsgeql5kvf26g5tqrtlalxn7fguer8q36z34sp5d4q0ewg4y46dpwq34cya0">Citing note 8c83f4</a></span></figcaption>
+          </figure>
+          <p><q>Watchdog is a new open-source tool that continuously monitors the mint and alerts the operator to any unexpected drifts in the mint’s funds or ecash issuance.</q> The testing mint began publishing real-time telemetry metrics directly to its status pages.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- THE INSTRUMENT & MARKET CONDITIONS (REVERSE PANEL) -->
+    <div class="band reverse">
+      <div class="band-head">
+        <div class="kicker">THE WEB OF TRUST INSTRUMENT</div>
+        <h2>A Measured Cut of the 24-Hour Stream</h2>
+      </div>
+      <div class="cols2">
+        <div class="cell">
+          <p class="dek">Every edition of The Nostr Observer is printed through a verified web-of-trust lens. The candidate set for a query spans the full 24-hour window across the network; scoring filters and ranks notes through the reader's direct social graph.</p>
+          <p class="note" style="color: var(--reverse-ink-2); margin-top: 8px;">
+            Window: 2026-09-02 11:52Z to 2026-09-03 11:52Z (24 hours fixed)<br>
+            Trust scoring: npub170cc48q… @ wss://scores.brainstorm.world · Filter floor: rank &ge; 20<br>
+            Search Relay: wss://search-staging.brainstorm.world
+          </p>
+          <div class="tablewrap" style="margin-top: 14px;">
+            <table>
+              <thead>
+                <tr>
+                  <th style="color: var(--reverse-ink-2); border-bottom-color: var(--reverse-ink-2);">Measurement</th>
+                  <th class="num" style="color: var(--reverse-ink-2); border-bottom-color: var(--reverse-ink-2);">Through Lens</th>
+                  <th class="num" style="color: var(--reverse-ink-2); border-bottom-color: var(--reverse-ink-2);">Unranked Control</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Notes Sampled</td>
+                  <td class="num" style="color: var(--reverse-ink);">372</td>
+                  <td class="num" style="color: var(--reverse-ink);">400</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Shared Events (Overlap)</td>
+                  <td class="num" style="color: var(--reverse-spot); font-weight: bold;">4</td>
+                  <td class="num" style="color: var(--reverse-spot); font-weight: bold;">1.0%</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Total Desks Populated</td>
+                  <td class="num" style="color: var(--reverse-ink);">14</td>
+                  <td class="num" style="color: var(--reverse-ink);">1</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Distinct Editorial Voices</td>
+                  <td class="num" style="color: var(--reverse-ink);">213</td>
+                  <td class="num" style="color: var(--reverse-ink);">&mdash;</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="cell">
+          <h3 style="font-size: 1.05rem; letter-spacing: .12em; text-transform: uppercase; color: var(--reverse-ink);">Network Conditions &amp; Mempool</h3>
+          <div class="byline" style="color: var(--reverse-ink-2); margin-bottom: 6px;">Clark Moody Dashboard · <a rel="noopener noreferrer" target="_blank" style="color: var(--reverse-spot); border-bottom-color: var(--reverse-spot);" href="https://jumble.social/notes/nevent1qqsqqqzhprna7gkztkgfdslf8yea0fem02dk9x3sh0ykc6qaqc8lv5c4fsrv7">Citing note 000057</a></div>
+          <div class="tablewrap">
+            <table>
+              <tbody>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Bitcoin Price</td>
+                  <td class="num" style="color: var(--reverse-ink);">$77,070 (1,298 sats/$)</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Global Hash Rate</td>
+                  <td class="num" style="color: var(--reverse-ink);">896 EH/s ($38.80 / PHash)</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Mempool Immediate Fee</td>
+                  <td class="num" style="color: var(--reverse-ink);">1 sat/vByte (Hour: 1 sat/vB)</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Mempool Transaction Backlog</td>
+                  <td class="num" style="color: var(--reverse-ink);">1,018 unconfirmed txs</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Current Block Height</td>
+                  <td class="num" style="color: var(--reverse-ink);">965,179</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Circulating Supply Issued</td>
+                  <td class="num" style="color: var(--reverse-ink);">95.61% (84,821 to halving)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVESTIGATIONS & ENGINEERING BAND -->
+    <div class="band">
+      <div class="band-head">
+        <div class="kicker">DEEP DISPATCHES</div>
+        <h2>Analysis, Security &amp; Long-Form Columns</h2>
+      </div>
+      <div class="cols3">
+        <!-- COLUMN 1: Surveillance & DAC8 -->
+        <div class="cell">
+          <div class="story">
+            <div class="kicker">EUROPEAN SURVEILLANCE</div>
+            <h3 class="sub-head">Central Database Breaches Mount as DAC8 Framework Expands</h3>
+            <div class="byline">1f5ddbfd reporting · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs9ufp4wcjfmwz70l2ud7an4egtxkccwf6gm3wvt5za90dzs3h3p8cjgs5uk">Citing article 5e2435</a></div>
+            <p class="first"><q>Berlin, Romania, France: Within a few weeks, three extraordinarily "successful" large-scale attacks show what happens when central databases are hacked by third parties.</q></p>
+            <p>A string of catastrophic data compromises has intensified skepticism surrounding European Union plans to consolidate taxpayer transaction data under the DAC8 directive.</p>
+            <p>Recent intrusions compromised 5.8 terabytes of state administrative files in Berlin for a 30-bitcoin ransom, while complete deletion of the Romanian land registry brought real estate transactions nationwide to a standstill. Critics argue centralized repositories create catastrophic attack surfaces that no administrative mandate can secure.</p>
+          </div>
+        </div>
+
+        <!-- COLUMN 2: Lightning Auditing & ZEUS -->
+        <div class="cell">
+          <div class="story">
+            <div class="kicker">LIGHTNING ENGINEERING</div>
+            <h3 class="sub-head">AI Vulnerability Scans Trigger Sweeping Node Patch Wave</h3>
+            <div class="byline">Fanis reporting · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsrfdsy0rhje7nqkncuwwr33vdzhymg2s85ghgwqnp28st3c3aa3yqkkdesq">Citing article 34b604</a></div>
+            <p class="first"><q>As a direct result of the ongoing AI-assisted vulnerability research across the Bitcoin open source ecosystem, the last 2 weeks have seen releases from 3 Lightning implementations, with 2 of them strongly suggesting operators upgrade.</q></p>
+            <p>Automated static analysis tools have accelerated the discovery of protocol edge-cases across core node engines, forcing rapid coordination between independent maintainers.</p>
+            <figure style="margin-top: 10px;">
+              <img src="https://image.nostr.build/06655626b39eb8f8a2796f8106051ed3eb4b8cc273da58bb3de98239426e449d.png" alt="ZEUS v13.2.1 release announcement graphic" width="1100" height="614">
+              <figcaption>ZEUS v13.2.1 rolling out BOLT 12 and clipboard hardening. <span class="credit">Image by ZEUS · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqvalghw3qgd2gpw44s3tda5axwvwvrxsyezxumdfjr255jc5slxq9c8j5g">Citing note 0677e8</a></span></figcaption>
+            </figure>
+            <p style="margin-top: 10px;"><q>ZEUS v13.2.1 is now available.</q> The mobile client shipped critical BOLT 12 fixes, Boltcard reconciliation updates, and defensive clipboard handling to shield sensitive payment payloads.</p>
+          </div>
+        </div>
+
+        <!-- COLUMN 3: Institutional Settlements -->
+        <div class="cell">
+          <div class="story">
+            <div class="kicker">FINANCIAL PLUMBING</div>
+            <h3 class="sub-head">The Weekend Banking Illusion: Why Wires Still Sleep</h3>
+            <div class="byline">fddb827e reporting · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqspynej3ta7farkm5rup6g09cpcqam4sjy9lp6ar8fqq4qyf48c9ncpr59yg">Citing article 124f32</a></div>
+            <p class="first"><q>Try sending a wire on Friday at 6PM. It doesn't go anywhere. It sits. Monday morning somebody presses a button and then it moves.</q></p>
+            <p>An essay on monetary settlement mechanics dismantles the enduring consumer assumption that electronic interbank transfers require physical transit windows:</p>
+            <p><q>There isn't. Money doesn't move. Ledgers update. Chase writes down that you have less, another bank writes down that somebody has more, and the two of them settle up later through the Federal Reserve.</q></p>
+            <p>While commercial banking prepares for continuous settlement requirements by 2027, decentralized protocols operate on an immutable 24/7 heartbeat that obsoletes artificial operational windows.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAZETTE, MARKET STALL, CALENDAR & AIRWAVES -->
+    <div class="band">
+      <div class="band-head">
+        <div class="kicker">COMMUNITY &amp; COMMERCE</div>
+        <h2>The Gazette: Listings, Gatherings &amp; Transmissions</h2>
+      </div>
+      <div class="cols4">
+        <!-- COLUMN 1: Classifieds -->
+        <div class="cell">
+          <div class="box-head">CLASSIFIEDS</div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqdhqun0v36kxazlxymnswpnxuenzvpsxgmnshejvvukymgzyp3h4ef89qxh5zexhdkzkad669e0t0tv3293jpa3qg3fdqx0psuxsqcyqqq8dssj2ug9n">Fresh Start Skincare Kit</a></h4>
+            <div class="byline">Born To Be Free</div>
+            <p>Regeneratively sourced American tallow skincare essentials formulated toxin-free to protect dry skin naturally throughout winter.</p>
+          </div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqfhxmm4dejz6cm0venx2efddgchx6texspzq05zyq59ud9hm53p9dhtvfjgcn3vlld2ktm5pkhwk5zqt6vg8azaqvzqqqrkcg8p5095">SOUND COFFEE Roast</a></h4>
+            <div class="byline">Otis Bitmeyer</div>
+            <p>Smooth, sweet specialty Caturra blend roasted to fuel independent builders and morning reflection.</p>
+          </div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqw8qun0v36kxapdxymnswpnxucrjdpjx56nqtt0xschwdrpqgsy8w40ps5wdna3jkchacyrux0t8f90m7k9fkdkhtchqfcw6xf7xnqrqsqqqakzxd9mke">Bitcoin Runners Logos</a></h4>
+            <div class="byline">BitPopArt · Free Download</div>
+            <p>Vector SVG badges supporting regional running clubs across Thailand, New Zealand, and Denmark.</p>
+          </div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qpqrvcmxxajrvwfkvver2cmyvccxyvmp893rzdrpvyunzwfkv93kvdfhxgexvdtpx33k2v33xyukvepnv5urvcek893ngcehxqengdejvvpzqueyupdfgmrx57qcl5xq4j5qkc8mr62lmcer2lh35gy8xq7aqxz7qvzqqqrkcg0kyefp">Bitcoin Leprechaun Shirt</a></h4>
+            <div class="byline">rafftyl</div>
+            <p>Heavyweight 100% cotton print (190 g/m²) tailored seamless from XS through 5XL.</p>
+          </div>
+        </div>
+
+        <!-- COLUMN 2: Calendar -->
+        <div class="cell">
+          <div class="box-head">TOWN SQUARE &amp; CALENDAR</div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqsryc3jxfjkgvtpv9jnsctzxgcryvesv5unzepcxd3k2cf3vd3rjcszyqr3kh72gxj98zqchngvt9jpfldcv7qj56xhm34svwgq2cl8v8snwqcyqqq8evcx9m979">Einundzwanzig Regensburg</a></h4>
+            <div class="byline">Loisel · Monthly Stammtisch</div>
+            <p>Informal open gathering discussing custody, node operation, and Lightning developments over dinner and drinks.</p>
+          </div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqgrqvnpv4nrxwf4xv6rge3kxd3k2q3qf5pre6wl6ad87vr4hr5wppqq30sh58m4p33mthnjreh03qadcajsxpqqqp7txl6jens">South Bend Bitcoin Meetup</a></h4>
+            <div class="byline">rev.hodl · Lang Lab</div>
+            <p>First Thursday circular economy meetup welcoming newcomers exploring sound money principles.</p>
+          </div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvcfe8qckvvfsv9nxzd3nxcunxcmyxgukxdn9v5pzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvdg24a3">Antidote Demo Day 001</a></h4>
+            <div class="byline">Club Orange · London</div>
+            <p>Inaugural showcase pitching Kute Wallet, Enclavia, and Evoke Vault to ecosystem investors.</p>
+          </div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvcfe8qmnzce4v9nxzd3nxcunxcmyxgukvdm98ypzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvzscltr">Austin Bitcoin &amp; Coffee</a></h4>
+            <div class="byline">Club Orange · The Meteor</div>
+            <p>Tuesday morning gathering on South Congress for breakfast tacos, coffee, and protocol discussion.</p>
+          </div>
+        </div>
+
+        <!-- COLUMN 3: Live Broadcasts -->
+        <div class="cell">
+          <div class="box-head">ON THE AIRWAVES</div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al">NoGood Radio</a></h4>
+            <div class="byline">zap.stream broadcast</div>
+            <p>Continuous open stream sharing community tracks, audio commentary, and cultural dispatches.</p>
+          </div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqf8x7tww35xgunpvahkuttxd9jhycm9qgsqtespt8c7pfktvna9w07pa034lxz6jaw7le7h2cplmw0gelfcxdqrqsqqqan8lyq2ya">Synthdragon Radio &mdash; FIERCE</a></h4>
+            <div class="byline">Redline Transmission</div>
+            <p>High-tempo electronic synthesizer soundscapes streaming live to decentralized listeners.</p>
+          </div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqghx7tww35xgunpvahkuttrdp5kcmqzyqz7vq2e78s2djmylftnls0tud0esk5hthh7046kq07mn6x06wpngqcyqqq8vec4f5fl5">Synthdragon Radio &mdash; CHILL</a></h4>
+            <div class="byline">Ambient Stream</div>
+            <p>Downtempo ambient synthesizer compositions broadcasting continuously on zap.stream.</p>
+          </div>
+        </div>
+
+        <!-- COLUMN 4: Field Notes & Culinary -->
+        <div class="cell">
+          <div class="box-head">FIELD &amp; HEARTH</div>
+          <figure>
+            <img src="https://blossom.primal.net/c0263e73324de13f2f41181f2e22cd1fe66fdcd289d70698f6cc79dea89644d9.jpg" alt="Burrata caprese with tomatoes from the garden and balsamic drizzle" width="768" height="1024">
+            <figcaption>Burrata caprese with homemade balsamic drizzle. <span class="credit">Photograph by V3spering · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsfnwe3x9d964sqsl02gsw5rhxvc747p9a5cl0prc5qk8fp2dhql2q4r4tgz">Citing note 99bb31</a></span></figcaption>
+          </figure>
+          <div class="story" style="margin-top: 10px;">
+            <p><q>Tonight's dinner. Burrata caprese, homemade balsamic drizzle, tomatoes from the garden. Everyone always asks where the meat is. Nobody ever asks how the tomatoes are doing.</q></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

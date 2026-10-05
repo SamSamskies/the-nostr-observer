@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Wednesday, September 9, 2026</title>
+  <meta name="description" content="Following the $320M Elements cache exploit, depositors rush to exit Bitcoin sidechains, triggering a 46-hour peg-out backlog on Rootstock and forcing a reckoning with the fragile assumptions between layers.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="The Contagion of Distrust: Rootstock Staggers as Liquid Panic Spreads Across Bitcoin Sidechains">
+  <meta property="og:description" content="Following the $320M Elements cache exploit, depositors rush to exit Bitcoin sidechains, triggering a 46-hour peg-out backlog on Rootstock and forcing a reckoning with the fragile assumptions between layers.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-09-09-F045FE.html">
+  <meta property="og:image" content="https://blossom.primal.net/7065dbdf4d34cede130074bc0c82cc9da055ee15776c19e6deaa03ac42925253.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Contagion of Distrust: Rootstock Staggers as Liquid Panic Spreads Across Bitcoin Sidechains">
+  <meta name="twitter:description" content="Following the $320M Elements cache exploit, depositors rush to exit Bitcoin sidechains, triggering a 46-hour peg-out backlog on Rootstock and forcing a reckoning with the fragile assumptions between layers.">
+  <meta name="twitter:image" content="https://blossom.primal.net/7065dbdf4d34cede130074bc0c82cc9da055ee15776c19e6deaa03ac42925253.jpg">
+
+
+
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+
+
+
+  <style>
+/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-7 { grid-column: span 7; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5, .span-7 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+  </style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="folio">
+    <span>No. F045FE</span>
+    <span>Wednesday, September 9, 2026</span>
+    <span>24h to 12:48 UTC</span>
+  </div>
+
+  <header class="masthead">
+    <h1><span class="the">The</span> Nostr Observer</h1>
+    <div class="motto">A Daily Broadsheet of the Web of Trust</div>
+  </header>
+
+  <div class="dateline">
+    <span>Ranked as NotBiebs</span>
+    <span>608 events through your lens</span>
+    <span>218 voices</span>
+  </div>
+
+  <main>
+    <!-- Above the fold: Lead story and First Feature with art-3 -->
+    <section class="fold">
+      <div class="col span-7">
+        <article class="story">
+          <div class="kicker">The Architecture of Custody</div>
+          <h2 class="lead-head">The Contagion of Distrust: Rootstock Staggers as Liquid Panic Spreads Across Bitcoin Sidechains</h2>
+          <div class="byline">By 21 Milioni di Chiacchiere &amp; Staff</div>
+          <p class="dek">Following the $320M Elements cache exploit, depositors rush to exit Bitcoin sidechains, triggering a 46-hour peg-out backlog on Rootstock and forcing a reckoning with the fragile assumptions between layers.</p>
+          <p class="first">The fallout from the 4,000&nbsp;BTC drainage of the Liquid Network is no longer confined to Blockstream’s federated sidechain. In the twenty-four hours since an incomplete cache key permitted unauthorized peg-outs against the federation’s reserves, a run on secondary layers has spread across the Bitcoin ecosystem. As depositors rushed to reclaim base-layer satoshis, Rootstock—a merge-mined sidechain utilizing a PowPeg architecture—began reporting severe delays of nearly two days for users attempting to withdraw funds.</p>
+          <p>Writing in an extensive architectural analysis, <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsfa98qzy5qygfr4g9grhx2n2c52ryp8x2j6h30vf06mppaz26mvas2wlchq">21 Milioni di Chiacchiere</a> observed that <q>L'hack di Liquid ha aperto una crepa che va ben oltre Liquid.</q> Users attempting to escape potential vulnerabilities quickly overwhelmed the peg infrastructure: <q>Gli utenti stanno abbandonando un'altra side chain, Rootstock, che adesso ha ritardi 36-46 ore nei peg-out, causati da un esaurimento temporaneo dell'inventario UTXO del PowPeg per un'ondata di prelievi simultanei.</q></p>
+          <p>The root problem is not a defect in Bitcoin itself, which processed transactions without interruption. Rather, as sidechain bridges and wrapped representations proliferate, depositors are being confronted with the reality that an asset locked in a secondary protocol carries the cumulative risk of every intermediary component: smart contracts, hardware security modules, and federation keys. As 21 Milioni di Chiacchiere noted, <q>la sicurezza di Bitcoin non si trasferisce automaticamente a tutto ciò che costruisce un ponte verso Bitcoin.</q></p>
+          <p>Reflecting on the crisis, <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsvcz05js4tkusw8cjx5v9nczsmjk3d7cg3exrx939hk7fur9dmt0s923rhp">Phaedrus</a> pointed out the defining contrast with account-based networks: <q>So far it looks like nobody has the power to revert (unlike Ethereum).</q> While Ethereum famously executed a state rollback following the DAO exploit a decade ago, Bitcoin base-layer miners and nodes continue to enforce consensus without intervention, leaving the sidechains to absorb the full reputational and economic shock.</p>
+        </article>
+      </div>
+
+      <div class="col span-5">
+        <article class="story">
+          <div class="kicker">Classroom Frontiers</div>
+          <h3 class="main-head">Thirty Students Cross the Threshold: Bitcoin Classroom Expands in Thailand</h3>
+          <div class="byline">Dispatch by Jimmy Kostro</div>
+          <p class="dek">At the Bitcoin Learning Center, international high schoolers encounter sound money outside the commercial banking system.</p>
+          <figure>
+            <img src="https://blossom.primal.net/7065dbdf4d34cede130074bc0c82cc9da055ee15776c19e6deaa03ac42925253.jpg" alt="Thirty international high school students visiting the Bitcoin Learning Center in Thailand" width="4000" height="3000">
+            <figcaption>Thirty international high school students at the Bitcoin Learning Center in Thailand, filed with Jimmy Kostro’s note on the visit.<span class="credit">Photograph by Jimmy Kostro</span></figcaption>
+          </figure>
+          <p class="first">While global infrastructure grappled with institutional sidechain failures, circular adoption continued at a human scale in Southeast Asia. <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqszjh58mzrdywqhdzt3vyjenc8gdgcr83uch28m0pw84m9702hvyvsq0jn74">Jimmy Kostro</a> hosted an international high school class at the Bitcoin Learning Center in Thailand. Reflecting on the visit, he wrote: <q>Today an International Highschool brought their students to the Bitcoin Learning Center, here in Thailand. Often I can not believe we get to experience all of this.</q></p>
+          <p>In a second transmission filing the classroom photograph, <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsw47j497pz4pkqls5lfttwjsvdqmyqx9n4anq3nhmksq07pqn06rctp0ctc">Kostro recorded the milestone</a> with characteristic brevity: <q>The network grew by 30 students today.</q></p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Mid-page band: Three distinct analytical and dispatch pillars -->
+    <section class="band cols3">
+      <div class="cell">
+        <div class="reverse">
+          <div class="kicker">Special Dispatch</div>
+          <h3 class="sub-head">“Bebe Did Exactly What She Was Built to Do”</h3>
+          <div class="byline">GlobalTraces in Kazakhstan</div>
+          <p class="dek">Five years on the road end in a rollover at a half-finished toll booth.</p>
+          <p>For six years, Dave, Jess, Isla, and Otis poured their life savings into a customized expedition truck named Bebe, turning her into an off-grid home, mobile school, and office. A few weeks ago in Kazakhstan, Bebe’s front tire struck an unmarked concrete plinth at an unlit toll booth, blowing both tires and flipping the vehicle onto its side.</p>
+          <p>In a dispatch published after hospital discharge, Dave shared his young daughter’s raw reaction: <q>Why did Bebe have to hurt herself to keep us safe? It wasn’t her job.</q></p>
+          <p>The family escaped with concussions, whiplash, and bruises, but the truck’s habitation box and chassis were ruined: <q>Bebe, our home for the last five years, has been catastrophically damaged.</q> Without commercial overland insurance available outside Europe, the community has rallied to support their journey back to England. <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs208dc36n7hphly0n4mumgrnex4s0sru25j0rn64wuce34py2twucd2ktrs">Read the full dispatch on Jumble</a>.</p>
+        </div>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Decentralized Engineering</div>
+          <h3 class="sub-head">Forge-Free Code: ngit v3 and GitWorkshop v4 Bring CI to Nostr</h3>
+          <div class="byline">Report by DanConwayDev</div>
+          <p class="dek">Self-hosted continuous integration and microVM job runners arrive over NIP-34.</p>
+          <figure>
+            <img src="https://blossom.ditto.pub/a1db480cb5ca201cf5c3b7d22dee9d7cfbfde3d284fd39e70289a4b4c28a89b1.png" alt="Announcement graphic for ngit v3 and GitWorkshop v4 launch">
+            <figcaption>Release announcement for ngit v3 and GitWorkshop v4, bringing self-hosted CI and private repositories to Nostr.<span class="credit">DanConwayDev</span></figcaption>
+          </figure>
+          <p>A sovereign network requires sovereign developer tooling. <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs8yr0ywk7zunh8x7yeg3rjlr5l8j6l3ejpmammc7v95ntpldm0d6qfyny63">DanConwayDev</a> announced the simultaneous release of ngit v3 and GitWorkshop v4, describing the milestone as <q>The biggest release yet brings CI, private repositories, forge-free software releases and much more.</q></p>
+          <p>Powered by the Grasp backend, the release introduces ngit-ci 0.1, a coordinator capable of executing containerized CI pipelines and microVM testing without centralized platforms like GitHub Actions.</p>
+        </article>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Sovereign Systems</div>
+          <h3 class="sub-head">Umbrel Lightning Nodes Gain Isolated Keys; Bitfest 2026 Set</h3>
+          <div class="byline">Protocol &amp; Community Wire</div>
+          <p>Announcing a self-custody Zap and Nostr Wallet Connect client for Umbrel node runners, <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqqqq0sx4y7usz7mmske8ljwe2jn9zd8fx5q7pmkcq4qfypm6lr0cuyq44s">⚡ Dee Kay ⚡</a> articulated the bedrock security philosophy of relay architecture: <q>Relays are transport, not trust.</q> By generating isolated Nostr keys on the node hardware and encrypting payloads via NIP-44, <q>so a relay only ever carries signed, encrypted payloads it cannot read or forge.</q></p>
+          <figure>
+            <img src="https://image.nostr.build/84eaa21497e1ca442547a3da2f992837ede0175a44d771b9ffa67df7df18f4b9.jpg" alt="Promotional graphic for Bitfest 2026 at the Pendulum Hotel in Manchester" width="512" height="256">
+            <figcaption>Bitfest 2026 at Manchester’s Pendulum Hotel, opening with Nostrshire.<span class="credit">Aaron of Essex</span></figcaption>
+          </figure>
+          <p>In the UK, <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsw5z8k5xza7utj8ehngp9hxlmr2dats703x90qf44wug5wzhhc5jgdsjhqe">Aaron of Essex</a> announced Bitfest 2026, taking place November 19–22 in Manchester across nine themed zones. Day zero will launch Nostrshire, the country’s first dedicated Nostr conference. Why gather in person? As Aaron noted, <q>the conversations in hallways and over coffee are where real collaborations start.</q></p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Bottom band: Standing columns, wire, and instrument -->
+    <section class="band cols4">
+      <div class="cell">
+        <div class="box">
+          <div class="box-head">Broadcasting · Live Now</div>
+          <p class="note">Transmissions active at edition press time.</p>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al">NoGood Radio</a></strong><br>Live talk, beats, and open community relay stream.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqf8x7tww35xgunpvahkuttxd9jhycm9qgsqtespt8c7pfktvna9w07pa034lxz6jaw7le7h2cplmw0gelfcxdqrqsqqqan8lyq2ya">Synthdragon Radio — FIERCE</a></strong><br>Now playing: Crimson Racer — Vanishing Point.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqghx7tww35xgunpvahkuttrdp5kcmqzyqz7vq2e78s2djmylftnls0tud0esk5hthh7046kq07mn6x06wpngqcyqqq8vec4f5fl5">Synthdragon Radio — CHILL</a></strong><br>Now playing: Glaciella — Deep Lattice.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjrgepcx5crjdr995exydn9956rve3k94snjcf495cxydfhxdjxverpxsexgq3qsjf300tngygmqtfkpyd0vcglld2msksjxe9fsjduzn2pccqjl9wsxpqqqpmxwr0l5xz">ScardustTV</a></strong><br>Progressive symphonic metal live dispatch announcing 2026 US tour dates.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cell">
+        <div class="box">
+          <div class="box-head">The Classifieds</div>
+          <p class="note">Peer-to-peer offers settled via Shopstr.</p>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqlxvvn9v3skydfh943nvwpn956xvcmz95unqveh94jnwvmyxa3k2cfcx5envwnnv4jkgumfvahx2u3dvdhk6urvv46x2ttzw45kceqzypuycd28ty3gm0384m2prtgyw9q66fxaqwrmmsvqxfcpyc8lrmv5zqcyqqq8dss4s2y56">SeedSigner Complete Build</a></strong> · 120 USD<br>Fully assembled stateless hardware wallet ready to sign, offered by Zalgebar.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qpqkvvn9v3skydfh943nvwpn956xvcmz95unqveh94jnwvmyxa3k2cfcx5envwnnv4jkgumfvahx2u3dwdjkce3dv9ehxetdvfk8jtttd96qygrcfs65wkfz3klz0tk5zxksgu2p45jd6qu8hhqcqvnszfs078kegypsgqqqwmpqgd5xsh">SeedSigner Self-Assembly Kit</a></strong> · 100 USD<br>Component kit for DIY air-gapped signing device by Zalgebar.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqsxxun9w3skutthd9kxgenvdamk2u3ddphkuete95exvwpev5mnxcczyp0kdtpedy7rcgenzmc5rluthh6rv37ys49dk3azm2204p2awwr7zqcyqqq8dssdylhyl">Cretan Wildflower Honey 10oz</a></strong> · 16 USD<br>Raw, direct-sourced wildflower honey from Crete, offered by Staci.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqjxxmmnw3hhxtt90p68ycfdwe5hyemfdckk7mrfwejj6mmfdsknqcf5dekrgq3qtan2cwtf8s7zxvck79qllzaa7smy03y9ftd50gk6jnag2htnslssxpqqqpmvyxtklsf">Costos Extra Virgin Olive Oil 16.9oz</a></strong> · 21 USD<br>Small-batch olive oil from family groves in Sparta, Greece, by Staci.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cell">
+        <div class="box">
+          <div class="box-head">Diary &amp; Calendar</div>
+          <p class="note">Upcoming gatherings across the network.</p>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctpxqcrwwt9vfnrgerzx93kycnrxajngdmp8ypzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv8lyyup">Torino self custody</a></strong><br>September 10 · Blox Space, Torino, Italy. Hands-on workshop on multisig, backup safety, and hardware security.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctpxq6kxdnyvfnrgerzx93kycnrxajkyvmpvspzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv0xhskw">Bitcoin Beach Dinner</a></strong><br>September 12 · Esencia Nativa, Playa El Zonte, El Salvador. Casual dinner settling over the Lightning Network.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctpxq6kxdecvfnrgerzx93kycnrxajkydfkvgpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvmwrn0g">Einundzwanzig Remstal Bitcoin Meetup</a></strong><br>September 10 · Trattoria Toscana, Rommelshausen, Germany. Community discussion on protocol developments.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctpxq6kxdeevfnrgerzx93kycnrxajkydfkvcpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvn3hywr">Frisco Orange-Pill Lunch</a></strong><br>September 11 · Steak 'n Shake, Frisco, Texas. Open lunch gathering exploring real-world Bitcoin usage.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cell">
+        <div class="box">
+          <div class="box-head">The Instrument</div>
+          <p class="note">24-hour comparative audit of the feed.</p>
+          <div class="wire-item">
+            <p><strong>Unranked Global Notes:</strong> 400</p>
+            <p><strong>Ranked Notes Surfaced:</strong> 393</p>
+            <p><strong>Corpus Overlap:</strong> 0 of 400 (0.0%)</p>
+            <p class="note" style="margin-top: 8px;">A reading taken without the lens captures 400 notes dominated by unranked global firehose volume. The web of trust lens eliminated all 400, surfacing an entirely distinct body of 393 notes and 218 voices chosen by your trust network.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Relay:</strong> search-staging.brainstorm.world<br><strong>Trust Floor:</strong> rank &ge; 20<br><strong>Desks Checked:</strong> 14 desks</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>
