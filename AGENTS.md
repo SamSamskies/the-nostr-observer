@@ -217,18 +217,33 @@ would a `CLAUDE_CODE_OAUTH_TOKEN` pasted into anything of ours.
   `Validator.kt`'s `corpus.all()`; the control run is not quotable.
 
 - **Permalinks are jumble.social `nevent1` URLs**, decoded rather than captured.
-  The writer cites `https://jumble.social/notes/<64-hex>`; `resolve.mjs` encodes
+  The skill writer cites `source:s42`; `resolve.mjs` expands the alias and encodes
   the nevent; `validate.mjs` decodes it and checks the id against the corpus.
   The Kotlin regex once allowed `nevent1…` in a branch that captured nothing, so
   every such link compared against the empty string and a page citing its sources
   the normal way failed its own check. Decode, or do not accept the link. The
   full Observer still uses njump.me; this is the skill's host.
 
-- **`reference/` is generated.** `tools/sync-skill.sh` copies `system-prompt.md`
-  and `house.css` in and prepends a banner correcting the three statements in the
-  brief that are true only of the Messages API harness (a sanitizer runs after
-  you; the corpus is a `<corpus>` block; return HTML and nothing else). Run it
-  after editing either resource — the copies are committed, so `git diff
+- **Short source ids belong to the full ranked corpus.** `sources.mjs` derives
+  them from the saved desks, before any digest trimming, so withholding an older
+  note cannot renumber the next desk. The control run never receives an alias.
+  Desk references are checked against the same kind/address index as legacy
+  links; unresolved references are refused by the validator. No mapping from
+  post text or extra corpus fields is trusted.
+
+- **The fixed house CSS is inserted by `resolve.mjs`.** The skill reads
+  `reference/layout.md` and writes the complete document and any custom styles;
+  the script copies `reference/house.css` first into `<head>`, before validation.
+  This removes repeated asset text from model input and output while keeping
+  the layout the writer's choice. Insertion is idempotent; a changed reserved
+  `observer-house` block is refused, not silently overwritten before its CSS
+  can be checked. The full generator's stylesheet path is unchanged.
+
+- **`reference/` is generated.** `tools/sync-skill.sh` copies `system-prompt.md`,
+  `house.css` and `house-guide.md` (as `layout.md`) in and prepends the brief's
+  harness corrections: resolution rather than sanitizing, a digest file,
+  artifact delivery, UTC stamps, short source references and CSS insertion.
+  Run it after editing any resource — the copies are committed, so `git diff
   --exit-code` after running it says whether they are current.
 
 - **Artifacts block remote images, so the artifact gets its own copy.** The

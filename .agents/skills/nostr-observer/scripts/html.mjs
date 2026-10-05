@@ -51,8 +51,8 @@ export function tags (html, name = '[a-z][a-z0-9-]*') {
  * hits the text inside `alt` first. Names are lowercased; values keep their
  * case.
  */
-export function attributes (raw) {
-  const out = {}
+function attributeSpans (raw) {
+  const out = []
   const after = /^<[a-z][a-z0-9-]*/i.exec(raw)
   if (!after) return out
   let at = after[0].length
@@ -67,8 +67,9 @@ export function attributes (raw) {
     while (at < end && !/[\s=/>]/.test(raw[at])) at++
     const name = raw.slice(nameStart, at).toLowerCase()
     if (!name) { at++; continue }
+    const nameEnd = at
     skip()
-    if (raw[at] !== '=') { out[name] = ''; continue } // boolean attribute
+    if (raw[at] !== '=') { out.push({ name, value: '', start: nameStart, end: nameEnd }); continue } // boolean attribute
     at++
     skip()
     let value
@@ -83,8 +84,24 @@ export function attributes (raw) {
       while (at < end && !/\s/.test(raw[at])) at++
       value = raw.slice(valueStart, at)
     }
-    out[name] = value
+    out.push({ name, value, start: nameStart, end: at })
   }
+  return out
+}
+
+export function attributes (raw) {
+  return Object.fromEntries(attributeSpans(raw).map(({ name, value }) => [name, value]))
+}
+
+/** Replace an actual attribute, never matching its name inside another value. */
+export function setAttribute (raw, name, value) {
+  const replacement = `${name}="${String(value).replace(/"/g, '&quot;').replace(/</g, '&lt;')}"`
+  const spans = attributeSpans(raw).filter((attr) => attr.name === name.toLowerCase())
+  if (spans.length === 0) return raw.replace(/\s*\/?\s*>$/, (ending) => ` ${replacement}${ending}`)
+  let out = raw
+  // Duplicate attributes are all set alike; parser/browser disagreement must
+  // not leave a second destination behind the one we resolved.
+  for (const span of spans.reverse()) out = out.slice(0, span.start) + replacement + out.slice(span.end)
   return out
 }
 

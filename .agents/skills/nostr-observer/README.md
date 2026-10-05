@@ -60,10 +60,33 @@ file.
 | 1 | Asks for your npub — it becomes the `observer:<pubkey>` token the relay ranks by |
 | 2 | `readiness.mjs` — four links, first unmet one wins, with the fix for that one |
 | 3 | `corpus.mjs` — fourteen desks plus an unranked control run, over a fixed 24-hour window |
-| 4 | Writes the page against `reference/editorial.md` and `reference/house.css` |
-| 5 | `validate.mjs` — every quote verbatim, every picture from the shortlist, no link to the open web |
-| 6 | `embed.mjs` — a separate artifact copy with the pictures inlined, since the artifact viewer blocks remote hosts |
-| 7 | Saves the HTML and publishes the embedded copy as an artifact |
+| 4 | Writes the page against `reference/editorial.md` and the compact `reference/layout.md` guide |
+| 5 | `resolve.mjs` — inserts the fixed house CSS and expands verified source references and art ids |
+| 6 | `validate.mjs` — every quote verbatim, every picture from the shortlist, every link verified |
+| 7 | `embed.mjs` — a separate artifact copy with the pictures inlined, since the artifact viewer blocks remote hosts |
+| 8 | Saves the HTML and publishes the embedded copy as an artifact |
+
+The digest gives each ranked source a short id, such as `s42`. The writer cites
+it with `href="source:s42"`; desk links use the printed `watch:`, `listing:`,
+`calendar:`, `app:` or `repo:` reference. `resolve.mjs` derives the final URL
+from the full ranked corpus and checks the event type. An unknown reference
+loses its link and is reported; a reference left unresolved fails validation.
+Older hex writer URLs and canonical citations still resolve.
+
+The fixed stylesheet is an asset, rather than text the model reads and copies
+into every edition. The writer chooses the whole layout using the guide's
+primitives and can add custom CSS. Resolve inserts the exact house CSS first,
+preserves custom styles after it, and does not duplicate its block on a second
+pass. The final HTML is still self-contained.
+
+Measured offline on the saved **2026-10-05 edition E4414D**: the same 597-event
+corpus produced a 151,579-character digest instead of about 197,162 (**23.1%
+smaller**). Replacing its 29 citations with short references and leaving the
+fixed CSS for the script reduced the draft the model would write from 36,443 to
+20,719 characters (**43.1% smaller**). Resolving that draft reproduced the
+original body, quotes, picture URLs and link destinations, and passed the
+boundary. These are character measurements, not tokenizer or billing results;
+no relay read or model call was needed for the comparison.
 
 ## If it says NOT READY
 
@@ -85,9 +108,9 @@ Four layers, and only the first two can run in CI.
 node --test ".agents/skills/nostr-observer/test/*.test.mjs"
 ```
 
-75 tests. bech32 against the NIP-19 worked example, the readiness chain in
+Tests cover bech32 against the NIP-19 worked example, the readiness chain in
 every state it can reach, query construction, the relay auth gate, socket
-sharing, the digest budget, the artifact embed step, and the boundary from
+sharing, the digest budget, source aliases, stylesheet insertion, the artifact embed step, and the boundary from
 both sides.
 
 **2. The relay client against a relay that misbehaves on purpose.**
@@ -151,6 +174,7 @@ caption and alt, and the run says which.
 
 ## Editing it
 
-`reference/editorial.md` and `reference/house.css` are **generated**. Edit
-`generator/src/main/resources/system-prompt.md` or `house.css` at the repository
-root and run `tools/sync-skill.sh`.
+`reference/editorial.md`, `reference/house.css` and `reference/layout.md` are
+**generated**. Edit `system-prompt.md`, `house.css` or `house-guide.md` in
+`generator/src/main/resources/` and run `tools/sync-skill.sh`. The harness
+corrections in the editorial banner are maintained in that sync script.

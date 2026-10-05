@@ -23,6 +23,7 @@
 import { readFileSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
 import { tags, attributes as attrsOf, textIn } from './html.mjs'
+import { SOURCE_SCHEME } from './sources.mjs'
 import {
   toNevent, fromNevent, fromNaddr, toZapStreamUrl, LIVE_KIND, toShopstrUrl, CLASSIFIED_KIND,
   toNjumpCalendarUrl, CALENDAR_KINDS, toZapstoreUrl, APP_KIND, toGitworkshopUrl, GIT_KIND,
@@ -488,6 +489,10 @@ export function check (html, corpus) {
   }
 
   for (const href of attributes(html, 'a', 'href')) {
+    if (SOURCE_SCHEME.test(decodeEntities(href).trim())) {
+      flag('LINK', 'short source references must be expanded by resolve.mjs before shipping', href.slice(0, 120))
+      continue
+    }
     if (!/^https?:/i.test(href)) continue
     const id = permalinkTarget(href)
     // A jumble nevent naming a CALENDAR listing is refused, though the event is
