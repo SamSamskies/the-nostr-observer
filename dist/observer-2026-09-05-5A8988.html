@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Saturday, September 5, 2026</title>
+  <meta name="description" content="The veteran Bitcoin Core developer steps down as chairman and director to launch CONVOY, following divergent visions for non-custodial mining pool decentralization.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="Luke Dashjr Exits OCEAN as Hashrate Plunges 96%">
+  <meta property="og:description" content="The veteran Bitcoin Core developer steps down as chairman and director to launch CONVOY, following divergent visions for non-custodial mining pool decentralization.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-09-05-5A8988.html">
+  <meta property="og:image" content="https://blossom.primal.net/082370baff9a636f61d93b9ead3f60309b3f1843d7a0d5d7c390da6b6ed2aab8.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Luke Dashjr Exits OCEAN as Hashrate Plunges 96%">
+  <meta name="twitter:description" content="The veteran Bitcoin Core developer steps down as chairman and director to launch CONVOY, following divergent visions for non-custodial mining pool decentralization.">
+  <meta name="twitter:image" content="https://blossom.primal.net/082370baff9a636f61d93b9ead3f60309b3f1843d7a0d5d7c390da6b6ed2aab8.jpg">
+
+
+
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+
+
+
+  <style>
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .folio, .dateline {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; gap: 2px;
+  }
+  .folio > :nth-child(3), .dateline > :nth-child(3) { text-align: center; }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline {
+  border-bottom: 1px solid var(--rule); padding: 7px 0 8px; margin-bottom: 24px;
+}
+
+/* --- grid ------------------------------------------------------------- */
+
+.fold {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  gap: 26px 22px; padding-bottom: 28px; border-bottom: 1px solid var(--rule);
+}
+.col { display: flex; flex-direction: column; gap: 18px; }
+.col + .col { border-left: 1px solid var(--rule-soft); padding-left: 22px; }
+
+.span-12 { grid-column: span 12; }
+.span-9  { grid-column: span 9; }
+.span-8  { grid-column: span 8; }
+.span-7  { grid-column: span 7; }
+.span-6  { grid-column: span 6; }
+.span-5  { grid-column: span 5; }
+.span-4  { grid-column: span 4; }
+.span-3  { grid-column: span 3; }
+
+@media (max-width: 960px) {
+  .fold { display: flex; flex-direction: column; }
+  .col + .col { border-left: none; padding-left: 0; border-top: 1px solid var(--rule-soft); padding-top: 18px; }
+}
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 8px; }
+.story > * + * { margin-top: 6px; }
+.story > .kicker + * { margin-top: 2px; }
+.story > h2 + .dek, .story > h3 + .dek { margin-top: 4px; }
+.story > .dek + .byline { margin-top: 2px; }
+.story > .byline + p, .story > .byline + figure { margin-top: 10px; }
+
+p.first::first-letter {
+  float: left; font-family: var(--serif); font-size: 3.4rem;
+  line-height: .8; padding: 4px 8px 0 0; font-weight: 700;
+  color: var(--ink);
+}
+
+blockquote {
+  margin: 10px 0; padding: 0 0 0 14px;
+  border-left: 3px solid var(--accent);
+  color: var(--ink-2); font-style: italic;
+}
+blockquote p { font-size: .95rem; }
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+figure img { width: 100%; height: auto; display: block; background: var(--paper-2); }
+figcaption {
+  font-family: var(--util); font-size: .74rem; line-height: 1.35;
+  color: var(--ink-2);
+}
+figcaption .credit {
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--ink-3); font-size: .68rem;
+}
+
+/* --- horizontal bands below the fold ---------------------------------- */
+
+.band {
+  border-top: 1px solid var(--rule); padding: 22px 0;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.band-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  border-bottom: 2px solid var(--ink); padding-bottom: 4px;
+}
+.band-head h2 { font-size: 1.15rem; letter-spacing: .06em; text-transform: uppercase; }
+
+.cols4 {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+}
+.cols3 {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+}
+.cols2 {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
+}
+
+.cols4 > *, .cols3 > *, .cols2 > * {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.cols4 > * + *, .cols3 > * + *, .cols2 > * + * {
+  border-left: 1px solid var(--rule-soft); padding-left: 20px;
+}
+
+@media (max-width: 860px) {
+  .cols4, .cols3 { grid-template-columns: repeat(2, 1fr); }
+  .cols4 > *:nth-child(2n+1), .cols3 > *:nth-child(2n+1) { border-left: none; padding-left: 0; }
+  .cols4 > *:nth-child(n+3), .cols3 > *:nth-child(n+3) { border-top: 1px solid var(--rule-soft); padding-top: 16px; }
+}
+@media (max-width: 540px) {
+  .cols4, .cols3, .cols2 { display: flex; flex-direction: column; }
+  .cols4 > * + *, .cols3 > * + *, .cols2 > * + * { border-left: none; padding-left: 0; border-top: 1px solid var(--rule-soft); padding-top: 16px; }
+}
+
+/* --- wire, tables, conditions ----------------------------------------- */
+
+.wire-item {
+  padding-bottom: 10px; border-bottom: 1px dotted var(--rule);
+  display: flex; flex-direction: column; gap: 3px;
+}
+.wire-item:last-child { border-bottom: none; padding-bottom: 0; }
+.wire-item .byline { font-size: .68rem; }
+.wire-item p { font-size: .88rem; line-height: 1.4; }
+
+.tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; font-family: var(--util); font-size: .82rem; }
+th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--rule-soft); }
+th { font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .7rem; border-bottom-color: var(--rule); }
+td.num, th.num { text-align: right; font-feature-settings: "tnum"; }
+
+.box {
+  background: var(--paper-2); border: 1px solid var(--rule);
+  padding: 14px 16px; display: flex; flex-direction: column; gap: 8px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+  border-bottom: 1px solid var(--rule); padding-bottom: 4px;
+}
+
+/* --- footer ----------------------------------------------------------- */
+
+.instrument-box {
+  margin-top: 36px; padding: 18px 20px; background: var(--paper-2);
+  border: 1px solid var(--rule); display: flex; flex-direction: column; gap: 6px;
+}
+.instrument-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.instrument-box p { font-size: .86rem; color: var(--ink-2); line-height: 1.45; }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="folio">
+      <span>No. 5A8988</span>
+      <span>Saturday, September 5, 2026</span>
+      <span>24h to 12:24 UTC</span>
+    </div>
+
+    <header class="masthead">
+      <h1><span class="the">The</span> Nostr Observer</h1>
+      <div class="motto">What Your Web of Trust Surfaced in the Last Twenty-Four Hours</div>
+    </header>
+
+    <div class="dateline">
+      <span>Ranked as NotBiebs</span>
+      <span>608 events through your lens</span>
+      <span>209 voices</span>
+    </div>
+
+    <!-- ABOVE THE FOLD -->
+    <div class="fold">
+      <!-- LEFT COLUMN: Mesh Networking & App Store Security -->
+      <div class="col span-3">
+        <article class="story">
+          <div class="kicker">PEER-TO-PEER NETWORKING</div>
+          <h2 class="sub-head">FIPS Protocol Enables Direct Node Meshes Across NAT</h2>
+          <div class="byline">Johnathan Corgan &amp; notmandatory · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsglyggm743nmmuj6h26cgmx2u97a80uk908gs5av44cguh9thhkcs54gq3x">Citing Corgan</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs2h2k3mvrvqcmmv6rv4j542yajl9h73dw4sjy0ja58rl53vchgu7cuavqng">Citing notmandatory</a></div>
+          <p class="first">A new peer-to-peer overlay network designed to eliminate domain registration, central routing, and firewall friction entered active field testing across the Nostr ecosystem.</p>
+          <p><q>running FIPS lets your system join a mesh of other FIPS nodes, gives you a new IP address, and lets you communicate over the mesh with any other FIPS node. There is no domain, no routing configuration, no firewall or NAT configuration, etc. No permission needed.</q></p>
+          <p>Developers began deploying the protocol to bypass restrictive residential network topologies. Operator notmandatory demonstrated tunneling secure administrative sessions directly to home hardware:</p>
+          <p><q>Running FIPS! now I can ssh into a dev system at home even though it's stuck with a private IPv4 address behind my stupid ISPs NAT.</q> The setup links machines across the internet without exposing public ports: <q>With FIPS I'm able to assign my home server a self generated npub and talk to it from anywhere. This is how the internet is meant to be, peer to peer, private and permissionless.</q></p>
+          <p>Early benchmarks show minimal performance degradation under production workflows: <q>I'm not seeing any noticeable latency running multiple shells and editors over my ssh tunnel between the office and home.</q></p>
+        </article>
+
+        <div class="box">
+          <div class="box-head">SECURITY ADVISORY</div>
+          <div class="story">
+            <h3 class="small-head">Zapstore Patches Nostr Event Verification Vulnerability</h3>
+            <div class="byline">Zapstore release · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsff8qgd62ujjwruzznhqy4gzh257j8uw2hmylntqltnrytav3zvlq78g9fa">Citing release</a></div>
+            <p>Maintainers of decentralized application distributor Zapstore issued an urgent upgrade advisory following an internal library audit: <q>Please update to Zapstore 1.1.2</q></p>
+            <p><q>It was released last week and contains a fix for a major security bug found in an underlying library, related to nostr event verification.</q></p>
+            <p>The flaw was identified by an external researcher prior to public exploit: <q>Found by ethicnology, thank you Sir</q></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER COLUMN: Lead Headline & Mining Pool Politics -->
+      <div class="col span-6">
+        <article class="story">
+          <div class="kicker">BITCOIN MINING &amp; CONSENSUS</div>
+          <h2 class="lead-head">Luke Dashjr Exits OCEAN as Hashrate Plunges 96%</h2>
+          <div class="dek">The veteran Bitcoin Core developer steps down as chairman and director to launch CONVOY, following divergent visions for non-custodial mining pool decentralization.</div>
+          <div class="byline">BTC Prague &amp; JB | Onchain · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqspqtsn7wrngj92u2nvzt5wsfr2a58e9299d27lzaelhsqc5zv83xqy3rhgc">Citing BTC Prague</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsx4n5scmrun9fugu8vch6n3d0nsm0ckyavsyygtdf9j3h0w93kyts0rr7re">Citing JB | Onchain</a></div>
+          <p class="first">The struggle over Bitcoin block template decentralization reached a dramatic fracture this week as OCEAN co-founder Luke Dashjr severed ties with parent company Mummolin, sparking a collapse in the pool's computing power.</p>
+          <p><q>Luke Dashjr is out at OCEAN. Resigned as chairman, CTO and director on 29 Aug. Mummolin repurchased all his equity.</q></p>
+          <p>The parting was attributed to <q>different visions for the future of Bitcoin mining.</q> Dashjr immediately revealed plans for a rival venture: <q>He is starting CONVOY. OCEAN's hashrate fell 96% in August.</q></p>
+          <p>The sudden fallout leaves observers questioning the resilience of independent block creation: <q>What does this do to template diversity?</q></p>
+          <p>For independent home miners running hardware like the Antminer S21 XP, pools remain the only economic path to steady returns. Analyst JB | Onchain highlighted the fundamental mechanics compelling miners into collective syndicates:</p>
+          <p><q>If I pointed it at Bitcoin alone and waited to find a block, I'd be waiting about 65 years. That's why mining pools exist. Everything else is details.</q></p>
+          <p><q>Twenty people at an office put in five dollars a week. No single ticket is likely to win, but twenty tickets win more often than one, and when one hits everybody gets a cut.</q></p>
+          <p><q>My machine sends its work to Ocean, and so do thousands of others. When any one of us finds a block, the reward splits across everybody who was working.</q></p>
+        </article>
+
+        <article class="story">
+          <div class="kicker">DISPATCH FROM KYIV</div>
+          <h3 class="main-head">Drone Strike Hits Government Quarter as Terry Yiu Rewrites SatsPrice</h3>
+          <div class="byline">Terry Yiu reporting · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsxjj5mqezkvcua32f9585wtct0w2y5cd96x5tmfnu5qucxnfpfdrszhkr2f">Citing note 694a9b</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsdaex8u5r8kunnv27nwvd9z2zsvucn64w820j8j2euu4ml9gjrxkgg3pnxw">Citing note dee4c7</a></div>
+          <p>Software development in wartime continues amidst aerial bombardment in central Ukraine. Developer Terry Yiu reported a missile and drone impact adjacent to his family's daily commute:</p>
+          <p><q>An hour after dropping my wife off at her office, a Russian drone struck the Security Service headquarters one minute down the street. I could hear the explosion from home. She, her team, and her office are fine.</q></p>
+          <p>Despite the disruption, Yiu has spent his parental leave restructuring Bitcoin tooling across desktop and mobile platforms: <q>While on my paternity leave, I've been rewriting my SatsPrice app with the help of Claude Code.</q></p>
+          <p><q>The unreleased (new) version uses Kotlin Multiplatform and targets all those platforms plus other desktop operating systems and the web. I was able to reach near feature parity at ~10x the speed with Claude Code.</q></p>
+        </article>
+      </div>
+
+      <!-- RIGHT COLUMN: Freedom Tech & P2P Escrow -->
+      <div class="col span-3">
+        <article class="story">
+          <div class="kicker">FREEDOM TECH ROOTS</div>
+          <h2 class="sub-head">Carl Dong Recalls the Overnight Firewall</h2>
+          <div class="byline">Ungovernable Network · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsru9jamlt9n52tgv7fvpjlp0uxhnfwx2uk6g0j0jjt0c5qst782ugt3ul5d">Citing note 3e165d</a></div>
+          <p class="first">A retrospective on Bitcoin Core contributor and Obscura VPN creator Carl Dong traced the formative events behind his commitment to censorship resistance.</p>
+          <p><q>His dad ordered a National Geographic subscription over the first dial up connection in the house, just so the family could see the outside world.</q></p>
+          <p>The window into open media snapped shut almost without warning: <q>The day before he was sharing clips with his friends, the next day there was no YouTube, no Facebook, nothing.</q></p>
+          <p>That rupture crystallized a clear operating ethos for Dong: <q>Technology should further the sovereignty and freedom of individuals. He has been building on that ever since.</q></p>
+        </article>
+
+        <article class="story">
+          <div class="kicker">P2P LIQUIDITY ESCROW</div>
+          <h3 class="small-head">Mostro Node v0.18.7 Tightens Payout Rails</h3>
+          <div class="byline">Mostro · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqszx6545n998jg2pwrzz9u4atad25zgsa0js3zmkpkntwpf3jp2gscyxz0y0">Citing release</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsd8cll2edrchvscfgxzatgn2cmp77hyk92aaqhnzur2x4g9spwxrqck8wyp">Citing disputes</a></div>
+          <p>Non-custodial Lightning peer-to-peer exchange Mostro shipped an architecture update introducing tighter liquidity constraints for routing nodes.</p>
+          <p><q>New payout safety rails: in-flight payouts are now capped per destination and node-wide, so one destination can't tie up the whole node's liquidity.</q></p>
+          <p><q>Payout routes now bound their total timelock, not just the last hop, and user payout invoices are capped at 144 blocks instead of 432 — funds stay locked for less time.</q></p>
+          <p>The release also detailed cryptographic authentication safeguards for trade disputes: <q>Opening a dispute on Mostro 🧌 puts a real person on the case, the admin of that node, or a solver they've assigned.</q> <q>Both you and your counterparty get a unique token to confirm you're talking to the actual admin, not an impostor.</q></p>
+        </article>
+      </div>
+    </div>
+
+    <!-- BAND 1: SOVEREIGN DEBT & MARKET CONDITIONS -->
+    <section class="band">
+      <div class="band-head">
+        <h2>Sovereign Debt Crisis &amp; Macro Pressures</h2>
+        <span class="byline">Global Capital Flows</span>
+      </div>
+      <div class="cols2">
+        <article class="story">
+          <div class="kicker">BOND MARKET ROUT</div>
+          <h3 class="main-head">Sovereign Yields Surge to Multi-Decade Highs as US Debt Tops $40T</h3>
+          <div class="byline">BTC Prague · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqswyagap4vg39x8re2ly4z6zyaveg5t3nmrdgj6v7gq2mu6cl0d27qsu4a47">Citing note e2751d</a></div>
+          <p class="first"><q>The bond market had a week.</q> Institutional capital faced intense volatility across major sovereign debt instruments as interest rates touched levels unseen since before the 2008 global financial crisis.</p>
+          <p><q>US 10Y: 4.82%, last seen 2023 … US 30Y: 5.29%, last seen 2007 … UK 10Y: 5.25%, last seen 2007 … Japan 10Y: 3.00%, last seen 1996 … US federal debt just passed $40T.</q></p>
+          <p>Against this structural sovereign stress, corporate balance sheets and sovereign treasuries expanded hard-asset reserves: <q>spot ETFs took in $3.52B in August, Strategy bought 4,603 BTC, El Salvador hit 7,762 BTC.</q></p>
+          <figure>
+            <img src="https://blossom.primal.net/082370baff9a636f61d93b9ead3f60309b3f1843d7a0d5d7c390da6b6ed2aab8.jpg" alt="Bond yields and debt chart filed by BTC Prague alongside market commentary">
+            <figcaption>Chart showing sovereign bond yields surging across US, UK, and Japan as US national debt crosses $40 trillion, filed by BTC Prague. <span class="credit">BTC Prague</span></figcaption>
+          </figure>
+        </article>
+
+        <div class="col">
+          <div class="box">
+            <div class="box-head">MARKET CONDITIONS &amp; STATS</div>
+            <div class="note">As of 12:24 UTC · Readings from window, not live · Sources: ChartsBTC, Clark Moody, Bond Desks</div>
+            <div class="tablewrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Metric</th>
+                    <th>Reading</th>
+                    <th class="num">Reference Period</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Bitcoin Index</td>
+                    <td>$79,636 USD</td>
+                    <td class="num">Epoch High</td>
+                  </tr>
+                  <tr>
+                    <td>Purchasing Power</td>
+                    <td>1,255 sats / USD</td>
+                    <td class="num">Historical Low</td>
+                  </tr>
+                  <tr>
+                    <td>Epoch Change</td>
+                    <td>+22.0%</td>
+                    <td class="num">From $64,990 Base</td>
+                  </tr>
+                  <tr>
+                    <td>Active Supply (&lt; 4y)</td>
+                    <td>12.50M BTC (62.2%)</td>
+                    <td class="num">Circulating</td>
+                  </tr>
+                  <tr>
+                    <td>Dormant Supply (≥ 4y)</td>
+                    <td>7.58M BTC (37.8%)</td>
+                    <td class="num">HODLed</td>
+                  </tr>
+                  <tr>
+                    <td>US Federal Debt</td>
+                    <td>$40.0 Trillion</td>
+                    <td class="num">Record High</td>
+                  </tr>
+                  <tr>
+                    <td>US 30Y Treasury Yield</td>
+                    <td>5.29%</td>
+                    <td class="num">Highest since 2007</td>
+                  </tr>
+                  <tr>
+                    <td>Japan 10Y Yield</td>
+                    <td>3.00%</td>
+                    <td class="num">Highest since 1996</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <article class="story">
+            <div class="kicker">MERCHANT CIRCULAR ECONOMY</div>
+            <h3 class="sub-head">Blink Integrates BTC Map Directly Into Wallet Directory</h3>
+            <div class="byline">Blink Wallet · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsfg430n45vjr0upy060rg4ukegmazeu0ffs20ym20k58jmjh65rwqgv0l04">Citing note 94562f</a></div>
+            <p>Blink released an update embedding the global BTC Map merchant database natively into wallet interfaces via an open interoperability standard, eliminating the friction of browser redirection when spending Bitcoin locally.</p>
+            <p>The deployment comes as community circular networks expand: in Nairobi, one urban settlement logged 3.78 million satoshis circulating across 11 community projects, demonstrating resilient bottom-up adoption.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAND 2: MARGINALIA, OUTDOORS & THE HEARTH -->
+    <section class="band">
+      <div class="band-head">
+        <h2>Marginalia, Field &amp; Hearth</h2>
+        <span class="byline">Ideas &amp; The Physical World</span>
+      </div>
+      <div class="cols2">
+        <article class="story">
+          <div class="kicker">THE COMMON RECORD</div>
+          <h3 class="main-head">Vannevar Bush, Memex Trails, and the Pocket Glass</h3>
+          <div class="byline">Gigi curating Vannevar Bush (1945) · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsversc5pu9m2250pdzdfc0wc4gxp237lvrfh5emdsld5s33gsdlhgvzl7yj">Citing note cc8e18</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs22gqd4twjfkqqs6l0krchpsdecy5xeyqpdyjafmyf0mzt9fudyqcedf76s">Citing note a5200d</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsdzswpqs37as8p59jfpx22rqkx5kpk4ld228v472rh7a5vr5fay7szu95wk">Citing note d141c1</a></div>
+          <p class="first">Author Gigi surfaced excerpts from Vannevar Bush's seminal July 1945 essay <em>As We May Think</em>, reflecting on the human imperative to organize personal knowledge archives:</p>
+          <p><q>There is a new profession of trail blazers, those who find delight in the task of establishing useful trails through the enormous mass of the common record</q></p>
+          <p>Bush's concept of associative knowledge trails anticipated decentralized information graphs by eight decades:</p>
+          <p><q>It is exactly as though the physical items had been gathered together from widely separated sources and bound together to form a new book. It is more than this, for any item can be joined into numerous trails.</q></p>
+          <p>Gigi contrasted this historical optimism with the degradation of modern consumer computing platforms:</p>
+          <p><q>The mind leaks outward - and it always has. Writing, numbering systems, and maps are not external aids to thought; they’re components of thought itself.</q></p>
+          <p>That externalized cognitive environment has increasingly fallen under the administrative control of proprietary corporate platforms: <q>having been brainwashed enough by Google, banks think I cannot be trusted to do banking on a computer I own while doing it on a small piece of glass that I keep in my pocket is "safe."</q></p>
+        </article>
+
+        <div class="col">
+          <article class="story">
+            <div class="kicker">HIGH COUNTRY DISPATCH</div>
+            <h3 class="sub-head">At the Summit of Pagosa Peak</h3>
+            <figure>
+              <img src="https://blossom.daniel.camera/5ffbcbbe21a073fc39cd17c921ddb02f1051a0ae563a1c8da8b8cb6e44365c81.jpg" alt="Pagosa Peak Summit at 12,641 feet during a hike, photographed by danielw">
+              <figcaption>At the summit of Pagosa Peak (12,641 feet) during a hike captured July 14, 2019, shared by danielw. <span class="credit">danielw</span></figcaption>
+            </figure>
+            <p class="byline"><a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs0ehmt0xx4ml794qcp39x2rmkcj5lgwkw0u5pqjvk8w230ewa078sajmawh">Citing note fcdf6b</a></p>
+          </article>
+
+          <article class="story">
+            <div class="kicker">FIELD &amp; HEARTH</div>
+            <h3 class="sub-head">Afternoon by the Fire</h3>
+            <figure>
+              <img src="https://media.poster.place/af0c0de7baa484082b2e01c49221689700a81962215b2f5f5ae9eebec8277629.jpg" alt="Four skewers on the grill with fire crackling underneath, photographed by V3spering">
+              <figcaption>Four skewers on the grill with fire crackling underneath and an afternoon spent flipping, shared by V3spering. <span class="credit">V3spering</span></figcaption>
+            </figure>
+            <p class="byline"><a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsg5a004wdr9earmazn6zukqmmwlffnk2srufncj6w5dj9qumxn56gan9hmv">Citing note 8a75ef</a></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAND 3: THE GAZETTE -->
+    <section class="band">
+      <div class="band-head">
+        <h2>The Gazette</h2>
+        <span class="byline">Dispatches, Commerce, Calendar &amp; Code</span>
+      </div>
+      <div class="cols4">
+        <!-- COLUMN 1: BROADCASTING -->
+        <div class="col">
+          <div class="box-head">BROADCASTING</div>
+          <div class="wire-item">
+            <a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al">NoGood Radio</a>
+            <div class="byline">zap.stream live broadcast</div>
+            <p>Live music stream transmitting community audio selections.</p>
+          </div>
+          <div class="wire-item">
+            <a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqsxc6t8dp6xu6twvukkwmmpw3ej6v3sxgmrqwfsx32rzdpn8qerzkszypnfaw7veaqfaczx0gekvzhg3lghu5meuerwg8tuydhlf93l8smtvqcyqqq8vecznlhey">⚡ Lightning Goats ⚡ Live Goat Feeder</a>
+            <div class="byline">⚡Lightning Goats⚡</div>
+            <p>Interactive automated farm feeder triggered via Lightning micro-payments.</p>
+          </div>
+          <div class="wire-item">
+            <a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqsx5mmjwd68yttvd9mx2ttrx5ckvvf48qenvvtpvv6rvcfevgexvegzyq6ccyn56sez2q48xw543p2wfsu3rec0af5nzcankx0p4e3pzg9zyqcyqqq8vecv2wdez">BTC Beats - This Is Why We Nostr</a>
+            <div class="byline">Scottie</div>
+            <p>Live musical stream celebrating independent community development.</p>
+          </div>
+          <div class="wire-item">
+            <a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqghx7tww35xgunpvahkuttrdp5kcmqzyqz7vq2e78s2djmylftnls0tud0esk5hthh7046kq07mn6x06wpngqcyqqq8vec4f5fl5">Synthdragon Radio — CHILL</a>
+            <div class="byline">Synthdragon Radio</div>
+            <p>Streaming Glaciella — Wish of a Dying Star.</p>
+          </div>
+          <div class="wire-item">
+            <a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqf8x7tww35xgunpvahkuttxd9jhycm9qgsqtespt8c7pfktvna9w07pa034lxz6jaw7le7h2cplmw0gelfcxdqrqsqqqan8lyq2ya">Synthdragon Radio — FIERCE</a>
+            <div class="byline">Synthdragon Radio</div>
+            <p>Streaming Mirajin — In the Halls of Courtly Pleasures.</p>
+          </div>
+          <div class="wire-item">
+            <a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjrgepcx5crjdr995exydn9956rve3k94snjcf495cxydfhxdjxverpxsexgq3qsjf300tngygmqtfkpyd0vcglld2msksjxe9fsjduzn2pccqjl9wsxpqqqpmxwr0l5xz">ScardustTV - USA Tour Announced</a>
+            <div class="byline">Stream Road</div>
+            <p>Band broadcasting live tour announcements and ticketing support.</p>
+          </div>
+        </div>
+
+        <!-- COLUMN 2: THE CLASSIFIEDS -->
+        <div class="col">
+          <div class="box-head">THE CLASSIFIEDS</div>
+          <div class="wire-item">
+            <a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqdx6etjvdshxct5wvkkgd3kxp3kydf48p3rjcek8q6nqq3qnfpl8mjn6e7xesj2amdz7464frdn2tmqlzuan97wx25et0f48evsxpqqqpmvyvl7n52">Nintendo Switch OLED + Mario Kart 8 Deluxe</a>
+            <div class="byline">Andro · 200 EUR</div>
+            <p>Blue and red Nintendo Switch OLED console in original box with dock, controller covers, and Mario Kart 8 Deluxe cartridge.</p>
+          </div>
+          <div class="wire-item">
+            <a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqdx6etjvdshxct5wvknzdr989sk2enrxvmnxvekxucx2q3qnfpl8mjn6e7xesj2amdz7464frdn2tmqlzuan97wx25et0f48evsxpqqqpmvynry87d">Mutant Year Zero: Road to Eden Deluxe</a>
+            <div class="byline">Andro · 45 EUR</div>
+            <p>Turn-based tactical adventure RPG cartridge for Nintendo Switch, Deluxe Edition release.</p>
+          </div>
+          <div class="wire-item">
+            <a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqdx6etjvdshxct5wvkn2en9xenxvdphxdnr2cmpxq6nvq3qnfpl8mjn6e7xesj2amdz7464frdn2tmqlzuan97wx25et0f48evsxpqqqpmvyv44xkw">Mario + Rabbids Kingdom Battle Switch</a>
+            <div class="byline">Andro · 15 EUR</div>
+            <p>Tactical strategy video game for Nintendo Switch developed by Ubisoft.</p>
+          </div>
+        </div>
+
+        <!-- COLUMN 3: DIARY & CALENDAR -->
+        <div class="col">
+          <div class="box-head">DIARY &amp; CALENDAR</div>
+          <div class="wire-item">
+            <a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvcfcvdjkzdfjxdjxxv34xs6nqefjve3r2v3cx5pzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv86qg7r">Kansas City Sovereign Assembly 2026</a>
+            <div class="byline">Saturday, September 5, 2026 · Kansas City, Missouri</div>
+            <p>Gathering dedicated to self-sovereignty, decentralized technology, local trade, and Bitcoin economics.</p>
+          </div>
+          <div class="wire-item">
+            <a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvdmrvgmxgde3vvcrwdekxvukxwf4x5crxdmpvspzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvwarfjd">Bitcoin and Cigars</a>
+            <div class="byline">Thursday, September 10, 2026 · Shreveport, Louisiana</div>
+            <p>Weekly informal evening meetup at Southern Smoke Cigar Lounge focused on ecash, miniscript, and Start9 nodes.</p>
+          </div>
+          <div class="wire-item">
+            <a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvcf4xsenjd3k8pnrscenv56k2vpnx9nrxvtrvvpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvjeqz9q">Jersey City Bitcoin Meetup</a>
+            <div class="byline">Thursday, September 10, 2026 · Jersey City, New Jersey</div>
+            <p>Second Thursday monthly gathering at Zeppelin Hall for developers, node operators, and the Bitcoin-curious.</p>
+          </div>
+          <div class="wire-item">
+            <a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvcfnv43rwdp5vveryep4vvcrxdpc8yuxvdf5vgpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvuggetq">Vegan Bitcoin™ Echo Park #2</a>
+            <div class="byline">Thursday, September 10, 2026 · Los Angeles, California</div>
+            <p>Dinner meetup at Men &amp; Beasts plant-based lounge exploring sound money and personal sovereignty.</p>
+          </div>
+          <div class="wire-item">
+            <a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvcfev93nyvrrx9snjdt98y6rwc3n8ymnwdfex5pzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv6a9ju4">Bitcoin Poland 2026 Poznań</a>
+            <div class="byline">October 5–6, 2026 · Poznań, Poland</div>
+            <p>Two-day conference at Poznań Congress Center bringing Central European builders and investors together.</p>
+          </div>
+        </div>
+
+        <!-- COLUMN 4: WORKSHOP & RELEASES -->
+        <div class="col">
+          <div class="box-head">WORKSHOP &amp; TOOLS</div>
+          <div class="wire-item">
+            <div class="kicker">SECURITY PATCH</div>
+            <div class="byline">Zapstore · Version 1.1.2</div>
+            <p>Security release correcting event signature verification in underlying client packages.</p>
+          </div>
+          <div class="wire-item">
+            <div class="kicker">CLIENT RELEASE</div>
+            <div class="byline">Team Soapbox · Ditto</div>
+            <p>Multi-purpose Nostr client featuring 9 custom interface themes, live media feeds, and decentralized mini-apps.</p>
+          </div>
+          <div class="wire-item">
+            <div class="kicker">HARDWARE SYNC</div>
+            <div class="byline">Zapstore · Casio G-Shock Smart Sync</div>
+            <p>Open-source Android client establishing local Bluetooth telemetry with compatible digital wristwatches without proprietary cloud dependence.</p>
+          </div>
+          <div class="wire-item">
+            <div class="kicker">LOCAL TRACKING</div>
+            <div class="byline">Zapstore · FitBook</div>
+            <p>Offline nutritional calorie and macronutrient logger keeping personal medical data completely device-local.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE INSTRUMENT FOOTER -->
+    <footer class="instrument-box">
+      <div class="instrument-head">The Instrument</div>
+      <p>The same 24-hour window read without the reader's web-of-trust lens returned 400 notes from the global relay. Of those, only 4 appeared among the 393 notes selected by this lens (<strong>1.0% overlap</strong>). The remaining 99% of this front page reflects the curated web of trust built by NotBiebs across 608 events and 209 independent voices.</p>
+    </footer>
+  </div>
+</body>
+</html>

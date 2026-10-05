@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Friday, September 4, 2026</title>
+  <meta name="description" content="Miners reject the year&#39;s fiercest soft-fork campaign by overwhelming margins, even as independent researchers demonstrate post-quantum transactions on mainnet using existing script opcodes.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="BIP-110 Collapses at 2% While Quantum Signatures Land on Mainnet">
+  <meta property="og:description" content="Miners reject the year&#39;s fiercest soft-fork campaign by overwhelming margins, even as independent researchers demonstrate post-quantum transactions on mainnet using existing script opcodes.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-09-04-6FE7B0.html">
+  <meta property="og:image" content="https://blossom.primal.net/4598e393dd52356fbd6a1554fdc6760994d67fbe7e243435cb30f269c3fe106b.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BIP-110 Collapses at 2% While Quantum Signatures Land on Mainnet">
+  <meta name="twitter:description" content="Miners reject the year&#39;s fiercest soft-fork campaign by overwhelming margins, even as independent researchers demonstrate post-quantum transactions on mainnet using existing script opcodes.">
+  <meta name="twitter:image" content="https://blossom.primal.net/4598e393dd52356fbd6a1554fdc6760994d67fbe7e243435cb30f269c3fe106b.jpg">
+
+
+
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+
+
+
+  <style>
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .folio, .dateline {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; gap: 2px;
+  }
+  .folio > :nth-child(3), .dateline > :nth-child(3) { text-align: center; }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline {
+  border-bottom: 1px solid var(--rule); padding: 7px 0 8px; margin-bottom: 24px;
+}
+
+/* --- grid ------------------------------------------------------------- */
+
+.fold {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  gap: 26px 22px; padding-bottom: 28px; border-bottom: 1px solid var(--rule);
+}
+.col { display: flex; flex-direction: column; gap: 18px; }
+.col + .col { border-left: 1px solid var(--rule-soft); padding-left: 22px; }
+
+.span-12 { grid-column: span 12; }
+.span-9  { grid-column: span 9; }
+.span-8  { grid-column: span 8; }
+.span-7  { grid-column: span 7; }
+.span-6  { grid-column: span 6; }
+.span-5  { grid-column: span 5; }
+.span-4  { grid-column: span 4; }
+.span-3  { grid-column: span 3; }
+
+@media (max-width: 960px) {
+  .fold { display: flex; flex-direction: column; }
+  .col + .col { border-left: none; padding-left: 0; border-top: 1px solid var(--rule-soft); padding-top: 18px; }
+}
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 8px; }
+.story > * + * { margin-top: 6px; }
+.story > .kicker + * { margin-top: 2px; }
+.story > h2 + .dek, .story > h3 + .dek { margin-top: 4px; }
+.story > .dek + .byline { margin-top: 2px; }
+.story > .byline + p, .story > .byline + figure { margin-top: 10px; }
+
+p.first::first-letter {
+  float: left; font-family: var(--serif); font-size: 3.4rem;
+  line-height: .8; padding: 4px 8px 0 0; font-weight: 700;
+  color: var(--ink);
+}
+
+blockquote {
+  margin: 10px 0; padding: 0 0 0 14px;
+  border-left: 3px solid var(--accent);
+  color: var(--ink-2); font-style: italic;
+}
+blockquote p { font-size: .95rem; }
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+figure img { width: 100%; height: auto; display: block; background: var(--paper-2); }
+figcaption {
+  font-family: var(--util); font-size: .74rem; line-height: 1.35;
+  color: var(--ink-2);
+}
+figcaption .credit {
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--ink-3); font-size: .68rem;
+}
+
+/* --- horizontal bands below the fold ---------------------------------- */
+
+.band {
+  border-top: 1px solid var(--rule); padding: 22px 0;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.band-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  border-bottom: 2px solid var(--ink); padding-bottom: 4px;
+}
+.band-head h2 { font-size: 1.15rem; letter-spacing: .06em; text-transform: uppercase; }
+
+.cols4 {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+}
+.cols3 {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+}
+.cols2 {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
+}
+
+.cols4 > *, .cols3 > *, .cols2 > * {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.cols4 > * + *, .cols3 > * + *, .cols2 > * + * {
+  border-left: 1px solid var(--rule-soft); padding-left: 20px;
+}
+
+@media (max-width: 860px) {
+  .cols4, .cols3 { grid-template-columns: repeat(2, 1fr); }
+  .cols4 > *:nth-child(2n+1), .cols3 > *:nth-child(2n+1) { border-left: none; padding-left: 0; }
+  .cols4 > *:nth-child(n+3), .cols3 > *:nth-child(n+3) { border-top: 1px solid var(--rule-soft); padding-top: 16px; }
+}
+@media (max-width: 540px) {
+  .cols4, .cols3, .cols2 { display: flex; flex-direction: column; }
+  .cols4 > * + *, .cols3 > * + *, .cols2 > * + * { border-left: none; padding-left: 0; border-top: 1px solid var(--rule-soft); padding-top: 16px; }
+}
+
+/* --- wire, tables, conditions ----------------------------------------- */
+
+.wire-item {
+  padding-bottom: 10px; border-bottom: 1px dotted var(--rule);
+  display: flex; flex-direction: column; gap: 3px;
+}
+.wire-item:last-child { border-bottom: none; padding-bottom: 0; }
+.wire-item .byline { font-size: .68rem; }
+.wire-item p { font-size: .88rem; line-height: 1.4; }
+
+.tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; font-family: var(--util); font-size: .82rem; }
+th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--rule-soft); }
+th { font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .7rem; border-bottom-color: var(--rule); }
+td.num, th.num { text-align: right; font-feature-settings: "tnum"; }
+
+.box {
+  background: var(--paper-2); border: 1px solid var(--rule);
+  padding: 14px 16px; display: flex; flex-direction: column; gap: 8px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+  border-bottom: 1px solid var(--rule); padding-bottom: 4px;
+}
+
+/* --- reverse band (ink ground) ---------------------------------------- */
+
+.band.reverse {
+  background: var(--reverse-bg); color: var(--reverse-ink);
+  margin-left: -22px; margin-right: -22px; padding: 24px 22px;
+  border-top: none;
+}
+.band.reverse .band-head { border-bottom-color: var(--reverse-ink-2); }
+.band.reverse .band-head h2 { color: var(--reverse-ink); }
+.band.reverse .kicker { color: var(--reverse-spot); }
+.band.reverse a { border-bottom-color: var(--reverse-ink-2); }
+.band.reverse a:hover { color: var(--reverse-spot); border-bottom-color: var(--reverse-spot); }
+.band.reverse .cols2 > * + * { border-left-color: #2F2A36; }
+.band.reverse .dek { color: var(--reverse-ink-2); }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="folio">
+      <span>No. 6FE7B0</span>
+      <span>Friday, September 4, 2026</span>
+      <span>24h to 12:25 UTC</span>
+    </div>
+
+    <header class="masthead">
+      <h1><span class="the">The</span> Nostr Observer</h1>
+      <div class="motto">What Your Web of Trust Surfaced in the Last Twenty-Four Hours</div>
+    </header>
+
+    <div class="dateline">
+      <span>Ranked as NotBiebs</span>
+      <span>476 events through your lens</span>
+      <span>186 voices</span>
+    </div>
+
+    <!-- ABOVE THE FOLD -->
+    <div class="fold">
+      <!-- LEFT COLUMN: Node Maintenance & Exchange Surveillance -->
+      <div class="col span-3">
+        <div class="story">
+          <div class="kicker">LIGHTNING INFRASTRUCTURE</div>
+          <h2 class="sub-head">Core Lightning Issues Emergency Binary-Only Patch</h2>
+          <div class="byline">Ungovernable reporting · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsx43usflkq2vecmrp87krvsmv8dw5eclky0yyghkumsxmfmxunxtqga78s3">Citing note 6ac790</a></div>
+          <p class="first"><q>Core Lightning told every node operator to shut down or restart with an offline flag, and left it there.</q> Following an undisclosed vulnerability, maintainers took the extraordinary step of withholding source code while deploying pre-compiled executables.</p>
+          <blockquote><q>Two days later a fix arrived as signed binaries only. No source. That comes in a fortnight. The reasoning is that publishing the diff hands attackers a map to unpatched nodes. Fair enough. But you can reverse engineer a closed binary too, so you slow the clock down without stopping anyone. What you do get is an open source project asking you to trust a binary. That precedent outlasts this bug.</q></blockquote>
+          <p>The incident has provoked sharp debate across node operators regarding operational security trade-offs and trust assumptions in critical routing software.</p>
+        </div>
+
+        <div class="box">
+          <div class="box-head">EXCHANGE SURVEILLANCE</div>
+          <div class="story">
+            <h3 class="small-head">HTX Dust Transfers Freeze Accounts on Kraken</h3>
+            <div class="byline">Ungovernable reporting · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsd99gsmnkuwmlexrm5n35hrmrlnk958d89qgkswx760argzap3zachnh5z2">Citing note d29510</a></div>
+            <p><q>Between the 17th and the 24th of August, wallets tied to sanctioned exchange HTX sent roughly 12,000 dust transfers into Kraken user addresses.</q> The uninvited micro-deposits triggered compliance locks across thousands of customer accounts.</p>
+            <p><q>The deposits tripped Kraken's AML controls and froze the accounts. Access has been restored, but Kraken still holds 4.2 million it considers tainted, and restored access is not the same as getting your money back.</q></p>
+            <p><q>Sending dust from an address you know is sanctioned costs an attacker close to nothing, even at current mempool rates. It can cost the victim their entire account. This is what coin control is for, and it is what leaving coins on an exchange can cost you.</q></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER COLUMN: Lead Headline & Consensus Stories -->
+      <div class="col span-6">
+        <article class="story">
+          <div class="kicker">BITCOIN PROTOCOL &amp; CONSENSUS</div>
+          <h2 class="lead-head">BIP-110 Collapses at 2% While Quantum Signatures Land on Mainnet</h2>
+          <p class="dek">Miners reject the year's fiercest soft-fork campaign by overwhelming margins, even as independent researchers demonstrate post-quantum transactions on mainnet using existing script opcodes.</p>
+          <div class="byline">Contra and Ungovernable reporting · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsra6ahw02w4ca3xux2a2s3mq2z9zgqw3sw6d4gwgccxw5z3ut4xkgdehxz7">Citing article 3eebb7</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs9jwpmgpfwzcnvcumu5gernkwcc99vxx0zwwkftyw5hfvn7lx3hxsu3ezde">Citing note 59383b</a></div>
+
+          <p class="first"><q>The loudest Bitcoin fight of the year ended with about 2% of miners signaling for it.</q> After months of polarized community debate over transaction metadata and arbitrary payload restrictions, the proposal to enforce strict trial caps collapsed as mining pools decisively passed on signaling.</p>
+          <blockquote><q>BIP-110 wanted to cap arbitrary data in transactions for a one year trial. Adam Back called it a downgrade. Michael Saylor published a hundred and ten reasons against it. The signaling window opened in August against a 55% early lock in threshold, and support sat at roughly 2%. Measured by volume it was a war. Measured by consensus it was a rounding error.</q></blockquote>
+          <p>The failure highlights an enduring structural reality of Bitcoin governance: social volume does not translate into economic consensus. Yet while soft-fork activation mechanisms remain conservative, cryptographic progress continues unhindered on the live chain.</p>
+          <p>In block 964199, an unannounced mainnet broadcast proved that long-standing worries over post-quantum vulnerability can be tackled today without altering a single consensus rule:</p>
+          <blockquote><q>Two Starkware researchers broadcast a quantum resistant Bitcoin transaction on mainnet, in block 964199, using hash based one time signatures built from script opcodes that already exist. No consensus change. No soft fork. Nobody had to ask Bitcoin Core for anything.</q></blockquote>
+          <p>The transaction utilized Lamport-style hash-based one-time signatures constructed from existing Script operations, proving that forward-looking security upgrades do not require permission or contentious soft forks.</p>
+          <p><q>It is about five times the size of a normal transaction, so at fifty sats a byte it stings. At one sat a byte it is nothing. And if the alternative is being quantum vulnerable, that is a price worth paying. The headline is not the cost. It is that this was possible the whole time.</q></p>
+        </article>
+      </div>
+
+      <!-- RIGHT COLUMN: Hardware & Community Workshops -->
+      <div class="col span-3">
+        <div class="story">
+          <div class="kicker">FREEDOM TECH WORKSHOP</div>
+          <h2 class="sub-head">Sovereign Engineering Funds Community Fab Lab</h2>
+          <div class="byline">Sovereign Engineering reporting · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs9qx5leg2yz0hnl4csc03w528dq9ppvmau9yywjj3pdcpt4lx2mdqlwg2u0">Citing note 501a9f</a></div>
+
+          <figure>
+            <img src="https://blossom.primal.net/4598e393dd52356fbd6a1554fdc6760994d67fbe7e243435cb30f269c3fe106b.jpg" alt="Builders and hardware equipment at Sovereign Engineering SEC-08 in Madeira" width="3501" height="2467">
+            <figcaption>Hardware equipment and workspaces at Sovereign Engineering SEC-08. Participants funded a shared community fab lab at Nostr Office with 3D printers, workbenches, and tools. <span class="credit">Photograph by Sovereign Engineering · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs9qx5leg2yz0hnl4csc03w528dq9ppvmau9yywjj3pdcpt4lx2mdqlwg2u0">Citing note 501a9f</a></span></figcaption>
+          </figure>
+
+          <p class="first"><q>Some participants come to Soveng carrying more than their laptops. They arrive with large backpacks and cases full of equipment to build.</q></p>
+          <p><q>Without a shared workshop or access to the right tools on the island, some builders could not do everything they had hoped to do.</q> Builders at the cohort in Madeira organized to solve the bottleneck permanently, raising over three million satoshis for a shared fabrication lab.</p>
+          <p><q>What began with a couple of participants choosing to solve a problem has become a shared effort, with 3 million sats raised so far.</q> The workshop, hosted at Nostr Office, equips developers with 3D printers, storage, and circuit analysis tools.</p>
+          <p>Veteran developer Johnathan Corgan observed of the gathering: <q>The experience of Sovereign Engineering is transformative. It goes way beyond just "hacking on freedom tech". The combination of people, location, philosophy, and shared values is unlike anything I have been through before.</q></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- THE INSTRUMENT & MARKET CONDITIONS (REVERSE PANEL) -->
+    <div class="band reverse">
+      <div class="band-head">
+        <div class="kicker">THE WEB OF TRUST INSTRUMENT</div>
+        <h2>A Measured Cut of the 24-Hour Stream</h2>
+      </div>
+      <div class="cols2">
+        <div class="cell">
+          <p class="dek">Every edition of The Nostr Observer is printed through a verified web-of-trust lens. The candidate set for a query spans the full 24-hour window across the network; scoring filters and ranks notes through the reader's direct social graph.</p>
+          <p class="note" style="color: var(--reverse-ink-2); margin-top: 8px;">
+            Window: 2026-09-03 12:25Z to 2026-09-04 12:25Z (24 hours fixed)<br>
+            Trust scoring: npub170cc48q… @ wss://scores.brainstorm.world · Filter floor: rank &ge; 20<br>
+            Search Relay: wss://search-staging.brainstorm.world
+          </p>
+          <div class="tablewrap" style="margin-top: 14px;">
+            <table>
+              <thead>
+                <tr>
+                  <th style="color: var(--reverse-ink-2); border-bottom-color: var(--reverse-ink-2);">Measurement</th>
+                  <th class="num" style="color: var(--reverse-ink-2); border-bottom-color: var(--reverse-ink-2);">Through Lens</th>
+                  <th class="num" style="color: var(--reverse-ink-2); border-bottom-color: var(--reverse-ink-2);">Unranked Control</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Notes Sampled</td>
+                  <td class="num" style="color: var(--reverse-ink);">388</td>
+                  <td class="num" style="color: var(--reverse-ink);">400</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Shared Events (Overlap)</td>
+                  <td class="num" style="color: var(--reverse-spot); font-weight: bold;">8</td>
+                  <td class="num" style="color: var(--reverse-spot); font-weight: bold;">2.0%</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Total Desks Populated</td>
+                  <td class="num" style="color: var(--reverse-ink);">13</td>
+                  <td class="num" style="color: var(--reverse-ink);">1</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Distinct Editorial Voices</td>
+                  <td class="num" style="color: var(--reverse-ink);">186</td>
+                  <td class="num" style="color: var(--reverse-ink);">&mdash;</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="cell">
+          <h3 style="font-size: 1.05rem; letter-spacing: .12em; text-transform: uppercase; color: var(--reverse-ink);">Network Readings &amp; Market Conditions</h3>
+          <div class="byline" style="color: var(--reverse-ink-2); margin-bottom: 6px;">As of 12:25 UTC · Readings from the window, not live figures · ChartsBTC &amp; Nostr Network</div>
+          <div class="tablewrap">
+            <table>
+              <tbody>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Bitcoin Price</td>
+                  <td class="num" style="color: var(--reverse-ink);">$81,467.13 (200-Day MA: $69,571.93)</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Mayer Multiple</td>
+                  <td class="num" style="color: var(--reverse-ink);">1.17 (Neutral Valuation)</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Weekly Moving Average</td>
+                  <td class="num" style="color: var(--reverse-ink);">$78,520 (100w MA: $89,095 · 0.88x)</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--reverse-ink);">4-Year Compound Growth</td>
+                  <td class="num" style="color: var(--reverse-ink);">42% CAGR ($19,840 in 2022)</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--reverse-ink);">MVRV Indicator</td>
+                  <td class="num" style="color: var(--reverse-ink);">1.53 (Accumulation Zone)</td>
+                </tr>
+                <tr>
+                  <td style="color: var(--reverse-ink);">Long-Term Supply (HODL)</td>
+                  <td class="num" style="color: var(--reverse-ink);">40.1% Unmoved &ge; 4 Years (8.05M BTC)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVESTIGATIONS & ENGINEERING BAND -->
+    <div class="band">
+      <div class="band-head">
+        <div class="kicker">DEEP DISPATCHES</div>
+        <h2>Analysis, Security &amp; Protocol Releases</h2>
+      </div>
+      <div class="cols3">
+        <!-- COLUMN 1: Surveillance & ID Leaks -->
+        <div class="cell">
+          <div class="story">
+            <div class="kicker">CYBERCRIME &amp; SURVEILLANCE</div>
+            <h3 class="sub-head">153 Million Identity Records Leaked from Verification Gateway</h3>
+            <div class="byline">Lyudmyla Kozlovska reporting · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs9hjqpx7ryfgpmq6m0023ar3m867l7zc3jpnmm67nz4q0plhleejqrsfd2e">Citing note 5bc801</a></div>
+            <p class="first"><q>On Aug. 31, Brian Krebs reported that a new service on the Russian cybercrime forum Exploit was offering access to digital scans of identity documents on more than 153 million people in North America.</q></p>
+            <p>The breach compromised identity verification infrastructure serving major hospitality, logistics, and retail corporations, with customer data exfiltrated continuously over a twelve-month span prior to detection.</p>
+            <blockquote><q>When 153 million identity documents sit in a single database for over a year, undetected, every person in that database becomes a potential target, not just for common fraud, but for transnational repression.</q></blockquote>
+            <p>Advocates argued the catastrophe demonstrates that centralized identity aggregation mandates create dangerous attack surfaces that compromise civil liberties worldwide.</p>
+          </div>
+        </div>
+
+        <!-- COLUMN 2: Signers & Git Protocol -->
+        <div class="cell">
+          <div class="story">
+            <div class="kicker">PROTOCOL RELEASES</div>
+            <h3 class="sub-head">Amber 6.6.1 Ships Permissions Hardening; ngit-grasp Debuts</h3>
+            <div class="byline">greenart7c3 and DanConwayDev · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsp824mjduvysrs8t9ndtra7l2awq7rax8386l7pl5mvlxazj68zjchaqgjg">Citing note 13aabb</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsy7cf6k44rv4evx6c3tfeasm4ljrkplygak057une2ygs929sfu6qxy5408">Citing note 4f613a</a></div>
+            <p class="first">Mobile signer Amber rolled out version 6.6.1, correcting permission list parsing when incoming JSON omitted kind tags and ensuring rejected signer requests return their request id so invoking client apps can cleanly handle declined signatures.</p>
+            <p>Simultaneously, code collaboration on Nostr advanced with the release of `ngit-grasp`, a Rust implementation of Git Relays Authorized via Signed-Nostr Proofs coupling decentralized repository state directly to Git Smart HTTP.</p>
+            <p>The dual releases illustrate the quiet hardening of signing and code review infrastructure across native client tooling.</p>
+          </div>
+        </div>
+
+        <!-- COLUMN 3: Non-Custodial Escrow -->
+        <div class="cell">
+          <div class="story">
+            <div class="kicker">P2P ESCROW</div>
+            <h3 class="sub-head">Mostro Charts State Transitions for Non-Custodial Swaps</h3>
+            <div class="byline">Mostro reporting · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsq5vw80y0372jesu92k9le3xze5cv9sh4u08qy5rr6r3ugrkdy75cu40rmx">Citing note 0a31c7</a></div>
+            <p class="first"><q>A Mostro 🧌 trade moves through a clear sequence: you create an order, someone takes it, sats lock into a hold invoice, you confirm the fiat arrived, and the invoice settles.</q></p>
+            <p>The peer-to-peer exchange published an exhaustive architecture map detailing order lifecycle states, hold invoice verification, and dispute resolution logic.</p>
+            <p>By enforcing escrow strictly through cryptographic hold invoices, counterparty risk is minimized without routing transactions through centralized custodian accounts.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAZETTE, MARKET STALL, CALENDAR & AIRWAVES -->
+    <div class="band">
+      <div class="band-head">
+        <div class="kicker">COMMUNITY &amp; COMMERCE</div>
+        <h2>The Gazette: Listings, Gatherings &amp; Transmissions</h2>
+      </div>
+      <div class="cols4">
+        <!-- COLUMN 1: Classifieds -->
+        <div class="cell">
+          <div class="box-head">CLASSIFIEDS</div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqjrzv3hvv6rswph95mrzcf5956rvwfe943rzce495un2ce3v3snzdmyx5enyq3q4hq5lgadtyy9dhvtszq46dnl0s0xwdddqr7e32rdqqhma8a4xhssxpqqqpmvyqwn6ll">Two Percent</a></h4>
+            <div class="byline">Contra · Essay Publication</div>
+            <p>Long-form essay examining the 2% miner signaling outcome for BIP-110, historical consensus stagnation, and governance mechanics across democratic institutions.</p>
+          </div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqw8qun0v36kxapdxymnswp4xqervdfjxqmrqtfjw4a8xut6qgsy8w40ps5wdna3jkchacyrux0t8f90m7k9fkdkhtchqfcw6xf7xnqrqsqqqakzytal2a">Nostr Pop Run</a></h4>
+            <div class="byline">BitPopArt · 2,100 SAT ($9.99 USD)</div>
+            <p>Digital vector SVG graphic for printing custom Nostr Pop Run running club stickers and athletic apparel.</p>
+          </div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqlxvvn9v3skydfh943nvwpn956xvcmz95unqveh94jnwvmyxa3k2cfcx5envwnnv4jkgumfvahx2u3dvdhk6urvv46x2ttzw45kceqzypuycd28ty3gm0384m2prtgyw9q66fxaqwrmmsvqxfcpyc8lrmv5zqcyqqq8dss4s2y56">SeedSigner Complete Build</a></h4>
+            <div class="byline">Zalgebar · Hardware Components</div>
+            <p>Sourced components and custom enclosures for the DIY stateless hardware signer returning to stock.</p>
+          </div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qpqkvvn9v3skydfh943nvwpn956xvcmz95unqveh94jnwvmyxa3k2cfcx5envwnnv4jkgumfvahx2u3dwdjkce3dv9ehxetdvfk8jtttd96qygrcfs65wkfz3klz0tk5zxksgu2p45jd6qu8hhqcqvnszfs078kegypsgqqqwmpqgd5xsh">SeedSigner Self-Assembly Kit</a></h4>
+            <div class="byline">Zalgebar · Kit Assembly</div>
+            <p>Open-source hardware self-assembly parts package with custom enclosure options for air-gapped signing.</p>
+          </div>
+        </div>
+
+        <!-- COLUMN 2: Calendar -->
+        <div class="cell">
+          <div class="box-head">TOWN SQUARE &amp; CALENDAR</div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqjxydfnv4jrvvfn94jnjdph956rvvp495urqce395crjdt9xqcrjvry8p3rjq3qs0mv35668yg7t4jk49zdltkezn0em0s3jpt2qn8mkneurnw2edwsxpqqqp7tx5mtw80">Bitcoin Colosseum - Community Edition</a></h4>
+            <div class="byline">Bitcoin Italia Network · Rome</div>
+            <p>14 November 2026, 17:00 at Via del Castro Pretorio, 28a. A free, independent, community-funded P2P gathering dedicated to real-world Bitcoin connections.</p>
+          </div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqwk6mmww35xc7fdvf6kcmrfwd5z6mtpwf4k2apdxgcryd3s8ypzq52c2mkpafgnkf2vnpafdacu7gmqz24es4st874dgjn4fjx0t6ngqvzqqqrukvn6ehkj">The Monthly Bullish Market</a></h4>
+            <div class="byline">bullishMarket · Circular Economy</div>
+            <p>Monthly circular economy showcase bringing together independent merchants, farmers, and artisans accepting bitcoin directly.</p>
+          </div>
+        </div>
+
+        <!-- COLUMN 3: Live Broadcasts -->
+        <div class="cell">
+          <div class="box-head">ON THE AIRWAVES</div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjrxenxxqmrqwf495urjcfs956rzdny95ukzvpk95cxzdesx5urgcnrvgck2q3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwkgf9qr">[P.A.Z.NIA RADIO NETWORK] Vonu Throwback Thursday Transmission</a></h4>
+            <div class="byline">zap.stream broadcast</div>
+            <p>Classic self-liberational media and community radio transmission on the decentralized airwaves.</p>
+          </div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al">NoGood Radio</a></h4>
+            <div class="byline">Continuous Stream</div>
+            <p>Independent audio broadcasting streaming community selections and discussion.</p>
+          </div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqsxc6t8dp6xu6twvukkwmmpw3ej6v3sxgmrqwfsxd2rzvenxscnwkszypnfaw7veaqfaczx0gekvzhg3lghu5meuerwg8tuydhlf93l8smtvqcyqqq8vecfln5ej">⚡ Lightning Goats ⚡ Live Goat Feeder</a></h4>
+            <div class="byline">Interactive Stream</div>
+            <p>Livestreamed animal feeder allowing remote viewers to trigger snack dispensers via Lightning micropayments.</p>
+          </div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqf8x7tww35xgunpvahkuttxd9jhycm9qgsqtespt8c7pfktvna9w07pa034lxz6jaw7le7h2cplmw0gelfcxdqrqsqqqan8lyq2ya">Synthdragon Radio — FIERCE</a></h4>
+            <div class="byline">Redline Transmission</div>
+            <p>High-energy synthesizer music broadcasting live to decentralized listeners.</p>
+          </div>
+          <div class="wire-item">
+            <h4 class="small-head"><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqghx7tww35xgunpvahkuttrdp5kcmqzyqz7vq2e78s2djmylftnls0tud0esk5hthh7046kq07mn6x06wpngqcyqqq8vec4f5fl5">Synthdragon Radio — CHILL</a></h4>
+            <div class="byline">Ambient Stream</div>
+            <p>Downtempo ambient synthesizer soundscapes broadcasting continuously on zap.stream.</p>
+          </div>
+        </div>
+
+        <!-- COLUMN 4: Field & Hearth -->
+        <div class="cell">
+          <div class="box-head">FIELD &amp; HEARTH</div>
+          <figure>
+            <img src="https://blossom.primal.net/528d15dc2caaa3677d0ba3f8036e781c0cb26c46e10877fc53601f3190eec87d.jpg" alt="Views down the valley towards Mayrhofen from the Zillertalbahn in the Austrian Alps" width="4080" height="3072">
+            <figcaption>The Zillertalbahn narrow-gauge railway looking down the valley towards Mayrhofen in the Austrian Alps. <span class="credit">Photograph by matts · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqst6pan50jx9lyvwn2pfpmeskqvzk8m9ej6fummlsjhs9r0al8pjcq5g2x35">Citing note bd07b3</a></span></figcaption>
+          </figure>
+
+          <figure style="margin-top: 10px;">
+            <img src="https://media.poster.place/c10a58ea1ac843c9b45276eddab77069e868a09d5672fc98517dfa1429cbfe25.jpg" alt="Sunset over water during an evening bike ride" width="2560" height="1920">
+            <figcaption>Sunset over the water during an evening ride. <span class="credit">Photograph by V3spering · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs9qq2eddv7g3n0p2jys7rkemamrrer2hprn7ep3mtdfm3ezw8skkqwwa4xu">Citing note 500159</a></span></figcaption>
+          </figure>
+          <div class="story" style="margin-top: 8px;">
+            <p><q>Evening bike ride with the wife and kids. On the way back the sun went down and the sky just went off over the water. We stopped and stood there in silence for a bit. Weird how a big orange sky shuts everybody up. Half the stuff I stress about wouldn't survive ten minutes next to this view. It's free, it shows up every night, and somehow it beats everything money buys. Life could be worse. Be happy with what you actually have.</q></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

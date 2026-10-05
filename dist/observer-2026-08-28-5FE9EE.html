@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Friday, August 28, 2026</title>
+  <meta name="description" content="When Pollen Robotics released Microduck, an unannounced WebRTC signaling dependency routed thousands of ephemeral coordination events across open Nostr relays—triggering denial-of-service alarms that quickly turned into admiration.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="Robotics Fleet Floods Public Relays in Accidental P2P Signaling Proof">
+  <meta property="og:description" content="When Pollen Robotics released Microduck, an unannounced WebRTC signaling dependency routed thousands of ephemeral coordination events across open Nostr relays—triggering denial-of-service alarms that quickly turned into admiration.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-08-28-5FE9EE.html">
+  <meta property="og:image" content="https://i.nostr.build/VL2YnWCKT1FLS8h7siKFdn.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Robotics Fleet Floods Public Relays in Accidental P2P Signaling Proof">
+  <meta name="twitter:description" content="When Pollen Robotics released Microduck, an unannounced WebRTC signaling dependency routed thousands of ephemeral coordination events across open Nostr relays—triggering denial-of-service alarms that quickly turned into admiration.">
+  <meta name="twitter:image" content="https://i.nostr.build/VL2YnWCKT1FLS8h7siKFdn.jpg">
+
+
+
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+
+
+
+  <style>
+/* The Nostr Observer — house stylesheet. */
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="folio">
+      <span>No. 5FE9EE</span>
+      <span>Friday, August 28, 2026</span>
+      <span>24h to 12:17 UTC</span>
+    </div>
+
+    <header class="masthead">
+      <h1><span class="the">The</span> Nostr Observer</h1>
+      <div class="motto">What your web of trust surfaced in the last 24 hours</div>
+    </header>
+
+    <div class="dateline">
+      <span>Ranked as NotBiebs and 69 others</span>
+      <span>584 of 11,838 events</span>
+      <span>217 voices</span>
+    </div>
+
+    <div class="fold">
+      <div class="col span-8">
+        <article class="story">
+          <div class="kicker">Protocol Discovery</div>
+          <h2 class="lead-head">Robotics Fleet Floods Public Relays in Accidental P2P Signaling Proof</h2>
+          <div class="byline">By Our Technology Correspondent · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqpgaqh9x3kpjmgljmvrkrv5cura8mzle6l4uv3xc2ewn2x4tknwsan73sn">Dispatch</a></div>
+          <div class="dek">When Pollen Robotics released Microduck, an unannounced WebRTC signaling dependency routed thousands of ephemeral coordination events across open Nostr relays—triggering denial-of-service alarms that quickly turned into admiration.</div>
+          <p class="first">What began yesterday morning as frantic chatter across Japanese relay dashboards—operators wondering whether open relay pools were suffering a distributed denial-of-service attack or being quietly exploited as an unmetered storage dump—ended with an unexpected demonstration of the protocol’s raw utility. A multiplayer robotics release titled Microduck, developed by Pollen Robotics, was discovered to be leaning on Trystero, a serverless WebRTC library that hardcodes public Nostr relays as its default peer-discovery and signaling layer.</p>
+          <p>Because the traffic consisted almost entirely of ephemeral matchmaking messages that are routed immediately and discarded without consuming disk space, the relays carried the entire burst without buckling. As the source of the traffic became clear, suspicion among developers transformed into quiet celebration: an external engineering project had selected Nostr not as an alternative social network, but purely as zero-configuration, censorship-resistant transport plumbing.</p>
+          <p>The incident underscored an argument long voiced across the developer community: the most consequential adoption of Nostr may happen far away from microblogging timelines. As reya <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqspwne95em2mycd22w6r4l5czcycm9egtdvmhw6cxqsuwcrjlvuh9c93nydq">observed during the debate</a>, <q>I've always believed that the 'other stuff' will make nostr win, not the 'twitter clone'.</q></p>
+        </article>
+
+        <article class="story">
+          <div class="kicker">Hardware Retrofit</div>
+          <h3 class="main-head">Sixty-Year-Old Vending Machine Dispenses Cold Glass Bottles for Sats</h3>
+          <div class="byline">Vancouver, B.C. · Reported by Leo · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsz0nz4llescfaeau24s70r0sfu9q2k4pdzk0cret2l5p9mplt66acyydce8">Field Report</a></div>
+          <figure>
+            <img src="https://i.nostr.build/VL2YnWCKT1FLS8h7siKFdn.jpg" alt="An almost sixty-year-old vintage Coca-Cola vending machine retrofitted to accept Lightning payments at DCTRL in Vancouver">
+            <figcaption>
+              At the DCTRL hackerspace at 330 West Hastings in Vancouver, an authentic 1960s mechanical Coca-Cola machine has been restored to active service, dispensing cold glass bottles through a Raspberry Pi relay running LNbits.
+              <span class="credit">Photograph by Leo</span>
+            </figcaption>
+          </figure>
+          <p class="first">In the downtown core of Vancouver, a mechanical relic from the 1960s has found a second life without altering its cooling system or classic coin-operated aesthetic. Members of the DCTRL hackerspace completed a retrofit on a vintage Coca-Cola vending machine, wiring a Raspberry Pi and a physical relay into the internal coin mechanism and connecting the trigger to LNbits.</p>
+          <p>Writing from the workshop floor, Leo <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsz0nz4llescfaeau24s70r0sfu9q2k4pdzk0cret2l5p9mplt66acyydce8">reported on the finished build</a>: <q>This almost 60 year old vending machine only takes sats! After all that time, without a single Freon refill, it still dispenses ice cold Coca Cola glass bottles. It was surprisingly simple to retrofit, using a Raspberry Pi, a relay and LNbits.</q></p>
+        </article>
+      </div>
+
+      <div class="col span-4">
+        <div class="box">
+          <div class="box-head">Security Advisory</div>
+          <article class="story">
+            <h4 class="sub-head">Core Lightning Issues Emergency Offline Flag</h4>
+            <div class="byline">Librería de Satoshi · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs07tnva899p223wl6zvfu3yvaamuq7zux7k95cdtvlxzsrmlf73vs0tkuyv">Advisory</a></div>
+            <p>Node operators across the Lightning Network received an urgent advisory to start existing Core Lightning daemons with the <code>--offline</code> command-line argument pending the release of signed update binaries. Releases 26.04 and earlier have reached end-of-life status, prompting educators to remind node maintainers that self-sovereignty requires timely maintenance.</p>
+          </article>
+        </div>
+
+        <article class="story" style="margin-top: 18px;">
+          <div class="kicker">Network Hygiene</div>
+          <h4 class="sub-head">The Recurring Vulnerability of Packet Sniffing</h4>
+          <div class="byline">Warning by Matt Corallo · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqspqe7qdl3sxc8n7vptwgw5g5067mrw2j78j5uepd4d60zducnyk7cptsall">Notice</a></div>
+          <figure>
+            <img src="https://image.nostr.build/540253d80ac412578485d31cd6dbc814a2e9943b49dcbae4551943296bdcc57c.jpg" alt="Security notice highlighting remote code execution hazards when parsing untrusted network captures">
+            <figcaption>
+              A reminder on the inherent risks of feeding untrusted raw packet data into complex dissector libraries.
+              <span class="credit">Notice filed by Matt Corallo</span>
+            </figcaption>
+          </figure>
+          <p>Following fresh reports of parser exploits, Bitcoin Core engineer Matt Corallo issued a blunt caution to system administrators inspecting network wire captures: <q>This is your regular reminder not to use Wireshark to read untrusted packets.</q></p>
+          <p>Expanding on the hazard, Corallo <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs943jhph8gqyj45srr0gx3z94g7rg45kpmle9mldmzen75u87x5tq4rzyg2">noted</a> that the software’s massive C codebase makes parser faults an ongoing reality: <q>This is far from the first time wireshark has had a critical RCE vulnerability 😭. In fact far from it, they gave them every year or three.</q></p>
+        </article>
+
+        <article class="story" style="margin-top: 18px;">
+          <div class="kicker">Cybercrime</div>
+          <h4 class="sub-head">Australian Police Arrest Two Over npm Shai-Hulud Worm</h4>
+          <div class="byline">Perth, Australia · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs97fm6hhvwcz9m68xpcy8t6jzut8vvjq5j7ftyl4j9yjl5hcsn45g7pmmk2">Report</a></div>
+          <p>Australian federal authorities arrested two alleged members of the TeamPCP syndicate in Perth. The suspects, aged 21 and 23, have been tied to systematic supply chain compromises targeting JavaScript registries, including the automated propagation of the Shai-Hulud worm.</p>
+        </article>
+      </div>
+    </div>
+
+    <section class="band">
+      <div class="band-head">
+        <h2>Engineering &amp; Releases</h2>
+      </div>
+      <div class="cols3">
+        <div class="cell">
+          <div class="kicker">Lightning Infrastructure</div>
+          <h3 class="sub-head">BOLT12 Pay Adds Reusable Address Book for Self-Hosted Nodes</h3>
+          <div class="byline">Alex71btc · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsph0kfcfgyu5gs9srftvq85xgu4dq2hm8jd8l0hkf2jgq2suggx3qat5xza">Release v0.3.1</a></div>
+          <figure>
+            <img src="https://blossom.primal.net/d8399d1f9c6353f18b1395226a1584f1ee3b18443e042bbb64b8e6628991ccc8.png" alt="User interface of BOLT12 Pay showing the new contacts management view on a self-hosted Lightning node">
+            <figcaption>
+              The updated interface brings reusable contacts, BIP353 resolution, and Keysend to Umbrel and StartOS nodes.
+              <span class="credit">Interface by Alex71btc</span>
+            </figcaption>
+          </figure>
+          <p>Version 0.3.1 of BOLT12 Pay landed on Umbrel and StartOS, adding a persistent contacts layer to transform raw nodes into everyday transactional wallets. The developer noted the driving goal was to <q>make a self-hosted Lightning node feel more like a usable sovereign wallet, not just infrastructure.</q></p>
+        </div>
+
+        <div class="cell">
+          <div class="kicker">Client Architecture</div>
+          <h3 class="sub-head">Nostur &amp; Coracle Push Major Overhauls to Discovery and Comment Handling</h3>
+          <div class="byline">Ecosystem Releases · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs9ledlfvn43epmazpkzh9s9jvxgpc2tk68us702w5xk6w3t40j7yqnrs7m0">Nostur</a> · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqqqrv3rssh8zu82tls2hajvat96vpsfnz9ntrvv9sjnj9jg605qqgmzrl0">Coracle</a></div>
+          <p>Client development saw simultaneous major releases today. Nostur shipped v1.31.0, introducing a unified Web of Trust discovery toggle across media tabs, overhauled badge administration, and background video management.</p>
+          <p>Simultaneously, hodlbod published Coracle 0.6.36, which transitions kind 1 inline replies into dedicated thread comments, strips surveillance query tracking parameters from outbound web links, and resolves compose box line-wrapping bugs.</p>
+        </div>
+
+        <div class="cell">
+          <div class="kicker">Distributed Audio</div>
+          <h3 class="sub-head">Napstr Streamers Rediscover Uncompressed Sound Quality</h3>
+          <div class="byline">Ben Arc · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqstgzdxc26lsgxdesssusxphp8u3ggtepfdpn7jad26kldysws4zvq6f2ywr">Audio Dispatch</a></div>
+          <p>Testing uncompressed peer-to-peer audio seeding through Napstrfy, Ben Arc documented the stark audible difference between direct media feeds and heavily compressed commercial streaming services.</p>
+          <p>Contrasting the high-bitrate output with the bandwidth-saving compression algorithms of legacy streaming platforms, Arc noted: <q>Seeding music doesn’t just feel better, it sounds waaaaay better too!</q></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="band-head">
+        <h2>Dispatches &amp; Living</h2>
+      </div>
+      <div class="cols3">
+        <div class="cell">
+          <div class="kicker">Cyprus</div>
+          <h3 class="sub-head">Suitcases of Fiat Traded for the Twelve Words</h3>
+          <div class="byline">Jurjen de Vries · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsrd3yfa67gg8npzuy26a79dxnltegy39kc33rq09rnlkuvnqgawlgj0jyqr">Travel Log</a></div>
+          <figure>
+            <img src="https://blossom.primal.net/3c193511aceef90af1b2c66f31c31a09d82e4b9cdda478ca2ea2c1c71a7d4708.jpg" alt="A hospitable 71-year-old host in Cyprus seated in her traditional home after learning about Bitcoin self-custody">
+            <figcaption>
+              A 71-year-old Cypriot host with a museum-like home learned the 12-word seed phrase after a lifetime of traveling with physical currency.
+              <span class="credit">Photograph by Jurjen de Vries</span>
+            </figcaption>
+          </figure>
+          <p>Traveling through Cyprus, Jurjen de Vries recorded his first on-island Bitcoin transaction with a 71-year-old host who once navigated international borders carrying suitcases of cash, introducing her to self-sovereign key backup.</p>
+        </div>
+
+        <div class="cell">
+          <div class="kicker">Agriculture</div>
+          <h3 class="sub-head">Thirty-Year Selection Yields Mammoth Garlic Harvest</h3>
+          <div class="byline">C-137 Heather · <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs0a9h8tn0hvtkzz5mwsrlj64t9n8hz46st2zdergwxx4af0wxwt0qr284f2">Homestead Notes</a></div>
+          <figure>
+            <img src="https://blossom.primal.net/e65fa2e47a9cc4893fc208c68929b6e1e291e3216bf4608957a08a5bcdefb20b.jpg" alt="Generous freshly harvested bulbs of heirloom garlic cured on a wooden table">
+            <figcaption>
+              Jumbo heirloom garlic bulbs harvested from seed stock nurtured for three decades by an 80-year-old nurse.
+              <span class="credit">Photograph by C-137 Heather</span>
+            </figcaption>
+          </figure>
+          <p>Showing the results of generational seed-saving, C-137 Heather documented this season’s garlic yield: <q>We got the original ones from a nurse in her 80s who had been saving the largest ones to replant for 30 years. We've been planting them for at least 5 ourselves.</q></p>
+        </div>
+
+        <div class="cell">
+          <div class="kicker">Highlights Desk</div>
+          <h3 class="sub-head">Marked in the Margins</h3>
+          <div class="byline">Curated Passages</div>
+          <div class="story">
+            <p class="dek">Dikaios1517 marked in a treatise on philosophical theology and embodiment:</p>
+            <blockquote style="font-size: 0.95rem; line-height: 1.4; border-left: 2px solid var(--accent); padding-left: 10px; margin: 4px 0;"><q>Human beings come from human beings through a reproductive process organized by two differentiated contributions.</q></blockquote>
+            <p class="dek" style="margin-top: 4px;"><q>A robust doctrine of common nature is strongest when it can bear concrete difference without panic.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs2j4e5gqpvst0eyj05v2md8w43hqkfcaxpnfqf0cfdx4mjs3psh5qewe4qj">Citation</a>)</p>
+          </div>
+          <div class="story" style="margin-top: 10px;">
+            <p class="dek">Gigi highlighted reflections on cryptographic networks and craft:</p>
+            <blockquote style="font-size: 0.95rem; line-height: 1.4; border-left: 2px solid var(--accent); padding-left: 10px; margin: 4px 0;"><q>the combination of global computer networks and strong cryptography could create something historically unusual: human relationships that could exist across jurisdictions</q></blockquote>
+            <p class="dek" style="margin-top: 4px;"><q>when it comes to making something wonderful, the magic is in the mundane</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsrw837gcueg5w739mychsgl3untv6kesjdm7cyldwpv35jr47pwzqenscrc">Citation</a>)</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="band-head">
+        <h2>Gazette &amp; Community Directory</h2>
+      </div>
+      <div class="cols4">
+        <div class="cell">
+          <div class="kicker">The Classifieds</div>
+          <h4 class="small-head">Provisions &amp; Goods</h4>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqdhqun0v36kxazlxymnsdecxservdfjxymrjhm5wfaxxvszyzx6cy3djtq6qzm559kza69ukhsdzuayecmc032slan954c0exxnwqcyqqq8dssdfgmcm">Stacker News Custom Tee</a></strong> — 100% organic cotton logo variant in Black and Gold Yellow. Agora merchant listing.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqrhwcedxv6rxdczyzx6cy3djtq6qzm559kza69ukhsdzuayecmc032slan954c0exxnwqcyqqq8dssqf0fxd">BitcoinTalk Forum Unisex Tee</a></strong> — Ethically harvested ring-spun cotton. Price: 26,386 sats ($21.00 USD).</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qpqrjvryxdskvwfnxvcngetzvgmx2dtyxv6kvv3sxdnrjv3cx33nqerzvsuryepnxd3rzef5xq6ngd3hx43kycmpxs6xyd35vcuryve5xupzqvq08kg0hhvw9p25z2m4c0wrxkn5ycfaz974nrrq2cn4tqps9pnkqvzqqqrkcgeanawu">Creosote Healing Salve (1 oz)</a></strong> — Rising River Botanicals. Protective desert creosote in jojoba, castor oil and beeswax.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqfhxmm4dejz6cm0venx2efddgchx6texspzq05zyq59ud9hm53p9dhtvfjgcn3vlld2ktm5pkhwk5zqt6vg8azaqvzqqqrkcg8p5095">SOUND COFFEE Whole Bean</a></strong> — Caturra blend roasted by Otis Bitmeyer fueling early-stage builders.</p>
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="kicker">Diary &amp; Calendar</div>
+          <h4 class="small-head">Upcoming Gatherings</h4>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvcfexqurjcfjvv6xzdmz8pnxvenpxqmkgdps8qpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvz4zvjh">Porto, Portugal</a></strong> — BTC Norte Meetup at French Fries Factory (Rua do Bonjardim 302), 6:00 PM. Lightning accepted.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvcfexpjx2cmrvv6xzdmz8pnxvenpxqurgvesvypzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvtkzkue">Austin, Texas</a></strong> — AI Startup Rodeo during Austin Tech Week on Friday, October 30th. Full-stack AI and value systems.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvwf5vsunjv3kv5cxvd3sxpjnser9v5ervcnxvgpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv2lg8t2">Helsinki, Finland</a></strong> — BTCHEL 2026 Nordic Conference, September 25–26.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvcfexyenxv3evv6xzdmz8pnxvenpxquxgv3svgpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvnxh2z2">Toronto, Canada</a></strong> — BitDevs Technical Socratic Seminar, Tuesday October 6th, 6:00 PM at bitdevs.to.</p>
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="kicker">Broadcasting</div>
+          <h4 class="small-head">Streams Recorded Live</h4>
+          <div class="wire-item">
+            <p><strong>Synthdragon Radio</strong> — Continuous dual synthwave streams (<a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqf8x7tww35xgunpvahkuttxd9jhycm9qgsqtespt8c7pfktvna9w07pa034lxz6jaw7le7h2cplmw0gelfcxdqrqsqqqan8lyq2ya">FIERCE</a> and <a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqghx7tww35xgunpvahkuttrdp5kcmqzyqz7vq2e78s2djmylftnls0tud0esk5hthh7046kq07mn6x06wpngqcyqqq8vec4f5fl5">CHILL</a>) broadcasting electronic sessions.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqsxc6t8dp6xu6twvukkwmmpw3ej6v3sxgmrqwpjxa2rzdpsx5crskszypnfaw7veaqfaczx0gekvzhg3lghu5meuerwg8tuydhlf93l8smtvqcyqqq8vecg4xk9q">⚡ Lightning Goats ⚡</a></strong> — Live interactive feeder camera funded by incoming Lightning micropayments.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al">NoGood Radio</a></strong> — Live underground musical broadcast session hosted over zap.stream.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjrgdeexgenvwpe95crxepj956xxcnz95urqefj956kvcehvd3rzcmxxg6kvq3qsjf300tngygmqtfkpyd0vcglld2msksjxe9fsjduzn2pccqjl9wsxpqqqpmxwc8mgyx">ScardustTV</a></strong> — Live tour announcement and community broadcast.</p>
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="kicker">The Wire &amp; Numbers</div>
+          <h4 class="small-head">Market &amp; Network Indices</h4>
+          <div class="tablewrap">
+            <table>
+              <tbody>
+                <tr>
+                  <th>Metric</th>
+                  <th style="text-align: right;">Reading</th>
+                </tr>
+                <tr>
+                  <td>Spot Exchange</td>
+                  <td class="num">$79,664</td>
+                </tr>
+                <tr>
+                  <td>Mempool Floor</td>
+                  <td class="num">1 sat/vB</td>
+                </tr>
+                <tr>
+                  <td>Block Height</td>
+                  <td class="num">964,305</td>
+                </tr>
+                <tr>
+                  <td>Supply Issued</td>
+                  <td class="num">95.59%</td>
+                </tr>
+                <tr>
+                  <td>4-Yr Realized ROI</td>
+                  <td class="num">+301%</td>
+                </tr>
+                <tr>
+                  <td>Word5 Puzzle</td>
+                  <td class="num">#693</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="note" style="margin-top: 8px;">As of 12:17 UTC — readings filed to the relay during the window, not live. Corpus: 584 ranked events across 14 desks; overlap 2 of 400.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

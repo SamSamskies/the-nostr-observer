@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Nostr Observer — Friday, September 25, 2026</title>
+  <meta name="description" content="Blitz releases an open-source recovery tool, self-hosters benchmark UmbrelOS 2.0, and developers push back against walled ecosystems with sovereign infrastructure.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="When the App Goes Offline: Sovereign Exits and Rebuilt Hatches">
+  <meta property="og:description" content="Blitz releases an open-source recovery tool, self-hosters benchmark UmbrelOS 2.0, and developers push back against walled ecosystems with sovereign infrastructure.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-09-25-AEF8DE.html">
+  <meta property="og:image" content="https://blossom.primal.net/9d1136cae7604c36982ba786079e32abaa57abddf2f26a4c95387671ad85c2ef.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="When the App Goes Offline: Sovereign Exits and Rebuilt Hatches">
+  <meta name="twitter:description" content="Blitz releases an open-source recovery tool, self-hosters benchmark UmbrelOS 2.0, and developers push back against walled ecosystems with sovereign infrastructure.">
+  <meta name="twitter:image" content="https://blossom.primal.net/9d1136cae7604c36982ba786079e32abaa57abddf2f26a4c95387671ad85c2ef.jpg">
+
+
+
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+
+
+
+<style>
+/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="folio">
+    <span>No. AEF8DE</span>
+    <span>Friday, September 25, 2026</span>
+    <span>24h to 13:17 UTC</span>
+  </div>
+
+  <header class="masthead">
+    <h1><span class="the">The</span> Nostr Observer</h1>
+    <p class="motto">All the news surfaced by your web of trust</p>
+  </header>
+
+  <div class="dateline">
+    <span>Ranked as NotBiebs and 69 others</span>
+    <span>602 events through your lens</span>
+    <span>200 voices</span>
+  </div>
+
+  <main class="fold">
+    <div class="col span-5">
+      <article class="story">
+        <span class="kicker">Self-Custody &amp; Sovereign Infrastructure</span>
+        <h2 class="lead-head">When the App Goes Offline: Sovereign Exits and Rebuilt Hatches</h2>
+        <p class="dek">Blitz releases an open-source recovery tool, self-hosters benchmark UmbrelOS 2.0, and developers push back against walled ecosystems with sovereign infrastructure.</p>
+        <figure>
+          <img src="https://blossom.primal.net/9d1136cae7604c36982ba786079e32abaa57abddf2f26a4c95387671ad85c2ef.jpg" alt="Screenshot of Blitz Recover, an open-source recovery tool for Blitz Wallet.">
+          <figcaption>Interface of the rebuilt Blitz Recover, released open-source to let users retrieve funds held across pools, gifts, and accounts if the app is offline.<span class="credit">Blitz Wallet</span></figcaption>
+        </figure>
+        <p class="byline">By Our Technology Desk</p>
+        <p class="first">When a Bitcoin wallet expands into multiple accounts, pools, and savings goals, self-custody faces an uncomfortable test: what happens if the company’s servers disappear tomorrow?</p>
+        <p>In an ecosystem that prizes sovereign control of funds, convenience frequently drifts toward invisible dependencies. That tension came into focus today as Blitz Wallet unveiled a completely rebuilt and open-source emergency escape hatch. As the developers put it, <q>Blitz offers more than a single wallet.</q> With separate allocations for gifts, pools, accounts, and savings goals, <q>how do you reach all of it without the Blitz app?</q></p>
+        <p>Their answer is a standalone recovery utility built specifically for catastrophic scenarios: <q>Fully open source and built for the case where Blitz goes offline.</q> Because it leverages off-chain state through Spark, the team took care to delineate its trust boundaries: <q>It uses the Spark network, so it is not a unilateral exit tool.</q> Users seeking access can reach the standalone tool at recover.blitzwalletapp.com (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsgqzgyemyhkrt7s55tnsv3znrljt9p9eclpyaahuxrdfha6g0zpjcknhdlp">Blitz Wallet</a>).</p>
+        <p>The impulse toward local resilience resonated widely across the network. Reviewing recent developments on local hardware, NostrLlama reported on the latest Raspberry Pi release of Umbrel: <q>After checking out UmbrelOS 2.0 on my Pi yesterday, I'm really considering also buying the Umbrel hardware to self-host basically anything</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqqqqp2vvawl04m9hvsva5ytz2rvcgad00pslnq08n4m72hw52eys4vsdhs">NostrLlama</a>). They noted how far self-hosted systems have evolved from early hobbyist builds, observing that the <q>UX/UI is so polished and functional now.</q></p>
+        <p>Meanwhile, peer-to-peer exchange RoboSats affirmed its deepening reliance on open protocols rather than closed server architecture, reminding traders: <q>RoboSats has integrated Nostr for many features and keeps adding more of them.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs9r7uueczgqg4nzew3a85xlpp62f2qd78fhf7ry8k2h6vdjnwf7yqt7kp0l">RoboSats</a>).</p>
+      </article>
+    </div>
+
+    <div class="col span-4">
+      <article class="story">
+        <span class="kicker">Privacy &amp; Civil Liberties</span>
+        <h3 class="main-head">Surveillance Threats in Europe as Russia Splits the Net</h3>
+        <p class="dek">German digital rights advocates sound the alarm on Chatkontrolle 2.0, while human rights monitors report on state internet manipulation.</p>
+        <p class="byline">By Our Privacy Correspondent</p>
+        <p>A critical battle over personal encryption is brewing in Brussels. Former MEP and digital rights advocate Patrick Breyer issued an urgent warning to European citizens ahead of a crucial vote early next week: <q>Dienstag droht schmutziger Deal zur #Chatkontrolle 2.0 mit PERMANENTER Erlaubnis von Massenscans unserer privaten Chats</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsq8pqly77tkma3zksk7ene02m9ehsmn6gey8yxq4wrdrwp4qj3y8gax2pdh">Patrick Breyer</a>). The proposal would establish permanent mandates for mass client-side scanning of private messaging applications across member states.</p>
+        <p>The precarious state of communication freedom was underscored globally by the Human Rights Foundation’s Financial Freedom Report #139, which documented how authoritarian regimes manipulate connectivity: <q>organizers of an international youth festival reportedly created multiple versions of the internet</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqspgkjr9t5ama3jptydcgyzr5dlwe4anx4s39tk86573p8cxrckfnc24qc0x">HRF</a>), offering uncensored web access on tailored SIM cards to foreign visitors while keeping domestic citizens behind rigid national firewalls.</p>
+      </article>
+
+      <article class="story">
+        <span class="kicker">Exchanges &amp; Scams</span>
+        <h3 class="sub-head">Suspected $352M Bitget Drain; KYCnot.me Blacklists Swapter</h3>
+        <p>Security desks tracked massive abnormal outflows from centralised exchange Bitget overnight: <q>Nearly $352M Moved From Crypto Exchange Bitget Wallets in Suspected Hack</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs20a86uqtgcduvyh2krq9v2ey343f54qgwqmz3agzwfvnlx0vxk2sg70ny7">Bitcoin Magazine</a>), renewing scrutiny on custodial counterparty risks.</p>
+        <p>Simultaneously, privacy watchdog KYCnot.me issued an unsparing notice regarding swap platform Swapter: <q>We have marked Swapter as a scam.</q> The watchdog documented predatory behavior against customers: <q>Large swaps are held for months and never paid or refunded</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsr4ndpc9wdxvdrafk0sdfwkmwhmx4p3gaslcyfdwu8um4p522vz2q820xq9">KYCnot.me</a>), even after users provided identity documents and proofs of funds.</p>
+        <p>On a brighter note for circular spending, Coincards announced its third major platform overhaul: <q>Spend Bitcoin like cash.</q> The service highlighted instant settlement without intermediaries: <q>Gift cards for your favourite stores</q>, <q>Pay with Bitcoin or Lightning</q>, and <q>No bank required</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsyyj7mv76s29uk947er6myj35hwljq9nluyapkvttv8u7rxtwnfasjxuf8d">Coincards.com</a>).</p>
+      </article>
+    </div>
+
+    <div class="col span-3">
+      <div class="box">
+        <div class="box-head">Conditions · As of 13:17 UTC</div>
+        <p class="note">Network and market readings from the 24-hour window (not live).</p>
+        <div class="tablewrap">
+          <table>
+            <tbody>
+              <tr><th>Metric</th><th class="num">Reading</th></tr>
+              <tr><td>Bitcoin (USD)</td><td class="num">$84,576 – $84,923</td></tr>
+              <tr><td>4-Year ROI</td><td class="num">+351%</td></tr>
+              <tr><td>US 10-Yr Yield</td><td class="num">5.11%</td></tr>
+              <tr><td>Floor Rank</td><td class="num">&ge; 20</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Price data compiled from ChartsBTC dispatches; bond yields cited by markusturm.</p>
+      </div>
+
+      <div class="box">
+        <div class="box-head">Broadcasting · Live Now</div>
+        <p class="note">Streams on air when this paper went to press.</p>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjrgdfevvcrqd3595mx2dfk956rqvty95urqwtp94jnvwrzxe3kgdecvsurgq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwvg5x7u">FREEDOM TECH FRIDAY</a></strong> — Live community broadcast on open tech and freedom tools.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al">NoGood Radio</a></strong> — Live audio stream on zap.stream.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqghx7tww35xgunpvahkuttrdp5kcmqzyqz7vq2e78s2djmylftnls0tud0esk5hthh7046kq07mn6x06wpngqcyqqq8vec4f5fl5">Synthdragon Radio — CHILL</a></strong> — Deep ambient electronics.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqf8x7tww35xgunpvahkuttxd9jhycm9qgsqtespt8c7pfktvna9w07pa034lxz6jaw7le7h2cplmw0gelfcxdqrqsqqqan8lyq2ya">Synthdragon Radio — FIERCE</a></strong> — High-energy synth broadcast.</p>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="box-head">The Instrument</div>
+        <p class="note">The same 24-hour window read without a lens returned 400 notes. Of those, exactly 0 appeared in your 393 ranked notes.</p>
+        <p class="note">A zero overlap confirms the lens is operating cleanly: filtering away global firehose noise and unvetted accounts to surface the specific network of trust you cultivate.</p>
+      </div>
+    </div>
+  </main>
+
+  <section class="band">
+    <div class="band-head"><h2>Despatches &amp; Community</h2></div>
+    <div class="cols3">
+      <div class="cell">
+        <article class="story">
+          <span class="kicker">Mascots &amp; Feeds</span>
+          <h3 class="sub-head">The Search for a Mascot, and Reclaiming Social Feeds</h3>
+          <figure>
+            <img src="https://blossom.primal.net/e8e51075af68cb4af022ff0ed50a55347e8024dc1c04386aeb063a96e2be2844.jpg" alt="Elephant seal proposed as Nostr mascot by Joe Martin.">
+            <figcaption>An elephant seal, nominated by Joe Martin as a candidate for a new Nostr mascot.<span class="credit">Joe Martin</span></figcaption>
+          </figure>
+          <p>A lighthearted Friday debate over protocol symbolism turned into a broader discussion on community identity. <q>If you had to choose a new nostr mascot, what would it be?</q> asked Joe Martin (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqspg6w660j6jjawptnj777pkkwmc9tuhuqenfd7w6dfvdlp0ctmcsghyrdz3">Joe Martin</a>), putting forward the <q>Elephant seal</q>. A.A.Ron countered with an aquatic nomination: <q>Electric eel, because they zap and are kinda cute.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqqqqzzkf00kvrnscz4rnec83sksee5dch7tsdk4cjdvd33hffw8qaqzxtx">A.A.Ron</a>).</p>
+          <p>Martin struck a more earnest tone reflecting on algorithmic feeds versus decentralized networks, creating curated follower packs for musicians: <q>Social media used to be about connection with friends and now it's about consumption driven by surveillance capitalism.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsvmqycj3uqf68uagrl7jfv2pzfca3a3ku8f6luwpjxm8sg87dm57quhdnj8">Joe Martin</a>).</p>
+        </article>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <span class="kicker">Dispatches</span>
+          <h3 class="sub-head">North of Morocco by Train; Hand-Knotted Silk</h3>
+          <figure>
+            <img src="https://blossom.primal.net/2f94a3f60123687a2b46e2b628205f8fa7f8fe6eba726c1b5d9bf787a14bfa89.jpg" alt="Photograph taken by Jurjen de Vries during his travels in Morocco.">
+            <figcaption>Filed by Jurjen de Vries while backpacking through northern Morocco en route by train to Meknes.<span class="credit">Jurjen de Vries</span></figcaption>
+          </figure>
+          <p>Travel notes arrived from North Africa, where Jurjen de Vries checked in from regional rails: <q>Traveling with my backpack in the north of Morocco.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsrhj6juk7h426xdymajdm2rjwpp3fw4ztr8tanluxsa457cgvhvyqhgtrvc">Jurjen de Vries</a>). En route between historic cities, he noted: <q>Have visited Assilah, Larache and Rabat, going by train to Meknes this afternoon.</q></p>
+          <p>Meanwhile in artisan craftsmanship, Pegah Rug shared finished details of an ambitious textile release: <q>Luxury Packaging for the First Round Bitcoin-Themed Rug.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqq78jx8yqagdjntswygtf5clhz4850hum3uen8t9ak7fp6nhc59ssuf6px">Pegah Rug</a>), delivering custom presentation boxes for hand-knotted silk pieces.</p>
+        </article>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <span class="kicker">Family &amp; Gatherings</span>
+          <h3 class="sub-head">A Foreign Culture at Home, and Festival Plans in Essex</h3>
+          <figure>
+            <img src="https://blossom.primal.net/5818710cfd417e39f492c15803bee54fc9c91f8a14c3e5906ee8302c9c64fa53.png" alt="Packaging design for hand-knotted Bitcoin-themed silk rug by Pegah Rug.">
+            <figcaption>Luxury packaging for the first round of hand-knotted Bitcoin-themed silk rugs, shared by Pegah Rug.<span class="credit">Pegah Rug</span></figcaption>
+          </figure>
+          <p>Reflecting on work-life priorities, Sir Double T shared quiet counsel on raising children: <q>Parenting is like a trip to a totally different culture.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsrsm67xh2zjecuwh4ay487cz3yjqy9eqknjxv6x0dx0jkm0keskqcj8ccq8">Sir Double T</a>). Recounting his early decisions, he observed: <q>The best thing I did was to put everything on the back burner and focus on spending time with my family.</q> His parting reminder to fellow builders: <q>Soak it up, it all goes by so fast.</q></p>
+          <p>Across the Atlantic, Aaron of Essex reported progress from an in-person planning session for the UK festival calendar: <q>Had a great irl meeting about bitfest.uk last night.</q> (<a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsv5j9pp7kdpujj6jr9407j3lky4c50wsw4gdyrud5g9dhfj6635ksd8gjh6">Aaron of Essex</a>), promising upcoming band rosters.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="band-head"><h2>Departments &amp; Exchanges</h2></div>
+    <div class="cols3">
+      <div class="cell">
+        <h3>The Classifieds</h3>
+        <p class="note">Offers from Shopstr merchants.</p>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqdhqun0v36kxazlxymnjvpjxuurvd3nxscnvhmzwyukycszyqce0ttqmw9umxgul0szxzt2j8y04zvn0s67rklru2tfd2m6zg4e2qcyqqq8dssmlp36g">Japanese Noh Mask Art Print A5</a></strong> · 21,000 SATS<br>
+          A5 art print on textured 240gsm matte paper based on sketches from a 2018 Japan trip. Offered by Tynka.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqdhqun0v36kxazlxymnwvp3x5crwvp38yervhe4d4unwmszyqd2rka7avzdmccwreaqpalw5as92j08sund2dfzuwvs4f5qp86rxqcyqqq8dssx3cmkr">Copper Engraving: Sur la petite route...</a></strong> · 80,000 SATS<br>
+          Original copper engraving print on recycled paper, edition of 8 by zed-erwan.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqdhqun0v36kxazlxymnjvpjxuenswf38y6r2hmtwscnyegzyqce0ttqmw9umxgul0szxzt2j8y04zvn0s67rklru2tfd2m6zg4e2qcyqqq8dssdy0mwp">Bookshop Art Print A4</a></strong> · 42,000 SATS<br>
+          Giclée print of an on-site sketchbook drawing of a South London bookshop by Tynka.</p>
+        </div>
+      </div>
+
+      <div class="cell">
+        <h3>App Releases &amp; Code</h3>
+        <p class="note">NIP-82 software and NIP-34 repositories.</p>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zapstore.dev/apps/dev.disobey.mango">Mango</a></strong> — Private messaging client by aljaz with direct Nostr onboarding and emergency local chat deletion.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zapstore.dev/apps/com.beatbridge">BeatBridge</a></strong> — Automatic Bluetooth audio playback resumption client.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zapstore.dev/apps/com.kazumaproject.markdownhelperkeyboard">Sumire</a></strong> — Offline Japanese keyboard IME for mobile.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://gitworkshop.dev/npub1zqdpzty2mshxncqqxy2078qax6mlehsxmpx5095wtxw4tpepkr0s2ce6fj/Nostr-Follow-Weight">Nostr Follow Weight</a></strong> — Algorithm by Permanerd to calculate follow distribution weights.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://gitworkshop.dev/npub1hw6amg8p24ne08c9gdq8hhpqx0t0pwanpae9z25crn7m9uy7yarse465gr/tollgate-rs">tollgate-rs</a></strong> — Rust implementation of tollgate micropayment proxies by Arjen.</p>
+        </div>
+      </div>
+
+      <div class="cell">
+        <h3>Diary &amp; Calendar</h3>
+        <p class="note">Upcoming dates from NIP-52 calendar notices.</p>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqjrwvtpvd3rqdtz94sn2e3k956x2ep495ukgvmz956rqc3nxe3nyv3nvfsnyq3q4yzptn3vkf4ravfl9dhu49pzqpsap3m5emze2e6v4tuyceht72eqxpqqqp7txxl770m">BitPost Relaunch</a></strong><br>
+          Tuesday, September 29, 2026. Online relaunch integrating native on-chain Bitcoin payments and mobile optimizations.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqckyct5w3jhyum9vykky6t5vdhkjmn9wfej6mmrw3hkyetj95erqv3k95cnwwphxcurvve3xccnyv3dxqpzqysf4dfswq6az9yewun53ygpsrq6pays60lxmpyyzjckjqfdd94fqvzqqqrukvg4clyl">Battersea Bitcoiners</a></strong><br>
+          October 2026. Monthly casual gathering in South West London, UK.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctzx5ckvwph893rwepe8y6nsdfh8qmxxenrvvpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvkux4rl">Bitcoin Nottingham November Meetup</a></strong><br>
+          Sunday, November 1, 2026, 6:00 PM. O'Connors Irish Bar, West Bridgford, Nottingham, UK.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

@@ -23,10 +23,17 @@ local.properties
 
 # Runtime data
 data/
-# Printed papers plus corpus/digest (every run)
+# Printed papers plus corpus/digest (every run). Never commit this —
+# corpus.json is other people's posts and must not go online via git.
 editions/
-# The public shelf — selected papers only, staged for Vercel
+# Ignore every dist/ by default (the print skill has used one that held
+# corpus.json). Un-ignore only the repo-root public shelf so a checkout
+# knows what is staged for Vercel. Still deploy with
+# `npx vercel deploy dist`, never as a git-linked project.
 dist/
+!/dist/
+!/dist/**
+# .vercel/ under dist/ stays ignored by the pattern below.
 .vercel/
 *.db
 *.sqlite

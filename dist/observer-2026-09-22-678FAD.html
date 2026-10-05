@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Tuesday, September 22, 2026</title>
+  <meta name="description" content="Two months after canceling commercial subscriptions, developers are finding self-hosted open models match frontier intelligence without the moving goalposts.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="Walking Away from the Cloud: The Open-Weight Dev Stack Takes Root">
+  <meta property="og:description" content="Two months after canceling commercial subscriptions, developers are finding self-hosted open models match frontier intelligence without the moving goalposts.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-09-22-678FAD.html">
+  <meta property="og:image" content="https://blossom.dreamith.to/92cd3c76bdf438ab0e92d7a16bdb7b1ef3e55971d4710f85f3903a60d7499df2.jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Walking Away from the Cloud: The Open-Weight Dev Stack Takes Root">
+  <meta name="twitter:description" content="Two months after canceling commercial subscriptions, developers are finding self-hosted open models match frontier intelligence without the moving goalposts.">
+  <meta name="twitter:image" content="https://blossom.dreamith.to/92cd3c76bdf438ab0e92d7a16bdb7b1ef3e55971d4710f85f3903a60d7499df2.jpeg">
+
+
+
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+
+
+
+  <style>
+/* The Nostr Observer — house stylesheet */
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+  </style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="folio">
+    <span>No. 678FAD</span>
+    <span>Tuesday, September 22, 2026</span>
+    <span>24h to 12:25 UTC</span>
+  </div>
+
+  <header class="masthead">
+    <h1><span class="the">The</span>Nostr Observer</h1>
+    <div class="motto">All the Notes Fit to Rank</div>
+  </header>
+
+  <div class="dateline">
+    <span>Ranked as NotBiebs</span>
+    <span>578 events through your lens</span>
+    <span>199 voices</span>
+  </div>
+
+  <!-- ABOVE THE FOLD -->
+  <div class="fold">
+
+    <!-- LEAD STORY -->
+    <div class="col span-5">
+      <article class="story">
+        <div class="kicker">The Local Machine</div>
+        <h2 class="lead-head">Walking Away from the Cloud: The Open-Weight Dev Stack Takes Root</h2>
+        <p class="dek">Two months after canceling commercial subscriptions, developers are finding self-hosted open models match frontier intelligence without the moving goalposts.</p>
+        <p class="byline">By Our Technology Correspondent</p>
+        <p class="first">The transition began quietly, but after sixty days the verdict is clear: developers who walked away from cloud AI subscriptions are not coming back. <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqstrhekcd7luh92t0wtwmyva2ldpnxg3l7xa7ztdv984yd70kjqhzcnm3pgk">Matt Lorentz</a>, reflecting on two months without frontier API dependencies, reported that the experiment has gone far better than anticipated. <q>Almost two months after canceling my Cursor subscription and it is going much better than I thought.</q> Running on open weights, he observed that <q>the open models feel 95% as good.</q></p>
+        <p>The real liberation, according to Lorentz, is not merely financial but psychological. In the proprietary ecosystem, developer workflows remain hostage to constant pricing shifts and deprecation schedules. As Lorentz put it: <q>I don't miss the subsidized subscription games that Anthropic is always changing the rules on.</q> His daily workflow now relies on open-weight models orchestrated locally on an old gaming PC using tools like Hermes with Qwen, deepseek-v4-flash, and custom local harness interfaces.</p>
+        <p>This shift away from centralized platforms extends across the Nostr developer ecosystem. <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs997aw8kxw45u8m7z3y5s67xqhqhusfnau5u3vwyzhuc9424u2evsf2ggee">Sirius</a> put out a call for testing on Iris Chat, an end-to-end encrypted messaging client requiring neither phone numbers nor server accounts, operating over both Nostr relays and local Bluetooth. Simultaneously, Sirius published a proposal for a <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsft7f6ww9cg7cwq6dx0u4yvzjv8lxpjk9c4j40gqpyqnv5fcpzafq6exqyp">Nostr double ratchet</a> protocol, advancing secure asynchronous messaging across untrusted relays.</p>
+      </article>
+    </div>
+
+    <!-- FEATURE COLUMN WITH ART -->
+    <div class="col span-4">
+      <article class="story">
+        <div class="kicker">Wilderness &amp; Dispatch</div>
+        <h2 class="main-head">Fifty Miles from the Road: A Solo Caribou Hunt in the Talkeetna Range</h2>
+        <p class="dek">Dropped by bush plane on an Alaskan river gravel bar, a hunter measures risk where every choice carries consequence.</p>
+        <p class="byline">By A.A.Ron</p>
+        <figure>
+          <img src="https://blossom.dreamith.to/92cd3c76bdf438ab0e92d7a16bdb7b1ef3e55971d4710f85f3903a60d7499df2.jpeg" alt="Gravel bar and mountains in the Talkeetna wilderness, filed by A.A.Ron with his note on hunting solo">
+          <figcaption>The braided river and mountain valley of the Talkeetnas, where A.A.Ron spent a week hunting solo.<span class="credit">Photograph by A.A.Ron</span></figcaption>
+        </figure>
+        <p class="first">Deep in Alaska’s Talkeetna Mountains, fifty miles from the nearest pavement, time contracts to the perimeter of your campsite and the direction of the wind. <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqqqqy8qv57wezg8ngmz24wr6tpek7l8nylqnkg5vqcn84uulsf2ckzutk7">A.A.Ron</a> returned this week from a solo expedition flown in by veteran bush pilot Mike Meekins, who touched down on a Maule atop an untamed gravel bar at 2,300 feet. <q>Just me, 50lbs of gear and my ol' 7 mag 5 miles from the nearest person.</q></p>
+        <p>Hunting alone in bear country alters the calculus of every routine chore. As A.A.Ron observed, <q>Everything is higher consequence when you are 50 miles from the road.</q> On his first morning along the river willow banks, two bull caribou emerged from the timber; a single broadside shot secured his harvest for the winter. Butchering required speed and vigilance, quartering the animal near the river before burying the gut pile and setting camp back 500 yards to avoid inquisitive predators.</p>
+        <p>The experience is framed by restraint and deliberate boundaries. <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqqqqplruj3r7uucadk7nxd3y42d0sltjku89vv7spfvftzs5f0dsl5g4nd">A.A.Ron</a> noted that solo travel demands a distinct threshold of caution: <q>There is no hard line, but I am more cautious when alone. No rafting. No wading across rivers more than knee deep. I stop when hiking turns into climbing. I wouldn't harvest a grizzly bear without a backup shooter.</q> The family returned to full freezer shelves, where <q>We ground most of the caribou and taught my oldest son how to make burger patties and brats.</q></p>
+      </article>
+    </div>
+
+    <!-- RAIL COLUMN -->
+    <div class="col span-3">
+      <div class="box">
+        <div class="box-head">Network Conditions</div>
+        <p class="note">As of 12:25 UTC · Readings from window, not live</p>
+        <div class="tablewrap">
+          <table>
+            <tbody>
+              <tr><th>Metric</th><th style="text-align:right">Reading</th></tr>
+              <tr><td>Bitcoin Price</td><td class="num">$85,430</td></tr>
+              <tr><td>Fee Rate</td><td class="num">1 sat/vB</td></tr>
+              <tr><td>Hash Rate</td><td class="num">943 EH/s</td></tr>
+              <tr><td>Block Height</td><td class="num">968,000</td></tr>
+              <tr><td>Blocks to Halving</td><td class="num">82,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">From the hourly report filed by <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqsqqqvdf8p9vd2krwt7cae8fn0czlsttg20fasc920kly77ln222yqswyq4v">Clark Moody Dashboard</a>.</p>
+      </div>
+
+      <div class="box">
+        <div class="box-head">The Instrument</div>
+        <p class="note">Measuring feed separation</p>
+        <p style="font-size: .85rem; line-height: 1.45; color: var(--ink-2);">The same 24-hour window read without your web of trust returned 400 notes. Of those, exactly 0 appeared in the 364 ranked notes your lens selected.</p>
+        <p style="font-size: .85rem; line-height: 1.45; color: var(--ink-2);">An overlap of <strong>0 of 400</strong> demonstrates the web of trust functioning as designed: completely isolating your feed from the global unranked noise.</p>
+      </div>
+
+      <div class="box">
+        <div class="box-head">Broadcasting</div>
+        <p class="note">Streams active in the 24-hour window</p>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqf8x7tww35xgunpvahkuttxd9jhycm9qgsqtespt8c7pfktvna9w07pa034lxz6jaw7le7h2cplmw0gelfcxdqrqsqqqan8lyq2ya">Synthdragon Radio — FIERCE</a></strong><br>Synthesizer and electronic music streaming on air, featuring Mirajin.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqghx7tww35xgunpvahkuttrdp5kcmqzyqz7vq2e78s2djmylftnls0tud0esk5hthh7046kq07mn6x06wpngqcyqqq8vec4f5fl5">Synthdragon Radio — CHILL</a></strong><br>Downtempo ambient frequencies broadcasting continuous listening.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zap.stream/naddr1qqjrgepcx5crjdr995exydn9956rve3k94snjcf495cxydfhxdjxverpxsexgq3qsjf300tngygmqtfkpyd0vcglld2msksjxe9fsjduzn2pccqjl9wsxpqqqpmxwr0l5xz">ScardustTV</a></strong><br>Live concert stream announcing dates for their upcoming American tour.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BAND 1: DESIGN & DISPATCHES -->
+  <div class="band">
+    <div class="band-head">
+      <h2>Design &amp; Dispatches</h2>
+    </div>
+    <div class="cols3">
+      <div class="cell">
+        <div class="kicker">Interface &amp; Form</div>
+        <h3 class="sub-head">The Allure of the Floating Panel: An Idea Everyone Tries</h3>
+        <figure>
+          <img src="https://blossom.primal.net/472e88eb571b50d68c505c3c414dcd3c93c22917c72d3b9398fa1f5f35125dd3.jpg" alt="Floating panel interface concept explored and abandoned across design tools and operating systems, filed by Christoph Ono">
+          <figcaption>Floating panels across Penpot, Figma, and macOS.<span class="credit">Image shared by Christoph Ono</span></figcaption>
+        </figure>
+        <p style="font-size: .88rem; line-height: 1.45; color: var(--ink-2);">Interface design cycles periodically succumb to recurrent temptations. <a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs24x74tytmep2yangxk32kz5mr8ylj8kdnj6yezh0lxfnf3ay0lks6zdq59">Christoph Ono</a> traced the persistent rise and fall of floating tool panels across modern systems: Penpot explored and dropped the concept in 2023, Figma briefly adopted and discarded it in 2024, and Apple introduced floating panels in macOS 26 only to abandon them in macOS 27. As Ono remarked, <q>Seems like there are some alluring ideas everyone just has to try.</q></p>
+      </div>
+      <div class="cell">
+        <div class="kicker">Software Releases</div>
+        <h3 class="sub-head">Nsite Browsers, Signers &amp; Git On Nostr</h3>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zapstore.dev/apps/pub.soapbox.tenna">Tenna</a>:</strong> Team Soapbox introduced Tenna, a dedicated browser for nsites published directly to Nostr relays. Websites reside on decentralized manifests rather than DNS servers, removing domain renewal vulnerabilities.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zapstore.dev/apps/com.greenart7c3.nostrsigner">Amber Signer</a>:</strong> Greenart7c3 published an update to the Amber event signer on Android, bolstering isolated key security for remote NIP-46 workflows.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://zapstore.dev/apps/space.gittr.buhogo">BuhoGO v1.9.2</a>:</strong> DrShift announced a major release upgrading Spark wallets to the Breez SDK with custom Lightning addresses.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://gitworkshop.dev/npub1n2ph08n4pqz4d3jk6n2p35p2f4ldhc5g5tu7dhftfpueajf4rpxqfjhzmc/gitnostr">Gitnostr &amp; Gittr</a>:</strong> Developer arbadacarba published a comprehensive suite of tools enabling distributed Git code repository management over Nostr.</p>
+        </div>
+      </div>
+      <div class="cell">
+        <div class="kicker">Postcard</div>
+        <h3 class="sub-head">Moroccan Medina: Art in Assilah</h3>
+        <figure>
+          <img src="https://blossom.primal.net/c6e4bcafcaeaf6956b399a83be659f4eef5c20a06b65f2797412cce1a549a370.jpg" alt="Street scene in the old city of Assilah, Morocco, filed by Jurjen de Vries">
+          <figcaption>Assilah’s old town, an artistic Medina along the Moroccan coast.<span class="credit">Photograph by Jurjen de Vries</span></figcaption>
+        </figure>
+        <p style="font-size: .88rem; line-height: 1.45; color: var(--ink-2);"><a rel="noopener noreferrer" target="_blank" href="https://jumble.social/notes/nevent1qqs2g99xaj2ugg9lufxuvyh66h9rlurahh4kmedduq4sm50wdjj4gls9dyzay">Jurjen de Vries</a> filed dispatches and photographs from northern Morocco, wandering through the ancient walled Medina of Assilah. Known for murals and artistic streets, the quiet coastal settlement offers visual refuge and timeless stone lanes.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BAND 2: THE CLASSIFIEDS & DIARY -->
+  <div class="band" style="border-bottom: 0;">
+    <div class="band-head">
+      <h2>The Classifieds &amp; Diary</h2>
+    </div>
+    <div class="cols2">
+      <div class="cell">
+        <div class="kicker">The Exchange</div>
+        <h3 class="sub-head">Leatherwork &amp; Literature</h3>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qq5kymrpvd4j6cn4venxzmr0943x2mr5956rydphwesj6vfdxyknytfn8qkkkam2xf582q3qv0tfjv5ahr3c260jtzdk5w48krerrnkg8fmcnc5lpguk0qda04eqxpqqqpmvy22967a">Black Buffalo belt - 1 1/2 / 38</a></strong> — $50 USD<br>Handcrafted leather belts by Leathermint, cut from durable black buffalo hide with heavy hardware. Sized two inches above trouser measurement.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqdhqun0v36kxazlxymnwvf5x5crjvekxgerzhme0pkrguczyreafh85mryee76k6qa28vsx3h4rdjdevp2384y6tvdkdrr03l26yqcyqqq8dss474stw">Bitcoin &amp; Exponential Freedom</a></strong> — 10 GBP<br>Offered by The Bitcoin Shop UK, an introductory volume exploring peer-to-peer monetary foundations and open societies.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a rel="noopener noreferrer" target="_blank" href="https://shopstr.market/listing/naddr1qqdhqun0v36kxazlxymnwvfnxcunqdfk8y6rgheed4ekuegzyreafh85mryee76k6qa28vsx3h4rdjdevp2384y6tvdkdrr03l26yqcyqqq8dss54rca2">The Sovereign Individual</a></strong><br>Classic treatise by Davidson and Rees-Mogg analyzing the transition to decentralized digital commerce, available from The Bitcoin Shop UK.</p>
+        </div>
+      </div>
+      <div class="cell">
+        <div class="kicker">Diary &amp; Calendar</div>
+        <h3 class="sub-head">Upcoming Gatherings</h3>
+        <div class="wire-item">
+          <p><strong>Berlin, Germany:</strong> <a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctzx9jrxdtxvenx2dtyxgerjvt9x56rxdmzxqpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv5el5ej">Nostrhackday Berlin</a><br>Tuesday, September 29, 2026 at c-base (Rungestraße 20). Collaborative building and show-and-tell preceding BTC++.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong>Nairobi, Kenya:</strong> <a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctzxyexywr9xccnjwtpxgcx2desvdnrqvp4xgpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv4zffd9">BitDevsNBO Socratic Seminar #32</a><br>Saturday, September 26, 2026 at Node NBO. Technical seminar sponsored by Btrust discussing protocol development.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong>Helsinki, Finland:</strong> <a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvwf5vsunjv3kv5cxvd3sxpjnser9v5ervcnxvgpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv2lg8t2">BTCHEL 2026</a><br>Friday &amp; Saturday, September 25–26, 2026. The second edition of the premier Nordic Bitcoin conference.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong>Santa Monica, California:</strong> <a rel="noopener noreferrer" target="_blank" href="https://njump.me/naddr1qqvrvctzxymnwwfjvfnxvvtxxvurxdr9x56rgc3exvpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvxgw7wc">Bitcoin &amp; Coffee #99</a><br>Saturday, September 26, 2026 from 9:00 to 11:00 at Sogno Toscano Caffè.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer style="margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--rule); font-family: var(--util); font-size: .68rem; color: var(--ink-3); text-align: center;">
+    The Nostr Observer · Printed for npub1vp8fdcyejd4pqjyrjk9sgz68vuhq7pyvnzk8j0ehlljvwgp8n6eqsrnpsw · Edition 678FAD · Closed at 12:25 UTC
+  </footer>
+
+</div>
+</body>
+</html>
