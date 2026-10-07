@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+<style id="observer-house">
+/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+
+</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Tuesday, October 6, 2026</title>
+  <meta name="description" content="With the arrival of Cordn for group messaging and Concord community governance, alongside simultaneous releases of Soapbox&#39;s Armada and hodlbod&#39;s Flotilla, Nostr clients are expanding from broadcast timelines into full sovereign communications platforms.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="Amethyst v1.17 Ships MLS Group Encryption as Sovereign Chat Ecosystem Surges">
+  <meta property="og:description" content="With the arrival of Cordn for group messaging and Concord community governance, alongside simultaneous releases of Soapbox&#39;s Armada and hodlbod&#39;s Flotilla, Nostr clients are expanding from broadcast timelines into full sovereign communications platforms.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-10-06-9CAA1F.html">
+  <meta property="og:image" content="https://i.nostr.build/v5XbQ6YaZEvUWA4uKAUtTx.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Amethyst v1.17 Ships MLS Group Encryption as Sovereign Chat Ecosystem Surges">
+  <meta name="twitter:description" content="With the arrival of Cordn for group messaging and Concord community governance, alongside simultaneous releases of Soapbox&#39;s Armada and hodlbod&#39;s Flotilla, Nostr clients are expanding from broadcast timelines into full sovereign communications platforms.">
+  <meta name="twitter:image" content="https://i.nostr.build/v5XbQ6YaZEvUWA4uKAUtTx.jpg">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<main class="sheet">
+
+  <div class="folio">
+    <span>No. 9CAA1F</span>
+    <span>Tuesday, October 6, 2026</span>
+    <span>24h to 14:30 UTC</span>
+  </div>
+
+  <header class="masthead">
+    <h1><span class="the">The</span>Nostr Observer</h1>
+    <div class="motto">All the Notes Fit to Rank</div>
+  </header>
+
+  <div class="dateline">
+    <span>Ranked as NotBiebs</span>
+    <span>598 events through your lens</span>
+    <span>216 voices</span>
+  </div>
+
+  <!-- ABOVE THE FOLD -->
+  <div class="fold">
+
+    <!-- LEAD STORY COLUMN (SPAN 8) -->
+    <div class="col span-8">
+      <article class="story">
+        <div class="kicker">Protocol Architecture &amp; Releases</div>
+        <h2 class="lead-head">Amethyst v1.17 Ships MLS Group Encryption as Sovereign Chat Ecosystem Surges</h2>
+        <p class="dek">With the arrival of Cordn for group messaging and Concord community governance, alongside simultaneous releases of Soapbox's Armada and hodlbod's Flotilla, Nostr clients are expanding from broadcast timelines into full sovereign communications platforms.</p>
+        <div class="byline">By The Observer Software Desk · Sourced from <a href="https://jumble.social/notes/nevent1qqsxeyyps6d7x30nnwmnlyds3y86vql4tlx0xtvmenp5cjcpc2ff2tg547ruw" target="_blank" rel="noopener noreferrer">Amethyst</a>, <a href="https://jumble.social/notes/nevent1qqsqqqqz5pdl9qxj2nl0haqzkndz2caxfu9lrrtcqyter077pp856gq0l6k0a" target="_blank" rel="noopener noreferrer">⚡ Dee Kay ⚡</a>, <a href="https://jumble.social/notes/nevent1qqsqqqrzp72mp0dmy9n9d5g5k269q2empwxv8uw2n59cwa545ltr8qq3ce0q8" target="_blank" rel="noopener noreferrer">Five</a> and <a href="https://zapstore.dev/apps/buzz.armada.app" target="_blank" rel="noopener noreferrer">Armada</a></div>
+
+        <p class="first">The transition of Nostr from an uncensorable public microblogging network into a full sovereign communications substrate took a substantial leap forward over the past twenty-four hours. Leading the wave, client developer Vitor Pamplona and the Amethyst project released version 1.17.0, introducing Cordn—a native implementation of Messaging Layer Security (MLS) group chats coordinated over an MCP layer. In Cordn rooms, messages bypass the event cache entirely, rendering them immune to search indexing, while supporting end-to-end encrypted voice notes, Blossom media attachments, and frictionless device migration via QR handoff.</p>
+
+        <p>The release also deepens decentralized community governance through Concord, bringing pin carousels, Direct Invites by pubkey, disappearing messages, and private channels with automatic key rotation upon member departure. Under the hood, the QR scanner was completely re-engineered on CameraX and zxing-cpp to reliably read blurry, off-axis, or low-contrast codes, while media rendering gains support to <q>display Ultra HDR photos in HDR</q> and a <q>make the audio visualizer update in real time fix</q>, as contributor ⚡ Dee Kay ⚡ noted. Amethyst v1.17.0 even integrates physical world exploration via Geocaching (NIP-CC) with QR-verified finds.</p>
+
+        <p>Amethyst's release coincided with an industry-wide convergence on decentralized collaboration and self-hosted infrastructure. Team Soapbox unveiled Armada (<a href="https://zapstore.dev/apps/buzz.armada.app" target="_blank" rel="noopener noreferrer">Armada</a>) and the Armada Stack (<a href="https://zapstore.dev/apps/armada-stack" target="_blank" rel="noopener noreferrer">Armada Stack</a>)—packaging a web client, Nostr relay, Blossom server, push gateway, and LiveKit voice and video calls into a single static binary. Simultaneously, developer hodlbod released Flotilla (<a href="https://zapstore.dev/apps/social.flotilla" target="_blank" rel="noopener noreferrer">Flotilla</a>) for self-hosted community chat and threaded forums, Henky!! launched Nostella (<a href="https://zapstore.dev/apps/nostella" target="_blank" rel="noopener noreferrer">Nostella</a>) borrowing peer-to-peer peering concepts from Gnutella, and Sirius reported progress on a native package manager for Omarchy (<a href="https://jumble.social/notes/nevent1qqstdwqmw0klpmqavfjw4r6hprv83elp4eq5k3y0t575fwqxqqk4v5seda8z7" target="_blank" rel="noopener noreferrer">Omarchy</a>) as an operating system.</p>
+
+        <p>Reflecting on the deeper architectural implications of these protocol milestones, network philosopher Five observed:</p>
+
+        <blockquote>Bitcoin brought adaptive proof of work based money, nostr gives us the simplest primitives for sovereign identity and independently verifiable data. These protocols let us design freedom oriented, natural, human-scale systems.</blockquote>
+
+        <p>As Gigi highlighted (<a href="https://jumble.social/notes/nevent1qqsfze4k36zumzgd4z49lwv0ms8g4wqt8unu5088pjzj5ce32lvmy8guq468r" target="_blank" rel="noopener noreferrer">Gigi</a>), <q>If nostr continues to catch on, it might turn itself into the global address book for these kinds of things</q>.</p>
+      </article>
+
+      <article class="story" style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--rule-soft);">
+        <div class="kicker">Operational Security</div>
+        <h3 class="main-head">The Mobile Bunker: Field Sovereignty on GrapheneOS and Termux</h3>
+        <div class="byline">Sourced from <a href="https://jumble.social/notes/nevent1qqsrgjuda9l2xy66rttw0kp7w74uggc2csw7rcfjldcfg9c8x52ze3cy42fwz" target="_blank" rel="noopener noreferrer">Alien Investor</a> &amp; <a href="https://jumble.social/notes/nevent1qqsg78xg504kkrfnfffm42cqeg8fl29dtka3t9rjlf8a64kpr66fexs246szm" target="_blank" rel="noopener noreferrer">evacide</a></div>
+        <p>In an operational field guide, Alien Investor detailed workflows for maintaining cryptographic sovereignty while mobile, pairing GrapheneOS with Termux for localized GPG key management and off-grid hygiene: <q>Sovereignty does not end at the edge of your desk. You need to take your digital fortress with you.</q> The guiding principle remains austere: <q>No magic. Just math. That is the Alien Investor way.</q></p>
+        <p>The necessity of independent communications was underscored internationally by security researcher evacide (<a href="https://jumble.social/notes/nevent1qqsg78xg504kkrfnfffm42cqeg8fl29dtka3t9rjlf8a64kpr66fexs246szm" target="_blank" rel="noopener noreferrer">evacide</a>), who flagged Russian state blocking of Signal, WhatsApp, and Telegram in an effort to herd citizens onto mandatory state-monitored alternatives like VK's Max app.</p>
+      </article>
+    </div>
+
+    <!-- SIDEBAR COLUMN (SPAN 4) -->
+    <div class="col span-4">
+
+      <!-- OVERLAND WIRE (WITH ART-29) -->
+      <article class="story">
+        <div class="kicker">Overland Wire</div>
+        <h3 class="main-head">Ten Hours on the D941: Overnight High-Speed Sleeper to the Pearl River Delta</h3>
+        <div class="byline">Dispatched by <a href="https://jumble.social/notes/nevent1qqsddj9jlxhrdfjj3gzr0svmhdq4zq4xhm4c4phqfgawgguh3lfjhmqn23e5e" target="_blank" rel="noopener noreferrer">Leo</a></div>
+
+        <figure>
+          <img src="https://i.nostr.build/v5XbQ6YaZEvUWA4uKAUtTx.jpg" alt="The interior of a sleeper cabin on the D941 high-speed train from Shanghai to Shenzhen.">
+          <figcaption>Inside a sleeper berth on the D941 from Shanghai to Shenzhen. <q>The beds are very slim and hard, but generally comfortable.</q> Leo observed of the 1,623km journey. <span class="credit">Leo</span></figcaption>
+        </figure>
+
+        <p style="margin-top: 10px;">Documenting long-distance transit across East Asia, traveler Leo boarded the D941 high-speed sleeper departing Shanghai Hongqiao for Shenzhen. Four identical bullet sleeper trains depart within a fifteen-minute window, all headed toward the Pearl River Delta with different terminal stations.</p>
+        <p><q>The couch seems to be primarily used by staff. You get basic toiletries and water for the 10h, 1623km ride. There are two toilets and a water boiler in every car, but no showers.</q></p>
+        <p>The journey is a study in transport economics: <q>The cabin for two persons costs US$378, more than two flights and a hotel would be.</q> Unlike daytime high-speed services, the sleeper carries a dedicated dining car, though the food quality remains standard railway fare.</p>
+      </article>
+
+      <!-- THE INSTRUMENT -->
+      <div class="box" style="margin-top: 20px;">
+        <div class="box-head">The Instrument · Lens Fidelity</div>
+        <p style="font-size: .88rem; line-height: 1.45; color: var(--ink-2);">Every morning this edition benchmarks the reader's curated web of trust against the unmoderated global firehose. Over the identical 24-hour window, an unranked query to the relay returned 400 notes. Of those 400, exactly <strong>0</strong> appeared among the 396 ranked notes surfaced for NotBiebs.</p>
+        <p style="font-size: .82rem; line-height: 1.4; color: var(--ink-3); border-top: 1px dotted var(--rule); padding-top: 8px;">A 0.0% overlap confirms that the reader's web of trust acted as a total filter, cleanly separating high-signal sovereign discourse from the ambient broadcast clutter.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- REVERSE PANEL: MONETARY THEORY & CONDITIONS -->
+  <div class="reverse" style="margin-top: 28px;">
+    <div class="kicker">Monetary Theory &amp; Markets</div>
+    <h2 class="main-head" style="margin-top: 4px;">Gold, Bricks, and $85,000 Coins: The Subjective Geometry of Value</h2>
+    <div class="byline" style="margin-top: 4px;">By The Financial Desk · Sourced from <a href="https://jumble.social/notes/nevent1qqsxvzymfvq9ygn2zjrh8x72lvpyurzm0mt89g2wpvj39z9lr8am55gjmt5j7" target="_blank" rel="noopener noreferrer">Trey</a> &amp; <a href="https://jumble.social/notes/nevent1qqs94plmqzcwrhza6p0zj8zgex9xx56p735sflq7nskejhx5zzhe6tqzyf347" target="_blank" rel="noopener noreferrer">ChartsBTC</a></div>
+
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 14px;">
+      <div>
+        <p style="font-size: .95rem; line-height: 1.5; color: var(--reverse-ink);">Examining the perennial debate over whether monetary assets require physical backing, analyst Trey untangled the fallacy of inherent worth:</p>
+        <blockquote style="margin: 12px 0; font-size: 1.05rem; color: var(--reverse-ink);">The exact same house can sell for far more in New York City or by the beach than in an Oklahoma cul-de-sac. The building has the same physical properties. Buyers value its location differently. That creates a problem for the phrase “intrinsic value.”</blockquote>
+        <p style="font-size: .95rem; line-height: 1.5; color: var(--reverse-ink);">As Trey concluded, <q>Value comes from what people expect an asset to do for them. Utility, scarcity, psychology, and expectations about the future shape demand.</q></p>
+        <p style="font-size: .85rem; line-height: 1.45; color: var(--reverse-ink-2); margin-top: 10px;">In commercial developments, Bringin opened Euro business banking accounts for Bitcoin companies across thirty European nations (<a href="https://jumble.social/notes/nevent1qqstp0e8u3g7xxdkpx567ssz53vnzh2c8frxddvqggjndmj8ul839hgy2zg8z" target="_blank" rel="noopener noreferrer">Bringin</a>). Meanwhile in the UK, the CPS secured a £1.81M confiscation order against a corrupt police officer who stole 50 BTC (£59,000 at the time, now worth over £4.4M) from a seized wallet in 2019 (<a href="https://jumble.social/notes/nevent1qqs989rwycqcyd5mq8gfpk37cw0wc2y39c3ut8txygu3kqkn0crywaqdq95qz" target="_blank" rel="noopener noreferrer">Ungovernable</a>).</p>
+      </div>
+
+      <div style="background: rgba(255,255,255,0.05); padding: 14px 16px; border: 1px solid var(--ink-2);">
+        <div style="font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--reverse-spot); border-bottom: 1px solid var(--ink-2); padding-bottom: 6px;">Chain &amp; Market Readings</div>
+        <div class="tablewrap" style="margin-top: 10px;">
+          <table>
+            <tbody>
+              <tr>
+                <td style="color: var(--reverse-ink-2); border-bottom: 1px dotted var(--ink-2);">Bitcoin Spot Price</td>
+                <td class="num" style="color: var(--reverse-ink); border-bottom: 1px dotted var(--ink-2);">$85,772</td>
+              </tr>
+              <tr>
+                <td style="color: var(--reverse-ink-2); border-bottom: 1px dotted var(--ink-2);">Purchasing Power</td>
+                <td class="num" style="color: var(--reverse-ink); border-bottom: 1px dotted var(--ink-2);">1,165 sats/$</td>
+              </tr>
+              <tr>
+                <td style="color: var(--reverse-ink-2); border-bottom: 1px dotted var(--ink-2);">4-Year ROI</td>
+                <td class="num" style="color: var(--reverse-ink); border-bottom: 1px dotted var(--ink-2);">+327%</td>
+              </tr>
+              <tr>
+                <td style="color: var(--reverse-ink-2); border-bottom: 1px dotted var(--ink-2);">Oct 2022 Baseline</td>
+                <td class="num" style="color: var(--reverse-ink); border-bottom: 1px dotted var(--ink-2);">$20,162</td>
+              </tr>
+              <tr>
+                <td style="color: var(--reverse-ink-2); border-bottom: 1px dotted var(--ink-2);">7-Day High</td>
+                <td class="num" style="color: var(--reverse-ink); border-bottom: 1px dotted var(--ink-2);">$87,219</td>
+              </tr>
+              <tr>
+                <td style="color: var(--reverse-ink-2); border-bottom: 0;">7-Day Low</td>
+                <td class="num" style="color: var(--reverse-ink); border-bottom: 0;">$82,870</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note" style="margin-top: 10px; color: var(--reverse-ink-2);">As of 14:30 UTC · Static readings from ChartsBTC (<a href="https://jumble.social/notes/nevent1qqs94plmqzcwrhza6p0zj8zgex9xx56p735sflq7nskejhx5zzhe6tqzyf347" target="_blank" rel="noopener noreferrer">ChartsBTC</a>, <a href="https://jumble.social/notes/nevent1qqsf7e4m7vzyltjh5rt6ngwxlrrf4nqnjzqped8a9y8wus4spvgm03sg3ln4x" target="_blank" rel="noopener noreferrer">ChartsBTC</a>, <a href="https://jumble.social/notes/nevent1qqs200f6lu27n9yskp6zz3uxgzxv8ghxg367ycxk6lpptn2tvcyzp2gx0l8zq" target="_blank" rel="noopener noreferrer">ChartsBTC</a>). Not a live ticker.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION BAND: FIELD REPORTS, HOMESTEAD & KITCHEN -->
+  <div class="band" style="margin-top: 32px;">
+    <div class="band-head">Field Reports, The Homestead &amp; The Kitchen</div>
+    <div class="cols3">
+
+      <!-- CELL 1: FIELD & RANGE (ART-10) -->
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Field &amp; Range</div>
+          <h3 class="sub-head">A Hunter’s Calculus at Two Hundred Yards</h3>
+          <div class="byline">Dispatched by <a href="https://jumble.social/notes/nevent1qqsf40ypz2ddkczdgjl0h9wkzdrhsyk5q2fjwn6erzpwxwda7hvxracwwtrmt" target="_blank" rel="noopener noreferrer">Anders</a></div>
+
+          <figure>
+            <img src="https://npub1p37gz205d5avyut6dzz3dlrw5q32tlj3qtasmmq3gf9rpj2fm5fs2ad6pe.blossom.band/e3ded566e760459c3023977ca64ba4166595c2917e0fce2da02af438aa1ccae6.jpg" alt="A hunter checking out a shot at over 200 yards in high winds.">
+            <figcaption>A hunter scoping quarry past 200 yards in adverse weather. <q>My friend checking out a chance, but it was over 200 yards and the wind was far from shooting conditions.</q> Anders reported. <span class="credit">Anders</span></figcaption>
+          </figure>
+
+          <p style="margin-top: 10px;">In open country, patience frequently outranks marksmanship. Documenting a field outing in gusty conditions, Anders captured the discipline of passing up a shot when distance and shifting crosswinds compromise ethical harvesting.</p>
+        </article>
+      </div>
+
+      <!-- CELL 2: DOMESTIC ECONOMY -->
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Domestic Economy</div>
+          <h3 class="sub-head">Twenty Cabbages in the Crisper: A Kitchen Dilemma</h3>
+          <div class="byline">Sourced from <a href="https://jumble.social/notes/nevent1qqsqqqqynqr67c0rvwgtyst682cjd20tjhljdphrmctwpqtp28pwqdgk4cwh9" target="_blank" rel="noopener noreferrer">A.A.Ron</a> &amp; <a href="https://jumble.social/notes/nevent1qqswh4mpj3wqwzrvjly8xc8kpcc25xqpaw44k62pmk78t8mkqtt8lcsvkvav5" target="_blank" rel="noopener noreferrer">Jimble's Jumble</a></div>
+
+          <p class="first">Grower A.A.Ron experienced the unintended consequence of defensive gardening: <q>Yeah, slugs usually get half of mine, so I plant twice as many as I want. This year they didn't.</q></p>
+          <p>The result is a harvest surplus: <q>Nope, I have 20 cabbages that I grew in the fridge and I need new ways to get my kids to eat it. Cole slaw and soup ain't cutting it.</q></p>
+          <p>With twenty pounds of venison kielbasa in the freezer waiting for culinary inspiration (<a href="https://jumble.social/notes/nevent1qqsqqqqzx7ehzh0zgh5qrct7mrhzx9zqz8zyd70jtj0uc8yyc9cdkkqwgg8we" target="_blank" rel="noopener noreferrer">A.A.Ron</a>), practical solutions surfaced from Jimble's Jumble (<a href="https://jumble.social/notes/nevent1qqswh4mpj3wqwzrvjly8xc8kpcc25xqpaw44k62pmk78t8mkqtt8lcsvkvav5" target="_blank" rel="noopener noreferrer">Jimble's Jumble</a>), who shared a five-recipe pickle and preserve pack on Zap Cooking alongside fresh batches of homemade chunky piccalilli.</p>
+        </article>
+      </div>
+
+      <!-- CELL 3: PRAIRIE & PENCIL (ART-12) -->
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Prairie &amp; Pencil</div>
+          <h3 class="sub-head">Mushrooms by the Fence and Sunday Prairie Rain</h3>
+          <div class="byline">By <a href="https://jumble.social/notes/nevent1qqsqqqyazfk3ct4cdnefmdzqhrun498chk25cytagptnsek7lvv0jrs9fr8t6" target="_blank" rel="noopener noreferrer">existing sprinkles</a> &amp; <a href="https://jumble.social/notes/nevent1qqsr7mxfd0e929jcaxrjg5q3v785sgz9te35yvg40d40d5tsg7qcfqgcq6f7c" target="_blank" rel="noopener noreferrer">tyson</a></div>
+
+          <figure>
+            <img src="https://blossom.primal.net/a6f0635889586a0b3b381b572a24ef3efb61f5fa48a38877d4bd7a81cba1d9c8.jpg" alt="Sketch of plants by a fence and overnight mushrooms.">
+            <figcaption>Morning ink sketch of fence-line vegetation. <q>the plants that seem to do well are by the fence and mushrooms who pop up overnight.</q> observed existing sprinkles. <span class="credit">existing sprinkles</span></figcaption>
+          </figure>
+
+          <p style="margin-top: 10px;">Reflecting on autumn quietude, illustrator existing sprinkles (<a href="https://jumble.social/notes/nevent1qqsqqqyazfk3ct4cdnefmdzqhrun498chk25cytagptnsek7lvv0jrs9fr8t6" target="_blank" rel="noopener noreferrer">existing sprinkles</a>) sketched persistent wild growth thriving along boundary fences. The slow morning coincided with tyson’s visual dispatch (<a href="https://jumble.social/notes/nevent1qqsr7mxfd0e929jcaxrjg5q3v785sgz9te35yvg40d40d5tsg7qcfqgcq6f7c" target="_blank" rel="noopener noreferrer">tyson</a>) tracing open prairie walking trails under steady weekend rainfall.</p>
+        </article>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STANDING DESKS BAND (COLS 4) -->
+  <div class="band" style="margin-top: 32px;">
+    <div class="band-head">Standing Desks &amp; Network Gazettes</div>
+    <div class="cols4">
+
+      <!-- APP RELEASES -->
+      <div class="cell">
+        <div class="box">
+          <div class="box-head">App Releases</div>
+          <div class="wire-item">
+            <p><strong><a href="https://zapstore.dev/apps/com.vitorpamplona.amethyst" target="_blank" rel="noopener noreferrer">Amethyst</a></strong>: v1.17 ships Cordn MLS encrypted group chats, Concord community channels, and NIP-CC geocaching.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://zapstore.dev/apps/buzz.armada.app" target="_blank" rel="noopener noreferrer">Armada</a></strong>: Serverless community chat with Concord channels, voice calls, and identity secured by keys.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://zapstore.dev/apps/armada-stack" target="_blank" rel="noopener noreferrer">Armada Stack</a></strong>: Web app, relay, Blossom server, push notifications, and LiveKit voice/video in one static binary.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://zapstore.dev/apps/npanel" target="_blank" rel="noopener noreferrer">npanel</a></strong>: Hostname-to-nsite mapping dashboard fetching signed Blossom blobs with TLS and onion routing.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://zapstore.dev/apps/social.flotilla" target="_blank" rel="noopener noreferrer">Flotilla</a></strong>: Self-hosted community chat and threaded forums built on the Nostr protocol.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://zapstore.dev/apps/nostella" target="_blank" rel="noopener noreferrer">Nostella</a></strong>: Resilient peer-to-peer distribution borrowing concepts from Gnutella.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://zapstore.dev/apps/com.darkrockstudios.apps.hammer.android" target="_blank" rel="noopener noreferrer">Hammer</a></strong>: Cross-platform Nostr application utility.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://zapstore.dev/apps/io.silentsuite.android" target="_blank" rel="noopener noreferrer">SilentSuite</a></strong>: End-to-end encrypted calendar, contacts, and task synchronization across platforms.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- BROADCASTING & REPOSITORIES -->
+      <div class="cell">
+        <div class="box">
+          <div class="box-head">Broadcasting &amp; Code</div>
+          <div class="wire-item">
+            <p><strong><a href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al" target="_blank" rel="noopener noreferrer">NoGood Radio</a></strong>: Community broadcast on zap.stream.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://zap.stream/naddr1qqghx7tww35xgunpvahkuttrdp5kcmqzyqz7vq2e78s2djmylftnls0tud0esk5hthh7046kq07mn6x06wpngqcyqqq8vec4f5fl5" target="_blank" rel="noopener noreferrer">Synthdragon Radio — CHILL</a></strong>: 24/7 ambient electronica stream.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://zap.stream/naddr1qqf8x7tww35xgunpvahkuttxd9jhycm9qgsqtespt8c7pfktvna9w07pa034lxz6jaw7le7h2cplmw0gelfcxdqrqsqqqan8lyq2ya" target="_blank" rel="noopener noreferrer">Synthdragon Radio — FIERCE</a></strong>: High-tempo synthwave featuring Mirajin's <em>The Obelisk</em>.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://zap.stream/naddr1qqjxvcfexy6rve3k94snyvrp956rwde5943rwcmx95mx2d35x5mn2d33v56nvq3qsjf300tngygmqtfkpyd0vcglld2msksjxe9fsjduzn2pccqjl9wsxpqqqpmxws0jj89" target="_blank" rel="noopener noreferrer">ScardustTV 24/7</a></strong>: Continuous video feed hosted on Stream Road.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://zap.stream/naddr1qq4xcmmrv9k97vp3vycnzvfkxqkkzephx5knwdej8qkkydfsvykngc3exejkydm9xccxyvgzyq7mtcdem2jhe34864f2s6582a8w5fj7qavam6u8638qwflhnmvg6qcyqqq8veckngxcw" target="_blank" rel="noopener noreferrer">Dota: Arc Warden No.1</a></strong>: Competitive gaming stream hosted by nickydev.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://gitworkshop.dev/npub1drvpzev3syqt0kjrls50050uzf25gehpz9vgdw08hvex7e0vgfeq0eseet/slip132-parser" target="_blank" rel="noopener noreferrer">slip132-parser</a></strong>: SLIP-0132 extended key prefix parser by Yuki Kishimoto.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://gitworkshop.dev/npub1n2ph08n4pqz4d3jk6n2p35p2f4ldhc5g5tu7dhftfpueajf4rpxqfjhzmc/gittr-helper-tools" target="_blank" rel="noopener noreferrer">gittr-helper-tools</a></strong>: Nostr git utilities by arbadacarba.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://gitworkshop.dev/npub1cgd35mxmy37vhkfcmjckk9dylguz6q8l67cj6h9m45tj5rx569cql9kfex/squawk" target="_blank" rel="noopener noreferrer">Squawk</a></strong>: Repository by ABH3PO.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://gitworkshop.dev/npub1te6ect9y5n3z9wn6lz0xluc4u8f8ssl730g28elxre96tvwqwvnqgneqew/MORP-Base" target="_blank" rel="noopener noreferrer">MORP Base</a></strong>: Repository by Josephus.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIARY & CALENDAR -->
+      <div class="cell">
+        <div class="box">
+          <div class="box-head">Diary &amp; Calendar</div>
+          <div class="wire-item">
+            <p><strong>Vienna</strong>: <a href="https://njump.me/naddr1qqvrvctrxsukxwrxv3jrscecxyunjvnyvd3kgvenv5pzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv66ufy5" target="_blank" rel="noopener noreferrer">15 Jahre Bitcoin Austria</a> unveils Valentina Picozzi's stainless steel Satoshi Nakamoto statue at Viertel Zwei.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Philadelphia</strong>: <a href="https://njump.me/naddr1qqvrvctrxfnrvde5v3skzdp48pjrqcn98qerzefe8qpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvqnxsua" target="_blank" rel="noopener noreferrer">October Bitcoin Jawn</a> featuring Lyn Alden on Monday, October 12 at Grand Palace Restaurant.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Swindon</strong>: <a href="https://njump.me/naddr1qqvrvctrxsukgcfev3jrscecxyunjvnyvd3k2efnxgpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv5w24l6" target="_blank" rel="noopener noreferrer">Dora’s Dairy Big Feed Up</a> celebrating ethical, regenerative farming and circular Bitcoin economies.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Melksham</strong>: <a href="https://njump.me/naddr1qqvrvctrxsukgcfcv3jrscecxyunjvnyvd3k2efjv5pzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvkupwlm" target="_blank" rel="noopener noreferrer">Wiltshire Bitcoin Meetup</a> at The Water Meadow East on Friday, October 23.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Linz</strong>: <a href="https://njump.me/naddr1qqvrvctrxdnr2vekv3jrscecxyunjvnyvd3xve3s8ypzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv6hme0j" target="_blank" rel="noopener noreferrer">Einundzwanzig Linz</a>, Protom demonstrates the new Zeus app, pocket nodes, and Cashu.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Off-Grid</strong>: <a href="https://njump.me/naddr1qqgk6et9w36hqtt9wejkuapdxvurswgzyrd0s0vjw6946qq9xulc8ccdggpupd68c9cyf8szl6nprgx6zf0wvqcyqqq8evcq676pk" target="_blank" rel="noopener noreferrer">MeshCore Workshop</a>, hands-on flashing of independent T1000-E radio nodes.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Milwaukee</strong>: <a href="https://njump.me/naddr1qqvrvctrxs6rswphv3jrscecxyunjvnyvd3ngd34x5pzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvq4gm3l" target="_blank" rel="noopener noreferrer">Milwaukee Bitcoin Meetup</a> at LuLu Café &amp; Bar in Bayview on Tuesday, October 13.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- THE CLASSIFIEDS -->
+      <div class="cell">
+        <div class="box">
+          <div class="box-head">The Classifieds</div>
+          <div class="wire-item">
+            <p><strong><a href="https://shopstr.market/listing/naddr1qpqrgenyvvensctpxe3rwvtpxcux2etyxp3n2v3hxpjngdpcxvmxvvpcvvukycfcxf3nzdpjx9snwenrxvurvvf4v4snxwrzvfjxgwrxxgpzqd6wayar8uak7yq5xfsps0f40hs3sj446vwxtk4kwayuuumxyv68qvzqqqrkcgrkqcut" target="_blank" rel="noopener noreferrer">Homemade Chunky Piccalilli</a></strong>: Fresh vegetable, turmeric, and mustard relish in 280g jar from Jimble's Jumble. Postage £4.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://shopstr.market/listing/naddr1qqjrqcty8qcnsdpj943nzc3e956rywfj95uxxet9956rxdfnxe3rgdn98qcnxq3qxa8wjw3n7wm0zq2rycqc856hmcgcf26ax8r9m2m8wjwwwdnzxdrsxpqqqpmvyd92gfp" target="_blank" rel="noopener noreferrer">Homemade Chunky Chilli Piccalilli</a></strong>: Spicy batch with a blast of chilli from Jimble's Jumble.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://shopstr.market/listing/naddr1qqjrjd33ve3rqdnx95ux2epe956rxwtx94snqvrr956kgcmrxcuxvvphvyenjq3qxa8wjw3n7wm0zq2rycqc856hmcgcf26ax8r9m2m8wjwwwdnzxdrsxpqqqpmvyr4xhzd" target="_blank" rel="noopener noreferrer">Blackberry &amp; Cherry Vanilla Preserve</a></strong>: Summer 2026 small-batch jam made with garden blackberries and British cherries by Jimble's Jumble.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://shopstr.market/listing/naddr1qqjxxun9w3skutthd9kxgenvdamk2u3ddphkuete95cnqtt00gknxdrsxcmk2q3qtan2cwtf8s7zxvck79qllzaa7smy03y9ftd50gk6jnag2htnslssxpqqqpmvylvqsv3" target="_blank" rel="noopener noreferrer">Cretan Wildflower Honey 10 oz</a></strong>: Sourced directly from Crete through family apiaries in Greece, offered by Staci.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://shopstr.market/listing/naddr1qq3xxun9w3skutthd9kxgenvdamk2u3ddphkuete956x773dxu6nzufs8qpzqhmx4sukj0puyve3du2pl79mmapkglzg2jkmg73d4986s4wh8plpqvzqqqrkcgp0jwlj" target="_blank" rel="noopener noreferrer">Cretan Wildflower Honey 4oz</a></strong>: Small 4 oz jar of natural wildflower honey offered by Staci.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+</body>
+</html>
