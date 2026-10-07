@@ -44,10 +44,10 @@ and ask for it:
 > print my Nostr Observer
 ```
 
-It will ask which npub to read for, check that your lens actually resolves, and
-stop with a specific remedy if it does not. If it prints a paper, you get two
-things: an `observer-<date>-<code>.html` file in `editions/` of that directory, and an
-artifact link.
+It uses your explicitly saved reader, or asks which npub to read for, checks
+that your lens actually resolves, and stops with a specific remedy if it does
+not. Each attempt gets its own folder under `editions/`. A completed run gives
+you an `observer-<date>-<code>.html` file and an artifact link.
 
 Everything runs locally. You are not signing in to anything of ours, and no
 key of yours goes anywhere — the skill reads public relay data and writes a
@@ -57,14 +57,67 @@ file.
 
 | Step | |
 |---|---|
-| 1 | Asks for your npub — it becomes the `observer:<pubkey>` token the relay ranks by |
-| 2 | `readiness.mjs` — four links, first unmet one wins, with the fix for that one |
-| 3 | `corpus.mjs` — fourteen desks plus an unranked control run, over a fixed 24-hour window |
-| 4 | Writes the page against `reference/editorial.md` and the compact `reference/layout.md` guide |
-| 5 | `resolve.mjs` — inserts the fixed house CSS and expands verified source references and art ids |
-| 6 | `validate.mjs` — every quote verbatim, every picture from the shortlist, every link verified |
-| 7 | `embed.mjs` — a separate artifact copy with the pictures inlined, since the artifact viewer blocks remote hosts |
-| 8 | Saves the HTML and publishes the embedded copy as an artifact |
+| 1 | Uses an explicitly chosen npub, optionally from the local reader profile |
+| 2 | `observer.mjs prepare` — live readiness, then fourteen desks plus control in a fixed 24-hour window; digest and writer metadata saved to disk |
+| 3 | Writes the complete draft against `reference/editorial.md` and `reference/layout.md` |
+| 4 | `observer.mjs finish` — house CSS and source resolution, validation, then the separate artifact copy |
+| 5 | Delivers the hotlinked edition and publishes the embedded copy as an artifact |
+
+## Saved reader and workflow commands
+
+These commands work from the directory where your paper should land. Substitute
+the absolute path to your installed skill for `<skill>`:
+
+```bash
+node <skill>/scripts/observer.mjs profile set --npub <chosen-npub> --timezone America/Chicago
+node <skill>/scripts/observer.mjs prepare
+```
+
+The profile lives in `.nostr-observer/reader.json` in that working directory,
+outside the skill and ignored by this repository. It contains only your chosen
+npub, IANA timezone and optional `--name`. It never caches readiness. Inspect it
+with `profile show`; choose another location with `--profile /path/to/reader.json`.
+Passing `--npub` or `--timezone` to prepare changes one run, leaving the profile
+alone. Without a profile, prepare requires an explicit `--npub` and uses UTC
+unless a timezone is supplied.
+
+Prepare reports an absolute `run.json` path, the two files the writer should read
+(`writer.json` and `digest.md`), and where to write `draft.html`. It always runs
+readiness first and stops before pulling a corpus on failure. Each attempt starts
+in a fresh `editions/run-…/` folder, so yesterday's evidence cannot become today's
+paper accidentally. `--out` chooses another output root and `--relay` another
+search relay. The profile does not store relay settings.
+
+The writer metadata supplies the local date and labelled clock, including DST,
+edition code, reader label and exact event/voice counts. The reader name comes
+from the same kind-0 batch as the bylines unless the profile overrides it. Source
+timestamps stay UTC, and the window remains exactly 24 hours.
+
+For a selected story's complete content or structured tags, avoid opening the
+whole corpus:
+
+```bash
+node <skill>/scripts/observer.mjs sources s42 s57 --run <reported-run.json>
+```
+
+After writing the draft, finish in one command:
+
+```bash
+node <skill>/scripts/observer.mjs finish --run <reported-run.json>
+```
+
+Finish checks that the corpus still matches the run, resolves into a temporary
+candidate, and validates before any image fetch or final-file replacement. A
+rejected draft stays editable; an existing valid edition stays intact. On success
+it reports the edition and artifact paths, saved directly in the output root
+so the existing `observer-pages` commands can discover the finished paper.
+The draft and evidence remain in the run folder. Read all resolution and embedding
+warnings before delivery. The separate readiness/corpus/resolve/validate/embed
+scripts remain available for diagnostics.
+
+The commands make no model calls. They reduce repeated agent orchestration and
+large raw-file reads; this phase does not change digest selection or introduce
+local semantic decisions. Token savings still need measurement on a real print.
 
 The digest gives each ranked source a short id, such as `s42`. The writer cites
 it with `href="source:s42"`; desk links use the printed `watch:`, `listing:`,
@@ -110,7 +163,8 @@ node --test ".agents/skills/nostr-observer/test/*.test.mjs"
 
 Tests cover bech32 against the NIP-19 worked example, the readiness chain in
 every state it can reach, query construction, the relay auth gate, socket
-sharing, the digest budget, source aliases, stylesheet insertion, the artifact embed step, and the boundary from
+sharing, the digest budget, source aliases, stylesheet insertion, saved profiles,
+timezone labels, the workflow commands, the artifact embed step, and the boundary from
 both sides.
 
 **2. The relay client against a relay that misbehaves on purpose.**
@@ -135,9 +189,7 @@ you installed the skill on its own, without the repository.)
 **4. Live, against the relay — needs a reader with a working lens.**
 
 ```bash
-mkdir -p editions
-node scripts/readiness.mjs <npub>              # exit 0 means ready
-node scripts/corpus.mjs <npub> --out editions/corpus.json > editions/digest.md
+node <skill>/scripts/observer.mjs prepare --npub <chosen-npub> --relay <search-relay>
 ```
 
 This is the layer CI cannot have, because the workflow's rule is that nothing

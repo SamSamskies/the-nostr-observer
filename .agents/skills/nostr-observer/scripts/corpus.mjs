@@ -422,7 +422,9 @@ async function main () {
   }
 
   // Bylines. One REQ for every author we are about to print.
-  const authors = [...new Set(Object.values(desks).flat().map((e) => e.pubkey))]
+  // Include the explicitly chosen reader in the same batch, so the workflow
+  // can supply their name without a separate agent lookup.
+  const authors = [...new Set([observerHex, ...Object.values(desks).flat().map((e) => e.pubkey)])]
   const profiles = {}
   if (authors.length > 0) {
     // Chunked: one REQ carrying every author of a busy day is the largest

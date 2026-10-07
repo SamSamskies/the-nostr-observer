@@ -239,6 +239,24 @@ would a `CLAUDE_CODE_OAUTH_TOKEN` pasted into anything of ours.
   `observer-house` block is refused, not silently overwritten before its CSS
   can be checked. The full generator's stylesheet path is unchanged.
 
+- **A saved reader is an explicit choice, not a cached lens.**
+  `observer.mjs profile set` stores the chosen npub, timezone and optional name
+  in the working directory's ignored `.nostr-observer/reader.json`. A run can
+  override the reader without overwriting that default. Never infer it from
+  old editions, public metadata or git configuration. No relay facts or READY
+  verdict belong in the profile.
+
+- **The daily skill commands are `prepare`, `sources` and `finish`.** Prepare
+  runs readiness live before corpus, creates a separate run folder, and supplies
+  local date/clock labels and counts in `writer.json`. The manifest binds the
+  reader and relay to the saved corpus; its hash catches accidental evidence
+  edits, not adversarial modification of local files. Sources retrieves full
+  ranked events by alias, without reading the anonymous control. Finish resolves
+  into a temporary candidate, validates before embedding, and only then replaces
+  the final edition and artifact in the output root, keeping the editable draft
+  and evidence in the run folder. This preserves observer-pages discovery. The individual
+  scripts remain available for diagnostics. The generator pipeline is unchanged.
+
 - **`reference/` is generated.** `tools/sync-skill.sh` copies `system-prompt.md`,
   `house.css` and `house-guide.md` (as `layout.md`) in and prepends the brief's
   harness corrections: resolution rather than sanitizing, a digest file,
