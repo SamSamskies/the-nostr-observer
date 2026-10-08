@@ -23,7 +23,9 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
 import { permalinkTarget, toPermalink, streamLinkTarget, streamWriterTarget, toStreamLink, listingLinkTarget, listingWriterTarget, toListingLink, calendarLinkTarget, calendarWriterTarget, toCalendarLink, appLinkTarget, appWriterTarget, toAppLink, gitLinkTarget, gitWriterTarget, toGitLink, corpusIndex } from './validate.mjs'
 import { fromNevent } from './nostr.mjs'
-import { tags, attributes } from './html.mjs'
+import { tags, attributes, setAttribute } from './html.mjs'
+import { SOURCE_SCHEME, SOURCE_LINK, sourceIndex } from './sources.mjs'
+import { applyHouseStyle } from './styles.mjs'
 
 /**
  * Jumble is a source citation, not a page the paper should be replaced by.
@@ -33,17 +35,13 @@ export function openInNewTab (raw) {
   let tag = raw
   const attrs = attributes(raw)
   if ((attrs.target || '').toLowerCase() !== '_blank') {
-    tag = 'target' in attrs
-      ? tag.replace(/(\btarget\s*=\s*)("[^"]*"|'[^']*'|[^\s>]+)/i, '$1"_blank"')
-      : tag.replace(/^<a\b/i, '<a target="_blank"')
+    tag = setAttribute(tag, 'target', '_blank')
   }
   const rel = new Set((attrs.rel || '').split(/\s+/).filter(Boolean))
   rel.add('noopener')
   rel.add('noreferrer')
   const next = [...rel].join(' ')
-  tag = 'rel' in attributes(tag)
-    ? tag.replace(/(\brel\s*=\s*)("[^"]*"|'[^']*'|[^\s>]+)/i, `$1"${next}"`)
-    : tag.replace(/^<a\b/i, `<a rel="${next}"`)
+  tag = setAttribute(tag, 'rel', next)
   return tag
 }
 
@@ -93,13 +91,13 @@ function dropFigure (html, start, end) {
  *
  * Returns the new html and every change made, so the caller can print them.
  */
-export function resolve (html, corpus) {
+export function resolve (html, corpus, { houseCss = null } = {}) {
   const byId = new Map((corpus.art || []).map((a) => [a.id, a]))
   // Lowercase: citedEventId always returns lower hex, and the desk byId maps
   // are keyed the same way. A mixed-case corpus id must still resolve.
   const eventIds = new Set(Object.values(corpus.desks).flat().map((e) => String(e.id || '').toLowerCase()))
   const changes = []
-  let out = html
+  let out = houseCss === null ? html : applyHouseStyle(html, houseCss)
 
   // --- art ids -------------------------------------------------------------
   // Rescanned from the top after each edit because dropping a figure moves
@@ -114,7 +112,7 @@ export function resolve (html, corpus) {
     const art = byId.get(id)
     if (art) {
       out = out.slice(0, img.start)
-        + img.raw.replace(/(\bsrc\s*=\s*)("art-\d+"|'art-\d+'|art-\d+)/i, `$1"${art.url}"`)
+        + setAttribute(img.raw, 'src', art.url)
         + out.slice(img.end)
       changes.push({ kind: 'resolved', detail: `${id} -> ${art.url}` })
     } else {
@@ -141,10 +139,18 @@ export function resolve (html, corpus) {
   // here is both the same work twice and a chance for the two to disagree
   // about what counts as linkable.
   const { streams, listings, calendars, apps, repos } = corpusIndex(corpus)
+  const { byAlias } = sourceIndex(corpus)
+  const deskLinks = {
+    watch: { events: streams.byId, toLink: toStreamLink, kind: 'stream' },
+    listing: { events: listings.byId, toLink: toListingLink, kind: 'listing' },
+    calendar: { events: calendars.byId, toLink: toCalendarLink, kind: 'calendar' },
+    app: { events: apps.byId, toLink: toAppLink, kind: 'app' },
+    repo: { events: repos.byId, toLink: toGitLink, kind: 'git' },
+  }
   const anchors = tags(out, 'a').reverse()
   for (const anchor of anchors) {
     const url = attributes(anchor.raw).href || ''
-    if (!/^https?:/i.test(url)) continue
+    if (!/^https?:/i.test(url) && !SOURCE_SCHEME.test(url)) continue
     const id = citedEventId(url)
     // Not `out.toLowerCase().indexOf(…)`: that copied the whole document once
     // per anchor, which on a 102 KB page with 528 anchors is 54 MB of string
@@ -152,12 +158,26 @@ export function resolve (html, corpus) {
     // also accepts `</a >`, which the literal missed.
     const closing = closeAnchor(out, anchor.end)
     if (!closing) continue
+    const short = SOURCE_LINK.exec(url)
+    const sourceId = short && byAlias.get(short[2])
+    if (sourceId) {
+      const type = short[1]
+      const desk = type === 'source' && calendars.byId.has(sourceId) ? deskLinks.calendar : deskLinks[type]
+      const event = desk?.events.get(sourceId)
+      const canonical = event ? desk.toLink(event) : type === 'source' && !desk ? toPermalink(sourceId) : null
+      if (canonical) {
+        const tag = openInNewTab(setAttribute(anchor.raw, 'href', canonical))
+        out = out.slice(0, anchor.start) + tag + out.slice(anchor.end)
+        changes.push({ kind: desk?.kind || 'permalink', detail: `${url} -> ${canonical}` })
+        continue
+      }
+    }
     const streamId = streamWriterTarget(url, corpus) || streamLinkTarget(url, corpus)
     if (streamId && streams.byId.has(streamId)) {
       const canonical = toStreamLink(streams.byId.get(streamId))
       let tag = anchor.raw
       if (url !== canonical) {
-        tag = tag.replace(/(\bhref\s*=\s*)("[^"]*"|'[^']*'|[^\s>]+)/i, `$1"${canonical}"`)
+        tag = setAttribute(tag, 'href', canonical)
       }
       tag = openInNewTab(tag)
       if (tag !== anchor.raw) {
@@ -173,7 +193,7 @@ export function resolve (html, corpus) {
       const canonical = toListingLink(listings.byId.get(listingId))
       let tag = anchor.raw
       if (url !== canonical) {
-        tag = tag.replace(/(\bhref\s*=\s*)("[^"]*"|'[^']*'|[^\s>]+)/i, `$1"${canonical}"`)
+        tag = setAttribute(tag, 'href', canonical)
       }
       tag = openInNewTab(tag)
       if (tag !== anchor.raw) {
@@ -190,7 +210,7 @@ export function resolve (html, corpus) {
       const canonical = toCalendarLink(calendars.byId.get(calendarId))
       let tag = anchor.raw
       if (url !== canonical) {
-        tag = tag.replace(/(\bhref\s*=\s*)("[^"]*"|'[^']*'|[^\s>]+)/i, `$1"${canonical}"`)
+        tag = setAttribute(tag, 'href', canonical)
       }
       tag = openInNewTab(tag)
       if (tag !== anchor.raw) {
@@ -206,7 +226,7 @@ export function resolve (html, corpus) {
       const canonical = toAppLink(apps.byId.get(appId))
       let tag = anchor.raw
       if (url !== canonical) {
-        tag = tag.replace(/(\bhref\s*=\s*)("[^"]*"|'[^']*'|[^\s>]+)/i, `$1"${canonical}"`)
+        tag = setAttribute(tag, 'href', canonical)
       }
       tag = openInNewTab(tag)
       if (tag !== anchor.raw) {
@@ -222,7 +242,7 @@ export function resolve (html, corpus) {
       const canonical = toGitLink(repos.byId.get(gitId))
       let tag = anchor.raw
       if (url !== canonical) {
-        tag = tag.replace(/(\bhref\s*=\s*)("[^"]*"|'[^']*'|[^\s>]+)/i, `$1"${canonical}"`)
+        tag = setAttribute(tag, 'href', canonical)
       }
       tag = openInNewTab(tag)
       if (tag !== anchor.raw) {
@@ -237,7 +257,7 @@ export function resolve (html, corpus) {
       const canonical = toPermalink(id)
       let tag = anchor.raw
       if (url !== canonical) {
-        tag = tag.replace(/(\bhref\s*=\s*)("[^"]*"|'[^']*'|[^\s>]+)/i, `$1"${canonical}"`)
+        tag = setAttribute(tag, 'href', canonical)
       }
       // The paper stays put; Jumble is a citation, not a destination that
       // replaces the edition. A writer who forgets target=_blank still gets it.
@@ -265,12 +285,14 @@ function main () {
     process.exit(2)
   }
   const corpus = JSON.parse(readFileSync(arg('--corpus', 'corpus.json'), 'utf8'))
-  const { html, changes } = resolve(readFileSync(page, 'utf8'), corpus)
+  const houseCss = readFileSync(new URL('../reference/house.css', import.meta.url), 'utf8')
+  const { html, changes } = resolve(readFileSync(page, 'utf8'), corpus, { houseCss })
   writeFileSync(arg('--out', page), html)
 
   const counts = changes.reduce((acc, c) => ({ ...acc, [c.kind]: (acc[c.kind] || 0) + 1 }), {})
   console.log('')
   console.log(`  Resolved ${counts.resolved || 0} art id(s).`)
+  console.log('  House stylesheet inserted or verified.')
   if (counts.permalink) console.log(`  Encoded ${counts.permalink} permalink(s) to jumble.social.`)
   if (counts.stream) console.log(`  Encoded ${counts.stream} stream watch link(s) to zap.stream.`)
   if (counts.listing) console.log(`  Encoded ${counts.listing} classified listing link(s) to Shopstr.`)
@@ -290,4 +312,9 @@ function main () {
 }
 
 // Importable by the tests; runs only when it is the thing that was invoked.
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main()
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  try { main() } catch (error) {
+    console.error(`\n  Resolution failed: ${error.message}\n`)
+    process.exit(3)
+  }
+}

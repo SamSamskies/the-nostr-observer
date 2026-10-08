@@ -20,6 +20,8 @@ hs_err_pid*
 .env.*
 local.properties
 *.local.conf
+# Explicit reader choice for the local print skill; never part of the public shelf.
+.nostr-observer/
 
 # Runtime data
 data/
