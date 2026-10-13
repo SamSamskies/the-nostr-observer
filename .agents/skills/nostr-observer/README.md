@@ -100,6 +100,13 @@ whole corpus:
 node <skill>/scripts/observer.mjs sources s42 s57 --run <reported-run.json>
 ```
 
+For a picture, find its `art-…` entry in the digest's **Art shortlist** and pass
+its printed source id to `sources`. For direct JSON inspection, the shortlist
+is the top-level `art` array in `corpus.json`, not a field named `shortlist`.
+An error such as Python's `KeyError: 'shortlist'` means the lookup used the
+wrong key, not that preparation lost the pictures. Do not edit the corpus or
+rerun preparation just to correct that lookup.
+
 After writing the draft, finish in one command:
 
 ```bash
