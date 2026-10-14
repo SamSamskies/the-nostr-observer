@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+<style id="observer-house">
+/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+
+</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Wednesday, October 14, 2026</title>
+  <meta name="description" content="As alternative networks either stall at pet-project scale or centralize to survive, protocol architect fiatjaf challenges key custody orthodoxy and calls for vibecoded hardware over endless software churn.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="The Myth of the Billion-User Toy: Fiatjaf on Key Sharding, Dumbphones, and Scaling Illusions">
+  <meta property="og:description" content="As alternative networks either stall at pet-project scale or centralize to survive, protocol architect fiatjaf challenges key custody orthodoxy and calls for vibecoded hardware over endless software churn.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-10-14-D61DD2.html">
+  <meta property="og:image" content="https://npub1p37gz205d5avyut6dzz3dlrw5q32tlj3qtasmmq3gf9rpj2fm5fs2ad6pe.blossom.band/aa407138f30acd658faf9b05e9248fa68c90e70b26ff3da0101c459ebbb887af.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Myth of the Billion-User Toy: Fiatjaf on Key Sharding, Dumbphones, and Scaling Illusions">
+  <meta name="twitter:description" content="As alternative networks either stall at pet-project scale or centralize to survive, protocol architect fiatjaf challenges key custody orthodoxy and calls for vibecoded hardware over endless software churn.">
+  <meta name="twitter:image" content="https://npub1p37gz205d5avyut6dzz3dlrw5q32tlj3qtasmmq3gf9rpj2fm5fs2ad6pe.blossom.band/aa407138f30acd658faf9b05e9248fa68c90e70b26ff3da0101c459ebbb887af.jpg">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<main class="sheet">
+
+  <div class="folio">
+    <span>No. D61DD2</span>
+    <span>Wednesday, October 14, 2026</span>
+    <span>24h to 08:26 CDT</span>
+  </div>
+
+  <header class="masthead">
+    <h1><span class="the">The </span>Nostr Observer</h1>
+    <div class="motto">All the Notes Fit to Rank</div>
+  </header>
+
+  <div class="dateline">
+    <span>Ranked for NotBiebs and 69 others</span>
+    <span>601 events through your lens</span>
+    <span>202 voices</span>
+  </div>
+
+  <!-- ABOVE THE FOLD -->
+  <div class="fold">
+
+    <!-- LEAD COLUMN (SPAN 8) -->
+    <div class="col span-8">
+      <article class="story">
+        <div class="kicker">Protocol Architecture &amp; Key Custody</div>
+        <h2 class="lead-head">The Myth of the Billion-User Toy: Fiatjaf on Key Sharding, Dumbphones, and Scaling Illusions</h2>
+        <p class="dek">As alternative networks either stall at pet-project scale or centralize to survive, protocol architect fiatjaf challenges key custody orthodoxy and calls for vibecoded hardware over endless software churn.</p>
+        <div class="byline">By The Observer Editorial Desk · Sourced from <a href="https://jumble.social/notes/nevent1qqsw8tqzqnvnk4ufcwmjuhs58xkk4hjlm5qrkw00cxkvnerw6zckn0g85v5k5" target="_blank" rel="noopener noreferrer">fiatjaf [s214]</a>, <a href="https://jumble.social/notes/nevent1qqsvmne2ej0xchka3qq26r0cwc9rfmdpdn5kw0a7tfwjw5wfergseyc2j37af" target="_blank" rel="noopener noreferrer">fiatjaf [s236]</a>, <a href="https://jumble.social/notes/nevent1qqsz5yyt69cfmq03940mxmt88dcsheyscqhdat33lymhu9ep3dczcag87yngn" target="_blank" rel="noopener noreferrer">fiatjaf [s271]</a>, <a href="https://jumble.social/notes/nevent1qqsrwkr59gr53jsz3ezdsdlkqy7xkxvcdyn7r8dtkzunwv33gz59hrqnh060m" target="_blank" rel="noopener noreferrer">fiatjaf [s299]</a>, <a href="https://jumble.social/notes/nevent1qqstmky4u05cwa232ew6hfkr2dstn47fnn60u9ravafkhmq4w2zr3qgz46vzf" target="_blank" rel="noopener noreferrer">fiatjaf [s331]</a>, <a href="https://jumble.social/notes/nevent1qqs2zpl3fyl3dnez0y0ug5gk8a9pvk3efmrusf239gymw7h369xwclcdgp64w" target="_blank" rel="noopener noreferrer">fiatjaf [s336]</a>, and <a href="https://jumble.social/notes/nevent1qqs8ck8uarhalpu2szerwtq0rxwx4gftvn5r287kyvjsj7uxdv783lctd56em" target="_blank" rel="noopener noreferrer">fiatjaf [s367]</a></div>
+
+        <p class="first">The recurring tragedy of decentralized protocols is not that they break under load, but that their creators rarely intend for them to reach load at all. In a sharp series of reflections across the network, protocol architect <a href="https://jumble.social/notes/nevent1qqsvmne2ej0xchka3qq26r0cwc9rfmdpdn5kw0a7tfwjw5wfergseyc2j37af" target="_blank" rel="noopener noreferrer">fiatjaf [s236]</a> confronted the self-limiting delusions of the developer ecosystem: <q>if these new inventions have such obvious flaws that make them impossible to scale to a billion users, why haven&#8217;t their own inventors realize it?</q></p>
+
+        <p>The answer, he argued, is an unspoken comfort with insularity. <q>Now I think they are not really thinking about changing anything, they just want to see their pet project running, and they are happy if it runs with a few thousand users and they&#8217;re idolized by some of them.</q> While enthusiasts celebrate early adoption, foundational limitations are swept aside: <q>someone invents some new thing that is sold as having the potential to &#8220;build a new internet&#8221;. And the thing actually works, wow! Everybody is excited, people start to put time into it, use it in their lives, tell others, convince businesses to accept payments using that because it is instant and free, you name it.</q></p>
+
+        <p>Yet without structural viability, the trap snaps shut: <q>The most likely outcome is that the new technology never grows beyond a million users, so the obvious issues never materialize. The second most likely outcome is that the thing grows and slowly turns into the worst version of itself and most people don&#8217;t realize.</q></p>
+
+        <p>Nowhere is this tension sharper than in key management and user onboarding. Turning to the community&#8217;s insistence on raw private keys, <a href="https://jumble.social/notes/nevent1qqs8ck8uarhalpu2szerwtq0rxwx4gftvn5r287kyvjsj7uxdv783lctd56em" target="_blank" rel="noopener noreferrer">fiatjaf [s367]</a> dismantled the purist dogma: <q>I think every person should have a phone with Amber installed and only use Nostr apps from that phone and the absolute requirement for ever thinking about using Nostr is that you have to first install Zapstore then Amber and promise you&#8217;ll never uninstall that, never lose your phone to someone that will steal your key, and that you&#8217;ll keep a paper or steel backup of your nsec at home at all times.</q></p>
+
+        <p>In response, he defended Pomegranate, a scheme where keys are split and coordinated via remote signers: <q>You shard your key in many parts and give it to semi-trusted operators to sign stuff in your behalf.</q> Sharded signers, he insisted, allow ordinary participants to use decentralized applications across devices without treating every login as a high-stakes operational drill.</p>
+
+        <p>At the root of the problem lies physical hardware. Modern smartphones, he observed in <a href="https://jumble.social/notes/nevent1qqstmky4u05cwa232ew6hfkr2dstn47fnn60u9ravafkhmq4w2zr3qgz46vzf" target="_blank" rel="noopener noreferrer">fiatjaf [s331]</a>, are fundamentally hostile to intentional thought: <q>It&#8217;s ridiculous how ineffective and unnerving phones are, they are optimized for browsing garbage and shutting down your brain.</q> Rather than building more ephemeral software layers on compromised platforms, he issued a challenge: <q>When are we going to be able to vibecode a dumbphone with exactly the features we need? Vibecoding software is useless, give me vibecoded hardware, please.</q></p>
+      </article>
+
+      <article class="story">
+        <div class="kicker">Client Engineering</div>
+        <h3 class="sub-head">Amethyst 1.19.0 Dismantles the Remote-Signer Bottleneck</h3>
+        <p class="dek">Vitor Pamplona’s flagship Android client brings NIP-46 remote signers to mobile, slashes gift-wrap cold starts by 75 percent, and introduces first-class desktop key storage.</p>
+        <div class="byline">By The Client Desk · Sourced from <a href="https://jumble.social/notes/nevent1qqsz8xhgv35vmw0ydgtx4q3p29n6wf0jkv83a6r0c0x86nu8jzvtfvqx84yzm" target="_blank" rel="noopener noreferrer">Amethyst [s365]</a></div>
+
+        <p class="first">Addressing the very authentication hurdles debated by protocol designers, the release of <a href="https://jumble.social/notes/nevent1qqsz8xhgv35vmw0ydgtx4q3p29n6wf0jkv83a6r0c0x86nu8jzvtfvqx84yzm" target="_blank" rel="noopener noreferrer">Amethyst [s365]</a> v1.19.0 marks a significant leap in signer ergonomics. The client reframes onboarding entirely, presenting <q>your signer app or a remote signer first, then the key field, on every platform</q>, cementing the principle that raw private keys should never be pasted into application memory.</p>
+
+        <p>The update brings native NIP-46 remote signer login to Android and <q>makes it work with Opal and other signers that percent-encode their bunker addresses</q>. Remote session performance received an essential overhaul: by resolving gift wraps, seals, and drafts in parallel batches ahead of the indexer, <q>a cold start that waited ~85s using a remote signer for DMs now takes ~20s</q>.</p>
+
+        <p>For cross-platform users, desktop builds now feature first-class local key management with password-encrypted NIP-49 file fallbacks, while Linux installations render natively on Wayland <q>with the compositor&#8217;s own title bar where it has one</q>. Network synchronization also saw dramatic efficiency gains: Amethyst now <q>Downloads the Web of Trust network in ~10 s and 39 MB instead of minutes and 380 MB</q>, cutting bandwidth overhead by nearly ninety percent.</p>
+      </article>
+    </div>
+
+    <!-- SIDEBAR COLUMN (SPAN 4) -->
+    <div class="col span-4">
+
+      <figure>
+        <img src="https://npub1p37gz205d5avyut6dzz3dlrw5q32tlj3qtasmmq3gf9rpj2fm5fs2ad6pe.blossom.band/aa407138f30acd658faf9b05e9248fa68c90e70b26ff3da0101c459ebbb887af.jpg" alt="A curved wooden staircase under construction in a Norwegian residence">
+        <figcaption>Craftsmanship on the build site in Norway. <q>Curves have not been commonly used in staircases in Norway for a really long time</q>, remarked builder Anders, admiring the precision required for the installation. <span class="credit">Photograph by Anders</span></figcaption>
+      </figure>
+
+      <article class="story">
+        <div class="kicker">Decentralized Publishing</div>
+        <h3 class="main-head">Tenna Ships Native Browser for Serverless Nsites</h3>
+        <p class="dek">Team Soapbox launches an Android browser that renders signed Nostr manifests directly from Blossom blobs with per-site permission sandboxes.</p>
+        <div class="byline">By The Web Desk · Sourced from <a href="https://jumble.social/notes/nevent1qqsvcpa2x2m8eng0j7el6en3lum0su87xau2hxh9ygxts4hvj5ylc0qv2llvu" target="_blank" rel="noopener noreferrer">Team Soapbox [s586]</a></div>
+
+        <p class="first">The long-sought goal of decentralized web publishing took physical form today with the release of Tenna. As developer <a href="https://jumble.social/notes/nevent1qqsvcpa2x2m8eng0j7el6en3lum0su87xau2hxh9ygxts4hvj5ylc0qv2llvu" target="_blank" rel="noopener noreferrer">Team Soapbox [s586]</a> explained: <q>Tenna is a browser for nsites — websites published to Nostr instead of to a host. There is no server to go down and no domain to expire: a site is a signed manifest listing every file by path and hash, and the files themselves are content-addressed blobs on Blossom.</q></p>
+
+        <p>The application resolves manifests from relays, pulls the underlying assets from Blossom servers, and serves the site locally to an internal WebView: <q>Tenna finds the manifest, fetches the blobs, verifies them, and serves the site to itself.</q> Security boundaries remain rigorous: <q>Tenna holds your keys; the sites never do</q>, exposing a NIP-07 interface that <q>proxies back to Tenna, which asks you before it signs</q>, while ensuring that <q>Every site runs as the top-level document of its own WebView on its own origin, so it is a real secure context</q>.</p>
+      </article>
+
+      <div class="box">
+        <div class="box-head">The Instrument</div>
+        <p class="note"><strong>Lens Diagnostic:</strong> Over the 24 hours ending at 08:26 CDT, an unranked control query to the search relay returned 400 notes. Of those 400, exactly <strong>2</strong> appeared in the 398 ranked notes surfaced for this reader. The web of trust operated as a 99.5% filter against the public firehose, cleanly separating authentic human discourse from ambient spam.</p>
+      </div>
+
+      <article class="story">
+        <div class="kicker">Artificial Intelligence</div>
+        <h4 class="small-head">The "Memento" Condition of Coding Agents</h4>
+        <div class="byline">Sourced from <a href="https://jumble.social/notes/nevent1qqs9hv0s07vq5eq43vhhd32gmz6dfmdxryv0s82hr00k83ma9hhmpqszzte2h" target="_blank" rel="noopener noreferrer">Christoph Ono [s42]</a></div>
+        <p class="note">Reflecting on twelve months of autonomous software engineering, designer <a href="https://jumble.social/notes/nevent1qqs9hv0s07vq5eq43vhhd32gmz6dfmdxryv0s82hr00k83ma9hhmpqszzte2h" target="_blank" rel="noopener noreferrer">Christoph Ono [s42]</a> observed: <q>Had Claude review its code and coding process from the last year of Arké. From this post, it seems like AIs are still basically in a Memento situation where they are only coherent for a short period of time and rely on notes they left for themselves to navigate unfamiliar situations.</q></p>
+      </article>
+
+    </div>
+
+  </div><!-- /fold -->
+
+  <!-- SECTION BAND: COOPERATION, SOVEREIGNTY & THE FIELD -->
+  <section class="band">
+    <div class="band-head">
+      <span>COMMERCE, WORK &amp; COOPERATION</span>
+      <span>FIELD DISPATCHES</span>
+    </div>
+    <div class="cols3">
+
+      <!-- CELL 1: BOBBIE ON CO-OPS -->
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Cooperative Economics</div>
+          <h3 class="sub-head">The Pigs Are Loose: The Uncounted Burden of Ground-Up Coordination</h3>
+          <p class="dek">A seasoned agricultural organizer on why decentralized production does not automatically produce decentralized responsibility.</p>
+          <div class="byline">By The Rural Desk · Sourced from <a href="https://jumble.social/notes/nevent1qqsf34644rpugkcv3fgemz9ehqpxdjlvw87mdrqyeux4e0e6ucvthycww86x9" target="_blank" rel="noopener noreferrer">Bobbie [s523]</a></div>
+
+          <p class="first">Writing from years of hands-on work with community food systems, <a href="https://jumble.social/notes/nevent1qqsf34644rpugkcv3fgemz9ehqpxdjlvw87mdrqyeux4e0e6ucvthycww86x9" target="_blank" rel="noopener noreferrer">Bobbie [s523]</a> cut through the romantic abstractions of mutual aid with the reality of agricultural life: <q>The pigs are loose. There is work waiting in the barn. Somewhere on a director’s desk, a project that could benefit the whole community eighteen months from now needs another application, another decision and another report.</q></p>
+
+          <p>The gap between ideals and operation is structural: <q>These are not competing ideas about whether cooperation is good. They are competing demands on someone’s Tuesday.</q> When software tools and platforms are layered onto community projects, the burden often concentrates rather than diffuses: <q>Decentralized production did not automatically produce decentralized responsibility.</q> Without funded infrastructure, <q>The institution can appear to have more capacity than it does because one person is supplying the missing coordination.</q></p>
+
+          <p>Drawing a direct parallel to protocol networks, Bobbie warned that independence is only half the battle: <q>I recognize the work between independent participants. A protocol can distribute identity and publishing while discovery remains dependent on particular indexes, relays, applications and maintainers.</q> <q>Someone still decides what gets retrieved, what gets shown, how missing context is explained and what happens when the connection fails.</q> The true measure of network health is whether it respects human boundaries: <q>A network is not sustainable simply because its participants stay independent. It becomes sustainable when the coordination efforts that connect them cannot quietly reassert control over that independence.</q></p>
+        </article>
+      </div>
+
+      <!-- CELL 2: KODE ON MONETARY BASELINES -->
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Monetary Theory</div>
+          <h3 class="sub-head">What Alternative Financial System? Questioning the Dollar Baseline</h3>
+          <p class="dek">From medieval Islamic copper fuloos to modern Treasury-backed stablecoins, why changing payment rails without changing the unit of account leaves the core dependency untouched.</p>
+          <div class="byline">By The Markets Desk · Sourced from <a href="https://jumble.social/notes/nevent1qqsgt3eh038krfeajfysah7kvj63mf4t6pnq8jrktn4q87usydvu9mgwlplnz" target="_blank" rel="noopener noreferrer">Kode [s524]</a></div>
+
+          <p class="first">Examining the surge in dollar-pegged settlement networks, analyst <a href="https://jumble.social/notes/nevent1qqsgt3eh038krfeajfysah7kvj63mf4t6pnq8jrktn4q87usydvu9mgwlplnz" target="_blank" rel="noopener noreferrer">Kode [s524]</a> challenged the crypto industry’s prevailing narrative: <q>What alternative financial system are we building if its measure of value remains the dollar? Better access, cheaper transfers and useful payment services matter. But how far does the alternative go?</q></p>
+
+          <p>Layering centralized claims onto cryptographic ledgers creates systemic fragilities: <q>A reserve-backed dollar stablecoin such as USDC adds an issuer between us and the currency.</q> When reserves consist of commercial bank deposits and short-dated government debt, users carry counterparty dependency without redemption guarantees or yield participation.</p>
+
+          <p>Turning to classical Islamic monetary jurisprudence, Kode recalled early debates surrounding debased coinage: <q>If I lend you a thousand dollars at zero interest and prices rise, the same thousand buys less when it comes back. I keep returning to fuloos, copper coinage whose monetary standing depended on acceptance and the authority’s decisions.</q> The challenge for sovereign designers remains unresolved: <q>show us how the payment service, the reserve, the financing contract and the real economy fit together.</q></p>
+        </article>
+      </div>
+
+      <!-- CELL 3: CIRCULAR DISPATCHES & ART -->
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Circular Economy</div>
+          <h3 class="sub-head">Sunshine Saffron, Honey Milestones, and DM Gift Cards</h3>
+          <p class="dek">Direct trade thrives across borders: saffron blooms, a beekeeper logs order number 1,000, and gift cards abandon surveillance email.</p>
+          <div class="byline">Sourced from <a href="https://jumble.social/notes/nevent1qqsqh7mml95u4u9v3p357kdsy2w5u93xr3kz0kdxn3rsg0ga508krrgrtacgw" target="_blank" rel="noopener noreferrer">Henry [s69]</a>, <a href="https://jumble.social/notes/nevent1qqsghg46qlm9asyczktrvzjqr96395y35m4q8hjees6352ae6g0azcs65m5uc" target="_blank" rel="noopener noreferrer">SweetSats [s87]</a>, and <a href="https://jumble.social/notes/nevent1qqsg9g3k66mqmq73xm05734ka6d7altgg9hj6gtpkxggfr79psj39sc30vdyn" target="_blank" rel="noopener noreferrer">Coincards.com [s197]</a></div>
+
+          <figure>
+            <img src="https://npub1lwy7trur3d7hz65gxq82rujnnllhsan25yfpasgfdzmtzzjf3u5q0v4zv0.blossom.band/5af625d252dfbc0882e2c7677fb34b568ef0ef09a59a43c34b2b49836aaa65a5.jpg" alt="Purple saffron crocus blossoms blooming in garden soil">
+            <figcaption>Sunshine and soil: <q>It was so sunny this year the saffron actually did something 😄</q> reported Henry from the harvest. <span class="credit">Photograph by Henry</span></figcaption>
+          </figure>
+
+          <p class="first">In circular commerce, merchant <a href="https://jumble.social/notes/nevent1qqsghg46qlm9asyczktrvzjqr96395y35m4q8hjees6352ae6g0azcs65m5uc" target="_blank" rel="noopener noreferrer">SweetSats [s87]</a> celebrated a steady three-year milestone on the network: <q>GM! 🐝 Oder 1000 is in, thank you nostr for all your support over the past three years.</q></p>
+
+          <p>Seeking to cut surveillance out of retail redemption, <a href="https://jumble.social/notes/nevent1qqsg9g3k66mqmq73xm05734ka6d7altgg9hj6gtpkxggfr79psj39sc30vdyn" target="_blank" rel="noopener noreferrer">Coincards.com [s197]</a> launched encrypted DM delivery: <q>Email is basically becoming a surveillance product with a send button.</q> The service now delivers codes over Signal and Nostr: <q>Pay in sats, get your codes in a DM, and let Google wonder where you went.</q></p>
+
+          <figure>
+            <img src="https://npub1sweetl0gskmka0n5qevt7v2wj9q56ntwkmaeywffw4ftaucmcakquhns6h.blossom.band/a010e91aa3ef4c52acc355bdbac450cf66811b4245fda1339ce13c8a01dfe0e1.png" alt="Order 1000 milestone graphic from honey merchant SweetSats">
+            <figcaption>Milestone in peer-to-peer commerce: SweetSats processed order number 1,000 paid entirely in sats across three years of community support. <span class="credit">Image by SweetSats</span></figcaption>
+          </figure>
+        </article>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION BAND: SOVEREIGN COMPUTING & SECURITY -->
+  <section class="band">
+    <div class="band-head">
+      <span>SOVEREIGN COMPUTING &amp; SECURITY</span>
+      <span>INFRASTRUCTURE REPORT</span>
+    </div>
+    <div class="cols3">
+
+      <!-- CELL 1: DYNEBOLIC IV -->
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Free Operating Systems</div>
+          <h3 class="sub-head">Dynebolic IV: The Deliberate Power of Intentional Limits</h3>
+          <p class="dek">Dyne.org launches a 100% free Devuan multimedia OS that runs from USB without proprietary WiFi firmware: an engineered digital air gap for high-risk journalism.</p>
+          <div class="byline">By The Systems Desk · Sourced from <a href="https://jumble.social/notes/nevent1qqs24leul3srl9fq5qp5ywkqawxhfegt8em64fxtp8ggfdttduczsfs9sz06h" target="_blank" rel="noopener noreferrer">Dyne.org [s522]</a></div>
+
+          <blockquote><q>This software is a tool for resistance. Inna Babylonian world that seeks to control how we communicate, Dynebolic stands as a self contained production and publishing tool. It runs from a USB stick and requires no installation</q></blockquote>
+
+          <p class="first">Rejecting surveillance operating systems, the developers at <a href="https://jumble.social/notes/nevent1qqs24leul3srl9fq5qp5ywkqawxhfegt8em64fxtp8ggfdttduczsfs9sz06h" target="_blank" rel="noopener noreferrer">Dyne.org [s522]</a> released Dynebolic 4, a live multimedia studio operating strictly within the Free System Distribution Guidelines. Grounded in the principle that <q>Freedom, knowledge sharing, and empowerment are the pillars of our development.</q>, the system adopts two controversial architectural choices as primary virtues.</p>
+
+          <p>First, it completely excludes closed-source wireless blobs: <q>Dynebolic is built with a strict commitment to free software. This means it does not include the proprietary firmware blobs that 99% of modern WIFI chips require.</q> Far from an oversight, the absence of passive wireless scanning serves investigative reporters in hostile environments: <q>Think of it as a digital air gap. By default, your machine is not constantly probing for networks, leaking metadata, or exposing itself to wireless attack vectors.</q> Network access becomes a conscious physical act, tethered via USB or wired Ethernet.</p>
+
+          <p>Second, by deliberately freezing proven multimedia packages rather than chasing bleeding-edge updates, Dynebolic provides rock-solid stability where creative output cannot be lost to unexpected upstream bugs.</p>
+        </article>
+      </div>
+
+      <!-- CELL 2: PASSPHRASE TRAP & MULTISIG -->
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Custody Security</div>
+          <h3 class="sub-head">The Passphrase Trap: Zero Fault Tolerance in the Field</h3>
+          <p class="dek">Frontline Bitcoin support engineers report that passphrases cause more lost wealth than malicious hacks, while multisig emerges as the sole provable extortion defense.</p>
+          <div class="byline">By The Custody Desk · Sourced from <a href="https://jumble.social/notes/nevent1qqsvzfyd9rkn3puzf80d748ymmgal9gdyv5u30gz7w8ppdzmrhw2fzsa6qfdg" target="_blank" rel="noopener noreferrer">Ungovernable [s121]</a> and <a href="https://jumble.social/notes/nevent1qqsye5jzu8x0c3ey5ggzd5jad8ly74neazg6zlgmal3pn6n8gwwmrjsjn098k" target="_blank" rel="noopener noreferrer">Ungovernable [s131]</a></div>
+
+          <p class="first">The orthodoxy that users should secure their wealth with complex, unwritten passphrases faced harsh scrutiny from field technicians. As reported by <a href="https://jumble.social/notes/nevent1qqsvzfyd9rkn3puzf80d748ymmgal9gdyv5u30gz7w8ppdzmrhw2fzsa6qfdg" target="_blank" rel="noopener noreferrer">Ungovernable [s121]</a>, support veteran Q revealed that user error with passphrases far outstrips technical exploits: <q>After five years of official Bitcoin support, Q says the single biggest cause of lost funds, or the panic of thinking you&#8217;ve lost them, is passphrases. By a country mile.</q></p>
+
+          <p>The brittleness of the scheme is unforgiving: <q>Case sensitivity, spaces, special characters, not knowing what a fingerprint is. Get one detail wrong and there&#8217;s zero fault tolerance.</q></p>
+
+          <p>Beyond accidental loss, physical extortion presents an existential threat that hidden passphrases cannot solve. In <a href="https://jumble.social/notes/nevent1qqsye5jzu8x0c3ey5ggzd5jad8ly74neazg6zlgmal3pn6n8gwwmrjsjn098k" target="_blank" rel="noopener noreferrer">Ungovernable [s131]</a>, analysts noted that multisig provides mathematical proof against physical duress: <q>Someone breaks in and demands you move the funds. If your defence is a passphrase stored in another country, you&#8217;re relying on them believing you.</q> With a geographically distributed quorum, the defender holds an incontrovertible answer: <q>With multisig you can prove it: "I can't fucking do it, and here's why."</q></p>
+        </article>
+      </div>
+
+      <!-- CELL 3: EU SQUEEZE & GHOST CURRENCIES -->
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Surveillance &amp; Anonymity</div>
+          <h3 class="sub-head">The European Squeeze: Blacklists, VPN Mandates, and the Monero Ghost</h3>
+          <p class="dek">Leaked European Council proposals target VPN providers with mandatory 12-month data retention, as privacy advocates double down on grassroots nodes and anonymous protocols.</p>
+          <div class="byline">Sourced from <a href="https://jumble.social/notes/nevent1qqsqefluudz9chn8p7r9g2zmxwex5xjw8zx3wzc2arddhrckdnqtvmc83vxd2" target="_blank" rel="noopener noreferrer">Wilder [s178]</a>, <a href="https://jumble.social/notes/nevent1qqsqq243g554xyf5dh0y75tppfu4h2c8rgmyu433eq0zr0acsdhltrc0t04r4" target="_blank" rel="noopener noreferrer">Pater Nostr [s8]</a>, and <a href="https://jumble.social/notes/nevent1qqsqp7qdync8p88usa5apsccspehrsatgltwnkumzj54jn0jrurnjvgwa26x5" target="_blank" rel="noopener noreferrer">Pater Nostr [s13]</a></div>
+
+          <p class="first">Digital civil liberties face tightening regulatory encirclement across the European Union. Commentator <a href="https://jumble.social/notes/nevent1qqsqefluudz9chn8p7r9g2zmxwex5xjw8zx3wzc2arddhrckdnqtvmc83vxd2" target="_blank" rel="noopener noreferrer">Wilder [s178]</a> sounded the alarm over aggressive censorship and upcoming mandates: <q>D&#225;va&#357; na &#269;ierne listiny open source typu yt-dlp&#8230; je fakt &#250;pln&#253; biz&#225;r.</q> Worse, leaked regulatory frameworks threaten to eliminate genuine network privacy: <q>Uniknut&#253; dokument Rady E&#218; navrhuje, aby aj VPN slu&#382;by povinne uchov&#225;vali minim&#225;lne 12 mesiacov identifika&#269;n&#233; &#250;daje pou&#382;&#237;vate&#318;ov, metad&#225;ta a polohu.</q></p>
+
+          <p>In response to financial surveillance, advocate <a href="https://jumble.social/notes/nevent1qqsqq243g554xyf5dh0y75tppfu4h2c8rgmyu433eq0zr0acsdhltrc0t04r4" target="_blank" rel="noopener noreferrer">Pater Nostr [s8]</a> urged individuals to reclaim sovereignty at home: <q>Run a Monero node. You don&#8217;t need permissions, expensive hardware, or a server farm. An old laptop can verify the chain and help strengthen the network.</q></p>
+
+          <p>Reflecting on the durability of untraceable cash in <a href="https://jumble.social/notes/nevent1qqsqp7qdync8p88usa5apsccspehrsatgltwnkumzj54jn0jrurnjvgwa26x5" target="_blank" rel="noopener noreferrer">Pater Nostr [s13]</a>, he pointed to the intentional anonymity of its origins: <q>Monero is the only major cryptocurrency whose founder remains completely unknown.</q> From its 2014 inception: <q>April 2014. An anonymous user on Bitcointalk named thankful_for_today launched a project called BitMonero, built on the CryptoNote protocol. The community disagreed with its direction, forked it within days, renamed the project Monero—a currency in Esperanto—and the founder vanished forever.</q></p>
+        </article>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION BAND: STANDING WIRE, RELEASES & CALENDAR -->
+  <section class="band">
+    <div class="band-head">
+      <span>THE WIRE &amp; CATALOGS</span>
+      <span>RELEASES, REPOSITORIES &amp; BROADCASTING</span>
+    </div>
+    <div class="cols4">
+
+      <!-- CELL 1: APP RELEASES -->
+      <div class="cell">
+        <div class="kicker">App Releases</div>
+        <h4 class="small-head">Zapstore Catalog</h4>
+        <div class="wire-item">
+          <p><strong><a href="https://zapstore.dev/apps/pub.soapbox.tenna" target="_blank" rel="noopener noreferrer">Tenna</a></strong> — Native Android browser for nsites hosted on Nostr and Blossom blobs.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a href="https://zapstore.dev/apps/org.dergigi.feather" target="_blank" rel="noopener noreferrer">Feather</a></strong> — Minimalist, fast, and opinionated Nostr client for Android built by Gigi.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a href="https://zapstore.dev/apps/n-143146b0d6f-7eda1291bd9164d3" target="_blank" rel="noopener noreferrer">Supersonic RC Revive</a></strong> — Rebuilt Shockwave RC-car racing game in Three.js with local split-screen.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a href="https://zapstore.dev/apps/n-44f63e5422b-e4575da52b416200" target="_blank" rel="noopener noreferrer">Poly Dogfight</a></strong> — Low-poly biplane momentum flight and aerial combat around a tiny planet.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a href="https://zapstore.dev/apps/social.flotilla" target="_blank" rel="noopener noreferrer">Flotilla</a></strong> — Self-hosted decentralized community chat and threaded forums.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a href="https://zapstore.dev/apps/buzz.armada.app" target="_blank" rel="noopener noreferrer">Armada</a></strong> — Serverless, end-to-end encrypted voice and community chatrooms.</p>
+        </div>
+      </div>
+
+      <!-- CELL 2: CODE REPOSITORIES -->
+      <div class="cell">
+        <div class="kicker">Code Repositories</div>
+        <h4 class="small-head">Gitworkshop Trees</h4>
+        <div class="wire-item">
+          <p><strong><a href="https://gitworkshop.dev/npub1dergggklka99wwrs92yz8wdjs952h2ux2ha2ed598ngwu9w7a6fsh9xzpc/feather" target="_blank" rel="noopener noreferrer">feather</a></strong> — Gigi’s minimal Android Nostr client repository.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a href="https://gitworkshop.dev/npub10qdp2fc9ta6vraczxrcs8prqnv69fru2k6s2dj48gqjcylulmtjsg9arpj/ditto-policy" target="_blank" rel="noopener noreferrer">ditto-policy</a></strong> — Policy enforcement and content moderation rules for Ditto instances.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a href="https://gitworkshop.dev/npub1ye5ptcxfyyxl5vjvdjar2ua3f0hynkjzpx552mu5snj3qmx5pzjscpknpr/black-site-map-editor" target="_blank" rel="noopener noreferrer">black-site-map-editor</a></strong> — Tactical map designer and terrain editor for the Black Site game.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a href="https://gitworkshop.dev/npub1jr8sgwrpuk66n9evk76jnfd6wxept4k3uv2vwjw42fhvzvl3mdes38wwnw/walkie-talkie" target="_blank" rel="noopener noreferrer">walkie-talkie</a></strong> — Sovereign real-time peer-to-peer audio transmission tool.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a href="https://gitworkshop.dev/npub1n2ph08n4pqz4d3jk6n2p35p2f4ldhc5g5tu7dhftfpueajf4rpxqfjhzmc/gittr" target="_blank" rel="noopener noreferrer">gittr</a></strong> — Decentralized Git collaboration and patch distribution tooling.</p>
+        </div>
+      </div>
+
+      <!-- CELL 3: BROADCASTING -->
+      <div class="cell">
+        <div class="kicker">Broadcasting</div>
+        <h4 class="small-head">Live Now</h4>
+        <div class="wire-item">
+          <p><strong><a href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al" target="_blank" rel="noopener noreferrer">NoGood Radio</a></strong><br><span class="note">Stream commenced at 13:21 UTC on zap.stream.</span></p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a href="https://zap.stream/naddr1qqjr2dejvccx2vn995enjctx956ryvfk95ukxvmp95mnxvphxgunzdeh8psnzq3qsjf300tngygmqtfkpyd0vcglld2msksjxe9fsjduzn2pccqjl9wsxpqqqpmxw9l8huk" target="_blank" rel="noopener noreferrer">ScardustTV 24/7</a></strong><br><span class="note">Continuous stream on air since 13:21 UTC.</span></p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a href="https://zap.stream/naddr1qqjrqe3jxqun2dny943xxwr9956rsv3494skye3c95exgvehvymrsdeexc6kzq3qejn774qahqmgjsfajawy7634unk88y26yktvwuzp9kfgdeejx9mqxpqqqpmxwgs59md" target="_blank" rel="noopener noreferrer">Right Shift</a></strong><br><span class="note">Political analysis broadcast on air since 15:02 UTC.</span></p>
+        </div>
+      </div>
+
+      <!-- CELL 4: DIARY & CALENDAR -->
+      <div class="cell">
+        <div class="kicker">Diary &amp; Calendar</div>
+        <h4 class="small-head">Upcoming Gatherings</h4>
+        <div class="wire-item">
+          <p><strong><a href="https://njump.me/naddr1qqvrvctrv4jr2vn9vscrjvr9xvurydpsxqmxxc33xupzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvreyxlg" target="_blank" rel="noopener noreferrer">COIN BASED: Ledger, Hardware Hacks</a></strong><br>PubKey NYC, West Village. Red Team analysis of signing device vulnerabilities.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a href="https://njump.me/naddr1qqvrvctrv5urzvrx893xyvnzxuurwd34xvcngwphvspzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvaartve" target="_blank" rel="noopener noreferrer">Frankfurt Bitcoin Meetup</a></strong><br>Thursday, October 15, 2026, 6:30 PM at Kuli Alma, Frankfurt am Main.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a href="https://njump.me/naddr1qqvrvctrvcerwenyvscrjvr9xvurydpsxqmngwf5v5pzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvlmu5cx" target="_blank" rel="noopener noreferrer">Bitcoin Whitepaper Day Lunch</a></strong><br>Saturday, October 31, 2026 at Steak 'n Shake. Commemorating the 2008 Satoshi paper.</p>
+        </div>
+        <div class="wire-item">
+          <p><strong><a href="https://njump.me/naddr1qqvrvctrvcerjcfcvscrjvr9xvurydpsxqmnvep3xupzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv4v7h00" target="_blank" rel="noopener noreferrer">Bitcoin Bunker After Party</a></strong><br>Wednesday, November 11, 2026 at Teatro de Lucas, Historic Center, San Salvador.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+</body>
+</html>
