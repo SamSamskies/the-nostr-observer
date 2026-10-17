@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="en">
+<head>
+<style id="observer-house">
+/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+
+</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Friday, October 16, 2026</title>
+  <meta name="description" content="Where the foam padding behind a Ledger Nano X screen should sit, tampered units bought through a Southeast Asian reseller carried a scraped microcontroller, a cellular modem and a custom antenna wired straight into the display lines.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="The Screen Was Listening: Cellular Implants Inside Resold Ledgers">
+  <meta property="og:description" content="Where the foam padding behind a Ledger Nano X screen should sit, tampered units bought through a Southeast Asian reseller carried a scraped microcontroller, a cellular modem and a custom antenna wired straight into the display lines.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-10-16-C79097.html">
+  <meta property="og:image" content="https://blossom.primal.net/b2f81127b6f50d8a5b483467c432a9abca2bc9cebe3f4efaef05d5c4391598b6.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Screen Was Listening: Cellular Implants Inside Resold Ledgers">
+  <meta name="twitter:description" content="Where the foam padding behind a Ledger Nano X screen should sit, tampered units bought through a Southeast Asian reseller carried a scraped microcontroller, a cellular modem and a custom antenna wired straight into the display lines.">
+  <meta name="twitter:image" content="https://blossom.primal.net/b2f81127b6f50d8a5b483467c432a9abca2bc9cebe3f4efaef05d5c4391598b6.jpg">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <main class="sheet">
+    <div class="folio">
+      <span>No. C79097</span>
+      <span>Friday, October 16, 2026</span>
+      <span>24h to 08:24 CDT</span>
+    </div>
+
+    <header class="masthead">
+      <h1><span class="the">The</span> Nostr Observer</h1>
+      <p class="motto">All the signal that survives the trust graph</p>
+    </header>
+
+    <div class="dateline">
+      <span>Ranked as NotBiebs and 69 others</span>
+      <span>665 events through your lens</span>
+      <span>228 voices</span>
+    </div>
+
+    <section class="fold">
+      <div class="col span-5">
+        <article class="story">
+          <div class="kicker">Supply Chain &amp; Custody</div>
+          <h2 class="lead-head">The Screen Was Listening: Cellular Implants Inside Resold Ledgers</h2>
+          <p class="dek">Where the foam padding behind a Ledger Nano X screen should sit, tampered units bought through a Southeast Asian reseller carried a scraped microcontroller, a cellular modem and a custom antenna wired straight into the display lines.</p>
+          <p class="byline">By the Hardware &amp; Security Desk · <a href="https://jumble.social/notes/nevent1qqsp0jz5majs02z0u07x7te9aprqxwtkhzf9a2n7z9xdlftd8q28lus4szxrn" target="_blank" rel="noopener noreferrer">Ungovernable</a> · <a href="https://jumble.social/notes/nevent1qqs8mqr6c9qn6kklkvrdkeyzj3752zzp6prwlnck577tyk7eu85tf3cu5dfhz" target="_blank" rel="noopener noreferrer">HRF</a> · <a href="https://jumble.social/notes/nevent1qqs2d9vrdlcdvcp469lzh7ye4hdqrjc88t8p5s2ezgweds7uhd079cqkxag9w" target="_blank" rel="noopener noreferrer">Bitcoin Magazine</a></p>
+          <p class="first">A cryptographic attestation check can prove that a secure element is genuine, and still say nothing about what is reading the screen over its shoulder. Across Thursday and Friday, engineers and freedom-tech researchers dissected a hardware supply-chain attack against Ledger Nano X devices acquired through a reseller in Southeast Asia, in which organized criminals replaced internal foam with an independent radio transmitter.</p>
+          <p><a href="https://jumble.social/notes/nevent1qqsp0jz5majs02z0u07x7te9aprqxwtkhzf9a2n7z9xdlftd8q28lus4szxrn" target="_blank" rel="noopener noreferrer">Ungovernable</a> laid out the anatomy of the implant in detail: <q>Where the foam padding behind a Ledger Nano X screen should be: a microcontroller with its markings scraped off, a Nordic cellular modem, an eSIM and a custom antenna. It's wired into the lines that carry data to the screen. When setup shows your 24 words, it reads them and sends them to the attacker over its own mobile connection.</q></p>
+          <p>Because the tap sits on the display bus rather than inside the enclave, the cryptographic handshake with the host software proceeds normally. <q>It never goes near the secure chip, so the device passes the genuine check. Ledger's own docs say the check can't detect this.</q> Ungovernable noted. In its 142nd Financial Freedom Report, the <a href="https://jumble.social/notes/nevent1qqs8mqr6c9qn6kklkvrdkeyzj3752zzp6prwlnck577tyk7eu85tf3cu5dfhz" target="_blank" rel="noopener noreferrer">Human Rights Foundation (HRF)</a> confirmed that the tampered devices were sold through a Southeast Asian reseller and noted that an on-chain investigator estimates losses above $86 million, while Ungovernable's brief put the drained total at $93 million.</p>
+          <p>The lesson echoed a line <a href="https://jumble.social/notes/nevent1qqsfpacd5q6reyw27a0gprf0aawcmv2ez2er5wxu9r3lckehkalq0uqtz3z8v" target="_blank" rel="noopener noreferrer">Fedi</a> posted from Imagine IF earlier in the window: <q>A customer list is a target list — the only list that doesn't leak is the one you never collect.</q> And elsewhere on the security beat, <a href="https://jumble.social/notes/nevent1qqsd0f3xhachn05aarmw5evnpgnegcvhcqrw0jzhf7cfqhmmd3kvwwsg06euv" target="_blank" rel="noopener noreferrer">Marcel</a> and <a href="https://jumble.social/notes/nevent1qqs29gavhy4umwttc520f5nwh5kyqj3xzp6dr9vt64dyqa3z6eps45qxrn95y" target="_blank" rel="noopener noreferrer">Nate</a> marked a passage from a Malwarebytes report on how a single credential opened nearly nine million personal records: <q>A weak, leaked password opened an authorized route into a sensitive register. That access allowed millions of searches, and the activity was discovered only after an unusually large bill drew attention to it.</q> As Nate's second highlight noted, <q>TV 2 says an email containing the password 123456 had appeared in a larger data leak</q>—while <a href="https://jumble.social/notes/nevent1qqsqqqqel88ud7jdj979talpswwj25c4yrmuzj2trsw5wxaxhuhlgxg78lrzn" target="_blank" rel="noopener noreferrer">Mr.Crown // Renarchy</a> pointed to 6.39 million personal records compromised in an earlier Odido breach.</p>
+        </article>
+
+        <article class="story">
+          <div class="kicker">Dispatches from Custody</div>
+          <h3 class="sub-head">Keonne Rodriguez Under the Lights That Never Turn Off</h3>
+          <p class="byline"><a href="https://jumble.social/notes/nevent1qqsr2ne57dtcr40av8rzp2ceglkj97uh99d4c8mx50yn3q7a0rdem6s7q7qcc" target="_blank" rel="noopener noreferrer">Ungovernable</a></p>
+          <p>From the prison beat, <a href="https://jumble.social/notes/nevent1qqsr2ne57dtcr40av8rzp2ceglkj97uh99d4c8mx50yn3q7a0rdem6s7q7qcc" target="_blank" rel="noopener noreferrer">Ungovernable</a> published the seventh letter from Samourai Wallet developer Keonne Rodriguez after his transfer out of Morgantown, capturing the sensory reality of federal detention in four short lines:</p>
+          <blockquote>11PM. Keonne asks his cellmate what time they turn the lights off. They don't. He covers his head with a sheet that smells of motor oil and sawdust, lies with half his body on bare metal, and asks himself if a year off his sentence was worth leaving Morgantown. All he wants is to call his wife, Lauren.</blockquote>
+        </article>
+      </div>
+
+      <div class="col span-4">
+        <figure>
+          <img src="https://blossom.primal.net/b2f81127b6f50d8a5b483467c432a9abca2bc9cebe3f4efaef05d5c4391598b6.jpg" alt="Photograph shared by Fedi from the Imagine IF conference accompanying a quote on customer lists.">
+          <figcaption>A post from <a href="https://jumble.social/notes/nevent1qqsfpacd5q6reyw27a0gprf0aawcmv2ez2er5wxu9r3lckehkalq0uqtz3z8v" target="_blank" rel="noopener noreferrer">Fedi</a> at Imagine IF warning against collecting customer lists in the first place. <span class="credit">Credit: Fedi</span></figcaption>
+        </figure>
+
+        <article class="story">
+          <div class="kicker">Protocol Architecture</div>
+          <h2 class="main-head">The Outbox Model Proves Its Speed as Clients Debate Microapps</h2>
+          <p class="dek">Canoe and Applesauce show that reading from authors' declared write relays works in seconds—while fiatjaf, hodlbod and hzrd149 hash out the boundary between napps and sandboxed napplets.</p>
+          <p class="byline">By the Protocol Desk · <a href="https://jumble.social/notes/nevent1qqspg39vkleltnw56pma98ldkecw8y4xe0hgg9pzg8yktn64w2688scha7ymp" target="_blank" rel="noopener noreferrer">hodlbod</a> · <a href="https://jumble.social/notes/nevent1qqszph99uej8u07nf77v6nln6c9rwe5twlyyva6zt7afspqy8d4myucp0jxva" target="_blank" rel="noopener noreferrer">hzrd149</a> · <a href="https://jumble.social/notes/nevent1qqszhte2vtnf694wtvlhpjgkc8cvccz86jqxhwpcr6nf29cqzs908dsl3vfvw" target="_blank" rel="noopener noreferrer">fiatjaf</a></p>
+          <p><a href="https://jumble.social/notes/nevent1qqspg39vkleltnw56pma98ldkecw8y4xe0hgg9pzg8yktn64w2688scha7ymp" target="_blank" rel="noopener noreferrer">hodlbod</a> released Canoe (gitea.coracle.social/coracle/canoe), a personal relay designed to end home-relay fragmentation by pulling an author's own notes from their declared NIP-65 outbox relays rather than scraping a web of trust. <q>Even better, if you run two instances they will actively copy your notes between them without any configuration other than a normal 10002. Use the outbox model. It works.</q> hodlbod wrote.</p>
+          <p>Hours later, <a href="https://jumble.social/notes/nevent1qqszph99uej8u07nf77v6nln6c9rwe5twlyyva6zt7afspqy8d4myucp0jxva" target="_blank" rel="noopener noreferrer">hzrd149</a> backed that claim with benchmark numbers from the upcoming release of Applesauce: <q>More sync tests from the upcoming version of applesauce, first one tries to connect to all my contacts relays ( 165 ) and gets ~1900 events in 34s. the second connects to the 30 most common and gets ~1700 events in 18s.</q> Meanwhile, <a href="https://jumble.social/notes/nevent1qqsqqqpkf3tcp9gx07htf0layejjzfzlwt2n75szdnmlky9dus8c99gx8wtj5" target="_blank" rel="noopener noreferrer">Cody</a> argued that <q>It's time for clients to let relays handle building the following feed.</q> and opened iOS public testing on TestFlight for PsstPsst (<a href="https://jumble.social/notes/nevent1qqsdnh88g2vhj9gj3tzpslaucaj3x7yj6zkr0s0ssxp8jk7xn4uyjfcxus82z" target="_blank" rel="noopener noreferrer">s99</a>).</p>
+          <p>On the application layer, <a href="https://jumble.social/notes/nevent1qqszhte2vtnf694wtvlhpjgkc8cvccz86jqxhwpcr6nf29cqzs908dsl3vfvw" target="_blank" rel="noopener noreferrer">fiatjaf</a> shipped <a href="https://zapstore.dev/apps/com.verdana.app" target="_blank" rel="noopener noreferrer">Verdana</a> on Zapstore—a launcher for small HTML or raw WASM microapps ("napps") that pass messages to one another—warning on the timeline that <q>Many bugs, but that's because Android is awful. Will fix, but try Verdana on the desktop if you are truly wise</q> (<a href="https://jumble.social/notes/nevent1qqsxtladxqnq8k6er496zdesgdvpkgarctyxlwkrpz2jes6laxykxkg6azped" target="_blank" rel="noopener noreferrer">s277</a>). <a href="https://jumble.social/notes/nevent1qqs9qd6phyycj54druvm7q5rfwvcas709aejrkrtq2wxv2l9ec6tgrc7snutu" target="_blank" rel="noopener noreferrer">hodlbod</a> asked whether "napplets" could be parameterized inside Flotilla with relay or room arguments, prompting <a href="https://jumble.social/notes/nevent1qqsq06d29g29z9nl6d04jx9r8ywhzpzs7esrh50uzfhm8y2lpuz625cgzsnc2" target="_blank" rel="noopener noreferrer">hzrd149</a> to draw the security boundary between the two approaches: <q>worth also pointing out the biggest difference is napps are default sites so they can access the full internet. napplets are heavily sandboxed so what they are allowed to do is completely controlled by the app they are running inside of</q>.</p>
+        </article>
+      </div>
+
+      <div class="col span-3">
+        <div class="box">
+          <div class="box-head">Network &amp; Market Conditions</div>
+          <p class="note">As of 08:24 CDT — readings from the 24-hour window, not live figures. Sources: <a href="https://jumble.social/notes/nevent1qqsqqqxe9qvncwddhlz9ha67txpv2fcslfymjqkdlp36l9f3mvs20sgzspnvl" target="_blank" rel="noopener noreferrer">Clark Moody Dashboard</a>, <a href="https://jumble.social/notes/nevent1qqsqqqj3u9y53fq05ae9s35rt20hvndx87zc53lc8p346dfvf4qgw3szzwxfs" target="_blank" rel="noopener noreferrer">s332</a>, <a href="https://jumble.social/notes/nevent1qqsq9ppffpzaarc8494y0cfvaf05pxt678g0pm60jyvsryq8tu6kceck8l5z5" target="_blank" rel="noopener noreferrer">ChartsBTC</a>, <a href="https://jumble.social/notes/nevent1qqsrck3xac9y3ummkh9uap04t3q04x76kgaa3ukxal7jqawldnq2yas44803r" target="_blank" rel="noopener noreferrer">s148</a>.</p>
+          <div class="tablewrap">
+            <table>
+              <tbody>
+                <tr><td>BTC Spot (ChartsBTC)</td><td class="num">$82,745</td></tr>
+                <tr><td>24h High / Low</td><td class="num">$82,545 / $79,693</td></tr>
+                <tr><td>100-Week MA</td><td class="num">$89,797 (0.92x)</td></tr>
+                <tr><td>Realized Price / MVRV</td><td class="num">$53,833 / 1.53</td></tr>
+                <tr><td>Sats per Dollar</td><td class="num">1,202 – 1,220</td></tr>
+                <tr><td>Block Height (Epoch 482)</td><td class="num">971,712</td></tr>
+                <tr><td>Difficulty Adjustment</td><td class="num">+5.9%</td></tr>
+                <tr><td>Hash Rate / Price</td><td class="num">1.00 ZH/s · $36.07/PH</td></tr>
+                <tr><td>Supply Issued</td><td class="num">95.70%</td></tr>
+                <tr><td>Fee Rate (Imm / Mean)</td><td class="num">1–2 sat/vB · $0.38</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <article class="story">
+          <div class="kicker">Macro &amp; Monetary</div>
+          <h3 class="sub-head">Iraq Cuts the Dinar 14.5% Overnight; Credit Reflexivity Debated</h3>
+          <p class="byline"><a href="https://jumble.social/notes/nevent1qqs8mqr6c9qn6kklkvrdkeyzj3752zzp6prwlnck577tyk7eu85tf3cu5dfhz" target="_blank" rel="noopener noreferrer">HRF</a> · <a href="https://jumble.social/notes/nevent1qqswsay5t2ey8tpyeckg5plfawnszhuqkel6ztd8ed592awl3urrcuc8mxwr0" target="_blank" rel="noopener noreferrer">MDB</a> · <a href="https://jumble.social/notes/nevent1qqsfww8m9v8ue0ghh3dqdlthmgk5prp7mlu5d6vznsetywtpxzeumrsll6dfl" target="_blank" rel="noopener noreferrer">BTC Prague</a></p>
+          <p>In Iraq, the regime devalued the dinar by roughly 14.5% overnight—its second steep cut in five years—driving up the cost of imported food, medicine and fuel while wiping out local salaries and savings (<a href="https://jumble.social/notes/nevent1qqs8mqr6c9qn6kklkvrdkeyzj3752zzp6prwlnck577tyk7eu85tf3cu5dfhz" target="_blank" rel="noopener noreferrer">s507</a>). In Vienna, <a href="https://jumble.social/notes/nevent1qqsqcgu0v5ukp8md3wslxa75ycf9lzfncdg5vqgqu9tl5c23p8hpcfqq45t9n" target="_blank" rel="noopener noreferrer">The Bitcoin Conference</a> reported the unveiling of Valentina Picozzi's new Satoshi Nakamoto statue built from 61 polished steel profiles that vanish when viewed head-on.</p>
+          <p>Meanwhile, <a href="https://jumble.social/notes/nevent1qqswsay5t2ey8tpyeckg5plfawnszhuqkel6ztd8ed592awl3urrcuc8mxwr0" target="_blank" rel="noopener noreferrer">MDB</a> warned that oversized dollar-denominated Bitcoin credit products could alter Bitcoin's volatility profile: <q>At sufficient scale, Bitcoin could increasingly function as the volatile reserve asset beneath a large dollar-denominated credit system.</q> And <a href="https://jumble.social/notes/nevent1qqsfww8m9v8ue0ghh3dqdlthmgk5prp7mlu5d6vznsetywtpxzeumrsll6dfl" target="_blank" rel="noopener noreferrer">BTC Prague</a> highlighted Lyn Alden's fiscal warning: <q>The US is in a slow-motion fiscal spiral, and the Fed's main tool has stopped working. Volcker could hike his way out with debt at 35% of GDP. It's over 100% now.</q></p>
+        </article>
+
+        <div class="box reverse">
+          <div class="box-head">The Instrument</div>
+          <h3 class="small-head">3 of 400 Overlap</h3>
+          <p>An unranked control pull over the identical 24-hour window returned 400 kind-1 notes. Only <strong>3</strong> of those appeared among the 390 ranked notes surfaced by this lens (665 events total across all fourteen desks from 228 voices). The trust floor did the editing.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="band-head">
+        <h2>Cryptography, Agents &amp; Circular Economies</h2>
+      </div>
+      <div class="cols3">
+        <div class="cell">
+          <article class="story">
+            <div class="kicker">Encrypted Group Messaging</div>
+            <h3 class="sub-head">Marmot, Cordn and NIP-17 on a 240 MHz ESP32 Badge</h3>
+            <p class="byline"><a href="https://jumble.social/notes/nevent1qqs9tcxuksy5gt7np4qu9ee65je2ankgr0q4tl0earr0awjyz0lu4mst47d7a" target="_blank" rel="noopener noreferrer">Max</a> · <a href="https://jumble.social/notes/nevent1qqsyxvw2hvd5tvq3exmhaxq5dw6jsazukszpyuku9skcvul29qwe23qezdkfd" target="_blank" rel="noopener noreferrer">s548</a> · <a href="https://jumble.social/notes/nevent1qqs092hfnunymwtxdrg7keq0n06f84hvdkzgch69z27esp3r6k20lkgfl4saj" target="_blank" rel="noopener noreferrer">cloud fodder</a> · <a href="https://jumble.social/notes/nevent1qqsd5hgg469wvaj4mhd334zj99c2nhylwqdx9uv66x5pput7aakcgtg6en9j8" target="_blank" rel="noopener noreferrer">Richard Nakamoto</a></p>
+            <p>Private group messaging over Nostr advanced on three fronts at once. <a href="https://jumble.social/notes/nevent1qqs9tcxuksy5gt7np4qu9ee65je2ankgr0q4tl0earr0awjyz0lu4mst47d7a" target="_blank" rel="noopener noreferrer">Max</a> published two technical deep dives into the Marmot Protocol (MLS over Nostr, MIP-00 through MIP-06), explaining how MIP-06 handles multi-device membership (<a href="https://jumble.social/notes/nevent1qqsyxvw2hvd5tvq3exmhaxq5dw6jsazukszpyuku9skcvul29qwe23qezdkfd" target="_blank" rel="noopener noreferrer">s548</a>): <q>MIP-06 gives each device its own MLS key material and its own leaf in the ratchet tree. Every leaf carries the same Nostr pubkey in the credential identity field. The devices share an identity but share no cryptographic state, which means compromising one device does not hand the attacker the keys to the other.</q></p>
+            <p>In the app catalog, <a href="https://jumble.social/notes/nevent1qqs092hfnunymwtxdrg7keq0n06f84hvdkzgch69z27esp3r6k20lkgfl4saj" target="_blank" rel="noopener noreferrer">cloud fodder</a> shipped <a href="https://zapstore.dev/apps/tools.relay.staircase" target="_blank" rel="noopener noreferrer">Staircase</a>, an end-to-end encrypted MLS group messenger built on Cordn (RFC 9420) with multi-device linking and Amber signing. And for constrained hardware, <a href="https://jumble.social/notes/nevent1qqsd5hgg469wvaj4mhd334zj99c2nhylwqdx9uv66x5pput7aakcgtg6en9j8" target="_blank" rel="noopener noreferrer">Richard Nakamoto</a> demonstrated that an ESP32 microcontroller running MicroPythonOS (240 MHz, 8 MB PSRAM) already holds 80% of the code needed for NIP-17 encrypted group chat rooms.</p>
+          </article>
+        </div>
+
+        <div class="cell">
+          <article class="story">
+            <div class="kicker">Local &amp; Paid Inference</div>
+            <h3 class="sub-head">Offline Punk Rock for the Apocalypse; Routstr 0.5.0 Ships</h3>
+            <p class="byline"><a href="https://jumble.social/notes/nevent1qqsgdqd9pta2a08hnfwss6vamx0n6sh4r30u2cx8a2aesp7vftqp2yc28rqkl" target="_blank" rel="noopener noreferrer">Juraj🏴💛🌘</a> · <a href="https://jumble.social/notes/nevent1qqspnzjsncn8s96yawvv8l6zshd6lqgs7v9qq47c5lyz5ql5x0x325cwy7kat" target="_blank" rel="noopener noreferrer">routstr</a> · <a href="https://jumble.social/notes/nevent1qqs2xg3lwpc22nun722wptj0czjn03htngvhmvzkd8krsnzas5gck4cf0q5vj" target="_blank" rel="noopener noreferrer">evacide</a></p>
+            <p><a href="https://jumble.social/notes/nevent1qqsgdqd9pta2a08hnfwss6vamx0n6sh4r30u2cx8a2aesp7vftqp2yc28rqkl" target="_blank" rel="noopener noreferrer">Juraj🏴💛🌘</a> released <a href="https://zapstore.dev/apps/io.github.jooray.localhoststudio" target="_blank" rel="noopener noreferrer">Localhost Recording Studio</a>, an open-source app running the YuE2-3B model directly on Android, macOS and Linux to generate full stereo songs offline:</p>
+            <blockquote>The zombie apocalypse started on a Tuesday. You're alone in a forest, running, and the cell towers went down on day one. It should feel like a movie. It doesn't, and it takes you a minute to see why: there's no soundtrack, just your breathing. So you pull out your phone, open Localhost Recording Studio and make one. Run, run, run.</blockquote>
+            <p>For networked inference, <a href="https://jumble.social/notes/nevent1qqspnzjsncn8s96yawvv8l6zshd6lqgs7v9qq47c5lyz5ql5x0x325cwy7kat" target="_blank" rel="noopener noreferrer">routstr</a> released Core 0.5.0 with modular model path control, Lightning refunds in transaction history, and `/v1/systemone` for typed AI decisions paid per call. Meanwhile, <a href="https://jumble.social/notes/nevent1qqsta8juw9mhhldzkmn7mv0pzyswcn606n493lpj4s6dxhpqlrj34dg6mgpyx" target="_blank" rel="noopener noreferrer">Freedom.Tech</a> noted that 17 of the day's 41 software releases were AI tooling bumps while flagging Paperless-ngx 3.3.2 (fixing GHSA-c8f3-pqr2-rr24) and Eclair 0.14.4 as the upgrades that actually matter. And <a href="https://jumble.social/notes/nevent1qqs2xg3lwpc22nun722wptj0czjn03htngvhmvzkd8krsnzas5gck4cf0q5vj" target="_blank" rel="noopener noreferrer">evacide</a> sounded the alarm on ad-tech surveillance: <q>ChatGPT now lets you target ads based on specific prompts or any phone number or email address. This is absolutely 100% going to be used for harassment.</q></p>
+          </article>
+        </div>
+
+        <div class="cell">
+          <article class="story">
+            <div class="kicker">Verification &amp; Growth</div>
+            <h3 class="sub-head">BitcoinEkasi Launches PoWBot; Git Moves to Nostr</h3>
+            <p class="byline"><a href="https://jumble.social/notes/nevent1qqsrmkk3ntctrdq7t73netunqgxu2z8085v7ssq72xnzs08ls338tvgpph7wg" target="_blank" rel="noopener noreferrer">BitcoinEkasi</a> · <a href="https://jumble.social/notes/nevent1qqsgeg7mdndmjmfd6gu6vdkuqfhj9f899yztdxf932ff36wqjx9ejgggghpvx" target="_blank" rel="noopener noreferrer">Ben Arc</a> · <a href="https://jumble.social/notes/nevent1qqsfxwtuk3ffv5zud66g52a8j3gmdkcxsherft2q8r4q5vd2pztaz5sudfg7v" target="_blank" rel="noopener noreferrer">Nathan Day</a></p>
+            <p>From South Africa, <a href="https://jumble.social/notes/nevent1qqsrmkk3ntctrdq7t73netunqgxu2z8085v7ssq72xnzs08ls338tvgpph7wg" target="_blank" rel="noopener noreferrer">BitcoinEkasi</a> unveiled powbot.africa, a real-time automated proof-of-work verification system for circular economies: <q>Have you ever looked at a Bitcoin Circular Economy project posting about adoption and wondered: "Is this even real?" Well, so have we.</q> They also shared footage from the Bitcoin Ekasi Thrift Shop, where families buy children's clothing in satoshis (<a href="https://jumble.social/notes/nevent1qqs202y73lh3kf7w0dx9j0mm2n0mag60wjlysz0688xwpxmjsfa8zegl57wsr" target="_blank" rel="noopener noreferrer">s315</a>).</p>
+            <p>On the onboarding front, <a href="https://jumble.social/notes/nevent1qqsgeg7mdndmjmfd6gu6vdkuqfhj9f899yztdxf932ff36wqjx9ejgggghpvx" target="_blank" rel="noopener noreferrer">Ben Arc</a> noted a wave of newcomers arriving via YouTube rather than Nostr's usual circles: <q>The Anagram Youtube video has 7.3k views, that's organic Youtube growth, rather than people from bitcoin-x/nostr echochamber (where the video post has 100ish likes). A wave of new users 🙌</q>. Meanwhile, <a href="https://jumble.social/notes/nevent1qqsfxwtuk3ffv5zud66g52a8j3gmdkcxsherft2q8r4q5vd2pztaz5sudfg7v" target="_blank" rel="noopener noreferrer">Nathan Day</a> migrated his codebases onto Nostr git infrastructure (<a href="https://gitworkshop.dev/npub1cn670f663n3ks02jnnlsvd5y88zjnefy8343ykaxs7y3nzzketrsrjwt8a/blockstr" target="_blank" rel="noopener noreferrer">blockstr</a>, <a href="https://gitworkshop.dev/npub1cn670f663n3ks02jnnlsvd5y88zjnefy8343ykaxs7y3nzzketrsrjwt8a/attestr" target="_blank" rel="noopener noreferrer">attestr</a>, <a href="https://gitworkshop.dev/npub1cn670f663n3ks02jnnlsvd5y88zjnefy8343ykaxs7y3nzzketrsrjwt8a/gamestr" target="_blank" rel="noopener noreferrer">gamestr</a>), writing: <q>ngit, ngit-ci and clients like gitworkshop and gittr are WILD. Just migrated all my repos. Got myslef a shiny new GRASP server too.</q> <a href="https://jumble.social/notes/nevent1qqs2xtjmdsefz2rdw7zsu50xh0qn888gjdfl3q3wa7f5ukea2uxmxgs5cksuw" target="_blank" rel="noopener noreferrer">Mostro</a> also shipped Node v0.20.0 with cross-node reputation import and Mostrix v0.3.8 with OSC 52 terminal clipboard support (<a href="https://jumble.social/notes/nevent1qqsqmldagxqyuj6e5rs5l376rudrf7h9rzj4mm44guq72gkgw66pa5gedepwt" target="_blank" rel="noopener noreferrer">s220</a>), while <a href="https://jumble.social/notes/nevent1qqsw804rcx6yfrasl6dhwfgpydumcl3f98m984n5re5pm8syrhw93jq6ppxa3" target="_blank" rel="noopener noreferrer">Alex71btc⚡💜₿🚀</a> released BOLT12 Pay v0.3.8 (<a href="https://jumble.social/notes/nevent1qqstx5449rsfq6tsjujzsmwhp20cxcemalcj0ze0gvzq5j8u7lr5aeq82wczd" target="_blank" rel="noopener noreferrer">s506</a>).</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="band-head">
+        <h2>Photographs from the Window</h2>
+      </div>
+      <div class="cols3">
+        <div class="cell">
+          <figure>
+            <img src="https://npub1xrja8ekfnzvecwds4zqzf7zlqlervty7wkyl055t8x0jn93f0rds7xrhk7.blossom.band/8ea3c0f31b71ea85eaf0703a2dbb1342850c62dc0537272c8670cfd8706eaf36.jpg" alt="Black-and-white night street photograph of cats in Suzhou, China, posted by nik.">
+            <figcaption>Night street photography from Suzhou, China: <q>Cats! #China #Suzhou #street #cats #photography #blackandwhite #iPhone #night</q> (<a href="https://jumble.social/notes/nevent1qqstsqrwc8tamr7nchnd6qrsmv4hnf0gyna4quy5a848ltw3ewvu4jg94z758" target="_blank" rel="noopener noreferrer">s55</a>). <span class="credit">Credit: nik ⚡️🟠🟣</span></figcaption>
+          </figure>
+        </div>
+        <div class="cell">
+          <figure>
+            <img src="https://blossom.primal.net/0f783ff138022f64466477f9d813ed5bca97db88030f7c658146299e5281da04.jpg" alt="Morning post image shared by Adopting Bitcoin Cape Town asking readers if they are studying Bitcoin.">
+            <figcaption>Morning dispatch from South Africa ahead of #abct27: <q>Good morning. Are you studying Bitcoin? #abct27</q> (<a href="https://jumble.social/notes/nevent1qqs8sdh247h34cte7g5w0v50lg49spkr85dwmc3737jvj7geh8ywgjqtg8rr6" target="_blank" rel="noopener noreferrer">s65</a>). <span class="credit">Credit: Adopting Bitcoin Cape Town</span></figcaption>
+          </figure>
+        </div>
+        <div class="cell">
+          <figure>
+            <img src="https://blossom.primal.net/5e94c2d2310a7ba56644d3ab61359dabe8f8da1a57f9e69d195e19056a29b004.jpg" alt="Pouches of survival seasoning and taco seasoning offered by Small Batch Steve.">
+            <figcaption><a href="https://jumble.social/notes/nevent1qqsqyzf3n3wxnrjr839fjmemzdw387cu9kuk3k9n7z2s9u95l36lwkswn8nek" target="_blank" rel="noopener noreferrer">Small Batch Steve</a> taking stock of his spice shelf: one large survival seasoning and three large taco seasoning pouches ready to split for plebs. <span class="credit">Credit: Small Batch Steve</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="band-head">
+        <h2>Essays, Letters &amp; The Library</h2>
+      </div>
+      <div class="cols2">
+        <div class="cell">
+          <article class="story">
+            <div class="kicker">Essays &amp; Reflections</div>
+            <h3 class="sub-head">When You're Paid in Stones, Weighing Physics by the Kilo, and Letting Kloak Go</h3>
+            <p class="byline"><a href="https://jumble.social/notes/nevent1qqstkrc6r2dv2lezy7clepsulqe5cephkr44zhfws8yh767d39we8sqnqclqz" target="_blank" rel="noopener noreferrer">omarvgws</a> · <a href="https://jumble.social/notes/nevent1qqspt5mcx03m8xwx3n2lp84sszhc2jpx0hh0as7k30lgsdjxgx9lwgqh99xgp" target="_blank" rel="noopener noreferrer">Michael Meyen</a> · <a href="https://jumble.social/notes/nevent1qqs2n6pzyvjcqpkldlg9k5jud4e5etr5pp4vc3zuxkkne3myfs0nkhqwuu2sz" target="_blank" rel="noopener noreferrer">Alex Gleason</a> · <a href="https://jumble.social/notes/nevent1qqsysvr37fjqujckdchayfpu82q6upadg54d27dhm0ptsm97wrr0uac0fqjzs" target="_blank" rel="noopener noreferrer">Daryn Cavalier</a></p>
+            <p>Writing from Avalon Tulum in <em>When You're Paid in Stones</em> (<a href="https://jumble.social/notes/nevent1qqstkrc6r2dv2lezy7clepsulqe5cephkr44zhfws8yh767d39we8sqnqclqz" target="_blank" rel="noopener noreferrer">s563</a>), <a href="https://jumble.social/notes/nevent1qqstkrc6r2dv2lezy7clepsulqe5cephkr44zhfws8yh767d39we8sqnqclqz" target="_blank" rel="noopener noreferrer">omarvgws</a> reflected on receiving a third incomplete bank transfer in a melting currency: <q>A payment that arrives the way dirty water arrives through a broken pipe: enough to survive by, too little to feel that someone, on the other side, honours the agreement.</q> He contrasted fiat stones with the seeds of a circular economy: <q>Can I pay someone in stones, when I ought to have paid in seeds?</q></p>
+            <p>In German long-form (<a href="https://jumble.social/notes/nevent1qqspt5mcx03m8xwx3n2lp84sszhc2jpx0hh0as7k30lgsdjxgx9lwgqh99xgp" target="_blank" rel="noopener noreferrer">s573</a>), <a href="https://jumble.social/notes/nevent1qqspt5mcx03m8xwx3n2lp84sszhc2jpx0hh0as7k30lgsdjxgx9lwgqh99xgp" target="_blank" rel="noopener noreferrer">Michael Meyen</a> reviewed six autumn books by putting them on the kitchen scale first—led at a full kilogram by Jochen Kirchhoff's <em>Antigeschichte der Physik</em>, published by Hauke Ritz's new imprint Hirschmann. And in the highlights desk, <a href="https://jumble.social/notes/nevent1qqs2n6pzyvjcqpkldlg9k5jud4e5etr5pp4vc3zuxkkne3myfs0nkhqwuu2sz" target="_blank" rel="noopener noreferrer">Alex Gleason</a> marked a farewell passage from the Kloak team (kloak.app): <q>But it’s time to let this go now. Not because it wasn’t worth it, but because we’ve given it everything we had, and there isn’t any more to give.</q> Meanwhile, <a href="https://jumble.social/notes/nevent1qqsysvr37fjqujckdchayfpu82q6upadg54d27dhm0ptsm97wrr0uac0fqjzs" target="_blank" rel="noopener noreferrer">Daryn Cavalier</a> highlighted page 168 of <em>Biological Elegance: Unwitting the Devil</em>: <q>If we are to preserve any useful meaning to the word, consciousness has to be experiential. It can only come from within a finite system that is experiencing an infinite reality.</q></p>
+          </article>
+        </div>
+
+        <div class="cell">
+          <article class="story">
+            <div class="kicker">The Reading Room &amp; Homestead</div>
+            <h3 class="sub-head">Max's Thirty-Eight Book Notes, Qubes Clipboard Wipes, and Farm Manchego</h3>
+            <p class="byline"><a href="https://jumble.social/notes/nevent1qqsgu5zmcsg37vz39203d5v656k3wfyskk9aq83hzmdtlwy9kh0cxjgxedfky" target="_blank" rel="noopener noreferrer">Max</a> · <a href="https://jumble.social/notes/nevent1qqsfs82hvx3779m9qryd9whr5w9q77cytq9zql9efs8spu2llglvwtcwmlrhf" target="_blank" rel="noopener noreferrer">Dawn</a> · <a href="https://jumble.social/notes/nevent1qqsrtvmckxsxv6620rsr0jmk5hdvqwggs3swxeecav9vhrj852gtmjs3tv6um" target="_blank" rel="noopener noreferrer">Essencial</a> · <a href="https://jumble.social/notes/nevent1qqsqqqqq5uf6narttkqr6sfzped73twc3gr9eux845x03erum7agyac7t8hll" target="_blank" rel="noopener noreferrer">A.A.Ron</a></p>
+            <p>More than half of the long-form desk today came from a single voice: <a href="https://jumble.social/notes/nevent1qqsgu5zmcsg37vz39203d5v656k3wfyskk9aq83hzmdtlwy9kh0cxjgxedfky" target="_blank" rel="noopener noreferrer">Max</a> filed over thirty book reviews and technical notes in one stretch, spanning Murray Rothbard's <em>Conceived in Liberty</em> (<a href="https://jumble.social/notes/nevent1qqszqlmvp6lnwcllzy4wm64t7enhag5a8nfm6ayxf48nzxnwz729l3quzu0dp" target="_blank" rel="noopener noreferrer">s525</a>), Whitfield Diffie and Susan Landau's <em>Privacy on the Line</em> (<a href="https://jumble.social/notes/nevent1qqsrt8rmfg9ezqdyj4a2vxguh98u5x40v8p5makc34wem5h9q5t4gksqm6m4u" target="_blank" rel="noopener noreferrer">s522</a>), Ross Anderson's <em>Security Engineering</em> (<a href="https://jumble.social/notes/nevent1qqsfay367nh7gx4gsqvr9xd9xecxcy3w3rg2n66mvkq99wz49frsfnqavlpmd" target="_blank" rel="noopener noreferrer">s542</a>), and <em>The MoonMath Manual to zk-SNARKs</em> (<a href="https://jumble.social/notes/nevent1qqsf5e8xgzzuvdx2v3pape9fqjwgjh5vgrx4fs2j89ggzkxap009w7q9dqnv3" target="_blank" rel="noopener noreferrer">s550</a>), alongside a one-liner for Qubes OS that wipes the AppVM clipboard every 30 seconds via `xsel` (<a href="https://jumble.social/notes/nevent1qqsgu5zmcsg37vz39203d5v656k3wfyskk9aq83hzmdtlwy9kh0cxjgxedfky" target="_blank" rel="noopener noreferrer">s508</a>).</p>
+            <p>Away from the terminal, the homestead and kitchen desk had a busy morning. <a href="https://jumble.social/notes/nevent1qqsfs82hvx3779m9qryd9whr5w9q77cytq9zql9efs8spu2llglvwtcwmlrhf" target="_blank" rel="noopener noreferrer">Dawn</a> published a full cheese-making guide for homemade Manchego (five hours prep, thirteen hours to press and brine, yielding two pounds from two gallons of farm-fresh milk), <a href="https://jumble.social/notes/nevent1qqsrtvmckxsxv6620rsr0jmk5hdvqwggs3swxeecav9vhrj852gtmjs3tv6um" target="_blank" rel="noopener noreferrer">Essencial</a> turned an untouched garden harvest into raw apple cake, chips and fruit leather, <a href="https://jumble.social/notes/nevent1qqsrn3e9yda9p9rl3raq0t2j69f4eqjjl6cghv7hm2yxsn6wwhgdljgmrdmyc" target="_blank" rel="noopener noreferrer">jsm</a> compared sheep breeds (<q>And we've really loved Katahdin ewes crossed with Texel rams. Good size. Workable. Hardy.</q>), and <a href="https://jumble.social/notes/nevent1qqsqqqqq5uf6narttkqr6sfzped73twc3gr9eux845x03erum7agyac7t8hll" target="_blank" rel="noopener noreferrer">A.A.Ron</a> remembered feeding quarters into a Pizza Hut Castlevania cabinet while waiting on a Book-It personal pan pizza—before checking on mylar bags sealed since 2014 (<a href="https://jumble.social/notes/nevent1qqsqqqqrdp43pxqa0saaakmeqmluh49lmk7qd0dz6dx77rn57ru7g5czfaeyt" target="_blank" rel="noopener noreferrer">s46</a>).</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="band-head">
+        <h2>Standing Desks: Broadcasting, Classifieds, Releases &amp; Diary</h2>
+      </div>
+      <div class="cols4">
+        <div class="cell">
+          <div class="kicker">Broadcasting &amp; Film</div>
+          <h3 class="small-head">On the Air at Press Time</h3>
+          <p class="note">Streams running when this edition closed; static page, not live.</p>
+          <div class="wire-item">
+            <strong><a href="https://zap.stream/naddr1qqjrjcfsxqcnxeps94jnzdpj956xge3h943xxcnx943nwepkxp3rze3svgukzq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrmtgmq" target="_blank" rel="noopener noreferrer">FREEDOM TECH FRIDAY</a></strong> · zap.stream · Started 2026-10-16 13:01 UTC. Weekly Freedom Tech signal; <a href="https://jumble.social/notes/nevent1qqsxjt8a0te7sj7q8k0zmcqt302hllsw8exafv4g00rsg7l9m059agq7t3w3s" target="_blank" rel="noopener noreferrer">Noderunners Radio</a> and <a href="https://jumble.social/notes/nevent1qqsf2a0kvfxu6ju3ml4hsgcex2ws2k5r59ejqqv5cqytcclng0dhy0guz2v9d" target="_blank" rel="noopener noreferrer">Jon</a> also called listeners into the jukebox show where the crowd is the DJ (<a href="https://jumble.social/notes/nevent1qqsxnzt7zdy3sc5zdxf3prskplfeuglxfltrlxx4fdmp9ngd7nmqn7skd0p8g" target="_blank" rel="noopener noreferrer">s74</a>).
+          </div>
+          <div class="wire-item">
+            <strong><a href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al" target="_blank" rel="noopener noreferrer">NoGood Radio</a></strong> · zap.stream · Continuous 24/7 pirate radio station running on scrap parts from a basement.
+          </div>
+          <div class="wire-item">
+            <strong><a href="https://zap.stream/naddr1qqjxgvp5xqun2ep494jrjdfh956x2vph95unqdtr956x2wtzve3k2efcxdskxq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwd43x4r" target="_blank" rel="noopener noreferrer">1.5k challenge week 5</a></strong> · zap.stream · Started 2026-10-16 13:14 UTC. Trading challenge under strict rules.
+          </div>
+          <div class="wire-item">
+            <strong><a href="https://zap.stream/naddr1qqjr2dejvccx2vn995enjctx956ryvfk95ukxvmp95mnxvphxgunzdeh8psnzq3qsjf300tngygmqtfkpyd0vcglld2msksjxe9fsjduzn2pccqjl9wsxpqqqpmxw9l8huk" target="_blank" rel="noopener noreferrer">ScardustTV 24/7</a></strong> · Stream Road · Continuous 24/7 stream of Scardust music videos.
+          </div>
+          <div class="wire-item">
+            <strong>Short Video Desk:</strong> <a href="https://jumble.social/notes/nevent1qqspw7fqsfraxfltu8q9r8a9a3ycdmun57zjry76ln2j402ap0jeu9sn5h0ws" target="_blank" rel="noopener noreferrer">Divine HQ</a> celebrated being named a <em>Time</em> Best Invention of 2026 (<q>We built Divine to put creative power back into human hands. A playground for human creativity and connection. No ads, no AI slop, no blackbox algorithm.</q>), while <a href="https://jumble.social/notes/nevent1qqswacr3v7fypmgvasy2y8jh5ndg8g984l5pqz0rq538m6jkw2722rgut32qf" target="_blank" rel="noopener noreferrer">improvising nate</a> welcomed the new wave of creators.
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="kicker">The Classifieds</div>
+          <h3 class="small-head">One Offer on the Board</h3>
+          <div class="wire-item">
+            <strong><a href="https://shopstr.market/listing/naddr1qqjrve3sxdjk2dtz95mxxcee956xxdtx943xzepn95erqvpexgurxveev43rjq3qcyla8qgt9gv8y6ydv8s2prt89h8afc0sr2kaz64ryjmlpdrzxm4qxpqqqpmvylanxlr" target="_blank" rel="noopener noreferrer">2140Gibson</a></strong> · Offered by <strong>kman2140</strong> · <strong>$3,000 USD</strong> (active). Tagged <em>art-collectibles</em>, referencing artofproof.space/2140. The sole classified listing in today's ranked window.
+          </div>
+          <div class="kicker">Code Repositories</div>
+          <h3 class="small-head">On Gitworkshop</h3>
+          <div class="wire-item">
+            <strong><a href="https://gitworkshop.dev/npub1q3sle0kvfsehgsuexttt3ugjd8xdklxfwwkh559wxckmzddywnws6cd26p/ditto-api" target="_blank" rel="noopener noreferrer">Ditto API</a></strong> · Alex Gleason &amp; <a href="https://gitworkshop.dev/npub10qdp2fc9ta6vraczxrcs8prqnv69fru2k6s2dj48gqjcylulmtjsg9arpj/ditto-api" target="_blank" rel="noopener noreferrer">Team Soapbox</a>, alongside <a href="https://gitworkshop.dev/npub1q3sle0kvfsehgsuexttt3ugjd8xdklxfwwkh559wxckmzddywnws6cd26p/armada-matrix-bridge" target="_blank" rel="noopener noreferrer">armada-matrix-bridge</a>.
+          </div>
+          <div class="wire-item">
+            <strong><a href="https://gitworkshop.dev/npub14rg4vrt2v374q95ezeeydu3hkdhmzglcj950mggacap4x0lv0gyq04wun7/slip39-laboratory" target="_blank" rel="noopener noreferrer">Slip39 Laboratory</a></strong> · stl1988 · Shamir backup tooling on Nostr git.
+          </div>
+          <div class="wire-item">
+            <strong><a href="https://gitworkshop.dev/npub1hw6amg8p24ne08c9gdq8hhpqx0t0pwanpae9z25crn7m9uy7yarse465gr/tollgate-suite-wrt" target="_blank" rel="noopener noreferrer">tollgate-suite</a></strong> · Arjen · Plus julien's <a href="https://gitworkshop.dev/npub19w6s06qgvfy8glfwc5qf5uxvm0staycslfsjj55j8jzhned2spzq8psyzj/narwal" target="_blank" rel="noopener noreferrer">narwal</a> and <a href="https://gitworkshop.dev/npub19w6s06qgvfy8glfwc5qf5uxvm0staycslfsjj55j8jzhned2spzq8psyzj/narwal-cli" target="_blank" rel="noopener noreferrer">narwal-cli</a>, and Milo's <a href="https://gitworkshop.dev/npub1g0tlqlgsh8nxyaz7zze0cgq6wnwp0z3s3sc5py6s6p4sg3mczmssqfhyrr/Jackdaw" target="_blank" rel="noopener noreferrer">Jackdaw</a> &amp; <a href="https://gitworkshop.dev/npub1g0tlqlgsh8nxyaz7zze0cgq6wnwp0z3s3sc5py6s6p4sg3mczmssqfhyrr/rookery" target="_blank" rel="noopener noreferrer">rookery</a>.
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="kicker">App Releases</div>
+          <h3 class="small-head">New on Zapstore</h3>
+          <div class="wire-item">
+            <strong><a href="https://zapstore.dev/apps/org.dergigi.feather" target="_blank" rel="noopener noreferrer">Feather</a></strong> · Gigi · Minimal, opinionated Android Nostr client built for speed and discoverability.
+          </div>
+          <div class="wire-item">
+            <strong><a href="https://zapstore.dev/apps/today.cypherpunk.nalgorithm" target="_blank" rel="noopener noreferrer">nalgorithm</a></strong> &amp; <strong><a href="https://zapstore.dev/apps/today.cypherpunk.emanator" target="_blank" rel="noopener noreferrer">Emanator</a></strong> · Juraj🏴💛🌘 · Plain-words feed ranking with one-line reasons, plus multi-account scheduling with Amber signing.
+          </div>
+          <div class="wire-item">
+            <strong><a href="https://zapstore.dev/apps/com.kilombino.pyblockwatch" target="_blank" rel="noopener noreferrer">Kilowallet</a></strong> · ꓘɨℓσꬺƄɨP110ꓘɳσ[Ŧƨ] 𓅦丰 · Reproducible Android wallet with Ark, Lightning and on-device dice seeds.
+          </div>
+          <div class="wire-item">
+            <strong><a href="https://zapstore.dev/apps/app.chama.market" target="_blank" rel="noopener noreferrer">Chama</a></strong> · Bitcrazy🏄🏾‍♂️ · Peer-to-peer Bitcoin and local currency trading and bill pay.
+          </div>
+          <div class="wire-item">
+            <strong><a href="https://zapstore.dev/apps/com.jarves.mh" target="_blank" rel="noopener noreferrer">Mobile Harness</a></strong> &amp; <strong><a href="https://zapstore.dev/apps/com.guiforge.bati" target="_blank" rel="noopener noreferrer">Bati</a></strong> · Zapstore · Local ARM64 coding workspace on Android, and a dark-fantasy RPG strength tracker.
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="kicker">Diary &amp; Calendar</div>
+          <h3 class="small-head">Upcoming Gatherings</h3>
+          <div class="wire-item">
+            <strong><a href="https://njump.me/naddr1qqvrvwrpxpsnzwp4vgck2wryv5ckvefjvesnqd35vcpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv2hyz4g" target="_blank" rel="noopener noreferrer">Bitcoin Alpha</a></strong> · Fri, Oct 16, 2026, 08:00 PDT · Casa Del Mar, Santa Monica, CA. Invite-only beachfront gathering.
+          </div>
+          <div class="wire-item">
+            <strong><a href="https://njump.me/naddr1qqjrydtyvccryce395ungdej956rwwfh95uryvrz95urzve3xgcxydnpxqmxxq3q38lktp328xjqvs45zysswzjxu4gxj58uypmlt486nxhek3dry8vsxpqqqp7txy5ada6" target="_blank" rel="noopener noreferrer">La minería de Bitcoin como vehículo de inversión</a></strong> · Fri, Oct 16, 2026, 18:00 CEST · Pg. de Gràcia 19, Barcelona. With BitCanary's Diego Martín Duro.
+          </div>
+          <div class="wire-item">
+            <strong><a href="https://njump.me/naddr1qqvrvctyxp3k2v3589nr2v35vyer2vtpvsuxvenz8qpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvk4thxn" target="_blank" rel="noopener noreferrer">[Arnhem] Bitcoin &amp; Nostr Kids</a></strong> · Sat, Oct 17, 2026, 12:00 CEST · Foodhall Arnhem, Netherlands. Pastries paid in sats.
+          </div>
+          <div class="wire-item">
+            <strong><a href="https://njump.me/naddr1qqhnwwphxa3kzv3k94jxyefj956xgct994snwe3h956rsvmy8y6xxefj8qekzw3jxqervtf3xqknydgzyqplg5tmwhsmqfse2ccstvmhuhtsd7frjyq6cef3c7ka02lnze037qcyqqq8evcntt3tl" target="_blank" rel="noopener noreferrer">BitcoinWalk Lugano</a></strong> · Sun, Oct 25, 2026, 10:00 CET · Satoshi Nakamoto Statue, Parco Ciani, Lugano.
+          </div>
+          <div class="wire-item">
+            <strong><a href="https://njump.me/naddr1qqjx2vmzvenr2e3c956rvdtr956rswtr95ukvve3943kgd3cvverxwrpxvmxgq3qd6cnmzg9m4kpfxxnzvcgljg4jwk09tu2xet3e72yx6ddgrkgmm7sxpqqqp7txxa22gs" target="_blank" rel="noopener noreferrer">Northants Bitcoin Whitepaper Day 2026</a></strong> · Sat, Oct 31, 2026, 15:00 GMT · The Dog &amp; Gun, Walton, Lutterworth, UK.
+          </div>
+          <div class="wire-item">
+            <strong><a href="https://njump.me/naddr1qqvrvctyxymnsdes89nr2v35vyer2vtpvsukgvehx5pzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvxp2rzg" target="_blank" rel="noopener noreferrer">Sovereign Conference</a></strong> · Sun, Nov 22, 2026, 13:30 PYST · UCOM, Asunción, Paraguay. Talks followed by an outdoor asado.
+          </div>
+          <div class="wire-item">
+            <strong><a href="https://njump.me/naddr1qqvrvctyx93kze3e89nr2v35vyer2vtpv3snxcm98ypzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukved3zjz" target="_blank" rel="noopener noreferrer">Bitcoin Basics - Bitcoin for Business</a></strong> · Wed, Nov 25, 2026, 17:30 AEDT · Melbourne Connect, Carlton VIC, Australia. With Kman 2140 on Australia's Oct 1 payment surcharge ban.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
