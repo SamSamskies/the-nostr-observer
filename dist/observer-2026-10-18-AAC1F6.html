@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+<head>
+<style id="observer-house">
+/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+
+</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Sunday, October 18, 2026</title>
+  <meta name="description" content="As generative agents churn out code at industrial volume, software builders and artists wrestle with the divide between disposable slop and enduring human discernment.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="The Post-Coding Frontier: Clankers, Vibe Coding, and the Question of Taste">
+  <meta property="og:description" content="As generative agents churn out code at industrial volume, software builders and artists wrestle with the divide between disposable slop and enduring human discernment.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-10-18-AAC1F6.html">
+  <meta property="og:image" content="https://npub1xrja8ekfnzvecwds4zqzf7zlqlervty7wkyl055t8x0jn93f0rds7xrhk7.blossom.band/c10acaa33ebb9690abe963d8260cd4ea95e8e9b6af35f68f52f242c4125a13f3.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Post-Coding Frontier: Clankers, Vibe Coding, and the Question of Taste">
+  <meta name="twitter:description" content="As generative agents churn out code at industrial volume, software builders and artists wrestle with the divide between disposable slop and enduring human discernment.">
+  <meta name="twitter:image" content="https://npub1xrja8ekfnzvecwds4zqzf7zlqlervty7wkyl055t8x0jn93f0rds7xrhk7.blossom.band/c10acaa33ebb9690abe963d8260cd4ea95e8e9b6af35f68f52f242c4125a13f3.jpg">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <div class="sheet">
+    <div class="folio">
+      <span>No. AAC1F6</span>
+      <span>Sunday, October 18, 2026</span>
+      <span>24h to 07:51 CDT</span>
+    </div>
+
+    <header class="masthead">
+      <h1><span class="the">The</span> Nostr Observer</h1>
+      <p class="motto">What your web of trust surfaced in the last twenty-four hours</p>
+    </header>
+
+    <div class="dateline">
+      <span>Ranked as NotBiebs and 69 others</span>
+      <span>671 events through your lens</span>
+      <span>247 voices</span>
+    </div>
+
+    <main class="fold">
+      <div class="col span-8">
+        <article class="story">
+          <p class="kicker">Software &amp; Philosophy</p>
+          <h2 class="lead-head">The Post-Coding Frontier: Clankers, Vibe Coding, and the Question of Taste</h2>
+          <p class="dek">As generative agents churn out code at industrial volume, software builders and artists wrestle with the divide between disposable slop and enduring human discernment.</p>
+
+          <p class="first">Across the network this morning, an ancient craft found itself at a strange and irreversible turning point. For half a century, the practice of software engineering demanded the painstaking manual translation of logic into syntax, line by line. But as generative models and agentic harnesses collapse the marginal cost of code to zero, the question confronting builders is no longer how quickly software can be written, but what is genuinely worth making when anything can be summoned from a prompt.</p>
+
+          <p>The tension surfaced sharply in reflections on the changing nature of the developer. Observing the speed of contemporary creation, sandwich remarked on how non-traditional builders are reshaping the field: <q>In the short term, I am watching artists vibe code in circles around developers, and it's because how they perceive software is not constrained by development knowledge. Depending on the subject matter, not knowing anything is probably an advantage IMO.</q> Yet that immediate velocity carries an impending reckoning for systems nobody truly understands: <q>On a long enough timeline, just remembering how to code will probably become invaluable when something breaks, nobody knows how it works and their agent refuses to fix it.</q> <a href="https://jumble.social/notes/nevent1qqsrnjnmlldzgw7wc5jgvjkpn0tjq7wsx4n34p5n8pzc6arfsdq25cqgspr74" target="_blank" rel="noopener noreferrer">[s48]</a>.</p>
+
+          <p>That caution was echoed by J.G.Montoya, who questioned the longevity of hastily prompted software. <q>Interesting! I've seen plenty of the opposite: people with little-to-no coding experience/knowledge making absolute trash!</q> Montoya noted, observing that while models steadily advance, <q>vibed codebases can be insanely hard to understand even if you know how to code.</q> <a href="https://jumble.social/notes/nevent1qqsyscn5kqtay4yufwgpkqu8wf8pqd8usr62ttlmvpgl26k330ks2xgerekwp" target="_blank" rel="noopener noreferrer">[s37]</a>.</p>
+
+          <figure>
+            <img src="https://npub1xrja8ekfnzvecwds4zqzf7zlqlervty7wkyl055t8x0jn93f0rds7xrhk7.blossom.band/c10acaa33ebb9690abe963d8260cd4ea95e8e9b6af35f68f52f242c4125a13f3.jpg" alt="High-rise skyscrapers illuminated at night piercing through misty clouds in Shanghai">
+            <figcaption>Skyscrapers rising into the night fog in Shanghai, captured from street level. <span class="credit">nik ⚡️🟠🟣</span></figcaption>
+          </figure>
+
+          <p>The paradox of automated leverage played out in concrete engineering over the weekend. On Freedom Tech Friday, SF reflected on overhauling the Node Runners Radio jukebox using AI assistants. As recounted on Ungovernable, <q>SF calls himself an ape banging rocks together when it comes to code.</q> While utilizing Claude felt <q>Honestly, it's been like magic</q>, the team acknowledged the hidden hazard: server maintainers had to intervene repeatedly after the assistant wandered into sensitive configurations, leaving behind systems operating as opaque black boxes <a href="https://jumble.social/notes/nevent1qqsfwv68my9zfu2y7av7lp8uj4nglrvrk0y4mum2c4dc0eyu953s2cg9s5653" target="_blank" rel="noopener noreferrer">[s103]</a>.</p>
+
+          <p>The philosophical root of this transition was articulated by Gigi in an essay highlighted by Marcel. Software, Gigi argues, has ceased to be an exclusive, scarce artifact: <q>everything is an open-source app now. You can reverse-engineer anything; you can point your clankers at a product, and tell them that you want the same thing, but under an MIT license.</q> <a href="https://jumble.social/notes/nevent1qqstp3ln996ercymrtsw470hswkp8jj8kr62efkcy7m8ywg4hxet7wsumwl7z" target="_blank" rel="noopener noreferrer">[s548]</a>. With historical perspective, Gigi declares that <q>The craft of software development is as dead as riding a horse for transportation purposes is dead.</q> <a href="https://jumble.social/notes/nevent1qqswd7jkcs6jcee0j6cu65a2ep7hgag4f9rpcx8nkelxevpjmeuk42sm6edev" target="_blank" rel="noopener noreferrer">[s551]</a>. What survives the death of routine syntax is human intentionality and standards: <q>IF you care and IF you have good taste THEN the clankers are a superpower. If you don't care and you don't have any taste all you'll be able to produce is slop.</q> <a href="https://jumble.social/notes/nevent1qqsxadaehnwq63ckrjdfdru8kd290m3xuhtd902h0a5u6xhsscs4ccg57ydgh" target="_blank" rel="noopener noreferrer">[s552]</a>.</p>
+
+          <p>Ultimately, the deflation of software complexity places responsibility squarely back on the individual. As Tim summarized: <q>software not the limiting factor any more, only way to grow freedom now is by growing responsibility. always optimistic(:</q> <a href="https://jumble.social/notes/nevent1qqsycveq06gxuwpc60nyzhehwfwy6vansnwpea5lc6s47nnq9h82ltghdv2fh" target="_blank" rel="noopener noreferrer">[s110]</a>.</p>
+
+          <h3 class="main-head">Decentralized Foundations: Homebrew Energy &amp; P2P Trade</h3>
+          <p>While the virtual world grapples with superabundance, tangible autonomy made quiet strides in home workshops and local protocols. aljaz drew attention to breakthroughs in decentralized fabrication, pointing to a working homebrew solar cell: <q>this dude is on fire, he made a DIY solar panel at home, also his other stuff is worth checking out, truly a frontier of decentralized manufacturing at home</q> <a href="https://jumble.social/notes/nevent1qqs803ldz9tsrlnd5ukw4l98ky8pwuwl62xyvp4rpjsvl5u3zuramhsxvyde8" target="_blank" rel="noopener noreferrer">[s67]</a>.</p>
+
+          <p>Peer-to-peer exchange similarly advanced its perimeter. The Mostro network announced its comprehensive v2.0.17 release, noting that <q>2026 has been the most Mostro year ever, and the team has worked hard so every Mostro is happy.</q> The platform rolled out a dedicated desktop and mobile interface: <q>The new Mostro app is here, available for Android, Linux, Windows and macOS</q> alongside Serbero, a dispute routing assistant designed to keep human solvers firmly in control of arbitration <a href="https://jumble.social/notes/nevent1qqs22fcl334uv2zp42yee806hp0lzq0ra8aqnlzh278ds50nf7nsunc9kxq97" target="_blank" rel="noopener noreferrer">[s105]</a>.</p>
+
+          <p>At the transport layer, client developers continue anchoring communication to immutable endpoints. Announcing the deployment of nVelope, Steven Day confirmed: <q>My account is live on nVelope.</q> reassuring users that <q>don't worry the relays are hard coded in the client, won't be overridden</q> <a href="https://jumble.social/notes/nevent1qqsq78vyw72r3muk5cxe90vu5z8vsugnyza63qst9cl3pzswl6phmpcay0240" target="_blank" rel="noopener noreferrer">[s50]</a>.</p>
+        </article>
+      </div>
+
+      <div class="col span-4">
+        <aside class="box">
+          <h3 class="box-head">The Instrument</h3>
+          <p class="note">A diagnostic comparison between ranked web-of-trust selection and anonymous recency.</p>
+          <p>The unranked control read of the identical 24-hour window returned 400 notes. Of those, exactly 0 appeared in the 396 ranked notes surfaced through the reader's lens. This absolute divergence demonstrates that the web-of-trust filter is operating with total discrimination, replacing anonymous broadcast noise entirely with the reader's trusted social network.</p>
+        </aside>
+
+        <aside class="box">
+          <h3 class="box-head">Network &amp; Market Readings</h3>
+          <p class="note">As of 07:51 CDT · Moving figures from window posts, not live tickers.</p>
+          <div class="tablewrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Metric</th>
+                  <th style="text-align: right;">Reading</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Bitcoin Price</td>
+                  <td class="num">$81,994</td>
+                </tr>
+                <tr>
+                  <td>Power Law Model</td>
+                  <td class="num">$143,528</td>
+                </tr>
+                <tr>
+                  <td>Distance to Model</td>
+                  <td class="num">-42.87%</td>
+                </tr>
+                <tr>
+                  <td>Window High</td>
+                  <td class="num">$81,649</td>
+                </tr>
+                <tr>
+                  <td>Days Since All-Time High</td>
+                  <td class="num">376 days</td>
+                </tr>
+                <tr>
+                  <td>S&amp;P 500 / Gold Ratio</td>
+                  <td class="num">1.78</td>
+                </tr>
+                <tr>
+                  <td>4-Year Return on Investment</td>
+                  <td class="num">+315%</td>
+                </tr>
+                <tr>
+                  <td>Supply Inactive &ge; 4 Years</td>
+                  <td class="num">39.5%</td>
+                </tr>
+                <tr>
+                  <td>Halving Epoch 4 Supply</td>
+                  <td class="num">11.00M BTC</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="note">Observations reported by ChartsBTC <a href="https://jumble.social/notes/nevent1qqsrqd52ajpycmt636wl7zerc5j52sczfwr05q2us36vckpz8lsj9sslc3pdx" target="_blank" rel="noopener noreferrer">[s54]</a> <a href="https://jumble.social/notes/nevent1qqs2z20hhr8gjaz44mxt5kh5nhcsksnn5mz27pzhldqr6vakt2j8j3qvfp50v" target="_blank" rel="noopener noreferrer">[s71]</a> <a href="https://jumble.social/notes/nevent1qqs8a7r5wn569z93khddnwv69du32kejlq3f37uf73t44c59dfl4jlgm8r7r7" target="_blank" rel="noopener noreferrer">[s76]</a> <a href="https://jumble.social/notes/nevent1qqsgevsjmukpsd8xxluas0km7ck7v0vafk9y86dex67wtlgcl3cpznqxq85kv" target="_blank" rel="noopener noreferrer">[s99]</a> <a href="https://jumble.social/notes/nevent1qqswvrfvwflft2kf6vuvqc5l7gzzs4xukd5g2dclmp0lwy3rh6tk5gcmqh84g" target="_blank" rel="noopener noreferrer">[s107]</a>.</p>
+        </aside>
+
+        <aside class="box reverse">
+          <p class="kicker">Counterculture</p>
+          <h3 class="sub-head">The Mondo 2000 Spirit</h3>
+          <p class="dek">Reclaiming the cybernetic optimism of the early electronic frontier.</p>
+          <figure>
+            <img src="https://blossom.primal.net/6e96bf8043ad097aeba2b44c74f7e1588011d9fbf09611bf26bfef1701250871.jpg" alt="Vintage issue of Mondo 2000 magazine exploring cybernetic culture and fringe technology">
+            <figcaption>Mondo 2000 in print, a reminder of computing's subversive roots. <span class="credit">erik</span></figcaption>
+          </figure>
+          <p>Amid corporate AI guardrails and homogenized interfaces, erik issued a call to remember where computing culture came from: <q>we must return to the mondo 2000 spirit.</q> <a href="https://jumble.social/notes/nevent1qqsq782455hhj0sxftksnmm545th7mzz66zssd58223xlfrcsw4t5jc8uqfez" target="_blank" rel="noopener noreferrer">[s166]</a>. The ethos of late-twentieth-century cybernetics was not efficiency optimization or corporate compliance, but subversive curiosity, radical individual capability, and unconstrained experimentation.</p>
+        </aside>
+      </div>
+    </main>
+
+    <section class="band">
+      <div class="band-head">
+        <h2>Culture, Autonomy &amp; Mind</h2>
+      </div>
+      <div class="cols3">
+        <div class="cell">
+          <article class="story">
+            <p class="kicker">Education</p>
+            <h3 class="sub-head">Natural Authority and Unschooling</h3>
+            <p class="byline">Notes from Alexandra ⚡</p>
+            <p>Reflecting on unlearning institutional pedagogy, Alexandra ⚡ shared the opening chapter of her book, recounting the pivotal moment her son refused forced instruction: <q>Of Course I Can Read, I'm Not Stupid</q> <a href="https://jumble.social/notes/nevent1qqsza5lt2uvf0hs3kx26y8lepa3nrgg7qr7s3g6vu85f4fnnxcq2wgcn8en6y" target="_blank" rel="noopener noreferrer">[s65]</a>.</p>
+            <p>The habit of external compulsion, she observes, begins early in childhood: <q>Because I said so</q> remains might makes right for kids in modern classrooms <a href="https://jumble.social/notes/nevent1qqsp4325u98avexkelnhk3m6v3uj40d80ucnx09t72yapjkntnnp4gshssk0n" target="_blank" rel="noopener noreferrer">[s80]</a>. Examining the endless multiplication of civil regulation, she noted: <q>Every new law is someone else deciding how you get to live. Less really is more.</q> <a href="https://jumble.social/notes/nevent1qqs846glnkdugv92e444xy370nkqrrf77yneat3huv9w9fnq95p70cgttumey" target="_blank" rel="noopener noreferrer">[s111]</a>.</p>
+          </article>
+        </div>
+
+        <div class="cell">
+          <article class="story">
+            <p class="kicker">Cognition</p>
+            <h3 class="sub-head">Recursion and Conviction</h3>
+            <p class="byline">Observations by MDB</p>
+            <p>The mechanics of compounding belief were broken down by MDB, describing how sovereign networks sustain their momentum: <q>a feedback loop pointed at itself is how stars ignite, how bank runs accelerate, how bitcoin compounds conviction into price, price into attention, attention into more conviction. scale is optional. recursion does the lifting.</q> <a href="https://jumble.social/notes/nevent1qqsvxyyev3xhnkdr7n82x0ef7gh8ve45hqadpxuww6x8tch85clu2ag0vk0yz" target="_blank" rel="noopener noreferrer">[s25]</a>.</p>
+            <p>In a companion meditation, MDB noted that the capacity to observe one's own thoughts operates prior to language and narrative, allowing an individual to read internal chatter as traffic rather than weather <a href="https://jumble.social/notes/nevent1qqsxfydgpdv89c5hrgrlll7hquqva8ef402ut4gvuw95dqr3z4krzmqc4dxrz" target="_blank" rel="noopener noreferrer">[s39]</a>.</p>
+          </article>
+        </div>
+
+        <div class="cell">
+          <article class="story">
+            <p class="kicker">Custody &amp; Verification</p>
+            <h3 class="sub-head">Don't Trust, Verify</h3>
+            <p class="byline">Field Notes</p>
+            <figure>
+              <img src="https://image.nostr.build/6477bd1655d8021e40eda576ff72fff7e4b8fd0963324029246f8ee876cebd68.jpg" alt="A dog staring with intense skepticism and suspicion">
+              <figcaption>Mateo keeping watch over private keys and unspent transaction outputs. <span class="credit">V3spering</span></figcaption>
+            </figure>
+            <p>V3spering captured the eternal posture of peer-to-peer security: <q>Mateo looking at me like I just moved his sats off chain without telling him. Don't trust, verify buddy.</q> <a href="https://jumble.social/notes/nevent1qqsxe72sjk7je204rhgs4pq28gzm8qhcn6dkyeqzgqvmup2hz57ctcgjf93xt" target="_blank" rel="noopener noreferrer">[s170]</a>.</p>
+            <p>On the network front, Walt Munny reported a noticeable absence of unwanted noise: <q>Is there still spam in #nostr? My feeds have never been this clean.</q> attributing the clarity to recent web-of-trust relay filters: <q>WoT is a game changer.</q> <a href="https://jumble.social/notes/nevent1qqsdk86z87hhyztfhwarpqxjkpk7d5k5qyp2fwefqt325nkszfen6lq9wa46k" target="_blank" rel="noopener noreferrer">[s40]</a>.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="band-head">
+        <h2>Standing Desks: Software, Code &amp; The Wire</h2>
+      </div>
+      <div class="cols3">
+        <div class="cell">
+          <div class="box">
+            <h3 class="box-head">App Releases (Zapstore)</h3>
+            <div class="wire-item">
+              <p><strong><a href="https://zapstore.dev/apps/org.dergigi.feather" target="_blank" rel="noopener noreferrer">Feather</a></strong> · Gigi</p>
+              <p>A minimal, lightweight, and opinionated Nostr client for Android, engineered for simplicity and discoverability.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://zapstore.dev/apps/farm.sandwich.puddlehop" target="_blank" rel="noopener noreferrer">Down to Duck</a></strong> · sandwich</p>
+              <p>An endless voxel crossing arcade game hopping through shifting worlds and collecting travelers.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://zapstore.dev/apps/com.kilombino.pyblockwatch" target="_blank" rel="noopener noreferrer">Kilowallet</a></strong> · ꓘɨℓσꬺƄɨP110ꓘɳσ[Ŧƨ] 𓅦丰</p>
+              <p>Bitcoin BLAKE2b wallet for Android featuring Ark, Lightning, and on-device dice seed generation.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://zapstore.dev/apps/app.chama.market" target="_blank" rel="noopener noreferrer">Chama</a></strong> · Bitcrazy🏄🏾‍♂️</p>
+              <p>A directory and matchmaking engine for peer-to-peer Bitcoin and local fiat trades.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://zapstore.dev/apps/com.formstr.pages" target="_blank" rel="noopener noreferrer">Pages by Form*</a></strong> · Form*</p>
+              <p>A private, local-first notes client built to safeguard personal plans and unvarnished thoughts.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="box">
+            <h3 class="box-head">Repositories &amp; Tooling</h3>
+            <div class="wire-item">
+              <p><strong><a href="https://gitworkshop.dev/npub1uac67zc9er54ln0kl6e4qp2y6ta3enfcg7ywnayshvlw9r5w6ehsqq99rx/sandwichfarm--dodgeland" target="_blank" rel="noopener noreferrer">dodgeland</a></strong> · sandwich</p>
+              <p>Experimental game logic and procedural mechanics repository hosted on gitworkshop.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://gitworkshop.dev/npub1zj0q0eseamwn9er4drf3jl3kufc0fddsfrr0v54l2mlfqenah7ysxuy9th/stepstr" target="_blank" rel="noopener noreferrer">stepstr</a></strong> · Snick</p>
+              <p>Fitness and step-tracking client integrating Nostr identity and signed event publication.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://gitworkshop.dev/npub1n2ph08n4pqz4d3jk6n2p35p2f4ldhc5g5tu7dhftfpueajf4rpxqfjhzmc/gittr" target="_blank" rel="noopener noreferrer">gittr</a></strong> · arbadacarba</p>
+              <p>NIP-34 repository tooling and patch publication client.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong>nostrfy v0.1.23</strong> · takuya / iqbqioza</p>
+              <p>Hardened release introducing safe daemon logging, config sanitization, and crash recovery <a href="https://jumble.social/notes/nevent1qqsqqqqz8xf3vu3ds2y2zrq0y0hfzxapw2kkvglt5zkt8pu470qwdwsampnsz" target="_blank" rel="noopener noreferrer">[s603]</a>.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong>Amethyst Reference Manual</strong> · ⚡ Dee Kay ⚡</p>
+              <p>Comprehensive 12-chapter guide detailing the client's 21 structured filter query tokens <a href="https://jumble.social/notes/nevent1qqsqqqqvt40cgvxw74mv7zcwd6jwel8gvja6pkdv6p76424lpp76ltqgjtw7l" target="_blank" rel="noopener noreferrer">[s560]</a>.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="box">
+            <h3 class="box-head">Broadcasting &amp; Gatherings</h3>
+            <p class="note">Streams currently on the air and upcoming calendar meetups.</p>
+            <div class="wire-item">
+              <p><strong>Live Streams (zap.stream)</strong></p>
+              <p>• <a href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al" target="_blank" rel="noopener noreferrer">NoGood Radio</a> by zap.stream</p>
+              <p>• <a href="https://zap.stream/naddr1qqjx2veevejxvvrx956xxd3e956xxcny94skzwfc95er2dpcx9nxxvt9v33kzq3q8gp8p84hjmjh9zejdlyqqcg22sj6x3qra0q2ng4v6cxxg95sav8qxpqqqpmxwhndn4a" target="_blank" rel="noopener noreferrer">Pixel Palace: Jorfest &#x27;26</a> by boo-bury</p>
+              <p>• <a href="https://zap.stream/naddr1qqjr2vfhxqekvwph94snxc34956rgwrp95unwwpe95ck2e3jvyuxzep4xyexyq3qsjf300tngygmqtfkpyd0vcglld2msksjxe9fsjduzn2pccqjl9wsxpqqqpmxw77ucuf" target="_blank" rel="noopener noreferrer">ScardustTV 24/7</a> by Stream Road</p>
+              <p>• <a href="https://zap.stream/naddr1qqjxgepcxu6kzwtx943rxefn956rgcf594snzcfk95enqerrxguxxd3ev4jrxq3qsh0cy25xtx0lh6q58kc7rcdl95tzlfs0c6zuv4g4jclx0n7hfx0sxpqqqpmxwctw37c" target="_blank" rel="noopener noreferrer">SIFAKA 24/7 METAL/HARDCORE/PUNK RADIO</a> by Live on Shosho</p>
+            </div>
+            <div class="wire-item">
+              <p><strong>Upcoming Meetups (njump)</strong></p>
+              <p>• <a href="https://njump.me/naddr1qqvrvctyxd3nwv34xfsk2ct9x4jnqefjv3nrxwpcvypzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvtlsw4x" target="_blank" rel="noopener noreferrer">Minneapolis Bitcoin Meetup</a> — Wed, Oct 21 @ O'Shaughnessy Distilling</p>
+              <p>• <a href="https://njump.me/naddr1qqvrvctyxsckydm9xfsk2ct9x4jnqefjv3nrjvf4x5pzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvd05gh4" target="_blank" rel="noopener noreferrer">Bitcoin Only Meetup Belgrade</a> — Wed, Oct 21 @ Docker Brewery</p>
+              <p>• <a href="https://njump.me/naddr1qqvrvctyxd3n2en9xfsk2ct9x4jnqefjv3nrzepevypzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvv485y9" target="_blank" rel="noopener noreferrer">Bitcoin am Holzmarkt</a> — Berlin Stammtisch @ Café Holzmarktperle</p>
+              <p>• <a href="https://njump.me/naddr1qqvrvctyxvmnzd33xfsk2ct9x4jnqefjv3jkxdfnxspzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvl4fe7c" target="_blank" rel="noopener noreferrer">Bitcoin Turns 18</a> — White Paper Day in Paris, Oct 31–Nov 1</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
