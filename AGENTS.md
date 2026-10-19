@@ -77,6 +77,10 @@ API key. A full run reads `ANTHROPIC_API_KEY` from the environment.
   version allowlisted any URL that appeared in the corpus; a test caught that
   the corpus is where the attacker writes, so posting a phishing URL was enough
   to allowlist it. Presence in the corpus is evidence of nothing.
+- **Pseudonyms are respected, not unmasked.** Nostr users often operate under
+  pseudonyms or handles (e.g. `waxwing`, `fiatjaf`). The digest provides the
+  name or handle from their profile. Writers must never substitute real-world
+  legal names or deanonymize pseudonymous users.
 
 ## Measured facts about the relays (2026-08-17 — re-measure, do not trust)
 

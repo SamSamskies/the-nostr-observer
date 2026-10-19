@@ -112,7 +112,9 @@ light, including `color-scheme: light`; no dark-mode override.
 - Use `<img src="art-3">`, never a raw image URL. Every image needs alt text and
   a caption derived from its post and credited to its author. You have not seen
   the photograph; never describe its contents from imagination.
-- Print names or npubs, never raw hex pubkeys or event ids.
+- Print names or npubs, never raw hex pubkeys or event ids. Respect pseudonyms:
+  use the handle or display name given in the digest; never substitute real-world
+  legal names for pseudonymous Nostr users.
 
 ## 4. Finish and deliver
 

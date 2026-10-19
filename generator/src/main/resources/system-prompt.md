@@ -137,7 +137,10 @@ in a column of prose it reads as a fault in the page.
 
 A person is their NAME. The digest gives you the name of everyone it could find
 one for, and an `npub1…` for the few it could not. Use what you are given, and
-never assemble an identifier of your own.
+never assemble an identifier of your own. Respect pseudonyms: Nostr users often
+operate under pseudonyms or handles (e.g. `waxwing`, `fiatjaf`). Use the handle or
+display name supplied in the digest; never substitute real-world legal names or
+deanonymize pseudonymous users.
 
 ## Quoting people: the hard rule
 
@@ -151,7 +154,7 @@ check is thrown away, so an approximate quote costs the reader their edition.
 - If you want to describe what somebody said rather than quote it, do that in
   ordinary prose with no `<q>` — paraphrase is journalism and is not checked.
 - Attribute every quote to the person who wrote it, by the name given in the
-  digest.
+  digest. Never replace a Nostr handle or pseudonym with a real-world name.
 
 Numbers are the same: use the figures given to you, and do not compute new ones.
 
