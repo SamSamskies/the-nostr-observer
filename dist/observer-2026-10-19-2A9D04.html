@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+<style id="observer-house">
+/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  font-size: .44em; display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+
+</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Monday, October 19, 2026</title>
+  <meta name="description" content="An active attack using leaked UpdraftCentral signing keys installs administrative backdoors on WordPress sites, as sovereign builders demonstrate reproducible code and local control.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="The Key You Never Kept: UpdraftCentral Breach Exposes 4M Sites to Silent Backdoors">
+  <meta property="og:description" content="An active attack using leaked UpdraftCentral signing keys installs administrative backdoors on WordPress sites, as sovereign builders demonstrate reproducible code and local control.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-10-19-2A9D04.html">
+  <meta property="og:image" content="https://image.nostr.build/9e2bdad94943a7e1cc458bdfdbc1c7c22bdc6b52af43e4e66700e5c80c15cd40.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Key You Never Kept: UpdraftCentral Breach Exposes 4M Sites to Silent Backdoors">
+  <meta name="twitter:description" content="An active attack using leaked UpdraftCentral signing keys installs administrative backdoors on WordPress sites, as sovereign builders demonstrate reproducible code and local control.">
+  <meta name="twitter:image" content="https://image.nostr.build/9e2bdad94943a7e1cc458bdfdbc1c7c22bdc6b52af43e4e66700e5c80c15cd40.jpg">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <div class="sheet">
+    <div class="folio">
+      <span>No. 2A9D04</span>
+      <span>Monday, October 19, 2026</span>
+      <span>24h to 09:11 CDT</span>
+    </div>
+
+    <header class="masthead">
+      <h1><span class="the">The</span> Nostr Observer</h1>
+      <p class="motto">What your web of trust surfaced in the last twenty-four hours</p>
+    </header>
+
+    <div class="dateline">
+      <span>Ranked as NotBiebs and 69 others</span>
+      <span>636 events through your lens</span>
+      <span>237 voices</span>
+    </div>
+
+    <main class="fold">
+      <div class="col span-8">
+        <article class="story">
+          <p class="kicker">Security &amp; Infrastructure</p>
+          <h2 class="lead-head">The Key You Never Kept: UpdraftCentral Breach Exposes 4M Sites to Silent Backdoors</h2>
+          <p class="dek">An active attack using leaked UpdraftCentral signing keys installs administrative backdoors on WordPress sites, as sovereign builders demonstrate reproducible code and local control.</p>
+
+          <p class="first">In the quiet hours before dawn, the perennial debate over centralized delegation versus local sovereignty received an unsparing practical demonstration. For years, the convenience of remote orchestration and single-pane dashboards has led system administrators to trade direct control for central management. But when the master signing key lives on somebody else’s server, even an impeccably patched perimeter offers no defense.</p>
+
+          <p>The alert came from Wilder, who discovered active intrusions across production systems: <q>On the night of 19 October an attacker sent validly signed UpdraftCentral commands to three of our WordPress sites and installed a backdoor plugin on two of them.</q> Crucially, the target servers had not been penetrated directly. As Wilder explained, <q>The sites were fully up to date, on UpdraftPlus 2.26.11, patched against the June vulnerability CVE-2026-10795. The attacker did not break into our servers. The commands were signed with the private dashboard keys that UpdraftCentral Cloud generates and keeps, keys that never existed on our side.</q> <a href="https://jumble.social/notes/nevent1qqsrhavff5g7wdrgq3ew80w4he96z2fe6z5lg789jp0vd5x6nvverjs8jphyj" target="_blank" rel="noopener noreferrer">[s66]</a>.</p>
+
+          <p>The mechanics of the rogue plugin illustrate how completely delegated trust can hollow out local authentication. <q>The backdoor waits for a secret link, then creates an account that looks like an ordinary Editor but can change every setting and install plugins, and logs the attacker straight in, bypassing the login form and two-factor authentication.</q> With an install base exceeding four million sites, Wilder stressed the vast scope of the exposure: <q>UpdraftPlus has more than 4 million active installations and every copy contains the UpdraftCentral client. Any site connected to UpdraftCentral is exposed, including the latest version. There is no fix yet.</q> <a href="https://jumble.social/notes/nevent1qqsrhavff5g7wdrgq3ew80w4he96z2fe6z5lg789jp0vd5x6nvverjs8jphyj" target="_blank" rel="noopener noreferrer">[s66]</a>.</p>
+
+          <figure>
+            <img src="https://image.nostr.build/9e2bdad94943a7e1cc458bdfdbc1c7c22bdc6b52af43e4e66700e5c80c15cd40.jpg" alt="A street view captured during a walk around Shibuya, Tokyo.">
+            <figcaption>A moment from a walk around Shibuya. <span class="credit">muneomi 📷</span></figcaption>
+          </figure>
+
+          <p>The breach arrives as sovereign builders across the protocol double down on provable, client-side integrity. Announcing that Envoy has been independently verified as reproducible on WalletScrutiny, Foundation underscored why transparent source code alone is not enough: <q>Open source means you can read the code.</q> In contrast, <q>Reproducible means you can prove the app/software you’re running was built from that exact code.</q> As the team noted, <q>The most secure code is the code anyone can verify and re build.</q> <a href="https://jumble.social/notes/nevent1qqsy753em59f0ss94p0w5khzwsq987mcd6zqztaj5agux0u2e326gpgkfam7n" target="_blank" rel="noopener noreferrer">[s47]</a>.</p>
+
+          <p>That philosophical line between dependent custody and cryptographic ownership was echoed across the network. From Santo Domingo, bitcoindominicana warned against reliance on external hosts: <q>Decentralization seems unnecessary until the day you actually need it.</q> Observing recent social account bans, they noted that <q>if your audience only lives inside a platform you don't control, you're building on rented land.</q> In contrast, open protocols establish an enduring baseline: <q>Bitcoin taught us "not your keys, not your coins." The same logic applies to communication: if your identity and your audience depend entirely on one company, they aren't fully yours.</q> <a href="https://jumble.social/notes/nevent1qqswsravms27ytgn67y4meu6wspv4swrx6szzu73nhy0rd8q2xqumlskpcaat" target="_blank" rel="noopener noreferrer">[s204]</a>.</p>
+
+          <p>Taking that model to local hardware, Umbrel rolled out its client to Windows desktops this morning, discovering local nodes on the LAN and mounting them straight into the native filesystem. As the release announced, <q>The Umbrel app is now on Windows!</q> connecting remotely via Tailscale to offer <q>The only cloud in File Explorer you actually own</q> <a href="https://jumble.social/notes/nevent1qqsxj0c6znepew5qx60q629yp7v0uuc3qagktkpajxl4ln773eylkmc9yuwfe" target="_blank" rel="noopener noreferrer">[s103]</a>.</p>
+
+          <h3 class="main-head">Compressing the Dispute: Lichen Collapses BitVMX Proofs to Five Transactions</h3>
+          <p class="dek">waxwing sketches a method to bypass BABE’s fixed collateral trap, shrinking onchain settlement worst-cases by four-fifths.</p>
+
+          <p>While web services wrestled with compromised credentials, protocol engineers took aim at the cost of dispute settlement on Bitcoin’s second layers. Outlining the mechanics of Lichen, waxwing addressed a fundamental limitation in BABE contract puzzles, where claims over collateral amounts must traditionally be locked at contract initialization.</p>
+
+          <p><q>The problem with BABE and how Lichen solves it: In BABE, you set up a puzzle to be solved later, like "if you can at any time find a valid proof for the statement that this 1BTC belongs to you, you can claim it". The problem is that the amount, 1BTC is fixed right there, at setup, before anything happened.</q> waxwing explained <a href="https://jumble.social/notes/nevent1qqsxse6frrarj7yt0ypkdux7u2stgrrtxw8tue54zg0ma56nuyj2cxccdht2z" target="_blank" rel="noopener noreferrer">[s215]</a>. In Lichen, enforcing hub liveness allows the hub to sign the specific withdrawal amount dynamically, shrinking dispute footprint dramatically: <q>dispute goes from worst-case 23 transactions onchain to worst-case 4 or 5 and *maybe* 20kb. In either case, it's zero normally.</q> <a href="https://jumble.social/notes/nevent1qqsxse6frrarj7yt0ypkdux7u2stgrrtxw8tue54zg0ma56nuyj2cxccdht2z" target="_blank" rel="noopener noreferrer">[s215]</a>.</p>
+
+          <p>At the application edge, confidential computation joined satoshi microtransactions. Juraj unveiled a working browser implementation of confidential AI image generation through routstr.cypherpunk.today, where end-to-end TLS tunnels and zero-knowledge receipts ensure that the relay node providing the API key never inspects either the prompt or the generated output <a href="https://jumble.social/notes/nevent1qqsx2x5zv3ww9ja0qhdde00le96crddpyjex74p0dvtfuv09r27jqkskr8pdm" target="_blank" rel="noopener noreferrer">[s325]</a>. Meanwhile, Cashu native mint transfers advanced as erik integrated cross-mint quotes allocating Lightning routing fees directly inside CDK <a href="https://jumble.social/notes/nevent1qqsxyj5kugcc38l69rw7ty76lp202vjmhjqrp9997fnz2mgqrzjx2qs6u22zr" target="_blank" rel="noopener noreferrer">[s202]</a>, and Mostro enabled cross-platform reputation imports from lnp2pBot <a href="https://jumble.social/notes/nevent1qqs2sysng4u62g29kmkvywahsnqwn50g52tk7n980wyjeehtdc62trsqcjy0n" target="_blank" rel="noopener noreferrer">[s113]</a>.</p>
+        </article>
+      </div>
+
+      <div class="col span-4">
+        <aside class="box">
+          <h3 class="box-head">The Instrument</h3>
+          <p class="note">A diagnostic comparison between ranked web-of-trust selection and anonymous recency.</p>
+          <p>The unranked control read of the identical 24-hour window returned 400 notes. Of those, exactly 0 appeared in the 398 ranked notes surfaced through the reader's lens. This absolute divergence demonstrates that the web-of-trust filter is operating with total discrimination, replacing anonymous broadcast noise entirely with the reader's trusted social network.</p>
+        </aside>
+
+        <div class="box">
+          <h3 class="box-head">Network &amp; Conditions</h3>
+          <p class="note">As of 09:11 CDT · Source: Clark Moody Dashboard &amp; ChartsBTC · Not live</p>
+          <div class="tablewrap">
+            <table>
+              <tbody>
+                <tr><th>Metric</th><th style="text-align:right">Reading</th></tr>
+                <tr><td>Bitcoin Price</td><td class="num">$82,020</td></tr>
+                <tr><td>Hash Rate</td><td class="num">1.01 ZHash/s</td></tr>
+                <tr><td>Mempool Immediate Fee</td><td class="num">1 sat/vB</td></tr>
+                <tr><td>Block Height</td><td class="num">972,156</td></tr>
+                <tr><td>Issued Supply</td><td class="num">95.71%</td></tr>
+                <tr><td>Blocks to Halving</td><td class="num">77,844</td></tr>
+                <tr><td>Supply &ge; 2y Unmoved</td><td class="num">48.7%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <article class="story">
+          <p class="kicker">Makers &amp; Hardware</p>
+          <h4 class="sub-head">Cards from the Hellbox: A Lightning Quartet Dealer</h4>
+          <p>Proving that hardware responds immediately to payment channels, axelhamburch demonstrated the ZapBox card dealer for the &ldquo;Money Wars&rdquo; quartet game. Built with an open-source servomotor mechanism and documented with schematics, a quick scan of a Lightning invoice dispenses physical cards directly to the player without human intervention <a href="https://jumble.social/notes/nevent1qqsqcelg7t3rpwstufmj6md22nh0t07xt2k5prwh9t2gwh80vhym47gjj3y4q" target="_blank" rel="noopener noreferrer">[s57]</a>.</p>
+
+          <figure>
+            <img src="https://blossom.primal.net/707f636bc56bb058de3e74dedae0f1c18a0aa7a8b04c9d9132ed848a8fa1e9af.jpg" alt="A wood-fired homestead sauna in autumn.">
+            <figcaption>Sauna season arrives on the homestead. <span class="credit">HodlHomestead</span></figcaption>
+          </figure>
+        </article>
+
+        <article class="story">
+          <p class="kicker">Foreign Wire</p>
+          <h4 class="small-head">Paris Under Pressure: Cost of Living Protests Mount</h4>
+          <p>Reports from France described spreading civil unrest across Paris as inflation and impending sovereign debt votes strain public patience <a href="https://jumble.social/notes/nevent1qqsqvl05lmj8dz2c5hpuzl9mhdmh5c6jy8xj5wgjuyxtx6l6z2e0zwcczhzkz" target="_blank" rel="noopener noreferrer">[s278]</a>. Across the Atlantic, observer marksn urged equanimity amid European headlines: <q>Don’t let the chaos in France distract you. The world will always be on fire. The headlines will always scream. Stay humble. Stay focused. Stack sats.</q> <a href="https://jumble.social/notes/nevent1qqswngqj508mcgg6l86wnu5gjkcc5yqjxqv7jar48j457fmlu2g50wcs7dc82" target="_blank" rel="noopener noreferrer">[s360]</a>.</p>
+        </article>
+      </div>
+    </main>
+
+    <section class="band">
+      <div class="band-head">
+        <h2>Standing Desks</h2>
+      </div>
+      <div class="cols4">
+        <div class="cell">
+          <h3 class="sub-head">Broadcasting</h3>
+          <p class="note">Streams running when this edition was prepared.</p>
+          <div class="wire-item">
+            <p><a href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al" target="_blank" rel="noopener noreferrer">NoGood Radio</a></p>
+            <p class="note">zap.stream broadcast</p>
+          </div>
+          <div class="wire-item">
+            <p><a href="https://zap.stream/naddr1qqjrydn9vy6rjep494jrwveh956rxvny94snscny94jr2epexfjxgerrxscn2q3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxw5wryd9" target="_blank" rel="noopener noreferrer">&#9889; Lightning Goats &#9889; Live Goat Feeder</a></p>
+            <p class="note">zap.stream interactive stream</p>
+          </div>
+          <div class="wire-item">
+            <p><a href="https://zap.stream/naddr1qqjrvvtxvccnjwtx95cnsdnx956x2ce394snqd33956nvdmxv93xzveh893nvq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxw6qcxtf" target="_blank" rel="noopener noreferrer">Week 6 - Trade or Die</a></p>
+            <p class="note">zap.stream trading session</p>
+          </div>
+          <div class="wire-item">
+            <p><a href="https://zap.stream/naddr1qqjxgvesvfsnsef3956rqwfk956rgefh95unse3k956r2wpcvymkvcmpx9jxyq3qsh0cy25xtx0lh6q58kc7rcdl95tzlfs0c6zuv4g4jclx0n7hfx0sxpqqqpmxw7qgf8t" target="_blank" rel="noopener noreferrer">SIFAKA 24/7 METAL/HARDCORE/PUNK RADIO</a></p>
+            <p class="note">Live on Shosho</p>
+          </div>
+        </div>
+
+        <div class="cell">
+          <h3 class="sub-head">The Classifieds</h3>
+          <p class="note">Offers circulating through web of trust.</p>
+          <div class="wire-item">
+            <p><strong><a href="https://shopstr.market/listing/naddr1qqjxvwf3x5mnqwpe943rzdr9956x2e3k94snsd3e94sn2vp3xcunvwf4xd3nsq3q702deaxcexw0k4ks823myp5dagmvnwtq25fafxjmrdngcmu06k3qxpqqqpmvy48ekwn" target="_blank" rel="noopener noreferrer">A Lodging of Wayfaring Men</a></strong></p>
+            <p class="dek">Paul Rosenberg’s cypherpunk novel, pristine storeroom copy. &pound;30.00 GBP.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://shopstr.market/listing/naddr1qqjrjvmyvfjnqdtz956nwvek956rvwtz943r2wfj95urzc3kxgurxephxvcxvq3q702deaxcexw0k4ks823myp5dagmvnwtq25fafxjmrdngcmu06k3qxpqqqpmvys2tyqe" target="_blank" rel="noopener noreferrer">Bitcoin: Everything Divided by 21 Million</a></strong></p>
+            <p class="dek">Knut Svanholm hardback on scarcity and time. &pound;18.00 GBP.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://shopstr.market/listing/naddr1qqjxzwp3xsmnycfn95mxgvej956rze3494sk2wtr95erwdtzx4nx2dnyxuukxq3q702deaxcexw0k4ks823myp5dagmvnwtq25fafxjmrdngcmu06k3qxpqqqpmvyshw2f7" target="_blank" rel="noopener noreferrer">The Inverse of Clown World</a></strong></p>
+            <p class="dek">Signed hardback by Svanholm &amp; de Wolf. &pound;21.00 GBP.</p>
+          </div>
+        </div>
+
+        <div class="cell">
+          <h3 class="sub-head">Diary &amp; Calendar</h3>
+          <p class="note">Upcoming gatherings across the network.</p>
+          <div class="wire-item">
+            <p><strong><a href="https://njump.me/naddr1qqvrvctyx33ngdphxfsk2ct9x4jnqefjv5crwdmrvcpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv49hz8q" target="_blank" rel="noopener noreferrer">Newcastle Bitcoin Meetup</a></strong></p>
+            <p class="note">Tuesday, November 17 &middot; Newcastle upon Tyne, UK</p>
+            <p>Monthly meetup at Kabin @ Kabannas, Carliol Square. Bitcoin-only discussion from 6:30 PM.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://njump.me/naddr1qqvrvctyx5mxydnpxfsk2ct9x4jnqefjv5cnqvrxv5pzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvcp4jx7" target="_blank" rel="noopener noreferrer">Socratic Seminar #30</a></strong></p>
+            <p class="note">Wednesday, October 28 &middot; San Juan, PR</p>
+            <p>BitDevs format at Ralf’s Game Club, dissecting protocol tech and node architecture.</p>
+          </div>
+        </div>
+
+        <div class="cell">
+          <h3 class="sub-head">Software &amp; Repositories</h3>
+          <p class="note">NIP-82 app catalogs &amp; NIP-34 git trees.</p>
+          <div class="wire-item">
+            <p><strong><a href="https://zapstore.dev/apps/farm.sandwich.puddlehop" target="_blank" rel="noopener noreferrer">Down to Duck</a></strong></p>
+            <p class="dek">Endless voxel crossing adventure by sandwich on Zapstore.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://zapstore.dev/apps/de.singular.looper" target="_blank" rel="noopener noreferrer">Rubber Ring</a></strong></p>
+            <p class="dek">Gapless loop rehearsal audio tool with tempo detection on Zapstore.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://gitworkshop.dev/npub1n2ph08n4pqz4d3jk6n2p35p2f4ldhc5g5tu7dhftfpueajf4rpxqfjhzmc/nsite-gateway" target="_blank" rel="noopener noreferrer">nsite-gateway</a></strong></p>
+            <p class="dek">Gateway service for Blossom-backed websites by arbadacarba.</p>
+          </div>
+          <div class="wire-item">
+            <p><strong><a href="https://gitworkshop.dev/npub1dhfmwt3jtknnswe8tmh3cesnrwjxvsexu93tcps9yagfkn3n4epsa3d8yn/satsigner" target="_blank" rel="noopener noreferrer">Satsigner</a></strong></p>
+            <p class="dek">Hardware-friendly signature repository by satsigner.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="band-head">
+        <h2>Dispatches &amp; Chronicles</h2>
+      </div>
+      <div class="cols3">
+        <div class="cell">
+          <p class="kicker">Lecture Review</p>
+          <h4 class="sub-head">Reclaiming Entropy: The Physics of True Randomness</h4>
+          <p>At the Noderunners Conference in Arnhem, Mr. 21 traced the journey of physical randomness from Clausius and Shannon to seed generation, contrasting thermodynamic disorder with cryptographic key space <a href="https://jumble.social/notes/nevent1qqsdlsmdj3me2d24wexdkl5ds0p4lqrvz6czamxvly2q6590h9ytx7qtadajn" target="_blank" rel="noopener noreferrer">[s458]</a>. The lecture deconstructs how attackers model pseudorandom generators and argues for physical entropy whitening as a core security requirement.</p>
+        </div>
+
+        <div class="cell">
+          <p class="kicker">Prehistory</p>
+          <h4 class="sub-head">Traces of Domestication in Ancient Alaska</h4>
+          <p>Highlighting archaeological findings from eastern-central Alaska, Dawn noted that human occupations at Shég’ Xdaltth’í’ predated Clovis sites by nearly a millennium, uncovering evidence of canid presence that points toward early dog domestication during the glacial epoch <a href="https://jumble.social/notes/nevent1qqs08v0e25x6uvqflturap2zvg973vpcs8ppspcs50y7k7why7zrmsckeeywl" target="_blank" rel="noopener noreferrer">[s502]</a> <a href="https://jumble.social/notes/nevent1qqstl7hgtmx6586rfkwz2df78h4q74dzt7fj4ykkyvea2gxtvwvn9xqvq2dvw" target="_blank" rel="noopener noreferrer">[s505]</a>.</p>
+        </div>
+
+        <div class="cell">
+          <p class="kicker">Hearth &amp; Craft</p>
+          <h4 class="sub-head">Oak Acorns and the Homemade Season</h4>
+          <p>Away from screens, autumn rituals took tangible shape. SimOne gathered Northern Red Oak acorns to polish, cap, and string as handcrafted holiday ornaments <a href="https://jumble.social/notes/nevent1qqswrp048aasa74d5l3xfrjwagzh2kfyf69vcnexwqsqjdxw8nenmfgj86ez7" target="_blank" rel="noopener noreferrer">[s332]</a>, while Dylan installed custom stained-glass panels with round amber bevels into a restored salvaged entryway <a href="https://jumble.social/notes/nevent1qqsdk4q8jf479d4y4s8pl4n8msgy25k8mf6es2x6y9dnd5l5kgjhfac3l9c2x" target="_blank" rel="noopener noreferrer">[s388]</a>.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
