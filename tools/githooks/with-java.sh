@@ -3,6 +3,18 @@
 # OpenJDK is installed but JAVA_HOME is empty and macOS reports
 # "Unable to locate a Java Runtime." Resolve it before any ./gradlew call.
 #
+# Cursor also injects GRADLE_USER_HOME and PLAYWRIGHT_BROWSERS_PATH into a
+# per-session tmpdir — even when the filesystem sandbox is off — so every
+# commit/push re-downloads Gradle and Chromium. Drop those redirects; a
+# user-set cache directory that is not Cursor's tmpdir is left alone.
+
+for var in GRADLE_USER_HOME PLAYWRIGHT_BROWSERS_PATH; do
+  eval "val=\${$var-}"
+  case "$val" in
+    *cursor-sandbox-cache*) unset "$var" ;;
+  esac
+done
+#
 # This repo pins jvmToolchain(21). Gradle will not invent a JDK 21 from an
 # unversioned Homebrew openjdk that has moved to 26 — and agent shells that
 # export JAVA_HOME to that path make the mismatch worse, because this script
