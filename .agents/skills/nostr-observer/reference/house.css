@@ -104,8 +104,17 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   letter-spacing: .015em; text-transform: uppercase; line-height: .92;
 }
 .masthead .the {
-  font-size: .44em; display: block; letter-spacing: .42em;
+  /* 0.44 of the nameplate, as a BLOCK so it sits above the rest.
+   *
+   * This used to be `.44em`. That is 44% of the h1 only when `.the` is nested
+   * inside it -- the shape every earlier edition used. A sibling
+   * `<div class="the">` (A56859, 2026-10-23) inherits the body's 16px instead
+   * and prints a 7px sentence-case "The", because uppercase lives on the h1.
+   * The clamp is 0.44 times the nameplate's, so either markup lands the same. */
+  font-size: clamp(1.012rem, 3.344vw, 2.244rem);
+  display: block; letter-spacing: .42em;
   margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+  font-family: var(--serif); font-weight: 700; text-transform: uppercase;
 }
 .motto {
   margin-top: 14px; font-family: var(--util); font-size: .7rem;
