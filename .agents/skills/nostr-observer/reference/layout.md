@@ -61,6 +61,22 @@ Always nest a `.story` (or multiple stories) inside a `.col`:
 <article class="col span-8 story"> ... </article>
 ```
 
+The same class of mistake happens with `.cell`. `.story + .story` adds a top
+margin, padding and rule to a following story, which is correct when two
+stories stack in one column and wrong when they sit in neighbouring cells of
+`.cols2`/`.cols3`/`.cols4` — document order is then the next column, not the
+next piece. Nest the story inside the cell; do not combine the classes.
+
+```html
+<!-- Correct -->
+<div class="cell">
+  <article class="story">...</article>
+</div>
+
+<!-- Avoid: combining .cell and .story drops the next column -->
+<div class="cell story">...</div>
+```
+
 ## Balance the rows
 
 Use the documented span classes; a name such as `span-7` has no built-in rule.
