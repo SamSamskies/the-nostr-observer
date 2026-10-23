@@ -24,6 +24,7 @@ import { readFileSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
 import { tags, attributes as attrsOf, textIn } from './html.mjs'
 import { SOURCE_SCHEME } from './sources.mjs'
+import { layoutWarnings } from './layout.mjs'
 import {
   toNevent, fromNevent, fromNaddr, toZapStreamUrl, LIVE_KIND, toShopstrUrl, CLASSIFIED_KIND,
   toNjumpCalendarUrl, CALENDAR_KINDS, toZapstoreUrl, APP_KIND, toGitworkshopUrl, GIT_KIND,
@@ -521,7 +522,7 @@ export function check (html, corpus) {
     flag('LINK', 'only source citations, verified zap.stream / Shopstr / njump calendar / Zapstore / gitworkshop links may be links', href.slice(0, 120))
   }
 
-  return { violations, quotes, events: events.length, images: allowedImages.size }
+  return { violations, quotes, events: events.length, images: allowedImages.size, layout: layoutWarnings(html, corpus) }
 }
 
 function main () {
@@ -532,7 +533,7 @@ function main () {
   }
   const html = readFileSync(page, 'utf8')
   const corpus = JSON.parse(readFileSync(arg('--corpus', 'corpus.json'), 'utf8'))
-  const { violations, quotes, events, images } = check(html, corpus)
+  const { violations, quotes, events, images, layout } = check(html, corpus)
 
   console.log('')
   console.log(`  Page:   ${page}`)
@@ -540,8 +541,15 @@ function main () {
   console.log(`  Quotes: ${quotes.length} checked`)
   console.log('')
 
+  if (layout.length > 0) {
+    console.log('  LAYOUT — static reminders, not a rendered proof:')
+    for (const warning of layout) console.log(`    ${warning.kind}: ${warning.detail}`)
+    console.log('')
+  }
+
   if (violations.length === 0) {
-    console.log(`  CLEAN — ${quotes.length} quotes, all verified.\n`)
+    console.log(`  CLEAN — source and safety checks passed; ${quotes.length} quotes verified.`)
+    console.log('  Layout has not been rendered.\n')
     process.exit(0)
   }
 

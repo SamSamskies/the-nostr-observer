@@ -153,6 +153,17 @@ test('changed corpus and redirected manifest file paths are refused', async (t) 
   assert.throws(() => loadRun(manifestPath), /saved corpus has changed/)
 })
 
+test('finish reports static layout concerns separately from source and safety checks', async (t) => {
+  const { manifestPath, directory, manifest } = await savedRun(t)
+  writeFileSync(join(directory, manifest.files.draft), '<html><head></head><body><main class="fold"><div class="col span-7"><p>Lead story.</p></div></main></body></html>')
+  const finished = await command(['finish', '--run', manifestPath], directory)
+  assert.equal(finished.code, 0, finished.stderr)
+  assert.match(finished.stdout, /LAYOUT.*static reminders/)
+  assert.match(finished.stdout, /span-7 has no selector/)
+  assert.match(finished.stdout, /CLEAN.*source and safety checks passed/)
+  assert.match(finished.stdout, /Layout has not been rendered/)
+})
+
 test('real commands prepare through the live gate and finish only validated editions', { timeout: 30000 }, async (t) => {
   const cwd = temporary(t)
   let broken = false

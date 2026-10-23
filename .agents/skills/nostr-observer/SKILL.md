@@ -132,6 +132,14 @@ links against verified source/desk destinations, and markup for scripts, forms,
 handlers, and other forbidden capabilities. The anonymous control is not evidence.
 Captions and paraphrases still require your editorial judgement.
 
+Validation also prints advisory layout reminders for undefined span classes
+and unusually tall shortlisted pictures. Review them using `reference/layout.md`;
+they do not evaluate the CSS cascade or block intentional designs. **CLEAN means
+source and safety checks passed, not that the layout was visually verified.**
+When browser access permits, inspect the finished page at phone, tablet and
+desktop widths, including below the fold. Fix unintended gaps or wrapping in
+the draft and finish again. If rendering is unavailable, state that limitation.
+
 Read all reports. Mention dropped figures or unwrapped links. After validation,
 finish builds a separate `.artifact.html` with shortlist images embedded; image
 bytes are checked by magic numbers. Mention any pictures that could not be
