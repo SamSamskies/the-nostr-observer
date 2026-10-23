@@ -34,6 +34,31 @@ columns. At 720px, story grids and band columns stack; their rules and padding
 adjust automatically. Folio and dateline have their own smaller breakpoints.
 Keep these responsive primitives instead of rebuilding them for each edition.
 
+## Nesting: columns vs stories
+
+`.col` and `.story` serve different layout roles and must not be combined on
+the same element. In `house.css`, `.col > * + *` adds an 18px top margin to
+every direct child inside a column. Combining `.col` and `.story` causes that
+rule to match `.story`'s inner children (kicker, headline, dek, paragraphs)
+alongside `.story`'s own flex gap, blowing out the vertical rhythm.
+
+Always nest a `.story` (or multiple stories) inside a `.col`:
+
+```html
+<!-- Correct -->
+<div class="col span-8">
+  <article class="story">
+    <div class="kicker">...</div>
+    <h2 class="lead-head">...</h2>
+    <p class="dek">...</p>
+    <p class="first">...</p>
+  </article>
+</div>
+
+<!-- Avoid: combining .col and .story breaks vertical spacing -->
+<article class="col span-8 story"> ... </article>
+```
+
 ## Balance the rows
 
 Use the documented span classes; a name such as `span-7` has no built-in rule.
