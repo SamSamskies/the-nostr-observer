@@ -52,8 +52,15 @@ export function layoutWarnings (html, corpus) {
   const usedImages = new Set()
   for (const tag of tags(markup)) {
     const attrs = attributes(tag.raw)
+    const classes = (attrs.class || '').split(/\s+/)
+    if (classes.includes('col') && classes.includes('story')) {
+      warnings.push({
+        kind: 'NESTING',
+        detail: `<${tag.name} class="${attrs.class}"> combines .col and .story on one element. In house.css, .col > * + * injects margin-top: 18px between all story elements (kicker, headline, dek, paragraphs), breaking vertical spacing. Nest .story inside .col instead.`,
+      })
+    }
     if (!/(?:^|;)\s*grid-column(?:-start|-end)?\s*:/i.test(attrs.style || '')) {
-      for (const cls of (attrs.class || '').split(/\s+/)) {
+      for (const cls of classes) {
         if (/^span-\d+$/.test(cls) && !spans.has(cls)) missing.add(cls)
       }
     }

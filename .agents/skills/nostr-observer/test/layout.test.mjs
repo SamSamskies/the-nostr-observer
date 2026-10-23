@@ -68,3 +68,14 @@ test('layout reminders reach validation without becoming safety violations', () 
   assert.deepEqual(result.violations, [])
   assert.deepEqual(result.layout.map(w => w.kind), ['SPAN', 'PORTRAIT'])
 })
+
+test('combining .col and .story on the same element triggers a NESTING reminder', () => {
+  const badPage = page('<main class="fold"><article class="col span-8 story"><h2>Headline</h2></article></main>')
+  const warnings = layoutWarnings(badPage, corpus)
+  const nesting = warnings.filter(w => w.kind === 'NESTING')
+  assert.equal(nesting.length, 1)
+  assert.match(nesting[0].detail, /combines \.col and \.story on one element/)
+
+  const goodPage = page('<main class="fold"><div class="col span-8"><article class="story"><h2>Headline</h2></article></div></main>')
+  assert.equal(layoutWarnings(goodPage, corpus).filter(w => w.kind === 'NESTING').length, 0)
+})
