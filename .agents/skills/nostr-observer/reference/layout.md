@@ -35,3 +35,30 @@ At 1000px, narrow main columns widen to half the grid and `.cols4` becomes two
 columns. At 720px, story grids and band columns stack; their rules and padding
 adjust automatically. Folio and dateline have their own smaller breakpoints.
 Keep these responsive primitives instead of rebuilding them for each edition.
+
+## Balance the rows
+
+Use the documented span classes; a name such as `span-7` has no built-in rule.
+If the day needs another width, define it in custom CSS and account for the
+1000px breakpoint. Even built-in widths can wrap there: `span-8` stays eight
+tracks while `span-4` becomes six. A desktop total of twelve is not proof that
+the same pair stays on one row at tablet widths.
+
+Balance the content of each row, not just its column widths. Two independent
+stacks of stories share the height of the taller stack and can leave a large
+blank below the shorter one. When that happens, split the page into shorter
+rows or move a readings box into its own full-width band. Do not stretch text
+or add filler to make the bottoms meet.
+
+Use the shortlist's dimensions when planning art. At a 460px display width,
+an 1848x4096 portrait is roughly 1020px tall before its caption. Give unusually
+tall art a narrower placement or a deliberate display-height limit. A CSS crop
+can help when the subject is visible and the crop preserves it; do not guess
+a focal point from the caption. Keep the original image URL and bytes.
+
+Static checks cannot judge column balance. When a browser is available, inspect
+the complete finished page at phone, tablet and desktop widths (for example
+390px, 900px and 1280px), including below the fold. Check overflow, unexpected
+row wrapping, long empty column tails and images dominating a row. An available
+embedded artifact avoids depending on remote image hosts. If rendering cannot
+run, report that limit; source validation is not visual verification.
