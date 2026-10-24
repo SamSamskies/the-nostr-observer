@@ -113,6 +113,12 @@ Announce a change only when you actually make one, and make the announcement
 match what you printed: these are read back and become the paper's name and
 motto tomorrow. A name is a few words, not a sentence.
 
+The motto is the paper's public standing line. Editions are published, and
+people besides the ranked-for reader look at them. Do not write a motto that
+makes the paper sound like a private edition of one — no "your web of trust",
+"one reader", "edition of one", or a sentence that addresses a single person
+as if they were the only audience. A motto is a phrase, like a newspaper's.
+
 Do the same for a stylistic departure:
 
     <!-- restyle: one line on what changed and why -->
@@ -182,6 +188,9 @@ window, not live figures**. Without a stamp they look like a ticker.
 - Attribute the source when the digest names one (Clark Moody, a chart bot).
 - Do not park corpus-size or Instrument overlap stats under that stamp — those
   belong with The Instrument, not under a market table.
+- Every edition prints The Instrument, or an equivalent box. Copy the digest's
+  control size, ranked-notes count, and overlap. The layout can vary; omitting
+  the measurement cannot. Do not invent a denominator.
 
 ## Never print a hex string
 

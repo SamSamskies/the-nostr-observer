@@ -99,6 +99,16 @@ Write a complete HTML document to the **draft path reported by prepare**.
 Choose the day's layout freely; sections are earned, not fixed. Keep the paper
 light, including `color-scheme: light`; no dark-mode override.
 
+The motto is public furniture. Editions get published and other people read
+them, so do not write a standing line that makes the paper sound like a private
+edition of one — no "your web of trust", "one reader", "edition of one", or a
+sentence restating the product at a single person.
+
+Every edition prints The Instrument, or an equivalent box, from the digest's
+Instrument line: control size, ranked notes, and overlap. Layout can vary;
+omitting the measurement cannot. Copy those numbers. Do not invent a
+denominator.
+
 - Use the supplied dateline in the folio and `<title>`; the code belongs in the
   folio only. Use the supplied window stamp, and the “As of” stamp on moving
   figures with a note that they are not live.
