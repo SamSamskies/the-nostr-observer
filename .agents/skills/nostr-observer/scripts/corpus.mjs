@@ -317,6 +317,7 @@ export function digest (corpus, budget = DEFAULT_DIGEST_BUDGET) {
   p(`The same window read WITHOUT the lens returned ${corpus.control.length} notes.`)
   p(`Of those, ${corpus.overlap} also appear in the ${corpus.desks.notes?.length || 0} ranked notes.`)
   p('That overlap is the measurement: a low number means the lens is doing the work.')
+  p('Do not cite a source in this panel. The overlap is a count, not a story, and the control run is not quotable.')
   p('')
 
   const dropped = Object.entries(trimmed)

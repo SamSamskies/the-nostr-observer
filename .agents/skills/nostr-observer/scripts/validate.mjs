@@ -22,7 +22,7 @@
 
 import { readFileSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
-import { tags, attributes as attrsOf, textIn } from './html.mjs'
+import { tags, attributes as attrsOf, textIn, elements } from './html.mjs'
 import { SOURCE_SCHEME } from './sources.mjs'
 import { layoutWarnings } from './layout.mjs'
 import {
@@ -427,6 +427,49 @@ const FORBIDDEN_SCHEME = /^\s*(javascript|vbscript|data)\s*:/i
 /** Scheme-bearing attributes. A `data:` image is allowed nowhere; see below. */
 const URL_ATTRS = ['href', 'src', 'action', 'formaction', 'poster', 'background', 'srcset', 'data', 'xlink:href']
 
+// The Instrument is a measurement (control size, ranked-notes count, overlap),
+// not a story. A 2026-10-25 edition cited [s100] — BTC Prague's Whitepaper
+// Sunday — next to "exactly 1 appeared among the 393 ranked notes". The one
+// overlapping note was someone saying "Gm". A permalink there is the writer
+// treating a count as a story. Mentioning the column by name in the colophon
+// is not the box; italic and similar are skipped so that does not trip this.
+const INSTRUMENT_TITLE = /^the\s+(web of trust\s+)?instrument:?$/i
+const INSTRUMENT_SKIP = new Set(['em', 'i', 'cite', 'a', 'q', 'blockquote', 'figcaption', 'code', 'title'])
+const INSTRUMENT_DETAIL = 'The Instrument reports a count, not a story — do not cite a source there'
+
+function textOf (html, el) {
+  return decodeEntities(html.slice(el.innerStart, el.innerEnd).replace(/<[^>]*>/g, ' ')).replace(/\s+/g, ' ').trim()
+}
+
+function parentOf (all, el) {
+  let parent = null
+  for (const p of all) {
+    if (el.start >= p.innerStart && el.start < p.innerEnd) {
+      if (!parent || p.start > parent.start) parent = p
+    }
+  }
+  return parent
+}
+
+export function instrumentViolations (html) {
+  const all = elements(html)
+  const boxes = []
+  for (const el of all) {
+    if (INSTRUMENT_SKIP.has(el.name)) continue
+    if (!INSTRUMENT_TITLE.test(textOf(html, el))) continue
+    boxes.push(parentOf(all, el) || el)
+  }
+  const out = []
+  for (const a of tags(html, 'a')) {
+    const href = attrsOf(a.raw).href
+    if (href === undefined) continue
+    if (boxes.some((b) => a.start >= b.innerStart && a.start < b.innerEnd)) {
+      out.push({ kind: 'LINK', detail: INSTRUMENT_DETAIL, excerpt: href.slice(0, 120) })
+    }
+  }
+  return out
+}
+
 export function markupViolations (html) {
   const out = []
   for (const tag of tags(html)) {
@@ -475,6 +518,7 @@ export function check (html, corpus) {
   const flag = (kind, detail, excerpt) => violations.push({ kind, detail, excerpt })
 
   violations.push(...markupViolations(html))
+  violations.push(...instrumentViolations(html))
 
   const quotes = quotedText(html)
   for (const quote of quotes) {

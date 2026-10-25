@@ -107,7 +107,9 @@ sentence restating the product at a single person.
 Every edition prints The Instrument, or an equivalent box, from the digest's
 Instrument line: control size, ranked notes, and overlap. Layout can vary;
 omitting the measurement cannot. Copy those numbers. Do not invent a
-denominator.
+denominator. Do not cite a source in that box: the overlap is a count, not
+a story, and the control run is not evidence. Do not identify the overlapping
+note.
 
 - Use the supplied dateline in the folio and `<title>`; the code belongs in the
   folio only. Use the supplied window stamp, and the “As of” stamp on moving

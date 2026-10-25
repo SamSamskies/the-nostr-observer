@@ -256,6 +256,7 @@ class Writer(
             }
             append(".\n")
             append("Posts appearing in both: ").append(overlap).append(".\n")
+            append("Do not cite a source here. The overlap is a count, not a story.\n")
         }
     }
 }

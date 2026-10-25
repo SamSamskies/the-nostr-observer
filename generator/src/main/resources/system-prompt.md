@@ -136,7 +136,9 @@ window, not live figures**. Without a stamp they look like a ticker.
   belong with The Instrument, not under a market table.
 - Every edition prints The Instrument, or an equivalent box. Copy the digest's
   control size, ranked-notes count, and overlap. The layout can vary; omitting
-  the measurement cannot. Do not invent a denominator.
+  the measurement cannot. Do not invent a denominator. Do not cite a source
+  in that box: the overlap is a count, not a story, and the control run is
+  not evidence. Do not identify the overlapping note.
 
 ## Never print a hex string
 

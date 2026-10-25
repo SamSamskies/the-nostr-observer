@@ -129,6 +129,7 @@ test('the digest is bounded, and says what it held back', async () => {
   assert.ok(kept.articles.length < 100, 'long-form gives way before the notes do')
 
   const text = digest({ observerNpub: 'n', relay: 'r', floor: 20, since: 0, until: 1, code: 'A', desks, control: [], overlap: 0, profiles: {}, art: [] })
+  assert.match(text, /Do not cite a source in this panel/)
   // NO SILENT CAPS: a digest that quietly drops half the long-form reads as a
   // quiet day for long-form, and a thin honest paper is supposed to mean one.
   for (const key of Object.keys(trimmed)) {

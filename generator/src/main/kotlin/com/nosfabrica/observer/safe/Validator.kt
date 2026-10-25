@@ -87,6 +87,17 @@ class Validator(
         // and on every quote in the page.
         private val WHITESPACE = Regex("""\s+""")
 
+        // The Instrument is a measurement, not a story. A 2026-10-25 edition
+        // cited a Whitepaper Sunday note next to the overlap count; the one
+        // overlapping event was someone saying "Gm". Mentioning the column by
+        // name in the colophon is not the box — italic and similar are skipped.
+        private val INSTRUMENT_TITLE =
+            Regex("""^the\s+(web of trust\s+)?instrument:?$""", RegexOption.IGNORE_CASE)
+        private val INSTRUMENT_SKIP =
+            setOf("em", "i", "cite", "a", "q", "blockquote", "figcaption", "code", "title")
+        private const val INSTRUMENT_DETAIL =
+            "The Instrument reports a count, not a story — do not cite a source there"
+
         /** The one external shape a link may take: a permalink to an event we read. */
         val PERMALINK = Regex("""^https://njump\.me/(nevent1\w+|note1\w+|[0-9a-f]{64})""", RegexOption.IGNORE_CASE)
 
@@ -188,6 +199,17 @@ class Validator(
                     href.take(120),
                 ),
             )
+        }
+
+        for (title in doc.body().allElements) {
+            if (title.tagName() in INSTRUMENT_SKIP) continue
+            if (!INSTRUMENT_TITLE.matches(title.text().trim())) continue
+            val box = title.parent() ?: continue
+            for (a in box.select("a[href]")) {
+                violations.add(
+                    Violation(Kind.LINK, INSTRUMENT_DETAIL, a.attr("href").take(120)),
+                )
+            }
         }
 
         return Report(violations, checked)
