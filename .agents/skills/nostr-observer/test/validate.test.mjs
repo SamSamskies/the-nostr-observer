@@ -130,6 +130,19 @@ test('The Instrument does not cite a source', () => {
   assert.deepEqual(kinds(
     `<div class="wire-item"><strong>The Instrument:</strong> 400 notes, overlap 1. ` +
     `<a href="${href}">s100</a></div>`), ['LINK'])
+  // Shipped editions subtitle the panel. An exact title match missed those,
+  // so a citation next to the overlap count was kept.
+  assert.deepEqual(kinds(
+    `<div class="box"><div class="box-head">The Instrument · Lens Fidelity</div>` +
+    `<p>overlap 1 of 400 [<a href="${href}">s100</a>]</p></div>`), ['LINK'])
+  assert.deepEqual(kinds(
+    `<div class="box"><div class="box-head">The Instrument • Web of Trust Lens Overlap</div>` +
+    `<p>overlap 1 of 400 [<a href="${href}">s100</a>]</p></div>`), ['LINK'])
+  assert.deepEqual(kinds(
+    `<div class="box"><div class="box-head">The Instrument · Lens Fidelity</div>` +
+    `<p>overlap 1 of 400</p></div>` +
+    `<p>a story <a href="${href}">s1</a></p>`), [],
+  'a subtitled panel must not widen to a neighbouring story')
 })
 
 test('a permalink to an event we actually read is the one allowed link', () => {

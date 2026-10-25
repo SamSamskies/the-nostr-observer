@@ -295,6 +295,32 @@ class ValidatorTest {
                 <a href="$href">listen</a></footer></body></html>""",
             )
         assertTrue(mention.ok, mention.summary())
+
+        // Shipped editions subtitle the panel. An exact title match missed
+        // those, so a citation next to the overlap count was kept.
+        val subtitled =
+            validator.validate(
+                """<html><body><div class="box"><div class="box-head">The Instrument · Lens Fidelity</div>
+                <p>overlap 1 of 400 <a href="$href">s100</a></p></div></body></html>""",
+            )
+        assertFalse(subtitled.ok)
+        assertTrue(subtitled.violations.any { it.kind == Validator.Kind.LINK && it.detail.contains("Instrument") })
+
+        val bullet =
+            validator.validate(
+                """<html><body><div class="box"><div class="box-head">The Instrument • Web of Trust Lens Overlap</div>
+                <p>overlap 1 of 400 <a href="$href">s100</a></p></div></body></html>""",
+            )
+        assertFalse(bullet.ok)
+        assertTrue(bullet.violations.any { it.kind == Validator.Kind.LINK && it.detail.contains("Instrument") })
+
+        val subtitledNeighbour =
+            validator.validate(
+                """<html><body><div class="box"><div class="box-head">The Instrument · Lens Fidelity</div>
+                <p>overlap 1 of 400</p></div>
+                <p>a story <a href="$href">listen</a></p></body></html>""",
+            )
+        assertTrue(subtitledNeighbour.ok, subtitledNeighbour.summary())
     }
 
     @Test

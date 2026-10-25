@@ -91,8 +91,11 @@ class Validator(
         // cited a Whitepaper Sunday note next to the overlap count; the one
         // overlapping event was someone saying "Gm". Mentioning the column by
         // name in the colophon is not the box — italic and similar are skipped.
+        // Trailing subtitle is allowed: shipped editions use "The Instrument ·
+        // Lens Fidelity". Elements with children are not titles, or the panel
+        // itself would match and parent() would widen to the column.
         private val INSTRUMENT_TITLE =
-            Regex("""^the\s+(web of trust\s+)?instrument:?$""", RegexOption.IGNORE_CASE)
+            Regex("""^the\s+(web of trust\s+)?instrument\b([:\s].*)?$""", RegexOption.IGNORE_CASE)
         private val INSTRUMENT_SKIP =
             setOf("em", "i", "cite", "a", "q", "blockquote", "figcaption", "code", "title")
         private const val INSTRUMENT_DETAIL =
@@ -203,6 +206,7 @@ class Validator(
 
         for (title in doc.body().allElements) {
             if (title.tagName() in INSTRUMENT_SKIP) continue
+            if (title.children().isNotEmpty()) continue
             if (!INSTRUMENT_TITLE.matches(title.text().trim())) continue
             val box = title.parent() ?: continue
             for (a in box.select("a[href]")) {

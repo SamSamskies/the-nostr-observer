@@ -433,7 +433,14 @@ const URL_ATTRS = ['href', 'src', 'action', 'formaction', 'poster', 'background'
 // overlapping note was someone saying "Gm". A permalink there is the writer
 // treating a count as a story. Mentioning the column by name in the colophon
 // is not the box; italic and similar are skipped so that does not trip this.
-const INSTRUMENT_TITLE = /^the\s+(web of trust\s+)?instrument:?$/i
+//
+// The title is not always bare. Shipped editions label the panel
+// "The Instrument · Lens Fidelity" and "The Instrument • Web of Trust Lens
+// Overlap". An exact match missed those, so a citation inside the box was
+// kept. Trailing subtitle is allowed; elements with children are not titles
+// — otherwise the panel's concatenated heading+body would match too, and
+// parentOf would widen to the column and refuse neighbouring stories.
+const INSTRUMENT_TITLE = /^the\s+(web of trust\s+)?instrument\b([:\s].*)?$/i
 const INSTRUMENT_SKIP = new Set(['em', 'i', 'cite', 'a', 'q', 'blockquote', 'figcaption', 'code', 'title'])
 const INSTRUMENT_DETAIL = 'The Instrument reports a count, not a story — do not cite a source there'
 
@@ -451,11 +458,16 @@ function parentOf (all, el) {
   return parent
 }
 
+function hasChildElement (all, el) {
+  return all.some((c) => c !== el && c.start >= el.innerStart && c.start < el.innerEnd)
+}
+
 export function instrumentViolations (html) {
   const all = elements(html)
   const boxes = []
   for (const el of all) {
     if (INSTRUMENT_SKIP.has(el.name)) continue
+    if (hasChildElement(all, el)) continue
     if (!INSTRUMENT_TITLE.test(textOf(html, el))) continue
     boxes.push(parentOf(all, el) || el)
   }
