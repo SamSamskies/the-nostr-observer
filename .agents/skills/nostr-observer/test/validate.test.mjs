@@ -109,6 +109,42 @@ test('PRESENCE IN THE CORPUS IS EVIDENCE OF NOTHING', () => {
   assert.deepEqual(kinds('<a href="https://evil.example.com/drain">free sats</a>'), ['LINK'])
 })
 
+test('The Instrument does not cite a source', () => {
+  // The overlap is a count. Citing a story next to it — as the 2026-10-25
+  // edition did with [s100] — is the writer treating a measurement as news.
+  // A permalink that would otherwise be allowed is still refused in that box.
+  const href = toPermalink(EVENT_ID)
+  assert.deepEqual(kinds(
+    `<div class="box"><div class="box-head">The Instrument</div>` +
+    `<p>overlap 1 of 400 [<a href="${href}">s100</a>]</p></div>`), ['LINK'])
+  assert.deepEqual(kinds(
+    `<div class="box"><div class="box-head">The Instrument</div>` +
+    `<p>overlap 1 of 400</p></div>`), [])
+  assert.deepEqual(kinds(
+    `<div class="box"><div class="box-head">The Instrument</div><p>overlap 1</p></div>` +
+    `<p>a story <a href="${href}">s1</a></p>`), [],
+  'a citation in a neighbouring story is still a citation')
+  assert.deepEqual(kinds(
+    `<footer>The control run in <em>The Instrument</em> above. <a href="${href}">s1</a></footer>`), [],
+  'naming the column in the colophon is not the box')
+  assert.deepEqual(kinds(
+    `<div class="wire-item"><strong>The Instrument:</strong> 400 notes, overlap 1. ` +
+    `<a href="${href}">s100</a></div>`), ['LINK'])
+  // Shipped editions subtitle the panel. An exact title match missed those,
+  // so a citation next to the overlap count was kept.
+  assert.deepEqual(kinds(
+    `<div class="box"><div class="box-head">The Instrument · Lens Fidelity</div>` +
+    `<p>overlap 1 of 400 [<a href="${href}">s100</a>]</p></div>`), ['LINK'])
+  assert.deepEqual(kinds(
+    `<div class="box"><div class="box-head">The Instrument • Web of Trust Lens Overlap</div>` +
+    `<p>overlap 1 of 400 [<a href="${href}">s100</a>]</p></div>`), ['LINK'])
+  assert.deepEqual(kinds(
+    `<div class="box"><div class="box-head">The Instrument · Lens Fidelity</div>` +
+    `<p>overlap 1 of 400</p></div>` +
+    `<p>a story <a href="${href}">s1</a></p>`), [],
+  'a subtitled panel must not widen to a neighbouring story')
+})
+
 test('a permalink to an event we actually read is the one allowed link', () => {
   const href = toPermalink(EVENT_ID)
   assert.deepEqual(kinds(`<a href="${href}">source</a>`), [])

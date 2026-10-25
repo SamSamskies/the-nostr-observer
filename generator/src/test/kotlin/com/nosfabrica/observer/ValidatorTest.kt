@@ -266,6 +266,64 @@ class ValidatorTest {
     }
 
     @Test
+    fun `rejects a source citation inside The Instrument`() {
+        // The overlap is a count. A permalink that is otherwise allowed — a
+        // verified watch link — is still refused in that box. Found 2026-10-25:
+        // an edition cited Whitepaper Sunday next to "exactly 1 appeared".
+        val stream = Fixtures.liveStream()
+        val validator = Validator(Fixtures.corpus(listOf(stream), Desk.LIVE), Fixtures.art())
+        val href = Streams.canonicalUrl(stream)
+        val cited =
+            validator.validate(
+                """<html><body><div class="box"><div class="box-head">The Instrument</div>
+                <p>overlap 1 of 400 <a href="$href">s100</a></p></div></body></html>""",
+            )
+        assertFalse(cited.ok)
+        assertTrue(cited.violations.any { it.kind == Validator.Kind.LINK && it.detail.contains("Instrument") })
+
+        val neighbour =
+            validator.validate(
+                """<html><body><div class="box"><div class="box-head">The Instrument</div>
+                <p>overlap 1 of 400</p></div>
+                <p>a story <a href="$href">listen</a></p></body></html>""",
+            )
+        assertTrue(neighbour.ok, neighbour.summary())
+
+        val mention =
+            validator.validate(
+                """<html><body><footer>The control run in <em>The Instrument</em> above.
+                <a href="$href">listen</a></footer></body></html>""",
+            )
+        assertTrue(mention.ok, mention.summary())
+
+        // Shipped editions subtitle the panel. An exact title match missed
+        // those, so a citation next to the overlap count was kept.
+        val subtitled =
+            validator.validate(
+                """<html><body><div class="box"><div class="box-head">The Instrument · Lens Fidelity</div>
+                <p>overlap 1 of 400 <a href="$href">s100</a></p></div></body></html>""",
+            )
+        assertFalse(subtitled.ok)
+        assertTrue(subtitled.violations.any { it.kind == Validator.Kind.LINK && it.detail.contains("Instrument") })
+
+        val bullet =
+            validator.validate(
+                """<html><body><div class="box"><div class="box-head">The Instrument • Web of Trust Lens Overlap</div>
+                <p>overlap 1 of 400 <a href="$href">s100</a></p></div></body></html>""",
+            )
+        assertFalse(bullet.ok)
+        assertTrue(bullet.violations.any { it.kind == Validator.Kind.LINK && it.detail.contains("Instrument") })
+
+        val subtitledNeighbour =
+            validator.validate(
+                """<html><body><div class="box"><div class="box-head">The Instrument · Lens Fidelity</div>
+                <p>overlap 1 of 400</p></div>
+                <p>a story <a href="$href">listen</a></p></body></html>""",
+            )
+        assertTrue(subtitledNeighbour.ok, subtitledNeighbour.summary())
+    }
+
+    @Test
     fun `an injected headline survives only if it can be quoted`() {
         // Mallory's post IS in the corpus, so quoting it is legitimate reporting
         // — that is the point. What must fail is the instruction being obeyed.

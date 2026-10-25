@@ -105,13 +105,28 @@ export function setAttribute (raw, name, value) {
   return out
 }
 
+const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'])
+
 /** Text between `<name>` and its matching `</name>`, nesting handled. */
 export function textIn (html, name) {
+  return elements(html, name)
+    .filter((el) => el.innerEnd > el.innerStart)
+    .map((el) => ({ start: el.start, end: el.innerEnd, raw: html.slice(el.innerStart, el.innerEnd) }))
+}
+
+/**
+ * Every element with a matching close (void and self-closing tags included).
+ * `innerEnd` is the start of `</name>`; `end` is past that close tag.
+ */
+export function elements (html, name = '[a-z][a-z0-9-]*') {
   const found = []
   for (const tag of tags(html, name)) {
-    if (tag.raw.endsWith('/>')) continue
+    if (VOID.has(tag.name) || tag.raw.endsWith('/>')) {
+      found.push({ name: tag.name, start: tag.start, innerStart: tag.end, innerEnd: tag.end, end: tag.end })
+      continue
+    }
     let depth = 1
-    const scan = new RegExp(`</?${name}(?=[\\s/>])`, 'gi')
+    const scan = new RegExp(`</?${tag.name}(?=[\\s/>])`, 'gi')
     scan.lastIndex = tag.end
     let close = -1
     let inner
@@ -120,7 +135,14 @@ export function textIn (html, name) {
       if (depth === 0) { close = inner.index; break }
     }
     if (close === -1) continue
-    found.push({ start: tag.start, end: close, raw: html.slice(tag.end, close) })
+    const closeMatch = /^<\/[a-z][a-z0-9-]*\s*>/i.exec(html.slice(close))
+    found.push({
+      name: tag.name,
+      start: tag.start,
+      innerStart: tag.end,
+      innerEnd: close,
+      end: close + (closeMatch ? closeMatch[0].length : 0),
+    })
   }
   return found
 }
