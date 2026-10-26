@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en">
+<head>
+<style id="observer-house">
+/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  /* 0.44 of the nameplate, as a BLOCK so it sits above the rest.
+   *
+   * This used to be `.44em`. That is 44% of the h1 only when `.the` is nested
+   * inside it -- the shape every earlier edition used. A sibling
+   * `<div class="the">` (A56859, 2026-10-23) inherits the body's 16px instead
+   * and prints a 7px sentence-case "The", because uppercase lives on the h1.
+   * The clamp is 0.44 times the nameplate's, so either markup lands the same. */
+  font-size: clamp(1.012rem, 3.344vw, 2.244rem);
+  display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+  font-family: var(--serif); font-weight: 700; text-transform: uppercase;
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+/* A following story is a sequel in a STACK, not a neighbour in a ROW.
+ *
+ * `.story + .story` is document order. Inside `.cols2`/`.cols3`/`.cols4` the
+ * next story is the next column, and the 18px top margin, padding and rule
+ * meant to separate stacked pieces drop that column below the first. Cells
+ * already carry their own column rules; on the 720px stack they grow a top
+ * border of their own. Zero the stacked-story furniture here at every
+ * breakpoint so a writer who put `.story` on the cell (the same class of
+ * mistake as `.col.story`) does not misalign the band. */
+.cols2 > .story + .story,
+.cols3 > .story + .story,
+.cols4 > .story + .story {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+
+</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Monday, October 26, 2026</title>
+  <meta name="description" content="Foundation revokes Cloudflare access credentials after malicious emails impersonating the hardware maker circulate, alleging tampered display modules while hardware and funds remain intact.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="Compromised Cloudflare Key Triggers Phishing Wave Aimed at Hardware Wallet Holders">
+  <meta property="og:description" content="Foundation revokes Cloudflare access credentials after malicious emails impersonating the hardware maker circulate, alleging tampered display modules while hardware and funds remain intact.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-10-26-295113.html">
+  <meta property="og:image" content="https://blossom.ditto.pub/ba358dc265a4fbb6593d0d7e2e7811f12c3572390a120adf5cabaa9f65a3c9fb.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Compromised Cloudflare Key Triggers Phishing Wave Aimed at Hardware Wallet Holders">
+  <meta name="twitter:description" content="Foundation revokes Cloudflare access credentials after malicious emails impersonating the hardware maker circulate, alleging tampered display modules while hardware and funds remain intact.">
+  <meta name="twitter:image" content="https://blossom.ditto.pub/ba358dc265a4fbb6593d0d7e2e7811f12c3572390a120adf5cabaa9f65a3c9fb.png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<div class="sheet">
+
+  <div class="folio">
+    <span>No. 295113</span>
+    <span>Monday, October 26, 2026</span>
+    <span>24h to 08:39 CDT</span>
+  </div>
+
+  <header class="masthead">
+    <h1><span class="the">The</span> Nostr Observer</h1>
+    <p class="motto">Signal through the noise</p>
+  </header>
+
+  <div class="dateline">
+    <span>Ranked as NotBiebs and 69 others</span>
+    <span>660 events through your lens</span>
+    <span>260 voices</span>
+  </div>
+
+  <main class="fold">
+    <div class="col span-8">
+      <article class="story">
+        <div class="kicker">Security &amp; Infrastructure</div>
+        <h2 class="lead-head">Compromised Cloudflare Key Triggers Phishing Wave Aimed at Hardware Wallet Holders</h2>
+        <p class="dek">Foundation revokes Cloudflare access credentials after malicious emails impersonating the hardware maker circulate, alleging tampered display modules while hardware and funds remain intact.</p>
+        <p class="byline">By Staff Reporters · <span class="note">Dispatches from the network</span></p>
+
+        <p class="first">Holders of Passport hardware signing devices awoke Monday morning to urgent security advisories following an unauthorized email broadcast transmitted through official service channels. The company moved swiftly to contain the breach, issuing an all-caps advisory to customers: <q>ANNOUNCEMENT: SPAM EMAILS HAVE BEEN SENT THAT APPEAR TO HAVE COME FROM OFFICIAL FOUNDATION DOMAINS.</q> [<a href="https://jumble.social/notes/nevent1qqsyewdu02z87eljgqyzst0rj0v52rklxytkd2cm0qjkhdm67u9u7zsr8m6um" target="_blank" rel="noopener noreferrer">s1</a>] The attack vector was isolated within hours to cloud configuration tokens: <q>We have traced this back to one or more compromised API keys on Cloudflare, and have already revoked all API keys.</q> [<a href="https://jumble.social/notes/nevent1qqsyewdu02z87eljgqyzst0rj0v52rklxytkd2cm0qjkhdm67u9u7zsr8m6um" target="_blank" rel="noopener noreferrer">s1</a>] The malicious domain referenced in the deceptive mailings was taken down, and the manufacturer emphasized that physical devices and cryptographic secrets remained unbreached: <q>Funds stored on Passport are safe and Passport hardware is not compromised.</q> [<a href="https://jumble.social/notes/nevent1qqsyewdu02z87eljgqyzst0rj0v52rklxytkd2cm0qjkhdm67u9u7zsr8m6um" target="_blank" rel="noopener noreferrer">s1</a>]</p>
+
+        <p>The deceptive emails attempted to convince recipients that their hardware had suffered supply-chain tampering prior to delivery. Community members quickly sought clarification across relays. Sir Double T reported receiving a message claiming <q>a display module was modified before it got to them</q> [<a href="https://jumble.social/notes/nevent1qqsp5687kc59vy87sluf2d88nrdn5x6x60nnkzkpvjj8zkh37hd36hqtau3hc" target="_blank" rel="noopener noreferrer">s20</a>], before confirming the fraudulent nature of the dispatch to fellow node runners: <q>Not that I’m aware of, but the email is a phishing scam.</q> [<a href="https://jumble.social/notes/nevent1qqsrkx90rljxa74admnfa8a5jh97eqxcwkkvjqpf8y2ljet8sgfx2rclek967" target="_blank" rel="noopener noreferrer">s29</a>] Foundation followed up with simple operational instructions for all registered users [<a href="https://jumble.social/notes/nevent1qqsg8lgp2e0a9mmvzwy4pxnqwa00eyjkhvmhma4m9j30cl9e43krnvcvrhpvh" target="_blank" rel="noopener noreferrer">s51</a>]: <q>Please do NOT click the links.</q></p>
+
+        <p>The incident coincided with a broader cluster of infrastructure updates across open-source custody tooling. Security researcher Flix circulated a formal GitHub security advisory for the Electrum wallet (GHSA-6jp4-8v48-cc5v) [<a href="https://jumble.social/notes/nevent1qqsw3vynh6gwe5tv38kk0wdtctytqqyamc78gqlzhcyl3edukc2hw7chupx3u" target="_blank" rel="noopener noreferrer">s290</a>] addressing an internal vulnerability. Meanwhile, Blockstream reminded node operators that legacy Electrum server ports hosted on blockstream.info will cease serving data on November 9, 2026 [<a href="https://jumble.social/notes/nevent1qqs00nuu0k3vs5aq5zg42xr56j3g9x2dxqd4v6zq3f2yl7a7cd5yd7q5gv86x" target="_blank" rel="noopener noreferrer">s276</a>], requiring users to transition to modern secure endpoints. As Freedom.Tech observed in a review of cross-stack dependencies [<a href="https://jumble.social/notes/nevent1qqsft0vr4acrqt6zvc2mxgt5w733ehpt8a69pfzantg6nl67qy8zrdsr3dkct" target="_blank" rel="noopener noreferrer">s564</a>], centralized cloud services and compromised authority keys continue to expose distributed networks to social engineering and operational friction.</p>
+      </article>
+
+      <article class="story">
+        <div class="kicker">Markets &amp; Liquidity</div>
+        <h3 class="main-head">Bitcoin Tests $80,000 Support One Year Following Record Peak</h3>
+        <p class="dek">With spot prices down 36 percent from the record set in October 2025, market analysts parse the mechanics of Sunday margin liquidations against an inflexible issuance schedule.</p>
+        <p class="byline">By Roger and markusturm · <span class="note">Dispatches from New York and Berlin</span></p>
+
+        <p class="first">Bitcoin hovered near psychological support early Monday, consolidating after a sharp weekend slide liquidated leveraged derivatives contracts across major exchanges. In an exhaustive review of trading conditions, Roger noted the milestone: <q>Bitcoin trades at $80,209 this morning. The all-time high was $126,080 on 6 October 2025, which puts the price 36.4 percent below the record, set almost exactly one year ago.</q> [<a href="https://jumble.social/notes/nevent1qqsdn2tahwcullchhy27xx500xrdca7p8xd28u7kzcfn0r9kdg5hpygsy92rf" target="_blank" rel="noopener noreferrer">s574</a>] In Berlin, markusturm tracked more than $150 million in long liquidations in four hours as spot prices breached the $80,000 boundary [<a href="https://jumble.social/notes/nevent1qqsvdudrmvkth9tm4t7ulpdg5kyqpjpgjq63lyyjlvmm29qpaqa5x4supxack" target="_blank" rel="noopener noreferrer">s559</a>], compounded by macroeconomic pressures as Brent crude oil touched an eight-month high of $116.</p>
+
+        <p>Addressing the recurrent tendency of leveraged trades to unwind violently outside traditional banking hours, Roger distinguished between theoretical monetary attributes and raw market mechanics: <q>During a margin call, the asset you can sell at three in the morning on a Sunday is the asset that gets sold. That says more about liquidity than about monetary properties.</q> [<a href="https://jumble.social/notes/nevent1qqsdn2tahwcullchhy27xx500xrdca7p8xd28u7kzcfn0r9kdg5hpygsy92rf" target="_blank" rel="noopener noreferrer">s574</a>] The post-halving landscape has also challenged simplistic supply-model predictions: <q>The halving does exactly one thing: it halves the flow of new supply. It says nothing about demand, and demand set this year's price.</q> [<a href="https://jumble.social/notes/nevent1qqsdn2tahwcullchhy27xx500xrdca7p8xd28u7kzcfn0r9kdg5hpygsy92rf" target="_blank" rel="noopener noreferrer">s574</a>]</p>
+
+        <p>Despite shifting speculative tides and institutional ETF flows, the underlying network ledger continues its deterministic cadence without interruption: <q>The price this morning is $80,209. It will be something else by the time you read this, and the ledger will not have moved.</q> [<a href="https://jumble.social/notes/nevent1qqsdn2tahwcullchhy27xx500xrdca7p8xd28u7kzcfn0r9kdg5hpygsy92rf" target="_blank" rel="noopener noreferrer">s574</a>]</p>
+      </article>
+    </div>
+
+    <div class="col span-4">
+      <div class="box">
+        <div class="box-head">The Instrument</div>
+        <p class="note">A mechanical audit of web-of-trust ranking</p>
+        <p>The control read of the network over the identical 24-hour window without a personal lens returned <strong>400 notes</strong>. Of those unranked notes, exactly <strong>2</strong> appeared among the <strong>383 ranked notes</strong> surfaced through this reader's lens.</p>
+        <p class="note">The minimal overlap confirms that ranking is doing the work: the front page reflects trusted editorial choices rather than ambient network broadcast volume.</p>
+      </div>
+
+      <div class="box">
+        <div class="box-head">Conditions &amp; Readings</div>
+        <p class="note">As of 08:39 CDT · Readings from the window; not live</p>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 8px;">
+          <tbody>
+            <tr><td>Bitcoin Price</td><td class="num">$80,350</td></tr>
+            <tr><td>Sats per Dollar</td><td class="num">1,245</td></tr>
+            <tr><td>Immediate Fee</td><td class="num">1 sat/vB</td></tr>
+            <tr><td>Hour Fee</td><td class="num">1 sat/vB</td></tr>
+            <tr><td>Hashrate</td><td class="num">1.04 ZH/s</td></tr>
+            <tr><td>Hash Price</td><td class="num">$4.94 / PH</td></tr>
+            <tr><td>Block Height</td><td class="num">973,079</td></tr>
+            <tr><td>Mempool Count</td><td class="num">1,005</td></tr>
+            <tr><td>Blocks to Halving</td><td class="num">76,921</td></tr>
+          </tbody>
+        </table>
+        <p class="note" style="margin-top: 6px;">Recorded by Clark Moody Dashboard [<a href="https://jumble.social/notes/nevent1qqsqqqa3e6fqqaney5ygqdx7ng6na49fcr2vmg5fp2c3xgmkl9hxw6sc06g7y" target="_blank" rel="noopener noreferrer">s287</a>]</p>
+      </div>
+
+      <article class="story">
+        <div class="kicker">Peer-to-Peer Exchange</div>
+        <h3 class="sub-head">Mostro Unveils Serbero to Assist Dispute Resolution</h3>
+        <figure>
+          <img src="https://blossom.ditto.pub/ba358dc265a4fbb6593d0d7e2e7811f12c3572390a120adf5cabaa9f65a3c9fb.png" alt="Workflow diagram and overview for Serbero, the automated dispute assistant for Mostro P2P nodes">
+          <figcaption>
+            Serbero monitors open trade disputes, alerts node solvers, and conducts automated mediation while keeping final arbitration and coin movement strictly human.
+            <span class="credit">Mostro</span>
+          </figcaption>
+        </figure>
+        <p>Mostro announced the release of Serbero, a dedicated modular assistant engineered to support dispute resolution teams operating lightning peer-to-peer exchange nodes [<a href="https://jumble.social/notes/nevent1qqswdjm57rlccm2hkc97faczm7d2t3fh2gyzcl8g89jahtamwpaap7g2mfl97" target="_blank" rel="noopener noreferrer">s48</a>]. As the project explained, <q>Serbero is the assistant that backs up the dispute team on Mostro</q>, automatically detecting open disputes, sending persistent alerts to designated solvers, and gathering preliminary transaction evidence from counterparties when mediation is active.</p>
+        <p>The system is designed with strict boundaries to ensure non-custodial integrity: <q>The final call always stays with a human solver, and Serbero never moves funds.</q> [<a href="https://jumble.social/notes/nevent1qqswdjm57rlccm2hkc97faczm7d2t3fh2gyzcl8g89jahtamwpaap7g2mfl97" target="_blank" rel="noopener noreferrer">s48</a>] Node operators can optionally deploy the service alongside existing node daemon runners.</p>
+      </article>
+    </div>
+  </main>
+
+  <section class="band">
+    <div class="band-head">
+      <h2>Engineering &amp; Infrastructure</h2>
+    </div>
+    <div class="cols3">
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Protocol Clients</div>
+          <h3 class="sub-head">Coop Client Brings WebAssembly and Native Chat to the Browser</h3>
+          <figure>
+            <img src="https://blossom.jumble.social/32b04d62ebeaba4841911eaba50fef2ec94e55b39f58452e7fb8c2129561369d.png" alt="Interface screenshot of the coop messaging client running in a web browser via WebAssembly">
+            <figcaption>
+              Coop running in-browser via WebAssembly, implementing private messaging and community chat protocols.
+              <span class="credit">reya</span>
+            </figcaption>
+          </figure>
+          <p>Developer reya announced the initial public deployment of coop in the web browser, compiling the Rust and GPUI desktop client directly to WebAssembly [<a href="https://jumble.social/notes/nevent1qqs8dq7vmgcucg2f6m8xft3x2rdedgdw4wr4z77ezsw948n6x98s2pqwwgy8c" target="_blank" rel="noopener noreferrer">s33</a>]. The author reported that <q>coop is running on the web via wasm (built with GPUI). It still has some performance issues, but overall everything works really well</q>, confirming that the client already supports encrypted direct communications and group standards: <q>coop currently supports NIP-17, NIP-4e and NIP-29.</q> [<a href="https://jumble.social/notes/nevent1qqs8dq7vmgcucg2f6m8xft3x2rdedgdw4wr4z77ezsw948n6x98s2pqwwgy8c" target="_blank" rel="noopener noreferrer">s33</a>] Alpha builds are live at web.coopchat.xyz.</p>
+        </article>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Key Management &amp; Mobile</div>
+          <h3 class="sub-head">Pomegranate Introduces FROST Threshold Signatures for Nostr</h3>
+          <p>fiatjaf published the application manifest for Pomegranate [<a href="https://zapstore.dev/apps/com.fiatjaf.pomegranate" target="_blank" rel="noopener noreferrer">app:s638</a>], an identity and signing manager designed around FROST threshold signatures. Rather than storing a single private key on a physical device, Pomegranate distributes key shares among multiple independent operators. The architecture enables account recovery without seed phrase vulnerability, manages NIP-46 remote signing bunker profiles, and functions as an Android NIP-55 local signer for installed client software.</p>
+          <p>Elsewhere on the mobile desk, Gigi released Feather [<a href="https://zapstore.dev/apps/org.dergigi.feather" target="_blank" rel="noopener noreferrer">app:s644</a>], a lightweight, minimalist Android Nostr client engineered for fast navigation and discoverability with minimal visual clutter. Complementing the privacy toolchain, Sovran published HelloHotspot [<a href="https://zapstore.dev/apps/com.gethellohotspot.zapstore" target="_blank" rel="noopener noreferrer">app:s636</a>], an app delivering pay-as-you-go eSIM connectivity and VPN services across 150 countries funded directly over Lightning.</p>
+        </article>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Broadcasting Wire</div>
+          <h3 class="sub-head">Live Streams on Air</h3>
+          <div class="wire-item">
+            <p><strong>TrackMania Nations Forever</strong>: Weekly time attack tournament hosted on TWENTY ONE Esports' private community server [<a href="https://zap.stream/naddr1qqxhgam9de68jmmwv5knydphqgsd7shq86yu8v4qt2y4klqvu3hqc88pq5vfymwdnh9gugp7f9xjf8qrqsqqqan8m3cqcq" target="_blank" rel="noopener noreferrer">watch:s441</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Cyberspace TV</strong>: Continuous digital video stream broadcasting across cyberspace television [<a href="https://zap.stream/naddr1qqjxxenrxa3xzvmy95un2ct9956xzdfe94snxvpe95crwerpxdskvwp5xqun2q3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxw6f2enq" target="_blank" rel="noopener noreferrer">watch:s435</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>NoGood Radio</strong>: Ongoing community radio broadcast [<a href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al" target="_blank" rel="noopener noreferrer">watch:s436</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>SIFAKA Radio</strong>: Twenty-four-hour continuous metal, hardcore, and punk audio stream transmitting on Shosho [<a href="https://zap.stream/naddr1qqjrgcfexq6rvcmr94snjdrr956xgvek94skywf494jxxvfhvcmnzefkv9jrsq3qsh0cy25xtx0lh6q58kc7rcdl95tzlfs0c6zuv4g4jclx0n7hfx0sxpqqqpmxw6vlyl5" target="_blank" rel="noopener noreferrer">watch:s442</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Trade or Die</strong>: Week eight market review and active trading session on zap.stream [<a href="https://zap.stream/naddr1qqjrvcejxgunxwp394snzcfe956rwdp495urgwrx95cx2e34v33kzvp38qmrwq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwflg7jw" target="_blank" rel="noopener noreferrer">watch:s437</a>].</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="band-head">
+      <h2>Culture, Commerce &amp; Gatherings</h2>
+    </div>
+    <div class="cols3">
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Illustration</div>
+          <h3 class="sub-head">Bilbo Meets Gollum in Ink: The Hobbit Illustrated</h3>
+          <figure>
+            <img src="https://blossom.primal.net/5e0dba1f328941748e714d2e7e9ac8ecf9fdaf599d6a9cd2533e1df32beddcd9.jpg" alt="Acrylic ink and black pen drawing of Bilbo Baggins and Gollum in the subterranean cavern from The Hobbit">
+            <figcaption>
+              Bilbo Baggins encounters Gollum beneath the Misty Mountains in Jón Kolbeinn's seventh installment of his acrylic and pen series.
+              <span class="credit">Jón Kolbeinn</span>
+            </figcaption>
+          </figure>
+          <p>Artist Jón Kolbeinn published the seventh installment of his serial Tolkien illustrations, depicting the subterranean riddle contest between Bilbo Baggins and Gollum from Chapter V of The Hobbit [<a href="https://jumble.social/notes/nevent1qqsptdjkqz35zp7asnau534mx6ausrw4yqlvsunpx4zrt0ca9euptas3pdrrq" target="_blank" rel="noopener noreferrer">s99</a>]. Executed with acrylic ink and fine-line black pen at block height 973,180, the drawing captures the fateful moment when Bilbo finds the ring deep under the mountain roots.</p>
+        </article>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">The Marketplace</div>
+          <h3 class="sub-head">Classified Offers</h3>
+          <div class="wire-item">
+            <p><strong>Greek Olive Oil &amp; Honey</strong>: Sourced directly from family groves in Sparta, Greece, Staci listed small-batch Costos Extra Virgin Olive Oil in 34-ounce mason jars and 16.9-ounce bottles [<a href="https://shopstr.market/listing/naddr1qqjxxmmnw3hhxtt90p68ycfdwe5hyemfdckk7mrfwejj6mmfdskk66tdw4485q3qtan2cwtf8s7zxvck79qllzaa7smy03y9ftd50gk6jnag2htnslssxpqqqpmvy6z4s7z" target="_blank" rel="noopener noreferrer">listing:s583</a>], alongside jars of Cretan Wildflower Honey harvested from native Mediterranean blossoms [<a href="https://shopstr.market/listing/naddr1qqjxxun9w3skutthd9kxgenvdamk2u3ddphkuete95cnqtt00gknxdrsxcmk2q3qtan2cwtf8s7zxvck79qllzaa7smy03y9ftd50gk6jnag2htnslssxpqqqpmvylvqsv3" target="_blank" rel="noopener noreferrer">listing:s582</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Vintage Basketball Jerseys</strong>: Barattolo posted early-era NBA collector pieces, including a vintage stitched Nike LeBron James #23 Cleveland Cavaliers jersey in size XL [<a href="https://shopstr.market/listing/naddr1qq8xyctjv968gmmvduknxv33xspzqtn6lcle47xrmjgdd69v4awh42fx548scgh3c42hqucfcpvlaqcmqvzqqqrkcgrtms49" target="_blank" rel="noopener noreferrer">listing:s589</a>] and a 2019 Fear the Deer Milwaukee Bucks Giannis Antetokounmpo jersey [<a href="https://shopstr.market/listing/naddr1qq8xyctjv968gmmvduknxv33xvpzqtn6lcle47xrmjgdd69v4awh42fx548scgh3c42hqucfcpvlaqcmqvzqqqrkcgn4w7k4" target="_blank" rel="noopener noreferrer">listing:s591</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Studio Recording Gear</strong>: Audio engineers offered an RME Fireface 800 professional FireWire 24-bit/192kHz audio interface with renowned AD/DA converters [<a href="https://shopstr.market/listing/naddr1qq8xyctjv968gmmvduknxv33xypzqtn6lcle47xrmjgdd69v4awh42fx548scgh3c42hqucfcpvlaqcmqvzqqqrkcgsjq62k" target="_blank" rel="noopener noreferrer">listing:s594</a>] and an M-VAVE Chocolate compact 4-switch wireless Bluetooth MIDI controller [<a href="https://shopstr.market/listing/naddr1qq8xyctjv968gmmvduknxv33xgpzqtn6lcle47xrmjgdd69v4awh42fx548scgh3c42hqucfcpvlaqcmqvzqqqrkcgxzfucq" target="_blank" rel="noopener noreferrer">listing:s595</a>].</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Diary &amp; Calendar</div>
+          <h3 class="sub-head">Upcoming Meetups &amp; Summits</h3>
+          <div class="wire-item">
+            <p><strong>Women of Bitcoin Summit</strong>: A two-day virtual gathering featuring collaborative workshops, technical discussions, and educational sessions spanning self-custody and mining [<a href="https://njump.me/naddr1qqjrxvmy8psnqe3j943rxen9956xvv3c943rxce395uxvce5xsmk2d3nvsmnzq3q5xd2mmjnh3caykh77djsv73e0zkrp42jp5mwerx8f4m6su40wdvsxpqqqp7txlu53gx" target="_blank" rel="noopener noreferrer">calendar:s599</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Einundzwanzig Linz</strong>: Mesh networking workshop hosted in Linz, Austria, with Protom guiding participants to flash hardware and establish peer-to-peer off-grid nodes [<a href="https://njump.me/naddr1qqvrvctyv4nxycf3xf3n2dejxg6kxetyv5mrvvecv5pzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv6crwge" target="_blank" rel="noopener noreferrer">calendar:s600</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Consensus Without Trust</strong>: Technical community lecture exploring Byzantine fault tolerance, game theory, and chain reorganization math in Deccan, Pune [<a href="https://njump.me/naddr1qqvrvctyv4nxydfjxf3n2dejxg6kxetyv5mrvvfkxqpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvusrytt" target="_blank" rel="noopener noreferrer">calendar:s601</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Whitepaper Day Maputo</strong>: In-person community meetup celebrating the anniversary of Satoshi Nakamoto's peer-to-peer cash whitepaper in Maputo, Mozambique [<a href="https://njump.me/naddr1qqvrvctyv3nx2dt9xf3n2dejxg6kxetyv56xxdpkvspzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv558kal" target="_blank" rel="noopener noreferrer">calendar:s602</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>TBB First Fridays</strong>: Monthly community gathering returning to Yotsuya, Shinjuku City in Tokyo on November 6 [<a href="https://njump.me/naddr1qqvrvctyv4snwd3exf3n2dejxg6kxetyv56kxe3kv5pzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvsn84zw" target="_blank" rel="noopener noreferrer">calendar:s603</a>].</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
