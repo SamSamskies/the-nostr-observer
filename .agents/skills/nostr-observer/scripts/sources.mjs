@@ -4,6 +4,18 @@
 
 export const SOURCE_SCHEME = /^(source|watch|listing|calendar|app|repo):/i
 export const SOURCE_LINK = /^(source|watch|listing|calendar|app|repo):(s[1-9][0-9]*)$/
+export const CITATION_LABEL = /^(?:(?:watch|listing|calendar|app|repo):)?s[1-9][0-9]*$/i
+
+/**
+ * Link text that is already a bracketed source id, such as `[s42]` or
+ * `[watch:s42]`. Writers cite "[s42]" and also wrap the tag in brackets, which
+ * prints [[s42]]. Null if the inner text is anything else — including a bare
+ * `s42`, which is the house form inside `[<a>s42</a>]`.
+ */
+export function citationLinkText (inner) {
+  const wrapped = /^\s*\[([^\]]+)\]\s*$/.exec(inner)
+  return wrapped && CITATION_LABEL.test(wrapped[1]) ? wrapped[1] : null
+}
 
 export function sourceIndex (corpus) {
   const byId = new Map()

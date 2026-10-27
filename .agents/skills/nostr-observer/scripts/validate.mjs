@@ -23,7 +23,7 @@
 import { readFileSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
 import { tags, attributes as attrsOf, textIn, elements } from './html.mjs'
-import { SOURCE_SCHEME } from './sources.mjs'
+import { SOURCE_SCHEME, citationLinkText } from './sources.mjs'
 import { layoutWarnings } from './layout.mjs'
 import {
   toNevent, fromNevent, fromNaddr, toZapStreamUrl, LIVE_KIND, toShopstrUrl, CLASSIFIED_KIND,
@@ -462,6 +462,29 @@ function hasChildElement (all, el) {
   return all.some((c) => c !== el && c.start >= el.innerStart && c.start < el.innerEnd)
 }
 
+/**
+ * `[<a>[s42]</a>]` prints [[s42]]. resolve.mjs strips the inner pair; this
+ * refuses a leftover so a regression in that step fails closed, same as the
+ * calendar-nevent guard. A lone `<a>[s42]</a>` is the other valid house form
+ * and is not flagged.
+ */
+export function citationBracketViolations (html) {
+  const out = []
+  for (const a of elements(html, 'a')) {
+    const inner = html.slice(a.innerStart, a.innerEnd)
+    if (!citationLinkText(inner)) continue
+    const before = a.start > 0 ? html[a.start - 1] : ''
+    const after = a.end < html.length ? html[a.end] : ''
+    if (before !== '[' && after !== ']') continue
+    out.push({
+      kind: 'LINK',
+      detail: 'citation is wrapped in brackets and the link text is too — that prints [[s42]]',
+      excerpt: inner.trim().slice(0, 80),
+    })
+  }
+  return out
+}
+
 export function instrumentViolations (html) {
   const all = elements(html)
   const boxes = []
@@ -531,6 +554,7 @@ export function check (html, corpus) {
 
   violations.push(...markupViolations(html))
   violations.push(...instrumentViolations(html))
+  violations.push(...citationBracketViolations(html))
 
   const quotes = quotedText(html)
   for (const quote of quotes) {

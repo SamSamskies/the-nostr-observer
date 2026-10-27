@@ -24,7 +24,7 @@ import { pathToFileURL } from 'node:url'
 import { permalinkTarget, toPermalink, streamLinkTarget, streamWriterTarget, toStreamLink, listingLinkTarget, listingWriterTarget, toListingLink, calendarLinkTarget, calendarWriterTarget, toCalendarLink, appLinkTarget, appWriterTarget, toAppLink, gitLinkTarget, gitWriterTarget, toGitLink, corpusIndex } from './validate.mjs'
 import { fromNevent } from './nostr.mjs'
 import { tags, attributes, setAttribute } from './html.mjs'
-import { SOURCE_SCHEME, SOURCE_LINK, sourceIndex } from './sources.mjs'
+import { SOURCE_SCHEME, SOURCE_LINK, sourceIndex, citationLinkText } from './sources.mjs'
 import { applyHouseStyle } from './styles.mjs'
 
 /**
@@ -70,6 +70,43 @@ function closeAnchor (html, from) {
   close.lastIndex = from
   const match = close.exec(html)
   return match ? { start: match.index, end: match.index + match[0].length } : null
+}
+
+/**
+ * House form is `[<a href="source:s42">s42</a>]`. Link text `[s42]` inside
+ * wrapping brackets prints [[s42]]. Strip the inner pair; if the tag had no
+ * outer pair, add one so a lone `<a>[s42]</a>` still prints [s42]. A combined
+ * `[<a>[s11]</a>, <a>[s48]</a>]` keeps one outer pair.
+ *
+ * Unwrap has to use the same rewrite: an unresolved `[<a>[s42]</a>]` would
+ * otherwise keep the inner pair and print [[s42]], and validate cannot catch
+ * that because the anchor is gone.
+ */
+function citationRewrite (html, anchor, closing) {
+  const inner = html.slice(anchor.end, closing.start)
+  const label = citationLinkText(inner)
+  if (!label) return { inner, label: null, wrap: false }
+  const before = anchor.start > 0 ? html[anchor.start - 1] : ''
+  const after = closing.end < html.length ? html[closing.end] : ''
+  return { inner, label, wrap: before !== '[' && after !== ']' }
+}
+
+function rewriteCitation (html, anchor, closing, tag, changes) {
+  const { inner, label, wrap } = citationRewrite(html, anchor, closing)
+  if (!label) {
+    if (tag === anchor.raw) return html
+    return html.slice(0, anchor.start) + tag + html.slice(anchor.end)
+  }
+  changes.push({ kind: 'brackets', detail: `${inner.trim()} -> [${label}]` })
+  const close = html.slice(closing.start, closing.end)
+  const piece = `${wrap ? '[' : ''}${tag}${label}${close}${wrap ? ']' : ''}`
+  return html.slice(0, anchor.start) + piece + html.slice(closing.end)
+}
+
+function unwrapCitation (html, anchor, closing) {
+  const { inner, label, wrap } = citationRewrite(html, anchor, closing)
+  const piece = label ? `${wrap ? '[' : ''}${label}${wrap ? ']' : ''}` : inner
+  return html.slice(0, anchor.start) + piece + html.slice(closing.end)
 }
 
 /** Drop the `<figure>` around `at`, or just the tag if there is no figure. */
@@ -158,6 +195,10 @@ export function resolve (html, corpus, { houseCss = null } = {}) {
     // also accepts `</a >`, which the literal missed.
     const closing = closeAnchor(out, anchor.end)
     if (!closing) continue
+    const keep = (tag, change) => {
+      out = rewriteCitation(out, anchor, closing, tag, changes)
+      if (change) changes.push(change)
+    }
     const short = SOURCE_LINK.exec(url)
     const sourceId = short && byAlias.get(short[2])
     if (sourceId) {
@@ -166,9 +207,7 @@ export function resolve (html, corpus, { houseCss = null } = {}) {
       const event = desk?.events.get(sourceId)
       const canonical = event ? desk.toLink(event) : type === 'source' && !desk ? toPermalink(sourceId) : null
       if (canonical) {
-        const tag = openInNewTab(setAttribute(anchor.raw, 'href', canonical))
-        out = out.slice(0, anchor.start) + tag + out.slice(anchor.end)
-        changes.push({ kind: desk?.kind || 'permalink', detail: `${url} -> ${canonical}` })
+        keep(openInNewTab(setAttribute(anchor.raw, 'href', canonical)), { kind: desk?.kind || 'permalink', detail: `${url} -> ${canonical}` })
         continue
       }
     }
@@ -176,32 +215,16 @@ export function resolve (html, corpus, { houseCss = null } = {}) {
     if (streamId && streams.byId.has(streamId)) {
       const canonical = toStreamLink(streams.byId.get(streamId))
       let tag = anchor.raw
-      if (url !== canonical) {
-        tag = setAttribute(tag, 'href', canonical)
-      }
-      tag = openInNewTab(tag)
-      if (tag !== anchor.raw) {
-        out = out.slice(0, anchor.start) + tag + out.slice(anchor.end)
-        if (url !== canonical) {
-          changes.push({ kind: 'stream', detail: `${url} -> ${canonical}` })
-        }
-      }
+      if (url !== canonical) tag = setAttribute(tag, 'href', canonical)
+      keep(openInNewTab(tag), url !== canonical ? { kind: 'stream', detail: `${url} -> ${canonical}` } : null)
       continue
     }
     const listingId = listingWriterTarget(url, corpus) || listingLinkTarget(url, corpus)
     if (listingId && listings.byId.has(listingId)) {
       const canonical = toListingLink(listings.byId.get(listingId))
       let tag = anchor.raw
-      if (url !== canonical) {
-        tag = setAttribute(tag, 'href', canonical)
-      }
-      tag = openInNewTab(tag)
-      if (tag !== anchor.raw) {
-        out = out.slice(0, anchor.start) + tag + out.slice(anchor.end)
-        if (url !== canonical) {
-          changes.push({ kind: 'listing', detail: `${url} -> ${canonical}` })
-        }
-      }
+      if (url !== canonical) tag = setAttribute(tag, 'href', canonical)
+      keep(openInNewTab(tag), url !== canonical ? { kind: 'listing', detail: `${url} -> ${canonical}` } : null)
       continue
     }
     const calendarId = calendarWriterTarget(url, corpus) || calendarLinkTarget(url, corpus)
@@ -209,68 +232,36 @@ export function resolve (html, corpus, { houseCss = null } = {}) {
     if (calendarId && calendars.byId.has(calendarId)) {
       const canonical = toCalendarLink(calendars.byId.get(calendarId))
       let tag = anchor.raw
-      if (url !== canonical) {
-        tag = setAttribute(tag, 'href', canonical)
-      }
-      tag = openInNewTab(tag)
-      if (tag !== anchor.raw) {
-        out = out.slice(0, anchor.start) + tag + out.slice(anchor.end)
-        if (url !== canonical) {
-          changes.push({ kind: 'calendar', detail: `${url} -> ${canonical}` })
-        }
-      }
+      if (url !== canonical) tag = setAttribute(tag, 'href', canonical)
+      keep(openInNewTab(tag), url !== canonical ? { kind: 'calendar', detail: `${url} -> ${canonical}` } : null)
       continue
     }
     const appId = appWriterTarget(url, corpus) || appLinkTarget(url, corpus)
     if (appId && apps.byId.has(appId)) {
       const canonical = toAppLink(apps.byId.get(appId))
       let tag = anchor.raw
-      if (url !== canonical) {
-        tag = setAttribute(tag, 'href', canonical)
-      }
-      tag = openInNewTab(tag)
-      if (tag !== anchor.raw) {
-        out = out.slice(0, anchor.start) + tag + out.slice(anchor.end)
-        if (url !== canonical) {
-          changes.push({ kind: 'app', detail: `${url} -> ${canonical}` })
-        }
-      }
+      if (url !== canonical) tag = setAttribute(tag, 'href', canonical)
+      keep(openInNewTab(tag), url !== canonical ? { kind: 'app', detail: `${url} -> ${canonical}` } : null)
       continue
     }
     const gitId = gitWriterTarget(url, corpus) || gitLinkTarget(url, corpus)
     if (gitId && repos.byId.has(gitId)) {
       const canonical = toGitLink(repos.byId.get(gitId))
       let tag = anchor.raw
-      if (url !== canonical) {
-        tag = setAttribute(tag, 'href', canonical)
-      }
-      tag = openInNewTab(tag)
-      if (tag !== anchor.raw) {
-        out = out.slice(0, anchor.start) + tag + out.slice(anchor.end)
-        if (url !== canonical) {
-          changes.push({ kind: 'git', detail: `${url} -> ${canonical}` })
-        }
-      }
+      if (url !== canonical) tag = setAttribute(tag, 'href', canonical)
+      keep(openInNewTab(tag), url !== canonical ? { kind: 'git', detail: `${url} -> ${canonical}` } : null)
       continue
     }
     if (id && eventIds.has(id)) {
       const canonical = toPermalink(id)
       let tag = anchor.raw
-      if (url !== canonical) {
-        tag = setAttribute(tag, 'href', canonical)
-      }
+      if (url !== canonical) tag = setAttribute(tag, 'href', canonical)
       // The paper stays put; Jumble is a citation, not a destination that
       // replaces the edition. A writer who forgets target=_blank still gets it.
-      tag = openInNewTab(tag)
-      if (tag !== anchor.raw) {
-        out = out.slice(0, anchor.start) + tag + out.slice(anchor.end)
-        if (url !== canonical) {
-          changes.push({ kind: 'permalink', detail: `${url} -> ${canonical}` })
-        }
-      }
+      keep(openInNewTab(tag), url !== canonical ? { kind: 'permalink', detail: `${url} -> ${canonical}` } : null)
       continue
     }
-    out = out.slice(0, anchor.start) + out.slice(anchor.end, closing.start) + out.slice(closing.end)
+    out = unwrapCitation(out, anchor, closing)
     changes.push({ kind: 'unwrapped', detail: url.slice(0, 120) })
   }
   changes.reverse()
@@ -299,12 +290,13 @@ function main () {
   if (counts.calendar) console.log(`  Encoded ${counts.calendar} calendar link(s) to njump.`)
   if (counts.app) console.log(`  Encoded ${counts.app} app link(s) to Zapstore.`)
   if (counts.git) console.log(`  Encoded ${counts.git} repository link(s) to gitworkshop.`)
+  if (counts.brackets) console.log(`  Normalized ${counts.brackets} double-bracketed citation(s).`)
   if (counts.dropped || counts.unwrapped) {
     console.log('')
     console.log('  CHANGES WORTH READING - each of these is the page trying to do something')
     console.log('  the paper does not do. Look at them before you ship:')
     console.log('')
-    for (const change of changes.filter((c) => c.kind !== 'resolved' && c.kind !== 'permalink' && c.kind !== 'stream' && c.kind !== 'listing' && c.kind !== 'calendar' && c.kind !== 'app' && c.kind !== 'git')) {
+    for (const change of changes.filter((c) => c.kind !== 'resolved' && c.kind !== 'permalink' && c.kind !== 'stream' && c.kind !== 'listing' && c.kind !== 'calendar' && c.kind !== 'app' && c.kind !== 'git' && c.kind !== 'brackets')) {
       console.log(`  ${change.kind.toUpperCase()}: ${change.detail}`)
     }
   }
