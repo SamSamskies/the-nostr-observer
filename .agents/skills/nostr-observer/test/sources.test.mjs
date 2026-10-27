@@ -107,6 +107,16 @@ test('unknown ids and wrong desk types are unwrapped and reported', () => {
   }
 })
 
+test('unwrapping a double-bracketed unknown citation prints [s7], not [[s7]]', () => {
+  const wrapped = resolve('[<a href="source:s7">[s7]</a>]', corpus)
+  assert.equal(wrapped.html, '[s7]')
+  assert.deepEqual(wrapped.changes.map((c) => c.kind), ['unwrapped'])
+  assert.equal(resolve('<a href="source:s7">[s7]</a>', corpus).html, '[s7]')
+  const mixed = resolve('[<a href="source:s7">[s7]</a>, <a href="source:s1">[s1]</a>]', corpus)
+  assert.match(mixed.html, /^\[s7, <a [^>]+>s1<\/a>\]$/)
+  assert.doesNotMatch(mixed.html, /\[\[/)
+})
+
 test('a desk alias needs the same address fields as a legacy desk link', () => {
   const missing = { ...corpus, desks: { live: [{ ...stream, tags: [] }] }, art: [] }
   const { html, changes } = resolve('<a href="watch:s1">stream</a>', missing)

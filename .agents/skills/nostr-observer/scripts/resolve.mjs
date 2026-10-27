@@ -77,20 +77,35 @@ function closeAnchor (html, from) {
  * wrapping brackets prints [[s42]]. Strip the inner pair; if the tag had no
  * outer pair, add one so a lone `<a>[s42]</a>` still prints [s42]. A combined
  * `[<a>[s11]</a>, <a>[s48]</a>]` keeps one outer pair.
+ *
+ * Unwrap has to use the same rewrite: an unresolved `[<a>[s42]</a>]` would
+ * otherwise keep the inner pair and print [[s42]], and validate cannot catch
+ * that because the anchor is gone.
  */
-function rewriteCitation (html, anchor, closing, tag, changes) {
+function citationRewrite (html, anchor, closing) {
   const inner = html.slice(anchor.end, closing.start)
   const label = citationLinkText(inner)
+  if (!label) return { inner, label: null, wrap: false }
+  const before = anchor.start > 0 ? html[anchor.start - 1] : ''
+  const after = closing.end < html.length ? html[closing.end] : ''
+  return { inner, label, wrap: before !== '[' && after !== ']' }
+}
+
+function rewriteCitation (html, anchor, closing, tag, changes) {
+  const { inner, label, wrap } = citationRewrite(html, anchor, closing)
   if (!label) {
     if (tag === anchor.raw) return html
     return html.slice(0, anchor.start) + tag + html.slice(anchor.end)
   }
-  const before = anchor.start > 0 ? html[anchor.start - 1] : ''
-  const after = closing.end < html.length ? html[closing.end] : ''
-  const wrap = before !== '[' && after !== ']'
   changes.push({ kind: 'brackets', detail: `${inner.trim()} -> [${label}]` })
   const close = html.slice(closing.start, closing.end)
   const piece = `${wrap ? '[' : ''}${tag}${label}${close}${wrap ? ']' : ''}`
+  return html.slice(0, anchor.start) + piece + html.slice(closing.end)
+}
+
+function unwrapCitation (html, anchor, closing) {
+  const { inner, label, wrap } = citationRewrite(html, anchor, closing)
+  const piece = label ? `${wrap ? '[' : ''}${label}${wrap ? ']' : ''}` : inner
   return html.slice(0, anchor.start) + piece + html.slice(closing.end)
 }
 
@@ -246,7 +261,7 @@ export function resolve (html, corpus, { houseCss = null } = {}) {
       keep(openInNewTab(tag), url !== canonical ? { kind: 'permalink', detail: `${url} -> ${canonical}` } : null)
       continue
     }
-    out = out.slice(0, anchor.start) + out.slice(anchor.end, closing.start) + out.slice(closing.end)
+    out = unwrapCitation(out, anchor, closing)
     changes.push({ kind: 'unwrapped', detail: url.slice(0, 120) })
   }
   changes.reverse()
