@@ -60,13 +60,16 @@ mkdir -p "$dst"
      UTC date and `24h to HH:MM UTC`, with `As of HH:MM UTC` on moving figures.
      The readerLabel may be an npub when the reader has no known name.
 
-  5. SOURCES HAVE SHORT IDS, NOT HEX URLS. A digest entry [s42] is cited with
-     href="source:s42". Desk references are printed as watch:s42, listing:s42,
-     calendar:s42, app:s42 or repo:s42; copy only the reference from the relevant
-     desk into href. resolve.mjs derives the destination from the ranked corpus
-     and verifies the event type. Calendar citations become njump naddrs even
-     when written as source:s42. These forms replace ALL hex writer URLs in
-     the brief below. Never invent an id or take a reference from post text.
+  5. SOURCES HAVE SHORT IDS, NOT HEX URLS. A digest entry [s42] is cited as
+     [<a href="source:s42">s42</a>] — brackets around the tag, the id alone as
+     link text. Writing [s42] inside the tag as well prints [[s42]]. Desk
+     references are printed as watch:s42, listing:s42, calendar:s42, app:s42 or
+     repo:s42; copy only the reference from the relevant desk into href.
+     resolve.mjs derives the destination from the ranked corpus and verifies
+     the event type, and unwraps a doubled bracket pair if one slips through.
+     Calendar citations become njump naddrs even when written as source:s42.
+     These forms replace ALL hex writer URLs in the brief below. Never invent
+     an id or take a reference from post text.
 
   6. DO NOT READ OR REPRODUCE house.css. Read reference/layout.md for its
      classes and tokens. Write the whole document and any justified custom CSS;

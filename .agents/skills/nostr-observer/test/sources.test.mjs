@@ -45,6 +45,8 @@ test('digest metadata uses short references without changing source prose', () =
   const text = digest(corpus)
   assert.match(text, /\[s1\] kind 1/)
   assert.match(text, /source: source:s1/)
+  assert.match(text, /\[<a href="source:s1">s1<\/a>\]/)
+  assert.match(text, /Never put \[s1\] in the link text/)
   for (const [type, n] of [['watch', 2], ['listing', 3], ['calendar', 4], ['app', 5], ['repo', 6]]) {
     assert.ok(text.includes(`${type}: ${type}:s${n}`))
   }
@@ -121,4 +123,28 @@ test('resolution changes actual attributes, leaving href/src text inside caption
   assert.deepEqual(attributes(html, 'img', 'src'), [corpus.art[0].url])
   assert.deepEqual(attributes(html, 'img', 'alt'), ['src="art-9" and 1 > 0'])
   assert.deepEqual(check(html, corpus).violations, [])
+})
+
+test('double-bracketed citation text is unwrapped so the page prints [s1]', () => {
+  // Writers cite "[s42]" and also wrap the tag, which prints [[s42]].
+  const page = [
+    '[<a href="source:s1">[s1]</a>]',
+    '[<a href="source:s1">[s1]</a>, <a href="watch:s2">[watch:s2]</a>]',
+    '<a href="app:s5">[app:s5]</a>',
+    '[<a href="source:s1">s1</a>]',
+  ].join(' ')
+  const { html, changes } = resolve(page, corpus)
+  assert.equal(changes.filter((c) => c.kind === 'brackets').length, 4)
+  assert.deepEqual([...html.matchAll(/<a [^>]*>([^<]*)<\/a>/g)].map((m) => m[1]), ['s1', 's1', 'watch:s2', 'app:s5', 's1'])
+  assert.match(html, /\[<a [^>]+>app:s5<\/a>\]/)
+  assert.doesNotMatch(html, />\[[^\]]+\]</)
+  assert.deepEqual(check(html, corpus).violations, [])
+  assert.equal(resolve(html, corpus).changes.filter((c) => c.kind === 'brackets').length, 0)
+})
+
+test('a leftover double-wrapped citation fails the boundary', () => {
+  const page = `[<a href="${toPermalink(note.id)}" target="_blank" rel="noopener noreferrer">[s1]</a>]`
+  const report = check(page, corpus)
+  assert.deepEqual(report.violations.map((v) => v.kind), ['LINK'])
+  assert.match(report.violations[0].detail, /\[\[s42\]\]/)
 })
