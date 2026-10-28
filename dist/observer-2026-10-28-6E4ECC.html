@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+<head>
+<style id="observer-house">
+/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  /* 0.44 of the nameplate, as a BLOCK so it sits above the rest.
+   *
+   * This used to be `.44em`. That is 44% of the h1 only when `.the` is nested
+   * inside it -- the shape every earlier edition used. A sibling
+   * `<div class="the">` (A56859, 2026-10-23) inherits the body's 16px instead
+   * and prints a 7px sentence-case "The", because uppercase lives on the h1.
+   * The clamp is 0.44 times the nameplate's, so either markup lands the same. */
+  font-size: clamp(1.012rem, 3.344vw, 2.244rem);
+  display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+  font-family: var(--serif); font-weight: 700; text-transform: uppercase;
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+/* A following story is a sequel in a STACK, not a neighbour in a ROW.
+ *
+ * `.story + .story` is document order. Inside `.cols2`/`.cols3`/`.cols4` the
+ * next story is the next column, and the 18px top margin, padding and rule
+ * meant to separate stacked pieces drop that column below the first. Cells
+ * already carry their own column rules; on the 720px stack they grow a top
+ * border of their own. Zero the stacked-story furniture here at every
+ * breakpoint so a writer who put `.story` on the cell (the same class of
+ * mistake as `.col.story`) does not misalign the band. */
+.cols2 > .story + .story,
+.cols3 > .story + .story,
+.cols4 > .story + .story {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+
+</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Wednesday, October 28, 2026</title>
+  <meta name="description" content="SEC Form 8-K reveals 837 coins trapped in Singapore since June; audit committee concludes unwithdrawable holdings never qualified as company assets under GAAP.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="Datavault AI Discloses Frozen Bitcoin at Custodian Biconomy as Audit Wipes $92 Million From Corporate Balance Sheet">
+  <meta property="og:description" content="SEC Form 8-K reveals 837 coins trapped in Singapore since June; audit committee concludes unwithdrawable holdings never qualified as company assets under GAAP.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-10-28-6E4ECC.html">
+  <meta property="og:image" content="https://blossom.jumble.social/6fe305327f69f1b72e07334db6970dcdb7eedb9bad5ef0bf4f6ac28d49fa3d77.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Datavault AI Discloses Frozen Bitcoin at Custodian Biconomy as Audit Wipes $92 Million From Corporate Balance Sheet">
+  <meta name="twitter:description" content="SEC Form 8-K reveals 837 coins trapped in Singapore since June; audit committee concludes unwithdrawable holdings never qualified as company assets under GAAP.">
+  <meta name="twitter:image" content="https://blossom.jumble.social/6fe305327f69f1b72e07334db6970dcdb7eedb9bad5ef0bf4f6ac28d49fa3d77.png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<div class="sheet">
+
+  <div class="folio">
+    <span>No. 6E4ECC</span>
+    <span>Wednesday, October 28, 2026</span>
+    <span>24h to 08:53 CDT</span>
+  </div>
+
+  <header class="masthead">
+    <h1><span class="the">The</span> Nostr Observer</h1>
+    <p class="motto">Signal through the noise</p>
+  </header>
+
+  <div class="dateline">
+    <span>Ranked as NotBiebs and 69 others</span>
+    <span>609 events through your lens</span>
+    <span>234 voices</span>
+  </div>
+
+  <main class="fold">
+    <div class="col span-8">
+      <article class="story">
+        <div class="kicker">Corporate Treasury &amp; Custody</div>
+        <h2 class="lead-head">Datavault AI Discloses Frozen Bitcoin at Custodian Biconomy as Audit Wipes $92 Million From Corporate Balance Sheet</h2>
+        <p class="dek">SEC Form 8-K reveals 837 coins trapped in Singapore since June; audit committee concludes unwithdrawable holdings never qualified as company assets under GAAP.</p>
+
+        <p class="first">A corporate treasury's reliance on paper ownership over physical key control suffered a catastrophic reckoning this week as Nasdaq-listed Datavault AI disclosed that hundreds of bitcoin remain trapped at an offshore custodian [<a href="https://jumble.social/notes/nevent1qqst9z5yqu9nel8mhngcc8rnxgwje72l0h7c26yxtywkj3ry946slege5lk24" target="_blank" rel="noopener noreferrer">s534</a>]. In an SEC Form 8-K filing analyzed by Roger, the company revealed that a withdrawal request submitted months ago has gone unfulfilled: <q>On Tuesday morning a Nasdaq-listed company told the SEC that it cannot move its bitcoin. Datavault AI filed a Form 8-K stating that a withdrawal request submitted in June 2026 from a third-party custodian, Singapore-based Biconomy Pte. Ltd., remains incomplete as of the filing date of 26 October. The shares fell nearly 50 per cent on 27 October, according to The Block.</q> [<a href="https://jumble.social/notes/nevent1qqst9z5yqu9nel8mhngcc8rnxgwje72l0h7c26yxtywkj3ry946slege5lk24" target="_blank" rel="noopener noreferrer">s534</a>]</p>
+
+        <p>The impasse originated in a September 2025 securities purchase agreement with Scilex Holding Company, which transferred 1,309.04 BTC to Datavault's wallet at Biconomy through off-chain ledger entries. After selling 491.431 BTC back to Scilex for cash, the remaining balance stayed with Biconomy. When Datavault attempted in June to withdraw its coins to an external address, the transaction stalled completely. Subsequent accounting reviews stripped the holdings from corporate ledgers: <q>Datavault's audit committee concluded on 20 October that the bitcoin never qualified as the company's own digital asset under GAAP at all. Four sets of financial statements, from the quarter ending September 2025 through June 2026, should no longer be relied upon. The asset reductions run to $8.1 million for September 2025 and $92.2 million for December 2025.</q> [<a href="https://jumble.social/notes/nevent1qqst9z5yqu9nel8mhngcc8rnxgwje72l0h7c26yxtywkj3ry946slege5lk24" target="_blank" rel="noopener noreferrer">s534</a>]</p>
+
+        <p>As Roger observed, the incident demonstrates that balance sheet claims are poor substitutes for cryptographic keys: <q>A balance is a claim. An asset is a control. The two look identical in a dashboard and behave identically in calm weather, which is why the failure never shows up at rest. It shows up on the day someone asks to move something and the answer is a support ticket.</q> [<a href="https://jumble.social/notes/nevent1qqst9z5yqu9nel8mhngcc8rnxgwje72l0h7c26yxtywkj3ry946slege5lk24" target="_blank" rel="noopener noreferrer">s534</a>] The underlying protocol functioned flawlessly; the failure occurred strictly in the legal and custodial apparatus erected around it.</p>
+
+        <p>Seeking an institutional architecture that avoids single custodial bottlenecks, Debifi and Swiss bank Sygnum launched MultiSYG [<a href="https://jumble.social/notes/nevent1qqs83jnle868wy97727f9vvujf9rlz0yfpes3sqjn2pk7wtzqw4gk0s3vm0sn" target="_blank" rel="noopener noreferrer">s515</a>], introducing bitcoin-backed lending where clients retain key custody in multisig: <q>Debifi and Sygnum launch MultiSYG. Sygnum clients can now borrow against their bitcoin while the collateral sits in multisig, and they hold a key themselves.</q> As Debifi founder Max Kei explained, <q>A year ago I said borrowers shouldn't need to trust a custodian blindly. This past year showed why, with one secret often being enough to empty a wallet. As borrowing against Bitcoin grows, MultiSYG gives clients a loan where one stolen or weak key is not sufficient to move their collateral.</q> [<a href="https://jumble.social/notes/nevent1qqs83jnle868wy97727f9vvujf9rlz0yfpes3sqjn2pk7wtzqw4gk0s3vm0sn" target="_blank" rel="noopener noreferrer">s515</a>]</p>
+      </article>
+
+      <article class="story">
+        <div class="kicker">Proof of Work</div>
+        <h3 class="sub-head">Solo Miner at 16.4 TH Finds a CKPool Block; Yearly Odds Below 1 in 3,400</h3>
+        <p class="dek">Dr -ck’s figure is the chance of finding any block over a year, not the odds of this hash winning a single round.</p>
+        <p>A home-scale solo miner solved a block on solo.ckpool.org [<a href="https://jumble.social/notes/nevent1qqsrw7zs68r3s4mwf0eey9nupq3tvv47pendgrkepugy4uxfcarvf5gketzuj" target="_blank" rel="noopener noreferrer">s39</a>]. Pool operator Dr -ck reported the event: <q>Congratulations to miner bc1q~ucu6 for solving the 318th stubborn block at solo.ckpool.org with only ~16.4TH of hashrate on a 6.2TH worker! A miner of this size has less than a one in 3400 chance of solving a block in a year.</q> [<a href="https://jumble.social/notes/nevent1qqsrw7zs68r3s4mwf0eey9nupq3tvv47pendgrkepugy4uxfcarvf5gketzuj" target="_blank" rel="noopener noreferrer">s39</a>]</p>
+        <p>That 1-in-3,400 figure is the chance of finding any block over a year, not the odds of winning this particular one. A year contains many blocks, so the per-block chance is much smaller than the annual number. The reward still went entirely to that miner.</p>
+      </article>
+    </div>
+
+    <div class="col span-4">
+      <div class="box">
+        <div class="box-head">The Instrument</div>
+        <p class="note">A mechanical audit of web-of-trust ranking</p>
+        <p>The control read of the network over the identical 24-hour window without a personal lens returned <strong>400 notes</strong>. Of those unranked notes, exactly <strong>2</strong> appeared among the <strong>396 ranked notes</strong> surfaced through this reader's lens.</p>
+        <p class="note">A two-note overlap confirms that the lens is performing the entire editorial curation, isolating signal from the broader network firehose.</p>
+      </div>
+
+      <div class="box">
+        <div class="box-head">Conditions &amp; Network Readings</div>
+        <p class="note">As of 08:53 CDT · Readings from the window; not live</p>
+        <div class="tablewrap">
+          <table>
+            <tbody>
+              <tr>
+                <td>Bitcoin Spot</td>
+                <td class="num">$80,674</td>
+              </tr>
+              <tr>
+                <td>100-Week Moving Avg</td>
+                <td class="num">$89,596</td>
+              </tr>
+              <tr>
+                <td>Price / 100w MA</td>
+                <td class="num">0.90</td>
+              </tr>
+              <tr>
+                <td>4-Year ROI</td>
+                <td class="num">+293%</td>
+              </tr>
+              <tr>
+                <td>4-Year CAGR</td>
+                <td class="num">41%</td>
+              </tr>
+              <tr>
+                <td>Supply HODL (&ge; 2 Yrs)</td>
+                <td class="num">48.9%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Sources: ChartsBTC &amp; market readings [<a href="https://jumble.social/notes/nevent1qqsfmlm2ygz6cdeq7p622cwqvd8jvjndfxhmgyhwxjswl4fp943j4gsc0nh07" target="_blank" rel="noopener noreferrer">s116</a>, <a href="https://jumble.social/notes/nevent1qqsfdx6gqxux688shfxap9gga8szhnug8zd83gds9cc6myenwqtk9nctyff0j" target="_blank" rel="noopener noreferrer">s121</a>, <a href="https://jumble.social/notes/nevent1qqs8sqs6w3m6wt356w4mw40quv05e5y8wk35v352rc3w0wz85fcrg3ggxgmeu" target="_blank" rel="noopener noreferrer">s151</a>, <a href="https://jumble.social/notes/nevent1qqsqk8cnz0jqlryk4cnpkgxdd4nxrqrhwhwvzfydmwuqggg0cm8m9scg4nmxc" target="_blank" rel="noopener noreferrer">s184</a>]</p>
+      </div>
+    </div>
+  </main>
+
+  <section class="band">
+    <div class="band-head">
+      <h2>Applications, Protocols &amp; Infrastructure</h2>
+    </div>
+    <div class="cols3">
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Client Architecture</div>
+          <h3 class="sub-head">Napp Maker Sparks Wave of Micro-App Prototyping</h3>
+          <p class="dek">Cody previews upcoming PsstPsst release integrating napps, napplets, and nsites directly over relay transport.</p>
+          <figure>
+            <img src="https://blossom.jumble.social/6fe305327f69f1b72e07334db6970dcdb7eedb9bad5ef0bf4f6ac28d49fa3d77.png" alt="Interface screenshot of Napp Maker by Cody">
+            <figcaption>
+              Composable web tooling: Cody tests Napp Maker, previewing support for napps and client-side sandboxes.
+              <span class="credit">Cody</span>
+            </figcaption>
+          </figure>
+          <p>Client development moved beyond chronological timelines this morning as builders experimented with nested micro-applications [<a href="https://jumble.social/notes/nevent1qqsqqqqq8ggetwjhszr4p53z85tudd7rxyysa8rfmr5dwpg5mz089jsh6xxe2" target="_blank" rel="noopener noreferrer">s84</a>]. Following fiatjaf's release of Napp Maker, developer Cody showcased interface prototypes for the upcoming PsstPsst release: <q>fiatjaf has been building a lot of napps lately. I just tried Napp Maker, and it feels full of possibilities! I can’t wait to release the next version of PsstPsst, with support for napps, napplets, and nsites!</q> [<a href="https://jumble.social/notes/nevent1qqsqqqqq8ggetwjhszr4p53z85tudd7rxyysa8rfmr5dwpg5mz089jsh6xxe2" target="_blank" rel="noopener noreferrer">s84</a>]</p>
+          <p>The architecture allows lightweight applications to execute inside host client environments, transforming Nostr profiles and relays into application distribution hubs.</p>
+        </article>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Sidechains &amp; Pegs</div>
+          <h3 class="sub-head">Liquid Federation Re-Enables 1:1 Swaps in Staged Recovery</h3>
+          <p class="dek">Aqua and SideSwap restore peg operations accounting for 99% of volume as independent security audit nears completion.</p>
+          <figure>
+            <img src="https://blossom.primal.net/3a4bfb1296d1c99b9ad9b595349a62d32e9a441ee4efbc0dad6b2c0428a24c61.png" alt="Announcement graphic from Liquid Network Federation">
+            <figcaption>
+              Liquid Network Federation announces restored 1:1 swap operations via member providers.
+              <span class="credit">Liquid Network</span>
+            </figcaption>
+          </figure>
+          <p>The Liquid Network Federation announced a significant milestone in its post-incident restoration process [<a href="https://jumble.social/notes/nevent1qqszrgf3s8ev2ptee7hcpw02sh9xmt2xac02uq0yh3t6nls6vetgm8cgy0zzx" target="_blank" rel="noopener noreferrer">s189</a>], re-enabling bilateral swaps across key mobile and desktop integrations: <q>BTC&lt;&gt;LBTC swaps were re-enabled last week as part of Liquid’s staged recovery.</q> [<a href="https://jumble.social/notes/nevent1qqszrgf3s8ev2ptee7hcpw02sh9xmt2xac02uq0yh3t6nls6vetgm8cgy0zzx" target="_blank" rel="noopener noreferrer">s189</a>]</p>
+          <p>Swaps between Bitcoin on-chain and Liquid LBTC are now active through participating providers including Aqua and SideSwap, which <q>collectively accounted for 99% of peg-out volume prior to the incident.</q> [<a href="https://jumble.social/notes/nevent1qqszrgf3s8ev2ptee7hcpw02sh9xmt2xac02uq0yh3t6nls6vetgm8cgy0zzx" target="_blank" rel="noopener noreferrer">s189</a>] Federation peg-out operations remain subject to enhanced controls while security audits conclude and auditable Proof of Reserves remain published at liquid.network.</p>
+        </article>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Defensive Engineering</div>
+          <h3 class="sub-head">White Noise and ZEUS Isolate Decoders and Refresh Toolchains</h3>
+          <p class="dek">Android messenger confines animated media to permissionless workers; ZEUS bundles LND v0.21.5-beta.</p>
+          <figure>
+            <img src="https://image.nostr.build/dd37a0ae26b85928fa7f73d53baebef7439468b71d3811d68f6d3d2aee31eab9.png" alt="Release testing announcement graphic from ZEUS">
+            <figcaption>
+              ZEUS v13.2.4-rc2 testing release bundles embedded node updates and security hardening.
+              <span class="credit">ZEUS</span>
+            </figcaption>
+          </figure>
+          <p>Hardening measures landed across privacy-focused communications and Lightning tools. White Noise detailed a significant containment upgrade for Android [<a href="https://jumble.social/notes/nevent1qqsvh6qap636ft9mhecft29568jsfhkkmc7n3z4tzhdqjmkyxl67akc9u3w9j" target="_blank" rel="noopener noreferrer">s507</a>], isolating animated GIF and WebP decoding within a permissionless worker process: <q>White Noise authenticates who sent a file to a group chat and confirms that it arrived intact. Your phone still has to open that file, which means handing sender-shaped bytes to a native decoder built for speed, and a trusted friend can forward a GIF crafted somewhere else. The sound response is to treat every attachment as untrusted input and give the code that reads it as little authority as possible, so a decoder bug lands in a process holding little worth taking.</q> [<a href="https://jumble.social/notes/nevent1qqsvh6qap636ft9mhecft29568jsfhkkmc7n3z4tzhdqjmkyxl67akc9u3w9j" target="_blank" rel="noopener noreferrer">s507</a>]</p>
+          <p>Concurrently, ZEUS rolled out its testing candidate [<a href="https://jumble.social/notes/nevent1qqstsxeakpg8szfpy8wym6x0gs3xepa63ngxk8urk45syem6tuvlvhstlwd6c" target="_blank" rel="noopener noreferrer">s188</a>]: <q>ZEUS v13.2.4-rc2 is now available for testing.</q> The build bundles embedded LND v0.21.5-beta, LDK Node v0.7.1, and CDK v0.18.2. On the catalog front, Zapstore instituted strict signature policies [<a href="https://jumble.social/notes/nevent1qqsqqq9uy8g6rl5cqtgysu8v607jct8v4nhz3k0m4lal7f788tnw7xclqgwvw" target="_blank" rel="noopener noreferrer">s133</a>]: <q>Apps that have no Android keystore ownership proof (signed NIP-C1) are no longer accepted.</q> Foundation also released Envoy 2.3.7 [<a href="https://jumble.social/notes/nevent1qqsg3mkvflrktk0rqysrvdqgeg73prql3ldlq0fmpm0jd2ecjp4fvpqd2majt" target="_blank" rel="noopener noreferrer">s54</a>] with maintenance updates.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="band-head">
+      <h2>Unsolicited Mail &amp; Customer Data</h2>
+    </div>
+    <div class="cols2">
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Social Engineering</div>
+          <h3 class="sub-head">Unsolicited Blockstream-Branded Email Hits an Address Used Only for a 2021 Order</h3>
+          <p class="dek">ndeet posted a screenshot as evidence of a customer-data leak. The sender is unverified; the tax claims in the message are not news.</p>
+          <figure>
+            <img src="https://blossom.primal.net/4b94d19875828d3e9590b795181c70037219fc8783b1178cfce7f2941316f138.png" alt="Screenshot of an unsolicited Blockstream-branded email posted by ndeet; sender not verified">
+            <figcaption>
+              A screenshot of an unsolicited email, not a verified Blockstream notice. ndeet received this Blockstream-branded message at an address used only for a 2021 hardware-store order and posted it as evidence of a leak. The paper cannot confirm the sender. Do not act on the IRS withholding claims in the screenshot.
+              <span class="credit">ndeet</span>
+            </figcaption>
+          </figure>
+        </article>
+      </div>
+      <div class="cell">
+        <article class="story">
+          <p class="first">Developer ndeet reported receiving the message at a unique email alias created solely for one store purchase in 2021, with no official leak announcement from the merchant [<a href="https://jumble.social/notes/nevent1qqs9avk9n559jxzpcpj7e99ya2prk7pz3x5kvtfuuz69w62pykzcqdgcyxecc" target="_blank" rel="noopener noreferrer">s209</a>]: <q>Unexpected but here we go. Bitcoin companies continue loose customer data and risking them getting wrench attacked. I'm tired of this shit. I will call out any company loosing customer data until they get their shit together.</q> ndeet asked whether the exposure was limited to email or also included a physical address. The screenshot is evidence of how the message arrived, not confirmation that Blockstream wrote it or that the tax guidance it describes is real.</p>
+          <p>Separately, hardware maker Foundation warned that fraudulent sites tied to recent phishing emails remain active [<a href="https://jumble.social/notes/nevent1qqstjyxdq3p4sn5ylv2e2rd79m9xsh5rss0sgf0vj6wrpnuylz7fr9q20ta8a" target="_blank" rel="noopener noreferrer">s33</a>]: <q>IMPORTANT REMINDER Some fraudulent websites linked to the recent phishing emails are still active. These sites have been reported, and we are working to have them taken down. Please DO NOT click any suspicious links in emails or visit the websites they direct you to. Foundation will NEVER ask for your recovery or seed phrase.</q> That advisory concerns Foundation's own customers; it does not authenticate the Blockstream-branded screenshot.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="band-head">
+      <h2>Scaling Frontiers, The Catalog &amp; Community Gatherings</h2>
+    </div>
+    <div class="cols3">
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Protocol Research</div>
+          <h3 class="sub-head">waxwing Outlines Lichen Scaling Leap Using BABE Verification</h3>
+          <p class="dek">Transitioning verification to BABE compresses on-chain footprint sevenfold, reducing exit delays and scaling hubs up to 50,000 users.</p>
+          <p>Bitcoin developer waxwing shared promising scaling benchmarks for Lichen, an off-chain protocol designed to streamline user exits and liquidity hub operations [<a href="https://jumble.social/notes/nevent1qqsrmvvu3kvq5z86k9un645087xdafrhp4k8cjru2w232x7y598zk0szc6jug" target="_blank" rel="noopener noreferrer">s222</a>]: <q>switching the onchain verification to BABE results in only a few onchain txs instead of 20-25 (so, a much smaller exit delay) and reduces onchain costs by about 7x in terms of bytes. Worst case attacks in terms of a mass exit can then allow scale of about 10k to 50k users with a single operator/hub. And fees kept in reserve are also far lower.</q> [<a href="https://jumble.social/notes/nevent1qqsrmvvu3kvq5z86k9un645087xdafrhp4k8cjru2w232x7y598zk0szc6jug" target="_blank" rel="noopener noreferrer">s222</a>]</p>
+          <p>Highlighting the practical usability gains for clients, waxwing noted: <q>Very easy for the user: they don't have to watch the bitcoin chain at all. It's like an LSP model, but way better imo.</q> [<a href="https://jumble.social/notes/nevent1qqsrmvvu3kvq5z86k9un645087xdafrhp4k8cjru2w232x7y598zk0szc6jug" target="_blank" rel="noopener noreferrer">s222</a>] The advancement moves Lichen from theoretical exploration into practical implementation territory.</p>
+        </article>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Code &amp; Classifieds Wire</div>
+          <h3 class="sub-head">Software Repositories, Applications &amp; Market</h3>
+          <div class="wire-item">
+            <p><strong>Ecash App</strong>: Free, open-source Fedimint wallet prioritizing financial privacy with multi-federation management, Lightning, and ecash payments [<a href="https://zapstore.dev/apps/org.fedimint.app" target="_blank" rel="noopener noreferrer">app:s569</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Super Productivity</strong>: ToDo list, time tracker, and personal task manager across desktop and mobile platforms [<a href="https://zapstore.dev/apps/com.superproductivity.superproductivity" target="_blank" rel="noopener noreferrer">app:s571</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>SkateSpots</strong>: Community directory and map for discovering skate spots worldwide, joining crews, and connecting over Nostr [<a href="https://zapstore.dev/apps/org.skatespots.app" target="_blank" rel="noopener noreferrer">app:s573</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>nostr-double-ratchet</strong>: End-to-end encrypted messaging primitives implementing double ratchet key exchange by Sirius Business Ltd [<a href="https://gitworkshop.dev/npub1xdhnr9mrv47kkrn95k6cwecearydeh8e895990n3acntwvmgk2dsdeeycm/nostr-double-ratchet" target="_blank" rel="noopener noreferrer">repo:s604</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>nostr-vpn</strong>: Decentralized virtual private network routing and tunnel coordination over Nostr relays [<a href="https://gitworkshop.dev/npub1xdhnr9mrv47kkrn95k6cwecearydeh8e895990n3acntwvmgk2dsdeeycm/nostr-vpn" target="_blank" rel="noopener noreferrer">repo:s609</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Retro Game Mat</strong>: New, boxed 200+ retro games mat with foot-pad controller in Como, Italy for 10.00 EUR on Barattolo [<a href="https://shopstr.market/listing/naddr1qq8xyctjv968gmmvduknxv3jxqpzqtn6lcle47xrmjgdd69v4awh42fx548scgh3c42hqucfcpvlaqcmqvzqqqrkcgtjut5y" target="_blank" rel="noopener noreferrer">listing:s543</a>].</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Broadcasts &amp; Calendar</div>
+          <h3 class="sub-head">Live Transmissions &amp; Upcoming Gatherings</h3>
+          <div class="wire-item">
+            <p><strong>NoGood Radio</strong>: Live audio broadcast streaming community music and talk on zap.stream [<a href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al" target="_blank" rel="noopener noreferrer">watch:s432</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Cyberspace TV Live Stream</strong>: Continuous technical stream and community feed on zap.stream [<a href="https://zap.stream/naddr1qqjxxenrxa3xzvmy95un2ct9956xzdfe94snxvpe95crwerpxdskvwp5xqun2q3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxw6f2enq" target="_blank" rel="noopener noreferrer">watch:s433</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>AI Startup Rodeo: Machine-to-Machine Payments</strong>: Technical talks and demos on agent tooling, developer frameworks, and automated payments at Q Branch in Austin, Texas on Friday, October 30 [<a href="https://njump.me/naddr1qqvrvct9xyuk2dmrxf3n2dejxg6kxetyv5ukve33vgpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvxgllny" target="_blank" rel="noopener noreferrer">calendar:s549</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Agents Anonymous</strong>: Community gathering exploring AI tools, Claude Code, Codex, and agent automation at AI Freedom Lab at Bitcoin Park in Nashville on Saturday, October 31 [<a href="https://njump.me/naddr1qqvrvct9xpnrgveexf3n2dejxg6kxetyv5ux2decv5pzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv5vqzfu" target="_blank" rel="noopener noreferrer">calendar:s550</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Halloween at The Bitcoin Embassy</strong>: Costume gathering, pupusa dinner, and community poker freeroll in San Salvador on Saturday, October 31 [<a href="https://njump.me/naddr1qqvrvct9xycnvetzxq6ngerx8yexxwtrxucnswtxvcpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvrkfp4g" target="_blank" rel="noopener noreferrer">calendar:s560</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Redding/Shasta Co. Bitcoin Meet-Up</strong>: Monthly dinner and discussion at Ortegas' Restaurant in Palo Cedro, California on Wednesday, November 4 [<a href="https://njump.me/naddr1qqvrvwtxv5mn2ep4xvuxydecx5mrjvmyv56nxepevypzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvdzwqcq" target="_blank" rel="noopener noreferrer">calendar:s545</a>].</p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Perth BitDevs</strong>: Socratic discussion covering Bitcoin engineering and protocol developments at Blasta Brewing Company in Burswood, Western Australia on Thursday, November 5 [<a href="https://njump.me/naddr1qqvrvct9xy6rjdfhxf3n2dejxg6kxetyv5un2ep4v5pzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvrnl7gn" target="_blank" rel="noopener noreferrer">calendar:s558</a>].</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
