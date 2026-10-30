@@ -101,6 +101,19 @@ class Validator(
         private const val INSTRUMENT_DETAIL =
             "The Instrument reports a count, not a story — do not cite a source there"
 
+        // `[watch:s452] FREEDOM TECH FRIDAY` is the machinery showing. Found
+        // 2026-10-30: a wire column prefixed every item with the desk id and
+        // then cited the same id after the blurb. The title is the link; a
+        // catalog number in front of a name is twice as hard to read. A
+        // trailing citation on a sentence, or a title that IS the link, is
+        // the house form.
+        private val LEADING_CITE =
+            Regex("""^\[\s*(?:(?:watch|listing|calendar|app|repo):)?s[1-9][0-9]*\s*\]\s+\S""", RegexOption.IGNORE_CASE)
+        private val LEADING_CITE_TAGS =
+            setOf("h1", "h2", "h3", "h4", "h5", "h6", "strong", "b", "p", "li", "dt")
+        private const val LEADING_CITE_DETAIL =
+            "do not prefix a headline or listing with a source id — the title is the link"
+
         /** The one external shape a link may take: a permalink to an event we read. */
         val PERMALINK = Regex("""^https://njump\.me/(nevent1\w+|note1\w+|[0-9a-f]{64})""", RegexOption.IGNORE_CASE)
 
@@ -214,6 +227,14 @@ class Validator(
                     Violation(Kind.LINK, INSTRUMENT_DETAIL, a.attr("href").take(120)),
                 )
             }
+        }
+
+        for (el in doc.body().allElements) {
+            if (el.tagName() !in LEADING_CITE_TAGS) continue
+            if (!LEADING_CITE.containsMatchIn(el.text().trim())) continue
+            violations.add(
+                Violation(Kind.LINK, LEADING_CITE_DETAIL, el.text().trim().take(80)),
+            )
         }
 
         return Report(violations, checked)

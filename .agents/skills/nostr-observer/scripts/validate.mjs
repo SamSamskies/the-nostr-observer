@@ -463,6 +463,30 @@ function hasChildElement (all, el) {
 }
 
 /**
+ * `[watch:s452] FREEDOM TECH FRIDAY` is the machinery showing. Found
+ * 2026-10-30: a wire column prefixed every item with the desk id and then
+ * cited the same id after the blurb. The title is the link; a catalog
+ * number in front of a name is twice as hard to read. A trailing citation
+ * on a sentence, or a title that IS the link, is the house form.
+ */
+const LEADING_CITE = /^\[\s*(?:(?:watch|listing|calendar|app|repo):)?s[1-9][0-9]*\s*\]\s+\S/i
+const LEADING_CITE_TAGS = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'b', 'p', 'li', 'dt'])
+const LEADING_CITE_DETAIL = 'do not prefix a headline or listing with a source id — the title is the link'
+
+export function leadingCitationViolations (html) {
+  const out = []
+  for (const el of elements(html)) {
+    if (!LEADING_CITE_TAGS.has(el.name)) continue
+    // Strip tags to nothing, not a space: textOf would turn `[<a>s1</a>] Title`
+    // into `[ s1 ] Title` and miss the prefix a reader actually sees.
+    const text = decodeEntities(html.slice(el.innerStart, el.innerEnd).replace(/<[^>]*>/g, '')).replace(/\s+/g, ' ').trim()
+    if (!LEADING_CITE.test(text)) continue
+    out.push({ kind: 'LINK', detail: LEADING_CITE_DETAIL, excerpt: text.slice(0, 80) })
+  }
+  return out
+}
+
+/**
  * `[<a>[s42]</a>]` prints [[s42]]. resolve.mjs strips the inner pair; this
  * refuses a leftover so a regression in that step fails closed, same as the
  * calendar-nevent guard. A lone `<a>[s42]</a>` is the other valid house form
@@ -555,6 +579,7 @@ export function check (html, corpus) {
   violations.push(...markupViolations(html))
   violations.push(...instrumentViolations(html))
   violations.push(...citationBracketViolations(html))
+  violations.push(...leadingCitationViolations(html))
 
   const quotes = quotedText(html)
   for (const quote of quotes) {

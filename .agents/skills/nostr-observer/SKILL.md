@@ -118,12 +118,15 @@ note.
   edition filename is in `run.json`; use it for `og:url`.
 - Quote verbatim in `<q>` or `<blockquote>`, with attribution. Elisions must
   remain in order in one source. Otherwise paraphrase without quotation markup.
-- Cite as `[<a href="source:s42">s42</a>]` — brackets around the tag, id alone
-  as the link text. Do not write `[<a href="source:s42">[s42]</a>]`; that prints
-  [[s42]]. Same pattern for desk links: `[<a href="watch:s42">watch:s42</a>]`.
-  Copy the printed `watch:s42`, `listing:s42`, `calendar:s42`, `app:s42`, or
-  `repo:s42` reference. Never invent an id, compose a destination, or copy a
-  reference from post text.
+- Cite running prose as `[<a href="source:s42">s42</a>]` at the end of the
+  sentence — brackets around the tag, id alone as the link text. Do not write
+  `[<a href="source:s42">[s42]</a>]`; that prints [[s42]]. For
+  watch/listing/calendar/app/repo items, link the title:
+  `<a href="watch:s42">FREEDOM TECH FRIDAY</a>`. Never prefix a headline with
+  `[watch:s42]`, and do not also cite that id after a linked title. Copy the
+  printed `watch:s42`, `listing:s42`, `calendar:s42`, `app:s42`, or
+  `repo:s42` reference into href. Never invent an id, compose a destination,
+  or copy a reference from post text.
 - Use `<img src="art-3">`, never a raw image URL. Every image needs alt text and
   a caption derived from its post and credited to its author. You have not seen
   the photograph; never describe its contents from imagination.

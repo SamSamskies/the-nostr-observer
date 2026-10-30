@@ -145,6 +145,31 @@ test('The Instrument does not cite a source', () => {
   'a subtitled panel must not widen to a neighbouring story')
 })
 
+test('a headline does not start with a source id', () => {
+  // Found 2026-10-30: the Network Gazette prefixed every wire item with
+  // [watch:s452] and then cited the same id after the blurb. The title is
+  // the link. A trailing citation, or a title that IS the link, is fine.
+  const href = toPermalink(EVENT_ID)
+  const watch = toStreamLink(corpus.desks.live[0])
+  assert.deepEqual(kinds(
+    `<strong>[<a href="${href}">s1</a>] FREEDOM TECH FRIDAY</strong>`), ['LINK'])
+  assert.deepEqual(kinds(
+    `<strong>[<a href="${watch}">watch:s452</a>] FREEDOM TECH FRIDAY</strong>`), ['LINK'])
+  assert.deepEqual(kinds(
+    `<h3>[<a href="${href}">s1</a>] A headline</h3>`), ['LINK'])
+  assert.deepEqual(kinds(
+    `<p>[<a href="${href}">s1</a>] Sirius envisioned a change.</p>`), ['LINK'])
+  assert.deepEqual(kinds(
+    `<strong><a href="${watch}">FREEDOM TECH FRIDAY</a></strong>`), [])
+  assert.deepEqual(kinds(
+    `<p>Hosted on zap.stream [<a href="${watch}">watch:s452</a>].</p>`), [])
+  assert.deepEqual(kinds(
+    `<strong>FREEDOM TECH FRIDAY [<a href="${watch}">watch:s452</a>]</strong>`), [])
+  assert.deepEqual(kinds(
+    `<p>[<a href="${href}">s1</a>]</p>`), [],
+  'a citation that is the whole paragraph is not a prefix')
+})
+
 test('a permalink to an event we actually read is the one allowed link', () => {
   const href = toPermalink(EVENT_ID)
   assert.deepEqual(kinds(`<a href="${href}">source</a>`), [])

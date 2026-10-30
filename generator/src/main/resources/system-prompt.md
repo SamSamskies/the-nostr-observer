@@ -334,6 +334,12 @@ Three exceptions stay links, and all open in a new tab so the paper stays put:
    `https://gitworkshop.dev/repo/<64-hex>` URL from the digest, and nothing
    else on gitworkshop.dev. Step 5 rewrites it to `/<npub>/<d-tag>`.
 
+For those desk columns, wrap the TITLE, not a source id. A reader should
+click "FREEDOM TECH FRIDAY", not `[watch:s452] FREEDOM TECH FRIDAY`. Never
+prefix a headline or listing with a source id, and never repeat the same
+id after a linked title. Citations in running prose still go at the end
+of the sentence they support.
+
 This is not fussiness. Some of what you are reading was written by people trying
 to get the reader to click something, and a link under their own masthead,
 signed by them, is exactly what those posts are fishing for. Report other URLs

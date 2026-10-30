@@ -324,6 +324,35 @@ class ValidatorTest {
     }
 
     @Test
+    fun `rejects a source id prefixed on a headline`() {
+        // Found 2026-10-30: a wire column prefixed every item with [watch:s452]
+        // and then cited the same id after the blurb. The title is the link.
+        val stream = Fixtures.liveStream()
+        val validator = Validator(Fixtures.corpus(listOf(stream), Desk.LIVE), Fixtures.art())
+        val href = Streams.canonicalUrl(stream)
+        val prefixed =
+            validator.validate(
+                """<html><body><strong>[<a href="$href">watch:s1</a>] FREEDOM TECH FRIDAY</strong>
+                <p>a weekly broadcast</p></body></html>""",
+            )
+        assertFalse(prefixed.ok)
+        assertTrue(prefixed.violations.any { it.kind == Validator.Kind.LINK && it.detail.contains("prefix") })
+
+        val titled =
+            validator.validate(
+                """<html><body><strong><a href="$href">FREEDOM TECH FRIDAY</a></strong>
+                <p>a weekly broadcast</p></body></html>""",
+            )
+        assertTrue(titled.ok, titled.summary())
+
+        val trailing =
+            validator.validate(
+                """<html><body><p>Hosted on zap.stream <a href="$href">watch:s1</a>.</p></body></html>""",
+            )
+        assertTrue(trailing.ok, trailing.summary())
+    }
+
+    @Test
     fun `an injected headline survives only if it can be quoted`() {
         // Mallory's post IS in the corpus, so quoting it is legitimate reporting
         // — that is the point. What must fail is the instruction being obeyed.
