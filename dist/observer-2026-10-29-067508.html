@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en">
+<head>
+<style id="observer-house">
+/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  /* 0.44 of the nameplate, as a BLOCK so it sits above the rest.
+   *
+   * This used to be `.44em`. That is 44% of the h1 only when `.the` is nested
+   * inside it -- the shape every earlier edition used. A sibling
+   * `<div class="the">` (A56859, 2026-10-23) inherits the body's 16px instead
+   * and prints a 7px sentence-case "The", because uppercase lives on the h1.
+   * The clamp is 0.44 times the nameplate's, so either markup lands the same. */
+  font-size: clamp(1.012rem, 3.344vw, 2.244rem);
+  display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+  font-family: var(--serif); font-weight: 700; text-transform: uppercase;
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+/* A following story is a sequel in a STACK, not a neighbour in a ROW.
+ *
+ * `.story + .story` is document order. Inside `.cols2`/`.cols3`/`.cols4` the
+ * next story is the next column, and the 18px top margin, padding and rule
+ * meant to separate stacked pieces drop that column below the first. Cells
+ * already carry their own column rules; on the 720px stack they grow a top
+ * border of their own. Zero the stacked-story furniture here at every
+ * breakpoint so a writer who put `.story` on the cell (the same class of
+ * mistake as `.col.story`) does not misalign the band. */
+.cols2 > .story + .story,
+.cols3 > .story + .story,
+.cols4 > .story + .story {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+
+</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Thursday, October 29, 2026</title>
+  <meta name="description" content="Discovery to disclosure took five days without an embargo, but code moves faster than operators: half the network still runs version 31.1.0.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="The Patch Is Not the Upgrade: Core Fixes Three Memory Bugs, but 96% of Nodes Lag Behind">
+  <meta property="og:description" content="Discovery to disclosure took five days without an embargo, but code moves faster than operators: half the network still runs version 31.1.0.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-10-29-067508.html">
+  <meta property="og:image" content="https://image.nostr.build/dd37a0ae26b85928fa7f73d53baebef7439468b71d3811d68f6d3d2aee31eab9.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Patch Is Not the Upgrade: Core Fixes Three Memory Bugs, but 96% of Nodes Lag Behind">
+  <meta name="twitter:description" content="Discovery to disclosure took five days without an embargo, but code moves faster than operators: half the network still runs version 31.1.0.">
+  <meta name="twitter:image" content="https://image.nostr.build/dd37a0ae26b85928fa7f73d53baebef7439468b71d3811d68f6d3d2aee31eab9.png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <div class="sheet">
+    <div class="folio">
+      <span>No. 067508</span>
+      <span>Thursday, October 29, 2026</span>
+      <span>24h to 08:28 CDT</span>
+    </div>
+
+    <header class="masthead">
+      <h1><span class="the">The</span> Nostr Observer</h1>
+      <p class="motto">What surfaced through the web of trust in the last twenty-four hours</p>
+    </header>
+
+    <div class="dateline">
+      <span>Ranked as NotBiebs and 69 others</span>
+      <span>673 events through your lens</span>
+      <span>236 voices</span>
+    </div>
+
+    <!-- Above the fold: Splash story & Lead Column (span-8) + Side Column (span-4) -->
+    <main class="fold">
+      <div class="col span-8">
+        <article class="story">
+          <div class="kicker">Consensus Infrastructure</div>
+          <h2 class="lead-head">The Patch Is Not the Upgrade: Core Fixes Three Memory Bugs, but 96% of Nodes Lag Behind</h2>
+          <p class="dek">Discovery to disclosure took five days without an embargo, but code moves faster than operators: half the network still runs version 31.1.0.</p>
+          <div class="byline">By Roger [<a href="https://jumble.social/notes/nevent1qqsfzzj9extytqa5qldx5gu2cy26ck6puym4e550e2qq0mtsral077qqczf7u" target="_blank" rel="noopener noreferrer">s584</a>] &amp; Staff</div>
+          <p class="first">Sixteen hours after Bitcoin Core published advisories for three memory vulnerabilities uncovered by automated LLM scanning tools, a network census reveals the stubborn gap between releasing a patch and securing a fleet. Of 16,283 reachable nodes identifying as Bitcoin Core, exactly 568—or 3.5 per cent—reported running a patched release carrying the mitigation [<a href="https://jumble.social/notes/nevent1qqsfzzj9extytqa5qldx5gu2cy26ck6puym4e550e2qq0mtsral077qqczf7u" target="_blank" rel="noopener noreferrer">s584</a>]. A single older release, 31.1.0, still accounted for 8,080 nodes, while 4,965 nodes ran versions already declared end-of-life.</p>
+          <p>The timeline itself marks a milestone in open-source vulnerability handling. On October 23, an automated scanner found an issue that lets any connected peer crash a Windows, macOS or BSD node. By October 26, the fix was opened, merged, and backported. On October 27, versions 31.2 and 32.1 shipped, followed immediately by point updates 29.5 and 30.4. Disclosure occurred in the same hour without a private embargo [<a href="https://jumble.social/notes/nevent1qqsfzzj9extytqa5qldx5gu2cy26ck6puym4e550e2qq0mtsral077qqczf7u" target="_blank" rel="noopener noreferrer">s584</a>].</p>
+          <blockquote><q>Code can be fixed in a day; a fleet cannot. The vulnerability window is now set by three clocks running at different speeds, and the policy change that Bitcoin Core merged on 22 October only touched the first one.</q></blockquote>
+          <p>Two of the vulnerabilities were discovered by Project Loupe, an automated scanning pipeline developed at Spiral [<a href="https://jumble.social/notes/nevent1qqsfzzj9extytqa5qldx5gu2cy26ck6puym4e550e2qq0mtsral077qqczf7u" target="_blank" rel="noopener noreferrer">s584</a>]. While the TCP urgent data crash was patched within days of detection, an earlier pre-BIP31 queue exhaustion bug discovered in mid-September waited forty-one days until the scheduled release train. The lesson is straightforward: automated auditing makes flaw discovery cheap and continuous, but shipping remains coupled to human release cycles and manual node upgrades [<a href="https://jumble.social/notes/nevent1qqsfzzj9extytqa5qldx5gu2cy26ck6puym4e550e2qq0mtsral077qqczf7u" target="_blank" rel="noopener noreferrer">s584</a>].</p>
+        </article>
+
+        <article class="story">
+          <div class="kicker">Application Architecture</div>
+          <h3 class="main-head">A Paint App Shouldn’t Need to Understand Nostr: The Case for Napplets</h3>
+          <p class="dek">NIP-5D proposes separating lightweight tools from protocol plumbing, letting users trust a single shell rather than untrusted app code.</p>
+          <div class="byline">By sandwich [<a href="https://jumble.social/notes/nevent1qqs0s88mcsvtw89mzmlcme5rmtqzws9fr8pz99axcut7gsjwrvs59zsar9nlt" target="_blank" rel="noopener noreferrer">s549</a>]</div>
+          <p class="first">Building software on open protocols often forces developers to reinvent identity, relay management, and signing infrastructure before drawing a single pixel. A new proposal, NIP-5D, argues for lightweight &ldquo;napplets&rdquo; that run inside a trusted host shell [<a href="https://jumble.social/notes/nevent1qqs0s88mcsvtw89mzmlcme5rmtqzws9fr8pz99axcut7gsjwrvs59zsar9nlt" target="_blank" rel="noopener noreferrer">s549</a>].</p>
+          <p><q>A paint app needs a canvas, some colors, and a way to undo a bad brushstroke.</q> writes sandwich [<a href="https://jumble.social/notes/nevent1qqs0s88mcsvtw89mzmlcme5rmtqzws9fr8pz99axcut7gsjwrvs59zsar9nlt" target="_blank" rel="noopener noreferrer">s549</a>]. <q>None of that requires a relay connection or a signing key. If you want to build one, you should be able to spend your time on the editor. And if someone wants to try it, they shouldn't have to trust you with everything else they do.</q></p>
+          <p>By moving cryptographic authority and network permissions entirely into the host shell, users gain a defensible security posture: trust the shell, but isolate the app in a sandboxed frame [<a href="https://jumble.social/notes/nevent1qqs0s88mcsvtw89mzmlcme5rmtqzws9fr8pz99axcut7gsjwrvs59zsar9nlt" target="_blank" rel="noopener noreferrer">s549</a>].</p>
+        </article>
+      </div>
+
+      <div class="col span-4">
+        <figure>
+          <img src="https://image.nostr.build/dd37a0ae26b85928fa7f73d53baebef7439468b71d3811d68f6d3d2aee31eab9.png" alt="Announcement banner for ZEUS version 13.2.4 with release details">
+          <figcaption>
+            ZEUS rolled out version 13.2.4 across Android and iOS, bundling embedded LND v0.21.5-beta and CDK v0.18.2 alongside enhanced hardening.
+            <span class="credit">Photograph via ZEUS [<a href="https://jumble.social/notes/nevent1qqs2ekkgethdyem6azw3fjurkq6dwk84268vd8l8muqhm9henss40uqzyc6d4" target="_blank" rel="noopener noreferrer">s191</a>]</span>
+          </figcaption>
+        </figure>
+
+        <div class="box">
+          <div class="box-head">The Instrument</div>
+          <p>The same 24-hour window read without the web-of-trust lens returned 400 notes. Of those, only 2 also appear in the 392 ranked notes surfaced for this reader.</p>
+          <p class="note">A 0.5% overlap demonstrates that the reader’s web of trust is performing substantive filtering, replacing firehose noise with community signal.</p>
+        </div>
+
+        <div class="box">
+          <div class="box-head">Conditions &amp; Readings</div>
+          <p class="note">As of 08:28 CDT · Readings from the window, not live figures</p>
+          <div class="tablewrap">
+            <table>
+              <tbody>
+                <tr>
+                  <td>Bitcoin Exchange Price</td>
+                  <td class="num">~$81,478</td>
+                </tr>
+                <tr>
+                  <td>Next Difficulty Estimate</td>
+                  <td class="num">149.73 T (+6.5%)</td>
+                </tr>
+                <tr>
+                  <td>Reachable Bitcoin Core Nodes</td>
+                  <td class="num">16,283</td>
+                </tr>
+                <tr>
+                  <td>Nodes Running Bug Fix (v32.1/31.2)</td>
+                  <td class="num">568 (3.5%)</td>
+                </tr>
+                <tr>
+                  <td>Nodes on Unpatched v31.1.0</td>
+                  <td class="num">8,080 (49.6%)</td>
+                </tr>
+                <tr>
+                  <td>Federal Reserve Target Rate</td>
+                  <td class="num">3.75% – 4.00%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="note">Price &amp; node figures recorded by Roger [<a href="https://jumble.social/notes/nevent1qqsfzzj9extytqa5qldx5gu2cy26ck6puym4e550e2qq0mtsral077qqczf7u" target="_blank" rel="noopener noreferrer">s584</a>]; difficulty estimate via DarkRoastJedi [<a href="https://jumble.social/notes/nevent1qqsgfuqqcrnzz6x7avf7h7u6vuv603d7ztp7c50ycuvzmh7plgdjhmgjv8kqc" target="_blank" rel="noopener noreferrer">s438</a>].</p>
+        </div>
+
+        <article class="story">
+          <div class="kicker">Wire Dispatches</div>
+          <h4 class="small-head">Jumble Adds NIP-22 Comment Toggle</h4>
+          <p>Clients are gradually moving toward standard threaded replies. Cody noted that Jumble now offers a setting under General Features allowing users to reply to kind 1 notes via NIP-22 comments [<a href="https://jumble.social/notes/nevent1qqs295uxu3hfpw63295gcmef9t79ya5m60n7pjf4cydgpdp8v0gj6dcv6ef5c" target="_blank" rel="noopener noreferrer">s123</a>].</p>
+        </article>
+      </div>
+    </main>
+
+    <!-- Band: Wire Protocols, Wireless Mesh, Broadcasting & Classifieds -->
+    <section class="band">
+      <div class="band-head">
+        <span>Desks &amp; Dispatches</span>
+        <span>Mesh Networks · Public Domain Sound · Exchanges</span>
+      </div>
+
+      <div class="cols3">
+        <div class="cell">
+          <article class="story">
+            <div class="kicker">Mesh Engineering</div>
+            <h3 class="sub-head">Four Codecs, One Wire: Rigorous Interop on Bluetooth Mesh</h3>
+            <div class="byline">By Vincenzo Palazzo [<a href="https://jumble.social/notes/nevent1qqsr6svm5gd0vlcxcd04pexg59fkm3cmhdpcc89rvyltm8zf4dxdvsc9jty4a" target="_blank" rel="noopener noreferrer">s564</a>]</div>
+            <p class="first">When building localized communications over Bluetooth mesh, testing on two phones sitting on an office desk frequently hides subtle failure modes [<a href="https://jumble.social/notes/nevent1qqsr6svm5gd0vlcxcd04pexg59fkm3cmhdpcc89rvyltm8zf4dxdvsc9jty4a" target="_blank" rel="noopener noreferrer">s564</a>].</p>
+            <p>The Sonar team detailed how they unified packet framing for bitchat into a shared Rust crate, testing against 181 iOS and 93 Android vectors generated directly by upstream reference implementations [<a href="https://jumble.social/notes/nevent1qqsr6svm5gd0vlcxcd04pexg59fkm3cmhdpcc89rvyltm8zf4dxdvsc9jty4a" target="_blank" rel="noopener noreferrer">s564</a>]. Their testing revealed a real-world interoperability flaw: stock bitchat on iOS verified incoming signatures by re-compressing payloads using Apple’s zlib level 5, which caused valid frames signed at Java’s default level 6 on Android to be rejected [<a href="https://jumble.social/notes/nevent1qqsr6svm5gd0vlcxcd04pexg59fkm3cmhdpcc89rvyltm8zf4dxdvsc9jty4a" target="_blank" rel="noopener noreferrer">s564</a>].</p>
+          </article>
+
+          <article class="story">
+            <div class="kicker">AI Aggregation</div>
+            <h4 class="small-head">Permissionless Model Routing via Sats</h4>
+            <p>Routstr highlighted how permissionless node aggregation makes newly published language models immediately available across Nostr clients paying with Lightning [<a href="https://jumble.social/notes/nevent1qqsvfpv3ap2gc7m7xzyuahtvt2m4qmnmpgnh5uf2wep24chxqdw0dms2x5s7y" target="_blank" rel="noopener noreferrer">s11</a>]. Downstream users query via providers like OpenRouter or Venice without custodial API subscriptions.</p>
+          </article>
+        </div>
+
+        <div class="cell">
+          <article class="story">
+            <div class="kicker">Cultural Heritage</div>
+            <h3 class="sub-head">Your Grandparents&rsquo; Records on the Radio</h3>
+            <div class="byline">By Noderunners Radio [<a href="https://jumble.social/notes/nevent1qqsxvwg2jur9w68tksstm939y8je4uqm3t5cpqewlu3altmqqkfnw8gwz0w48" target="_blank" rel="noopener noreferrer">s72</a>]</div>
+            <p class="first">Noderunners Radio launched a dedicated public domain channel curating over 369,000 historical audio recordings [<a href="https://jumble.social/notes/nevent1qqsxvwg2jur9w68tksstm939y8je4uqm3t5cpqewlu3altmqqkfnw8gwz0w48" target="_blank" rel="noopener noreferrer">s72</a>]. Pulling from the Great 78 Project, UCSB Cylinder Archive, and Wikimedia Commons, the catalog features wax cylinders dating back to 1902 and early jazz shellacs.</p>
+            <p>Each recording underwent station processing to eliminate turntable rumble that risks damaging modern speaker cones [<a href="https://jumble.social/notes/nevent1qqsxvwg2jur9w68tksstm939y8je4uqm3t5cpqewlu3altmqqkfnw8gwz0w48" target="_blank" rel="noopener noreferrer">s72</a>]. Listeners queue historical tracks onto the live stream for 21 sats via Lightning.</p>
+          </article>
+
+          <div class="box">
+            <div class="box-head">Broadcasting: Live Streams</div>
+            <p class="note">Streams active at generation time; check listings for status</p>
+            <div class="wire-item">
+              <strong><a href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al" target="_blank" rel="noopener noreferrer">watch:s451</a></strong> — NoGood Radio
+            </div>
+            <div class="wire-item">
+              <strong><a href="https://zap.stream/naddr1qqjrvcejxgunxwp394snzcfe956rwdp495urgwrx95cx2e34v33kzvp38qmrwq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwflg7jw" target="_blank" rel="noopener noreferrer">watch:s452</a></strong> — Trade or Die week 8 (X_x)
+            </div>
+            <div class="wire-item">
+              <strong><a href="https://zap.stream/naddr1qqjxxenrxa3xzvmy95un2ct9956xzdfe94snxvpe95crwerpxdskvwp5xqun2q3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxw6f2enq" target="_blank" rel="noopener noreferrer">watch:s453</a></strong> — Cyberspace TV Live Stream
+            </div>
+            <div class="wire-item">
+              <strong><a href="https://zap.stream/naddr1qqjrgwf4v3nx2wtp95mrjde3956rsvmr95unswpj94jrsv3e893xgvnrv5ekyq3qsjf300tngygmqtfkpyd0vcglld2msksjxe9fsjduzn2pccqjl9wsxpqqqpmxw9smx9f" target="_blank" rel="noopener noreferrer">watch:s454</a></strong> — ScardustTV 24/7
+            </div>
+            <div class="wire-item">
+              <strong><a href="https://zap.stream/naddr1qqxhgam9de68jmmwv5knydphqgsd7shq86yu8v4qt2y4klqvu3hqc88pq5vfymwdnh9gugp7f9xjf8qrqsqqqan8m3cqcq" target="_blank" rel="noopener noreferrer">watch:s456</a></strong> — Blockli Cup #1: Das erste Blockli-Turnier
+            </div>
+            <div class="wire-item">
+              <strong><a href="https://zap.stream/naddr1qqjrgcfexq6rvcmr94snjdrr956xgvek94skywf494jxxvfhvcmnzefkv9jrsq3qsh0cy25xtx0lh6q58kc7rcdl95tzlfs0c6zuv4g4jclx0n7hfx0sxpqqqpmxw6vlyl5" target="_blank" rel="noopener noreferrer">watch:s457</a></strong> — SIFAKA 24/7 Metal/Hardcore/Punk Radio
+            </div>
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="box">
+            <div class="box-head">The Classifieds</div>
+            <p class="note">Direct peer-to-peer offers from kind 30402 listings</p>
+            <div class="wire-item">
+              <p><strong><a href="https://shopstr.market/listing/naddr1qqjxxun9w3skutthd9kxgenvdamk2u3ddphkuete95cnqtt00gknxdrsxcmk2q3qtan2cwtf8s7zxvck79qllzaa7smy03y9ftd50gk6jnag2htnslssxpqqqpmvylvqsv3" target="_blank" rel="noopener noreferrer">listing:s588</a></strong> · Cretan Wildflower Honey (10 oz)<br>
+              Smooth wildflower honey sourced directly from Crete through family beekeepers in Greece.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://shopstr.market/listing/naddr1qq98xm3dxymrqdp58quqygz0u9809zf5ksyn6uw582xfa8ky926zg0ltllecgu9lauzl2xvjaspsgqqqwmpqy3zatm" target="_blank" rel="noopener noreferrer">listing:s590</a></strong> · &ldquo;Bitcoin Standard&rdquo; Book (Japanese Edition)<br>
+              List price: ¥4,000. Translated by S. Amouz and team; offer routed via AGORA marketplace.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://shopstr.market/listing/naddr1qqxxyctjv968gmmvduknwdgzyqh84l3lntuv8hys6m52et6a025jdf20ps30r324wpesnszel6p3kqcyqqq8dss49pjch" target="_blank" rel="noopener noreferrer">listing:s591</a></strong> · Buoni Zalando (10% Discount)<br>
+              €25 vouchers offered at €22.50 EUR by Barattolo in Salerno, Italy; digital delivery.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://shopstr.market/listing/naddr1qqdhqun0v36kxazlxymnjvejxu6rvwfkxyunxhehveax5vczypjtl2dtlljmrrg8x8hd27eczuadc2agn0u8c95d4yz30uppuu3t2qcyqqq8dssrs3cja" target="_blank" rel="noopener noreferrer">listing:s586</a></strong> · Howth Photography Print<br>
+              20cm &times; 30cm landscape print captured in Howth, Dublin, Ireland, offered by BTCPhoto.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://shopstr.market/listing/naddr1qqdhqun0v36kxazlxymnvwf3xqcnzwpnxyunghmsduchgcszyre0tswdwkskjggvp5z3fw0tyet9uhywa6npl05chw8mqprrfqrryqcyqqq8dssl4qhey" target="_blank" rel="noopener noreferrer">listing:s593</a></strong> · Mail-In Joy-Con 2 Button Swap<br>
+              Custom button replacement service for Nintendo controllers in various metallic and chrome finishes.</p>
+            </div>
+          </div>
+
+          <div class="box">
+            <div class="box-head">Code Repositories</div>
+            <p class="note">Announced via gitworkshop on NIP-34</p>
+            <div class="wire-item">
+              <p><strong><a href="https://gitworkshop.dev/npub1ua6fxn9ktc4jncanf79jzvklgjftcdrt5etverwzzg0lgpmg3hsq2gh6v6/noderunnersradio-site" target="_blank" rel="noopener noreferrer">repo:s656</a></strong> · noderunnersradio-site — Public portal code for community-operated station.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://gitworkshop.dev/npub1ye5ptcxfyyxl5vjvdjar2ua3f0hynkjzpx552mu5snj3qmx5pzjscpknpr/habla.news" target="_blank" rel="noopener noreferrer">repo:s658</a></strong> · habla.news — Long-form publishing reader updates by hzrd149.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://gitworkshop.dev/npub1w3vaxva0vcrx7pnvlpmede5smvafdl69xnu7ma82kaxl9us89zdsht4c5c/rillswap" target="_blank" rel="noopener noreferrer">repo:s657</a></strong> · rillswap — Decentralized exchange contracts by m0wer.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://gitworkshop.dev/npub1manlnflyzyjhgh970t8mmngrdytcp3jrmaa66u846ggg7t20cgqqvyn9tn/nas" target="_blank" rel="noopener noreferrer">repo:s659</a></strong> · Nostr Archive Standards — Specifications by ManiMe.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Band: Community Calendar & App Releases -->
+    <section class="band">
+      <div class="band-head">
+        <span>Calendar &amp; Releases</span>
+        <span>Upcoming Gatherings · Software Catalog</span>
+      </div>
+
+      <div class="cols2">
+        <div class="cell">
+          <div class="box">
+            <div class="box-head">Diary &amp; Calendar</div>
+            <p class="note">Replaceable calendar listings on kind 31922 &amp; 31923</p>
+            <div class="wire-item">
+              <p><strong><a href="https://njump.me/naddr1qqvrvctzv4skgd3cv3skzdp48pjrqcn9xa3kzwpjxypzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv9nk6vz" target="_blank" rel="noopener noreferrer">calendar:s601</a></strong> · <strong>October 29, 2026</strong> — Tampa, Florida<br>
+              <em>Bitcoin White Paper Hodlween Party</em> at BarrieHaus from 7–10 PM hosted by Bitcoin Bay.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://njump.me/naddr1qqvrvctrxv6xzefnv3skzdp48pjrqcn98qexzery8ypzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvm2q4vq" target="_blank" rel="noopener noreferrer">calendar:s599</a></strong> · <strong>October 29, 2026</strong> — Sister Cities<br>
+              <em>Bitcoin at the Pub, City Edition</em> gathering at 6:00 PM for informal discussion.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://njump.me/naddr1qqsxy6t5vdhkjm3dvfhkget8vykk2eryv3nrge33943kzmr9dejxzuszyz9uhgn03ajghq6vf3s0rh644jalfh69zs6d04sqhxu5sly250wmzqcyqqq8evsfkn8h9" target="_blank" rel="noopener noreferrer">calendar:s621</a></strong> · <strong>October 29, 2026</strong> — Chicago, Illinois<br>
+              <em>Bitcoin Bodega</em> members marketplace at the Chicago Bitcoin Collective.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://njump.me/naddr1qqvrvct9xgukxvfnxf3n2dejxg6kxetyv43xgce4vspzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv04jyw9" target="_blank" rel="noopener noreferrer">calendar:s597</a></strong> · <strong>November 2, 2026</strong> — Springfield, Illinois<br>
+              <em>Lincolnland Bitcoin Meetup</em> at It’s All About Wine on Wabash for sound money talk.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://njump.me/naddr1qqvrvct9xgukze33xf3n2dejxg6kxetyv43xxenrxgpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv85c87p" target="_blank" rel="noopener noreferrer">calendar:s600</a></strong> · <strong>November 4, 2026</strong> — Munich, Germany<br>
+              <em>Bitcoin Munich Stammtisch</em> at Alter Wirt Ramersdorf from 6:00 PM.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://njump.me/naddr1qqvrvct9xg6rwwt9xf3n2dejxg6kxetyv43rvdfnv5pzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvmlp63x" target="_blank" rel="noopener noreferrer">calendar:s608</a></strong> · <strong>November 26, 2026</strong> — Austin, Texas<br>
+              <em>PlebsGiving 2026</em> annual community potluck hosted at PlebLab.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="box">
+            <div class="box-head">App Releases</div>
+            <p class="note">Decentralized software entries announced on Zapstore (NIP-82)</p>
+            <div class="wire-item">
+              <p><strong><a href="https://zapstore.dev/apps/com.greenart7c3" target="_blank" rel="noopener noreferrer">app:s634</a></strong> · <strong>Labradorite</strong> by greenart7c3<br>
+              Drive Claude Code, omp, pi and Codex running on your desktop terminal straight from your mobile phone.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://zapstore.dev/apps/com.greenart7c3.citrine" target="_blank" rel="noopener noreferrer">app:s646</a></strong> · <strong>Citrine</strong> by greenart7c3<br>
+              An embedded on-device Nostr relay for Android, enabling local client operations without external relay round trips.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://zapstore.dev/apps/social.flotilla" target="_blank" rel="noopener noreferrer">app:s649</a></strong> · <strong>Flotilla</strong> by hodlbod<br>
+              Self-hosted community chat rooms and threaded discussions built on native Nostr events.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://zapstore.dev/apps/com.nostrvault.app" target="_blank" rel="noopener noreferrer">app:s651</a></strong> · <strong>Nostr Vault</strong> by Logen<br>
+              Self-custodial mobile client bundling its own personal relay and Blossom media server directly on device.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://zapstore.dev/apps/ovh.uid.lumen" target="_blank" rel="noopener noreferrer">app:s652</a></strong> · <strong>Lumen</strong> by Russell<br>
+              Unified wallet coordinator linking Lightning nodes over NIP-47 alongside local Liquid balances.</p>
+            </div>
+            <div class="wire-item">
+              <p><strong><a href="https://zapstore.dev/apps/default" target="_blank" rel="noopener noreferrer">app:s627</a></strong> · <strong>Follow Pack Creator</strong> by sandwich<br>
+              Curate and publish social graph follow recommendations with integrated profile search.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
