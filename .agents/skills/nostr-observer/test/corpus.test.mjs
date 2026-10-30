@@ -130,6 +130,8 @@ test('the digest is bounded, and says what it held back', async () => {
 
   const text = digest({ observerNpub: 'n', relay: 'r', floor: 20, since: 0, until: 1, code: 'A', desks, control: [], overlap: 0, profiles: {}, art: [] })
   assert.match(text, /Do not cite a source in this panel/)
+  assert.match(text, /link the title/)
+  assert.match(text, /Never prefix a headline/)
   // NO SILENT CAPS: a digest that quietly drops half the long-form reads as a
   // quiet day for long-form, and a thin honest paper is supposed to mean one.
   for (const key of Object.keys(trimmed)) {

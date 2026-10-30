@@ -37,16 +37,19 @@
      UTC date and `24h to HH:MM UTC`, with `As of HH:MM UTC` on moving figures.
      The readerLabel may be an npub when the reader has no known name.
 
-  5. SOURCES HAVE SHORT IDS, NOT HEX URLS. A digest entry [s42] is cited as
-     [<a href="source:s42">s42</a>] — brackets around the tag, the id alone as
-     link text. Writing [s42] inside the tag as well prints [[s42]]. Desk
-     references are printed as watch:s42, listing:s42, calendar:s42, app:s42 or
-     repo:s42; copy only the reference from the relevant desk into href.
-     resolve.mjs derives the destination from the ranked corpus and verifies
-     the event type, and unwraps a doubled bracket pair if one slips through.
-     Calendar citations become njump naddrs even when written as source:s42.
-     These forms replace ALL hex writer URLs in the brief below. Never invent
-     an id or take a reference from post text.
+  5. SOURCES HAVE SHORT IDS, NOT HEX URLS. A digest entry [s42] is cited in
+     running prose as [<a href="source:s42">s42</a>] — brackets around the
+     tag, the id alone as link text, at the end of the sentence it supports.
+     Writing [s42] inside the tag as well prints [[s42]]. Desk columns link
+     the TITLE: <a href="watch:s42">FREEDOM TECH FRIDAY</a>. Copy only the
+     printed watch:s42, listing:s42, calendar:s42, app:s42 or repo:s42
+     reference into href. Never prefix a headline with [watch:s42], and never
+     repeat that id after a linked title. resolve.mjs derives the destination
+     from the ranked corpus and verifies the event type, and unwraps a
+     doubled bracket pair if one slips through. Calendar citations become
+     njump naddrs even when written as source:s42. These forms replace ALL
+     hex writer URLs in the brief below. Never invent an id or take a
+     reference from post text.
 
   6. DO NOT READ OR REPRODUCE house.css. Read reference/layout.md for its
      classes and tokens. Write the whole document and any justified custom CSS;
@@ -390,6 +393,12 @@ Three exceptions stay links, and all open in a new tab so the paper stays put:
 6. **A repository link in Code repositories** — the derived
    `https://gitworkshop.dev/repo/<64-hex>` URL from the digest, and nothing
    else on gitworkshop.dev. Step 5 rewrites it to `/<npub>/<d-tag>`.
+
+For those desk columns, wrap the TITLE, not a source id. A reader should
+click "FREEDOM TECH FRIDAY", not `[watch:s452] FREEDOM TECH FRIDAY`. Never
+prefix a headline or listing with a source id, and never repeat the same
+id after a linked title. Citations in running prose still go at the end
+of the sentence they support.
 
 This is not fussiness. Some of what you are reading was written by people trying
 to get the reader to click something, and a link under their own masthead,

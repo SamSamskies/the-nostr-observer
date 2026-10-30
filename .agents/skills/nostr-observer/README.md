@@ -127,11 +127,12 @@ large raw-file reads; this phase does not change digest selection or introduce
 local semantic decisions. Token savings still need measurement on a real print.
 
 The digest gives each ranked source a short id, such as `s42`. The writer cites
-it with `href="source:s42"`; desk links use the printed `watch:`, `listing:`,
-`calendar:`, `app:` or `repo:` reference. `resolve.mjs` derives the final URL
-from the full ranked corpus and checks the event type. An unknown reference
-loses its link and is reported; a reference left unresolved fails validation.
-Older hex writer URLs and canonical citations still resolve.
+running prose with `href="source:s42"` at the end of the sentence. Desk columns
+link the title (`<a href="watch:s42">FREEDOM TECH FRIDAY</a>`), never a catalog
+number in front of the name. `resolve.mjs` derives the final URL from the full
+ranked corpus and checks the event type. An unknown reference loses its link
+and is reported; a reference left unresolved fails validation. Older hex writer
+URLs and canonical citations still resolve.
 
 The fixed stylesheet is an asset, rather than text the model reads and copies
 into every edition. The writer chooses the whole layout using the guide's
