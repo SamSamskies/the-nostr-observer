@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en">
+<head>
+<style id="observer-house">
+/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  /* 0.44 of the nameplate, as a BLOCK so it sits above the rest.
+   *
+   * This used to be `.44em`. That is 44% of the h1 only when `.the` is nested
+   * inside it -- the shape every earlier edition used. A sibling
+   * `<div class="the">` (A56859, 2026-10-23) inherits the body's 16px instead
+   * and prints a 7px sentence-case "The", because uppercase lives on the h1.
+   * The clamp is 0.44 times the nameplate's, so either markup lands the same. */
+  font-size: clamp(1.012rem, 3.344vw, 2.244rem);
+  display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+  font-family: var(--serif); font-weight: 700; text-transform: uppercase;
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+/* A following story is a sequel in a STACK, not a neighbour in a ROW.
+ *
+ * `.story + .story` is document order. Inside `.cols2`/`.cols3`/`.cols4` the
+ * next story is the next column, and the 18px top margin, padding and rule
+ * meant to separate stacked pieces drop that column below the first. Cells
+ * already carry their own column rules; on the 720px stack they grow a top
+ * border of their own. Zero the stacked-story furniture here at every
+ * breakpoint so a writer who put `.story` on the cell (the same class of
+ * mistake as `.col.story`) does not misalign the band. */
+.cols2 > .story + .story,
+.cols3 > .story + .story,
+.cols4 > .story + .story {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+
+</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Wednesday, November 4, 2026</title>
+  <meta name="description" content="From a 3 a.m. bank seizure freezing three million accounts in Paraguay to a $4.5 million lending pool backed by $1.72 in cash, recent catastrophes expose the structural vulnerabilities of custodial promises layered over bearer assets.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="The Wrapper Is the Risk: As Bank Freezes Strike Paraguay, Failures Trace to Custodial Promises Rather Than Cryptography">
+  <meta property="og:description" content="From a 3 a.m. bank seizure freezing three million accounts in Paraguay to a $4.5 million lending pool backed by $1.72 in cash, recent catastrophes expose the structural vulnerabilities of custodial promises layered over bearer assets.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-11-04-B79C79.html">
+  <meta property="og:image" content="https://blossom.primal.net/eba145abab1f33bfc5934b10ebd281c209446b9e1f8e80f3b7e3e67c45098b88.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Wrapper Is the Risk: As Bank Freezes Strike Paraguay, Failures Trace to Custodial Promises Rather Than Cryptography">
+  <meta name="twitter:description" content="From a 3 a.m. bank seizure freezing three million accounts in Paraguay to a $4.5 million lending pool backed by $1.72 in cash, recent catastrophes expose the structural vulnerabilities of custodial promises layered over bearer assets.">
+  <meta name="twitter:image" content="https://blossom.primal.net/eba145abab1f33bfc5934b10ebd281c209446b9e1f8e80f3b7e3e67c45098b88.jpg">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <div class="sheet">
+    <div class="folio">
+      <span>No. B79C79</span>
+      <span>Wednesday, November 4, 2026</span>
+      <span>24h to 07:41 CST</span>
+    </div>
+
+    <header class="masthead">
+      <h1><span class="the">The</span> Nostr Observer</h1>
+      <p class="motto">Signal from noise across the web of trust</p>
+    </header>
+
+    <div class="dateline">
+      <span>Ranked for NotBiebs and 69 others</span>
+      <span>655 events through your lens</span>
+      <span>243 voices</span>
+    </div>
+
+    <div class="fold">
+      <div class="col span-8">
+        <article class="story">
+          <div class="kicker">Custodial Vulnerability &amp; Protocol Integrity</div>
+          <h2 class="lead-head">The Wrapper Is the Risk: As Bank Freezes Strike Paraguay, Failures Trace to Custodial Promises Rather Than Cryptography</h2>
+          <p class="dek">From a 3 a.m. bank seizure freezing three million accounts in Paraguay to a $4.5 million lending pool backed by $1.72 in cash, recent catastrophes expose the structural vulnerabilities of custodial promises layered over bearer assets.</p>
+          <p class="first">When automated financial mechanisms buckle, the fracture rarely occurs inside the cryptography. It occurs in the institutional promises layered over top [<a href="https://jumble.social/notes/nevent1qqsqxrermh798sezu2dxk08mfsmylm95w02w0ha4hqt9pfea8s99ujg0vkdfw" target="_blank" rel="noopener noreferrer">s572</a>]. Overnight in Paraguay, the fragility of centralized financial ledgers reasserted itself with brutal speed [<a href="https://jumble.social/notes/nevent1qqsw6cu4uzz8zlmv7mquk9y8zaqsh2fssa9u9uka4ykwjl9d8470x8qk50yq6" target="_blank" rel="noopener noreferrer">s63</a>]. <q>3 a.m. in Paraguay. One switch. About 3 million Ueno Bank customers woke up to dead cards, dead ATMs and no transfers. Funds frozen for up to 15 days. Bitcoin doesn't have a 3 a.m. switch.</q> reported Coincards.com as authorities seized the digital banking venue [<a href="https://jumble.social/notes/nevent1qqsw6cu4uzz8zlmv7mquk9y8zaqsh2fssa9u9uka4ykwjl9d8470x8qk50yq6" target="_blank" rel="noopener noreferrer">s63</a>].</p>
+          <p>The pattern repeating across decentralized finance presents an identical lesson under different technical vocabulary [<a href="https://jumble.social/notes/nevent1qqsqxrermh798sezu2dxk08mfsmylm95w02w0ha4hqt9pfea8s99ujg0vkdfw" target="_blank" rel="noopener noreferrer">s572</a>]. In a forensic review of lending pools on Base, independent researcher Roger examined the Moonwell cbBTC Core market contract, discovering a stark liquidity mismatch [<a href="https://jumble.social/notes/nevent1qqsqxrermh798sezu2dxk08mfsmylm95w02w0ha4hqt9pfea8s99ujg0vkdfw" target="_blank" rel="noopener noreferrer">s572</a>]. <q>There is a lending market on Base that holds 58.48 bitcoin and one dollar and seventy-two cents of cash.</q> wrote Roger [<a href="https://jumble.social/notes/nevent1qqsqxrermh798sezu2dxk08mfsmylm95w02w0ha4hqt9pfea8s99ujg0vkdfw" target="_blank" rel="noopener noreferrer">s572</a>]. <q>That is not a metaphor and not a rounding error.</q> [<a href="https://jumble.social/notes/nevent1qqsqxrermh798sezu2dxk08mfsmylm95w02w0ha4hqt9pfea8s99ujg0vkdfw" target="_blank" rel="noopener noreferrer">s572</a>]. Against $4.56 million deposited by suppliers, the pool held barely 3.8 cents of withdrawable cash per $100,000 of capital [<a href="https://jumble.social/notes/nevent1qqsqxrermh798sezu2dxk08mfsmylm95w02w0ha4hqt9pfea8s99ujg0vkdfw" target="_blank" rel="noopener noreferrer">s572</a>]. <q>Bitcoin did not fail here. No key was broken, no signature forged, no hash function weakened. What failed was a stack of accounting promises layered on top of bitcoin, and the failure was visible only because somebody went and read the contract instead of the dashboard.</q> [<a href="https://jumble.social/notes/nevent1qqsqxrermh798sezu2dxk08mfsmylm95w02w0ha4hqt9pfea8s99ujg0vkdfw" target="_blank" rel="noopener noreferrer">s572</a>].</p>
+          <p>That failure of human custody and administrative perimeter also underpinned Binance's $6.34 billion exploit, which the exchange officially disclosed began not with an attack on mathematical primitives or cryptographic signing routines, but through a five-month social engineering operation [<a href="https://jumble.social/notes/nevent1qqsxyqqwz27y6ukly0r690uncssx4yg472n46k6l3rw9n069mq0cc9g8fecvd" target="_blank" rel="noopener noreferrer">s570</a>, <a href="https://jumble.social/notes/nevent1qqsqxrermh798sezu2dxk08mfsmylm95w02w0ha4hqt9pfea8s99ujg0vkdfw" target="_blank" rel="noopener noreferrer">s572</a>]. Attackers contacted an infrastructure engineer via a fake job interview, deploying malicious build dependencies to obtain container deployment tokens [<a href="https://jumble.social/notes/nevent1qqsxyqqwz27y6ukly0r690uncssx4yg472n46k6l3rw9n069mq0cc9g8fecvd" target="_blank" rel="noopener noreferrer">s570</a>, <a href="https://jumble.social/notes/nevent1qqsqxrermh798sezu2dxk08mfsmylm95w02w0ha4hqt9pfea8s99ujg0vkdfw" target="_blank" rel="noopener noreferrer">s572</a>]. As Roger noted, each intermediary wrapper converts a property that could be verified mathematically into an institutional promise that must be trusted blind [<a href="https://jumble.social/notes/nevent1qqsqxrermh798sezu2dxk08mfsmylm95w02w0ha4hqt9pfea8s99ujg0vkdfw" target="_blank" rel="noopener noreferrer">s572</a>]. <q>The coin remains the only instrument in this story whose failure mode is public.</q> [<a href="https://jumble.social/notes/nevent1qqsqxrermh798sezu2dxk08mfsmylm95w02w0ha4hqt9pfea8s99ujg0vkdfw" target="_blank" rel="noopener noreferrer">s572</a>].</p>
+        </article>
+
+        <article class="story">
+          <div class="kicker">Monuments &amp; Sovereignty</div>
+          <h3 class="main-head">"The Genesis of Satoshi" Unveiled in Buenos Aires</h3>
+          <p class="dek">Argentina's capital erects a monumental mirrored public structure honoring the creator of decentralized sound money.</p>
+          <p class="first">Marking sixteen years since the publication of the Bitcoin whitepaper, attendees gathered in Buenos Aires for the public unveiling of "The Genesis of Satoshi", an imposing architectural installation commemorating the emergence of peer-to-peer electronic cash [<a href="https://jumble.social/notes/nevent1qqsyqjej2dpxyqtfczs29d7plz3ujr0wk6pg4gg7j9t57vkhjlue8rss5rc0f" target="_blank" rel="noopener noreferrer">s21</a>, <a href="https://jumble.social/notes/nevent1qqspveuz0gyr95h0pjdxptwmtzkrtew2dpnqmrkzs9y0uvdcswfa9dc66klw8" target="_blank" rel="noopener noreferrer">s49</a>]. Dany, documenting the landmark from Argentina, captured the interior of the monument lined with mirrored surfaces that reflect visitors back toward one another [<a href="https://jumble.social/notes/nevent1qqsyqjej2dpxyqtfczs29d7plz3ujr0wk6pg4gg7j9t57vkhjlue8rss5rc0f" target="_blank" rel="noopener noreferrer">s21</a>, <a href="https://jumble.social/notes/nevent1qqspveuz0gyr95h0pjdxptwmtzkrtew2dpnqmrkzs9y0uvdcswfa9dc66klw8" target="_blank" rel="noopener noreferrer">s49</a>]. <q>The inside of the monument. We're all Satoshi.</q> Dany observed from within the structure, highlighting how the memorial turns attention away from an anonymous founder and toward the collective participants maintaining the network [<a href="https://jumble.social/notes/nevent1qqsyqjej2dpxyqtfczs29d7plz3ujr0wk6pg4gg7j9t57vkhjlue8rss5rc0f" target="_blank" rel="noopener noreferrer">s21</a>].</p>
+        </article>
+      </div>
+
+      <div class="col span-4">
+        <figure>
+          <img src="https://blossom.primal.net/eba145abab1f33bfc5934b10ebd281c209446b9e1f8e80f3b7e3e67c45098b88.jpg" alt="Mirrored interior of the Genesis of Satoshi monument in Buenos Aires">
+          <figcaption>Inside the newly unveiled monument in Buenos Aires, where mirrored steel turns the viewer's gaze back onto the community, bearing the sentiment: <q>The inside of the monument. We're all Satoshi.</q> <span class="credit">Photograph by Dany</span> [<a href="https://jumble.social/notes/nevent1qqsyqjej2dpxyqtfczs29d7plz3ujr0wk6pg4gg7j9t57vkhjlue8rss5rc0f" target="_blank" rel="noopener noreferrer">s21</a>]</figcaption>
+        </figure>
+
+        <article class="story">
+          <div class="kicker">Peer-to-Peer Networks</div>
+          <h3 class="sub-head">Mostro P2P Expands Across Ten Global Node Hubs</h3>
+          <p class="first">Decentralized exchange protocol Mostro outlined its 2026 expansion, providing peer-to-peer Lightning and cross-chain settlements without centralized custody [<a href="https://jumble.social/notes/nevent1qqsrcfyvjgnnp2p23qfx4u5nz9uchtav4vyagkszd064ud5nzzp6rts4yphyz" target="_blank" rel="noopener noreferrer">s12</a>]. Community-run nodes are now active across Cuba, Spain, Colombia, Bolivia, Venezuela, Brazil, Argentina, Ecuador, and Mexico [<a href="https://jumble.social/notes/nevent1qqsrcfyvjgnnp2p23qfx4u5nz9uchtav4vyagkszd064ud5nzzp6rts4yphyz" target="_blank" rel="noopener noreferrer">s12</a>], backed by Nostr Wallet Connect integrations and thirty payment options [<a href="https://jumble.social/notes/nevent1qqsrcfyvjgnnp2p23qfx4u5nz9uchtav4vyagkszd064ud5nzzp6rts4yphyz" target="_blank" rel="noopener noreferrer">s12</a>]. The team participated in regional workshops at LaBitConf in Buenos Aires [<a href="https://jumble.social/notes/nevent1qqswnpchc6dkppdjx567dkjj8nmd4xj59vrpmhclvk825r47x62s3lg8srpns" target="_blank" rel="noopener noreferrer">s58</a>].</p>
+        </article>
+
+        <div class="box">
+          <div class="box-head">The Instrument</div>
+          <p>The same 24-hour window read without the lens returned 403 notes. Of those, 0 also appear in the 399 ranked notes. That overlap is the measurement: a zero overlap confirms the reader's web of trust is isolating an entirely distinct stream from the unranked relay firehose.</p>
+        </div>
+      </div>
+    </div>
+
+    <section class="band">
+      <div class="band-head"><h2>Education, Privacy &amp; Open Infrastructure</h2></div>
+      <div class="cols3">
+        <div class="cell">
+          <article class="story">
+            <div class="kicker">Southeast Asia</div>
+            <h3 class="sub-head">Bigger Than Bitcoin: Documentary Explores Adoption Across Indonesia</h3>
+            <p class="dek">My First Bitcoin examines monetary sovereignty across 40 Indonesian grassroots communities.</p>
+            <p class="first">My First Bitcoin released its 23-minute documentary examining grassroots adoption in Indonesia [<a href="https://jumble.social/notes/nevent1qqsvvrgly3f9tj9a036yvmwmcpkjlf7t0mxv8sszn8cnvyu9hyqn5wc4c3rpt" target="_blank" rel="noopener noreferrer">s55</a>]. <q>In Indonesia, you can own Bitcoin, but you can't legally spend it.</q> [<a href="https://jumble.social/notes/nevent1qqsvvrgly3f9tj9a036yvmwmcpkjlf7t0mxv8sszn8cnvyu9hyqn5wc4c3rpt" target="_blank" rel="noopener noreferrer">s55</a>]. The documentary tracks the local debate from whether the currency is halal or haram to educational networks connecting 40 communities across the nation [<a href="https://jumble.social/notes/nevent1qqsvvrgly3f9tj9a036yvmwmcpkjlf7t0mxv8sszn8cnvyu9hyqn5wc4c3rpt" target="_blank" rel="noopener noreferrer">s55</a>].</p>
+          </article>
+        </div>
+
+        <div class="cell">
+          <article class="story">
+            <div class="kicker">Independent Builders</div>
+            <h3 class="sub-head">HiveTalk Marks Two and a Half Years Funded Exclusively by Zaps</h3>
+            <p class="dek">Rejecting institutional grants, the decentralized video platform sustains operations through user value-for-value micro-contributions.</p>
+            <p class="first">Contrasting with traditional startup fundraising, decentralized video calling platform HiveTalk reached two and a half years of continuous operation without accepting outside capital [<a href="https://jumble.social/notes/nevent1qqstsw3r20dcrzfwjss2f2dy6qx4t2vnh0rffv0quyzgn34epr4x7rcvthm3n" target="_blank" rel="noopener noreferrer">s550</a>]. <q>HiveTalk has never taken a grant</q>—neither from OpenSats nor human rights organizations—relying entirely on user zaps over Lightning [<a href="https://jumble.social/notes/nevent1qqstsw3r20dcrzfwjss2f2dy6qx4t2vnh0rffv0quyzgn34epr4x7rcvthm3n" target="_blank" rel="noopener noreferrer">s550</a>]. Concurrently, client development pressed ahead with Liana 16.0 introducing Taproot as the default address format in its installer [<a href="https://jumble.social/notes/nevent1qqsyf9lda7mnt5jj769fq6et2y8mzfhsn32mqs42a0fkvjlkdmthmhgamkyz2" target="_blank" rel="noopener noreferrer">s556</a>], and Cashu rolling out version 0.22.1 [<a href="https://jumble.social/notes/nevent1qqsyf9lda7mnt5jj769fq6et2y8mzfhsn32mqs42a0fkvjlkdmthmhgamkyz2" target="_blank" rel="noopener noreferrer">s556</a>].</p>
+          </article>
+        </div>
+
+        <div class="cell">
+          <article class="story">
+            <div class="kicker">Confidential Inference</div>
+            <h3 class="sub-head">OpenAI Safeguards Read Prompts Before Confidential Enclaves</h3>
+            <p class="dek">Analysis of OpenAI's Private Safety Processing reveals plaintext inspection precedes enclave protections.</p>
+            <p class="first">An architectural review by aljaz of OpenAI's Private Intelligence white paper indicates that verifiable confidential computing protections only take effect after prompt contents have been processed by internal safeguards in plaintext [<a href="https://jumble.social/notes/nevent1qqs2fmpv9g66vz0mqzp6zr60544f07gn9rj3zaargd5g0lal0m5zq7sv5chl8" target="_blank" rel="noopener noreferrer">s549</a>]. <q>Even if the model call itself runs in confidential computing, OpenAI’s own safety layer has already read your prompt in plaintext outside it. That’s not end to end.</q> [<a href="https://jumble.social/notes/nevent1qqs2fmpv9g66vz0mqzp6zr60544f07gn9rj3zaargd5g0lal0m5zq7sv5chl8" target="_blank" rel="noopener noreferrer">s549</a>]. Furthermore, attestation verification is restricted to authorized auditors rather than end-user clients [<a href="https://jumble.social/notes/nevent1qqs2fmpv9g66vz0mqzp6zr60544f07gn9rj3zaargd5g0lal0m5zq7sv5chl8" target="_blank" rel="noopener noreferrer">s549</a>].</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="band-head"><h2>Craft, Culture &amp; Network Conditions</h2></div>
+      <div class="cols3">
+        <div class="cell">
+          <figure>
+            <img src="https://blossom.primal.net/d032cfb81286365ecc01e086dc5007c5cd376ab51f52141d167a33414b21411f.jpg" alt="Yellow gold engagement ring with a cabochon opal on a workbench">
+            <figcaption>From the workbench: a handcrafted engagement ring in yellow gold set with an Australian cabochon opal. <span class="credit">Photograph by FilanysZ</span> [<a href="https://jumble.social/notes/nevent1qqsd7kgwkujl5evjps5g834ycyhkgmcafuh5kzt7w2d3enfeat9ecfsrlrjqd" target="_blank" rel="noopener noreferrer">s212</a>]</figcaption>
+          </figure>
+          <article class="story">
+            <div class="kicker">Artisanship</div>
+            <h3 class="sub-head">From the Bench: Opal Ring Completed in Yellow Gold</h3>
+            <p class="first">Jeweler FilanysZ shared a completed bespoke engagement ring crafted in yellow gold and mounted with an iridescent cabochon opal [<a href="https://jumble.social/notes/nevent1qqsd7kgwkujl5evjps5g834ycyhkgmcafuh5kzt7w2d3enfeat9ecfsrlrjqd" target="_blank" rel="noopener noreferrer">s212</a>]. The piece represents weeks of metalwork and setting completed directly from the independent workbench [<a href="https://jumble.social/notes/nevent1qqsd7kgwkujl5evjps5g834ycyhkgmcafuh5kzt7w2d3enfeat9ecfsrlrjqd" target="_blank" rel="noopener noreferrer">s212</a>].</p>
+          </article>
+        </div>
+
+        <div class="cell">
+          <figure>
+            <img src="https://blossom.primal.net/8b64f2159add84b3ba8754fc3fd8cab28103d11071d16c838cf08e4ec7befe31.jpg" alt="A group road trip setting out in Sri Lanka">
+            <figcaption>Setting out from Ambalangoda to Hiriketiya beach on a Sri Lankan road trip. <span class="credit">Photograph by Jurjen de Vries</span> [<a href="https://jumble.social/notes/nevent1qqsgh5xz7hntvc246ej93sfn697eykkn9xe9grnf00gs9zt26z7xmxq9kd6ga" target="_blank" rel="noopener noreferrer">s31</a>]</figcaption>
+          </figure>
+          <article class="story">
+            <div class="kicker">Travelstr</div>
+            <h3 class="sub-head">Nostriches on Tour: Roadtrip Across Sri Lanka Begins</h3>
+            <p class="first">Jurjen de Vries and fellow Nostr travelers embarked on a cross-country road trip in Sri Lanka, journeying from Ambalangoda down toward Hiriketiya beach with initial stops along coastal turtle reserves [<a href="https://jumble.social/notes/nevent1qqsgh5xz7hntvc246ej93sfn697eykkn9xe9grnf00gs9zt26z7xmxq9kd6ga" target="_blank" rel="noopener noreferrer">s31</a>]. The expedition gathers decentralized builders and community members across local regional stops [<a href="https://jumble.social/notes/nevent1qqsgh5xz7hntvc246ej93sfn697eykkn9xe9grnf00gs9zt26z7xmxq9kd6ga" target="_blank" rel="noopener noreferrer">s31</a>].</p>
+          </article>
+        </div>
+
+        <div class="cell">
+          <div class="box">
+            <div class="box-head">Conditions &amp; Network Readings</div>
+            <p class="note">As of 07:41 CST · Readings from the 24-hour window, not live figures</p>
+            <div class="tablewrap">
+              <table>
+                <tbody>
+                  <tr><td>Bitcoin Spot (USD)</td><td class="num">$78,520.62</td></tr>
+                  <tr><td>Block Height</td><td class="num">974,519</td></tr>
+                  <tr><td>Midterm Low (USD)</td><td class="num">$75,700.00</td></tr>
+                  <tr><td>Gold Spot (USD/oz)</td><td class="num">$4,051.20</td></tr>
+                  <tr><td>Tether Reserve (BTC)</td><td class="num">150,000</td></tr>
+                  <tr><td>Lightning Median Fee</td><td class="num">50 ppm</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="note" style="margin-top: 8px;">Readings compiled from dispatches filed into the 24-hour window by Roger, markusturm, and Bitcoin Magazine [<a href="https://jumble.social/notes/nevent1qqsxl5myej0dtgn8k6atmqly772ex46k3u3djw473zg3ymkwcrqlejgyuk7af" target="_blank" rel="noopener noreferrer">s573</a>, <a href="https://jumble.social/notes/nevent1qqstjac0qew2v0dadqwv64nzqlctyzahruszum3sl33cv2wwx8lps8cee6cr5" target="_blank" rel="noopener noreferrer">s555</a>, <a href="https://jumble.social/notes/nevent1qqs8vwt8vylw7h002z9uusjaneq5esjcvsasw72s7hgvuqeemq3mvfguw46qw" target="_blank" rel="noopener noreferrer">s566</a>]. None of these numbers represent live feeds.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="band-head"><h2>Network Desks &amp; Standing Wires</h2></div>
+      <div class="cols4">
+        <div class="cell">
+          <div class="box">
+            <div class="box-head">App Releases</div>
+            <div class="wire-item">
+              <h4><a href="https://zapstore.dev/apps/ngit-grasp" target="_blank" rel="noopener noreferrer">ngit-grasp</a></h4>
+              <p>Production-ready Rust implementation of Git Relays Authorized via Signed-Nostr Proofs (GRASP), uniting Nostr relays with Git Smart HTTP transport.</p>
+            </div>
+            <div class="wire-item">
+              <h4><a href="https://zapstore.dev/apps/org.dergigi.boris" target="_blank" rel="noopener noreferrer">Boris</a></h4>
+              <p>Nostr-native offline reader by Gigi featuring highlight preservation, local caching, and zero tracking dependencies.</p>
+            </div>
+            <div class="wire-item">
+              <h4><a href="https://zapstore.dev/apps/rocks.orchard.Orchard" target="_blank" rel="noopener noreferrer">Orchard</a></h4>
+              <p>Decentralized Flatpak package manager by Geek allowing application distribution and updates verified via signed Nostr events.</p>
+            </div>
+            <div class="wire-item">
+              <h4><a href="https://zapstore.dev/apps/music.nucube" target="_blank" rel="noopener noreferrer">Nucube</a></h4>
+              <p>Local-first media player by Daniele streaming from network-attached storage and local UPnP renderers without cloud logins.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="box">
+            <div class="box-head">Code Repositories</div>
+            <div class="wire-item">
+              <h4><a href="https://gitworkshop.dev/npub1gcxzte5zlkncx26j68ez60fzkvtkm9e0vrwdcvsjakxf9mu9qewqlfnj5z/amethyst" target="_blank" rel="noopener noreferrer">amethyst</a></h4>
+              <p>Android Nostr client maintained by Vitor Pamplona, delivering continuous improvements to local caching and multimedia playback.</p>
+            </div>
+            <div class="wire-item">
+              <h4><a href="https://gitworkshop.dev/npub1qe3e5wrvnsgpggtkytxteaqfprz0rgxr8c3l34kk3a9t7e2l3acslezefe/nostr-slides" target="_blank" rel="noopener noreferrer">nostr-slides</a></h4>
+              <p>Presentation slide creation and sharing tool developed by Sebastix, published directly to decentralized relay storage.</p>
+            </div>
+            <div class="wire-item">
+              <h4><a href="https://gitworkshop.dev/npub1scvyzz02ayma34hesz62pdrd5nhsmxp74hjq8msmfs9khh3r3drsnw68d8/armada-stack" target="_blank" rel="noopener noreferrer">armada-stack</a></h4>
+              <p>Docker orchestration and deployment stack by chad for self-hosting serverless Armada encrypted communication communities.</p>
+            </div>
+            <div class="wire-item">
+              <h4><a href="https://gitworkshop.dev/npub13c0ralhk2zdealz98kp4jz2qkmn92uc86k9cn40hpa8c237vdcyszpe8s8/T-Post" target="_blank" rel="noopener noreferrer">T-Post</a></h4>
+              <p>Command-line posting and formatting utility authored by 𝕋ℍ𝔼 𝕋𝕆𝔻𝔻𝕊𝕋ℝ for structured network dispatches.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="box">
+            <div class="box-head">Diary &amp; Calendar</div>
+            <div class="wire-item">
+              <h4><a href="https://njump.me/naddr1qqgrvdf3xucrgvfjxumrwv3hxgcnyq3q6p8v7varqwjes5hak6q7mz6pygqm4pwc6gve4mrned3xs8tz42gqxpqqqp7txxtsadn" target="_blank" rel="noopener noreferrer">BudaBit Demo Day</a></h4>
+              <p>Nov 13 · Online. Freedom tech showcase and peer review organized by Five. Open to builders, designers, and cypherpunk developers.</p>
+            </div>
+            <div class="wire-item">
+              <h4><a href="https://njump.me/naddr1qqvrvct9vyenqwfcxcunzv3e8ycnyctpxgengwtpvypzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvse4ygl" target="_blank" rel="noopener noreferrer">Brum Bitcoin &amp; Beer</a></h4>
+              <p>Nov 19 · Birmingham, UK. Monthly meetup atop The Wellington on Bennetts Hill discussing sound money and protocol evolution.</p>
+            </div>
+            <div class="wire-item">
+              <h4><a href="https://njump.me/naddr1qqvrvct9vyurgenzx3nrjetzv4nrscf4vgmrxefnxvpzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvn8dhjf" target="_blank" rel="noopener noreferrer">Columbia Bitcoin Meetup</a></h4>
+              <p>Nov 21 · West Columbia, SC. Rooftop gathering at Savage Craft Ale Works focusing on self-sovereignty and peer-to-peer commerce.</p>
+            </div>
+            <div class="wire-item">
+              <h4><a href="https://njump.me/naddr1qqvrvct9v9jrsd3nx3nrjetzv4nrscf4vgmxgvnxxspzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukv98mfeh" target="_blank" rel="noopener noreferrer">BitDevs Guadalajara Seminario Socrático 24</a></h4>
+              <p>Nov 17 · Guadalajara, Mexico. Technical Socratic seminar analyzing protocol pull requests, security papers, and development challenges.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="box">
+            <div class="box-head">On Air &amp; Classifieds</div>
+            <div class="wire-item">
+              <h4><a href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al" target="_blank" rel="noopener noreferrer">NoGood Radio</a></h4>
+              <p>Live stream broadcast over zap.stream.</p>
+            </div>
+            <div class="wire-item">
+              <h4><a href="https://zap.stream/naddr1qqjrvvtrx5erjvpk94jrvcm9956rycfj95uxvepe95urqve5v43nse34vs6nsq3qsh0cy25xtx0lh6q58kc7rcdl95tzlfs0c6zuv4g4jclx0n7hfx0sxpqqqpmxw6ny8ng" target="_blank" rel="noopener noreferrer">SIFAKA 24/7 METAL/HARDCORE/PUNK RADIO</a></h4>
+              <p>Continuous independent music stream running on Shosho.</p>
+            </div>
+            <div class="wire-item">
+              <h4><a href="https://shopstr.market/listing/naddr1qqxkyctjv968gmmvduknzwpkqgszu7h787d03s7ujrtw3t90t4a2jf49fuxz9uw924c8xzwqt8lgxxcrqsqqqakzaznvjx" target="_blank" rel="noopener noreferrer">Caffè in grani pacchi da 1kg oppure 500gr</a></h4>
+              <p>Milan, Italy. Whole coffee beans offered by Barattolo for €70.00 EUR (minimum 7kg) with Lightning escrow.</p>
+            </div>
+            <div class="wire-item">
+              <h4><a href="https://shopstr.market/listing/naddr1qq8xyctjv968gmmvduknxv3sxypzqtn6lcle47xrmjgdd69v4awh42fx548scgh3c42hqucfcpvlaqcmqvzqqqrkcgdlfvav" target="_blank" rel="noopener noreferrer">Occhiale IR01 TARTAR. - No Facial Recognition</a></h4>
+              <p>Handcrafted anti-facial recognition eyewear by Barattolo designed to protect biometric privacy against infrared tracking.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
