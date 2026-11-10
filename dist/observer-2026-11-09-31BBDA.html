@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<style id="observer-house">
+/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  /* 0.44 of the nameplate, as a BLOCK so it sits above the rest.
+   *
+   * This used to be `.44em`. That is 44% of the h1 only when `.the` is nested
+   * inside it -- the shape every earlier edition used. A sibling
+   * `<div class="the">` (A56859, 2026-10-23) inherits the body's 16px instead
+   * and prints a 7px sentence-case "The", because uppercase lives on the h1.
+   * The clamp is 0.44 times the nameplate's, so either markup lands the same. */
+  font-size: clamp(1.012rem, 3.344vw, 2.244rem);
+  display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+  font-family: var(--serif); font-weight: 700; text-transform: uppercase;
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+/* A following story is a sequel in a STACK, not a neighbour in a ROW.
+ *
+ * `.story + .story` is document order. Inside `.cols2`/`.cols3`/`.cols4` the
+ * next story is the next column, and the 18px top margin, padding and rule
+ * meant to separate stacked pieces drop that column below the first. Cells
+ * already carry their own column rules; on the 720px stack they grow a top
+ * border of their own. Zero the stacked-story furniture here at every
+ * breakpoint so a writer who put `.story` on the cell (the same class of
+ * mistake as `.col.story`) does not misalign the band. */
+.cols2 > .story + .story,
+.cols3 > .story + .story,
+.cols4 > .story + .story {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+
+</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Monday, November 9, 2026</title>
+  <meta name="description" content="Node operators worldwide sever connections following a wave of targeted fund withdrawals on self-hosted LNbits instances.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="Emergency Shutdown Ordered as Attacks Strike LNbits">
+  <meta property="og:description" content="Node operators worldwide sever connections following a wave of targeted fund withdrawals on self-hosted LNbits instances.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-11-09-31BBDA.html">
+  <meta property="og:image" content="https://blossom.primal.net/a38f084b5e3c0e1b1eb41eea1300b4e253e3dd629306a4592a7e848d5b0be206.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Emergency Shutdown Ordered as Attacks Strike LNbits">
+  <meta name="twitter:description" content="Node operators worldwide sever connections following a wave of targeted fund withdrawals on self-hosted LNbits instances.">
+  <meta name="twitter:image" content="https://blossom.primal.net/a38f084b5e3c0e1b1eb41eea1300b4e253e3dd629306a4592a7e848d5b0be206.png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<div class="sheet">
+
+  <div class="folio">
+    <span>No. 31BBDA</span>
+    <span>Monday, November 9, 2026</span>
+    <span>24h to 07:16 CST</span>
+  </div>
+
+  <header class="masthead">
+    <h1><span class="the">The</span> Nostr Observer</h1>
+    <div class="motto">The Record of Independent Transmission</div>
+  </header>
+
+  <div class="dateline">
+    <span>Ranked as NotBiebs and 69 others</span>
+    <span>473 events through your lens</span>
+    <span>174 voices</span>
+  </div>
+
+  <main class="fold">
+    <div class="col span-8">
+      <article class="story">
+        <div class="kicker">Vulnerabilities &amp; Infrastructure</div>
+        <h2 class="lead-head">Emergency Shutdown Ordered as Attacks Strike LNbits</h2>
+        <p class="dek">Node operators worldwide sever connections following a wave of targeted fund withdrawals on self-hosted LNbits instances.</p>
+        <p class="byline">By Staff Reporters · <span class="note">Dispatches from the Relays</span></p>
+
+        <figure>
+          <img src="https://blossom.primal.net/a38f084b5e3c0e1b1eb41eea1300b4e253e3dd629306a4592a7e848d5b0be206.png" alt="Emergency warning notice advising immediate shutdown of LNbits servers">
+          <figcaption>An urgent advisory circulated across the network warning node operators to halt self-hosted servers after vulnerabilities were actively exploited.<span class="credit">Image by aljaz</span></figcaption>
+        </figure>
+
+        <p class="first">As an escalating series of automated exploits began draining satoshis from self-hosted Lightning infrastructure, the maintainers of LNbits issued an urgent advisory instructing administrators across the network to sever connections immediately [<a href="https://jumble.social/notes/nevent1qqsytu999q5c4ham6e0gjt5trzjdn7y5ghgrqexarctm3mrym6nkcac8s72sk" target="_blank" rel="noopener noreferrer">s16</a>] [<a href="https://jumble.social/notes/nevent1qqs98hlxsmpdgs4rn7qjd3hcuwealnx3xmugwtgu0rcwwwh352828cqsshr2r" target="_blank" rel="noopener noreferrer">s392</a>]. Citing <q>a wave of attacks</q> exploiting unpatched vulnerabilities across active instances, the project urged node operators to pull the plug while emergency fixes were prepared [<a href="https://jumble.social/notes/nevent1qqs98hlxsmpdgs4rn7qjd3hcuwealnx3xmugwtgu0rcwwwh352828cqsshr2r" target="_blank" rel="noopener noreferrer">s392</a>]: <q>All LNbits users should stop their LNbits servers IMMEDIATELY.</q> [<a href="https://jumble.social/notes/nevent1qqs98hlxsmpdgs4rn7qjd3hcuwealnx3xmugwtgu0rcwwwh352828cqsshr2r" target="_blank" rel="noopener noreferrer">s392</a>]</p>
+
+        <p>The operational impact materialized before public warnings circulated. System operator Kevin Ravens₿erg reported that his public instance fell victim to the intrusion prior to the formal advisory, with unauthorized parties siphoning funds across newly registered accounts [<a href="https://jumble.social/notes/nevent1qqsqzefuxdv4dmw9902eg5ejgrq0gmqgdugcp6t439qmf68740l95gqjq9tc8" target="_blank" rel="noopener noreferrer">s117</a>]. <q>2,285,545 sats got withdrawn by new accounts that used this exploit before I could stop the server</q>, Ravens₿erg stated, confirming that the barrage persisted over several hours before the host could be isolated [<a href="https://jumble.social/notes/nevent1qqsqzefuxdv4dmw9902eg5ejgrq0gmqgdugcp6t439qmf68740l95gqjq9tc8" target="_blank" rel="noopener noreferrer">s117</a>]. Assuring users that account balances on his Telegram integration would be made whole once patches are verified, he underscored the stark realities of independent custody: when software perimeters buckle, self-hosting demands direct administrative intervention [<a href="https://jumble.social/notes/nevent1qqsqzefuxdv4dmw9902eg5ejgrq0gmqgdugcp6t439qmf68740l95gqjq9tc8" target="_blank" rel="noopener noreferrer">s117</a>].</p>
+
+        <p>Community reaction divided between immediate remediation and debates over structural resilience. Multiple node runners documented incoming withdrawal probes on transaction endpoints [<a href="https://jumble.social/notes/nevent1qqsqqqyjrmzd0kxjdpsdh2u0wrnpcmt0j094ytlkxrkcyfacmt3367shs0z2l" target="_blank" rel="noopener noreferrer">s14</a>], while contributor Logen traced funds to an on-chain destination [<a href="https://jumble.social/notes/nevent1qqszrhqu6ny944dwzp6n5elau5jrs972saqv0mrrfa80r93x3kl8j8cdpqulx" target="_blank" rel="noopener noreferrer">s123</a>]. Responding to critics, developer sudocarlos noted the boundaries of volunteer maintenance and pointed out that external security teams do not administer individual releases: <q>LNBits was vulnerable.</q> they noted, adding that foundational grants support development but cannot deploy code onto third-party machines [<a href="https://jumble.social/notes/nevent1qqsqv063epf0utwjwcffr66klvz4pd85rv928e4l5ztt076vxp8yaeq8agf6p" target="_blank" rel="noopener noreferrer">s67</a>]. As operator Filou observed, the episode served as a sharp audit of network defenses: <q>Attacks will continue until all bugs are squashed!</q> [<a href="https://jumble.social/notes/nevent1qqsxqknxw53fstxn4mj034y477w9qcg7992s6w0sz40q4pj3hddc75qe970w4" target="_blank" rel="noopener noreferrer">s269</a>]</p>
+      </article>
+
+      <article class="story">
+        <div class="kicker">Corporate Intelligence &amp; Cryptanalysis</div>
+        <h3 class="main-head">Board Inquiry Follows Espionage Alert at Nvidia; DeepMind Targets 1024-Bit RSA</h3>
+        <p class="dek">Executive admission of vulnerability to suspected foreign intelligence operation coincides with automated algorithmic breakthroughs on legacy cryptographic keys.</p>
+
+        <p class="first">In Silicon Valley, Nvidia's board launched an independent investigation following disclosures that chief executive Jensen Huang was targeted in an intelligence operation linked to foreign operatives [<a href="https://jumble.social/notes/nevent1qqsg9qkvx4s97uh7v75csqpzl3ls96wul29pje6uz9m4t9tenf4tkmsn5mfat" target="_blank" rel="noopener noreferrer">s296</a>] [<a href="https://jumble.social/notes/nevent1qqsfvzzrrxpp54hxmzt362qw66pvj2agjk8nanp42xx9ej2uqnl849qv4lzv5" target="_blank" rel="noopener noreferrer">s384</a>]. In an internal communication obtained by reporters, Huang addressed the security exposure directly: <q>I was unfaithful to my wife. My actions hurt her and our children. There is no excuse for what I did.</q> [<a href="https://jumble.social/notes/nevent1qqsfvzzrrxpp54hxmzt362qw66pvj2agjk8nanp42xx9ej2uqnl849qv4lzv5" target="_blank" rel="noopener noreferrer">s384</a>] While the board stated that corporate proprietary data and national security secrets appeared uncompromised, the human vulnerability prompted widespread commentary across the feed [<a href="https://jumble.social/notes/nevent1qqsfvzzrrxpp54hxmzt362qw66pvj2agjk8nanp42xx9ej2uqnl849qv4lzv5" target="_blank" rel="noopener noreferrer">s384</a>]. As Tim Bouma observed drily: <q>Algorithms don’t have affairs.</q> [<a href="https://jumble.social/notes/nevent1qqs0kkhsts3fg5mq3gka45dq4fdd52p057g6zan34v646sce684mqnc2x95ea" target="_blank" rel="noopener noreferrer">s80</a>]</p>
+
+        <p>Simultaneously, Google DeepMind announced that artificial intelligence agents had formulated two novel mathematical attacks on 1024-bit RSA cryptography [<a href="https://jumble.social/notes/nevent1qqs89vtppjtncl84ez9y3kltej06lkmt53c79dxwjr82ldzh463whqsp43f6r" target="_blank" rel="noopener noreferrer">s400</a>]. The researchers estimated that one vector generates counterfeit digital signatures 1,600 times faster than preceding benchmarks when controlling minimal signed text, while a companion technique reduces the marginal cost of bulk factorization thirty-fold [<a href="https://jumble.social/notes/nevent1qqs89vtppjtncl84ez9y3kltej06lkmt53c79dxwjr82ldzh463whqsp43f6r" target="_blank" rel="noopener noreferrer">s400</a>]. Standard 2048-bit deployments remain secure, but the findings illustrate accelerating machine pressure against legacy mathematical defenses [<a href="https://jumble.social/notes/nevent1qqs89vtppjtncl84ez9y3kltej06lkmt53c79dxwjr82ldzh463whqsp43f6r" target="_blank" rel="noopener noreferrer">s400</a>].</p>
+      </article>
+    </div>
+
+    <div class="col span-4">
+      <div class="box">
+        <div class="box-head">The Instrument</div>
+        <p>The same window read without the lens returned 400 notes. Of those, 13 also appear in the 400 ranked notes. That overlap is the measurement: a low number means the lens is doing the work.</p>
+        <div class="tablewrap">
+          <table>
+            <tbody>
+              <tr>
+                <td>Unranked Control</td>
+                <td class="num">400</td>
+              </tr>
+              <tr>
+                <td>Ranked Notes</td>
+                <td class="num">400</td>
+              </tr>
+              <tr>
+                <td>Overlap</td>
+                <td class="num">13</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="box-head">Network Readings</div>
+        <div class="tablewrap">
+          <table>
+            <tbody>
+              <tr>
+                <td>Bitcoin Spot (USD)</td>
+                <td class="num">$75,724</td>
+              </tr>
+              <tr>
+                <td>Estimated Hashrate</td>
+                <td class="num">989.4 EH/s</td>
+              </tr>
+              <tr>
+                <td>Strategy Cost Basis</td>
+                <td class="num">$75,451</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">As of 07:16 CST · Readings recorded in 24h window; figures are not live. Source: Bitcoin Calendar &amp; Bitcoin News [<a href="https://jumble.social/notes/nevent1qqsgcwfrqek25vuvg903hzajclycjzaff233v4rz2df9w2wjps67y2scxv07f" target="_blank" rel="noopener noreferrer">s136</a>] [<a href="https://jumble.social/notes/nevent1qqsgkuhwfvcy7rv9qzkpcvf2p4053jnty2cxv3sd50dy45f52ya974sx5sa7p" target="_blank" rel="noopener noreferrer">s432</a>].</p>
+      </div>
+
+      <article class="story">
+        <div class="kicker">Consensus History</div>
+        <h3 class="sub-head">Nine Years After SegWit2x: The Small-Block Watershed Revisited</h3>
+        <p class="dek">Reflections on the November 2017 cancellation that cemented developer and node sovereignty over mining cartels.</p>
+        <p>Nine years ago this week, the contentious SegWit2x proposal was formally abandoned on the eve of activation after failing to secure community consensus [<a href="https://jumble.social/notes/nevent1qqsy39t2fnze6gl2rr0pt5df3d9qwkmheq58td09624dvjdv4xmszkctwrw8d" target="_blank" rel="noopener noreferrer">s62</a>]. <q>On this day in 2017, the SegWit2x hard fork was officially called off — just days before it was set to activate.</q> recalled historical chroniclers, marking the moment when node operators successfully resisted corporate and miner consolidation: <q>The 'block size wars' were effectively over — and the small blockers had won.</q> [<a href="https://jumble.social/notes/nevent1qqsy39t2fnze6gl2rr0pt5df3d9qwkmheq58td09624dvjdv4xmszkctwrw8d" target="_blank" rel="noopener noreferrer">s62</a>]</p>
+        <p>Yet the technical legacy remains contested among network engineers. Pointing to the cryptographic structure of subsequent upgrades, analyst Brisket cautioned against oversimplified victory laps: <q>I'm not so sure the smaller blockers won. A couple of years later when segwit was rolled out, we effectively 4Xed the blocksize by introducing the segwit script discount.</q> [<a href="https://jumble.social/notes/nevent1qqsqqqqpjv6rxay688fqr7el0fusdn72ym5lvgchzce6a7xt84syawscvmeec" target="_blank" rel="noopener noreferrer">s112</a>]</p>
+      </article>
+    </div>
+  </main>
+
+  <section class="band">
+    <div class="band-head">
+      <h2>Investigation &amp; Environment</h2>
+    </div>
+    <div class="cols2">
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Environmental Safety</div>
+          <h3 class="main-head">A 14-Inch Pipeline Rupture Beside the Schuylkill, and a Town Left in the Dark</h3>
+          <p class="dek">In Bridgeport, Pennsylvania, an estimated 60,000-gallon jet fuel leak pools in a quarry while residents report zero emergency alarms.</p>
+          <p class="first">When an excavation crew struck an underground petroleum line in Montgomery County, Pennsylvania, thousands of gallons of aviation fuel drained silently into an adjacent limestone quarry [<a href="https://jumble.social/notes/nevent1qqspr9k06vg7km3mq3tgjd42972zsxjcjjqsndzhnwcp3jpdrz0fers4cwph5" target="_blank" rel="noopener noreferrer">s433</a>]. Yet as investigative reporter godsdeth documented, the gravest failure occurred not in the earth, but across public alert systems: <q>Three days after a jet fuel pipeline was ruptured beside the Schuylkill, the most striking fact about the Bridgeport spill isn't the size of the release. It's that you can stand a few blocks from the site and find neighbors who never heard a thing.</q> [<a href="https://jumble.social/notes/nevent1qqspr9k06vg7km3mq3tgjd42972zsxjcjjqsndzhnwcp3jpdrz0fers4cwph5" target="_blank" rel="noopener noreferrer">s433</a>]</p>
+          <p>With official release estimates swinging wildly between 500 and 60,000 gallons, emergency coordination consisted primarily of two municipal web notices and a swift all-clear [<a href="https://jumble.social/notes/nevent1qqspr9k06vg7km3mq3tgjd42972zsxjcjjqsndzhnwcp3jpdrz0fers4cwph5" target="_blank" rel="noopener noreferrer">s433</a>]. Demanding full public disclosure of air and water monitoring data, the report noted that while containment booms hold the quarry pool, the failure of reverse-911 and mobile alerts leaves neighboring communities exposed: <q>A pipeline spill is a physical event with a finite footprint. A failed notification is a systemic event with an unlimited one.</q> [<a href="https://jumble.social/notes/nevent1qqspr9k06vg7km3mq3tgjd42972zsxjcjjqsndzhnwcp3jpdrz0fers4cwph5" target="_blank" rel="noopener noreferrer">s433</a>] <q>The spill is the story. The silence is the scandal.</q> [<a href="https://jumble.social/notes/nevent1qqspr9k06vg7km3mq3tgjd42972zsxjcjjqsndzhnwcp3jpdrz0fers4cwph5" target="_blank" rel="noopener noreferrer">s433</a>]</p>
+        </article>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Payment Rails &amp; Sovereignty</div>
+          <h3 class="main-head">Custodial Screening Provokes Tension Across Lightning Corridors</h3>
+          <p class="dek">Growing friction between non-custodial ideals and financial perimeter controls tests node operators.</p>
+          <p class="first">As regulated payment providers tighten transaction monitoring, bitcoiners are debating the encroaching boundaries of financial compliance. Node operator Filou flagged increasing interventions by centralized applications, criticizing policies that result in <q>censoring and blocking transactions on the lightning network that don’t pass their purity test</q> [<a href="https://jumble.social/notes/nevent1qqsthzufceynx4jpmyd7gqawpr52zvftzx4uzjcva532ydzvytgf53gecy4d8" target="_blank" rel="noopener noreferrer">s275</a>]. Rejecting compromises that mimic legacy banking surveillance, Filou argued: <q>We have plenty of ways to use lightning without the KYC/surveillance BS.</q> [<a href="https://jumble.social/notes/nevent1qqsfsh5nq4p7sk5qcy0knrzwy7g0gvmyz7uskmswkuksrm0sk984kmc6kfv4r" target="_blank" rel="noopener noreferrer">s263</a>]</p>
+          <p>In response, market observers suggested that payment processors are responding to expanding sender-receiver identification mandates rather than voluntary editorial choices [<a href="https://jumble.social/notes/nevent1qqs2mg27dpuyw5kjwqh5tljs6w7v6nlavz7356fk4u9u9z2d3aj6l6ghkuaq0" target="_blank" rel="noopener noreferrer">s152</a>]. The resulting friction has spurred users to double down on self-sovereign routing, running sovereign nodes and local ecash mints to maintain unencumbered settlement outside regulated gateways [<a href="https://jumble.social/notes/nevent1qqsgcszvh3kkzcf9hqxgezc2prxe9egl9vpdmpcscm5fy8udm4khhdg0xf9jp" target="_blank" rel="noopener noreferrer">s208</a>] [<a href="https://jumble.social/notes/nevent1qqsfsh5nq4p7sk5qcy0knrzwy7g0gvmyz7uskmswkuksrm0sk984kmc6kfv4r" target="_blank" rel="noopener noreferrer">s263</a>].</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="band-head">
+      <h2>Standing Desks &amp; Wire Dispatches</h2>
+    </div>
+    <div class="cols4">
+      <div class="cell">
+        <div class="box">
+          <div class="box-head">Broadcasting Wire</div>
+          <div class="wire-item">
+            <p><a href="https://zap.stream/naddr1qqjr2vpjxvcxgefs943rsv3n956x2wf594sngefn95cnsvehx4jngvpj8yuxgq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwfpzfkw" target="_blank" rel="noopener noreferrer">Cyberspace TV Live Stream</a><br><span class="note">Transmitting via zap.stream</span></p>
+          </div>
+          <div class="wire-item">
+            <p><a href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al" target="_blank" rel="noopener noreferrer">NoGood Radio</a><br><span class="note">Music and audio stream</span></p>
+          </div>
+          <div class="wire-item">
+            <p><a href="https://zap.stream/naddr1qqjr2vf4vc6rjdec956x2v3c956rxce5943xvd3495mngd3kv56nvdp3x3jryq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwawhtxn" target="_blank" rel="noopener noreferrer">⚡ Lightning Goats ⚡ Live Goat Feeder</a><br><span class="note">Interactive hardware feed</span></p>
+          </div>
+          <div class="wire-item">
+            <p><a href="https://zap.stream/naddr1qqjrjv3hx5mryv3c95mkvd3j956rjwph943xxvee94snsvm9x5ckye35xcukzq3qsjf300tngygmqtfkpyd0vcglld2msksjxe9fsjduzn2pccqjl9wsxpqqqpmxwqhtfvm" target="_blank" rel="noopener noreferrer">ScardustTV 24/7</a><br><span class="note">Continuous broadcast</span></p>
+          </div>
+          <div class="wire-item">
+            <p><a href="https://zap.stream/naddr1qqxhgam9de68jmmwv5knydphqgsd7shq86yu8v4qt2y4klqvu3hqc88pq5vfymwdnh9gugp7f9xjf8qrqsqqqan8m3cqcq" target="_blank" rel="noopener noreferrer">TWENTY ONE Esports</a><br><span class="note">3,048 competitive rounds played</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cell">
+        <div class="box">
+          <div class="box-head">Diary &amp; Calendar</div>
+          <div class="wire-item">
+            <p><strong>Tuesday, November 10</strong> · San Salvador<br>
+            <a href="https://njump.me/naddr1qqjr2wfj8quk2cfn94nrxdes956xvdmr95ur2vnr95urvwp5x5mrjvecx5uk2q3q5xd2mmjnh3caykh77djsv73e0zkrp42jp5mwerx8f4m6su40wdvsxpqqqp7txl4ax8s" target="_blank" rel="noopener noreferrer">Bitcoin Capital Summit</a><br>
+            <span class="note">16:30–19:30 CST at BINAES (National Library). Exploring corporate balance sheets, institutional execution, and stablecoin settlement.</span></p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Friday, November 13</strong> · San Salvador<br>
+            <a href="https://njump.me/naddr1qqjrjveevvunwefe95mk2v34956xyd3n95unye3j956rwcesxyuxydpex3nrsq3q5xd2mmjnh3caykh77djsv73e0zkrp42jp5mwerx8f4m6su40wdvsxpqqqp7txrfw8me" target="_blank" rel="noopener noreferrer">Seed2Table Demo Dinner</a><br>
+            <span class="note">17:00–22:00 CST at Ex Casa Presidencial. Curated salon co-hosted by ANIA bringing together robotics, AI, and Bitcoin founders.</span></p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Friday, November 13</strong> · Lake Ilopango<br>
+            <a href="https://njump.me/naddr1qqjrvwfk8qcxxdfs943ngcfn956xvdny95unyenx943nwve3x4jrjde3vvunwq3q5xd2mmjnh3caykh77djsv73e0zkrp42jp5mwerx8f4m6su40wdvsxpqqqp7txprez74" target="_blank" rel="noopener noreferrer">Renaissance Rodeo</a><br>
+            <span class="note">Afternoon festival featuring bull riding, barbecue, helicopter tours, and Bitcoin exhibits on the lakeshore.</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cell">
+        <div class="box">
+          <div class="box-head">The Classifieds</div>
+          <div class="wire-item">
+            <p><a href="https://shopstr.market/listing/naddr1qqthq6t60fsj6erp0ykksmm0v35k2tt2w9chwwfeqgszayfsvgw7fzsm239zc2etfgh9h8cg4lj88amn59v5atg8rhetl7srqsqqqakzwc5eez" target="_blank" rel="noopener noreferrer">Pizza Day Hoodie</a> · <strong>$46.20 USD</strong><br>
+            <span class="note">Fleece-lined streetwear commemorating Laszlo Hanyecz’s 10,000 BTC transaction on 22 May 2010. Sizes XS–6XL, free worldwide shipping with import duties prepaid by Satoshoes.</span></p>
+          </div>
+          <div class="wire-item">
+            <p><a href="https://shopstr.market/listing/naddr1qpqxxmrpwdekjcedvgkkymrpvd4j6mr0wukhgmms94ekuetpddjhyuedvsexz7rjd5knzv3dx5kk6etw95cngtthdakk2m3dwfnxsvnkd5pzqt53xp3pmey2rd2y5tpt9d9zukulpzh7gulhwws4jn4dquwl90l6qvzqqqrkcgx6xayr" target="_blank" rel="noopener noreferrer">Classic B Black Low Tops</a> · <strong>$60.00 USD</strong><br>
+            <span class="note">Court-style sneakers with black-and-white ₿ branding, perforated toe box, and basketball traction outsoles. Made to order by Satoshoes.</span></p>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-head">Code Repositories</div>
+          <div class="wire-item">
+            <p><a href="https://gitworkshop.dev/npub1xhklzztd83v34zsf9da2gvfrctj5wcsvsx09er9v26jy7r0uq8yq4vme7d/site" target="_blank" rel="noopener noreferrer">SwapMarket site</a><br>
+            <span class="note">Web storefront and interface repository published by SwapMarket via NIP-34.</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Relay Dispatch</div>
+          <h4 class="small-head">Morning Notes Across the Mesh</h4>
+          <figure>
+            <img src="https://image.nostr.build/f477e13d1b9c0205e57318cbede4c3fd1a9f7c2d0e50d355744ddd528ec41c76.jpg" alt="Morning cup of coffee in early sunlight">
+            <figcaption>Daylight returns across the network as nodes hum and morning traffic begins.<span class="credit">Photo by Paul</span></figcaption>
+          </figure>
+          <p>From sunrise check-ins to local hardware deployments, daily life across the relays maintained its steady pulse. Paul reported in with morning essentials: <q>gm, ☀️ is up. ⚡️ is up. ☕️ is up.</q> [<a href="https://jumble.social/notes/nevent1qqs0n2mh0ausx34dwsqc2fmf0smkkwsrmxy47x5hrvsxm5maer5tqrcd5dz2x" target="_blank" rel="noopener noreferrer">s185</a>]</p>
+          <p>Elsewhere, node operators celebrated operational milestones. Blockdyor marked a full year of continuous uptime on a low-cost micro-node running Core Lightning: <q>today marks 1 year of uptime for our lightning node, running on a small @core_ln setup with a 30 dollar @dtvelectronics cmrat.</q> [<a href="https://jumble.social/notes/nevent1qqsgcszvh3kkzcf9hqxgezc2prxe9egl9vpdmpcscm5fy8udm4khhdg0xf9jp" target="_blank" rel="noopener noreferrer">s208</a>] Across local networks, hardware experimenters reported exploring Reticulum and MeshCore radio topologies as alternatives to centralized messaging corridors [<a href="https://jumble.social/notes/nevent1qqsz09dfkf8a99wghaexghvnyqgnvdrnpzl9ljnv2872zq3c9kxn6vsclqek8" target="_blank" rel="noopener noreferrer">s345</a>] [<a href="https://jumble.social/notes/nevent1qqszp2cstlt8wrjn7tu8n7wk8emtd7pqwmd53g7estfesgxdvrwykyc0vd82j" target="_blank" rel="noopener noreferrer">s375</a>].</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
