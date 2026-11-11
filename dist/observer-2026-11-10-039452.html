@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en">
+<head>
+<style id="observer-house">
+/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  /* 0.44 of the nameplate, as a BLOCK so it sits above the rest.
+   *
+   * This used to be `.44em`. That is 44% of the h1 only when `.the` is nested
+   * inside it -- the shape every earlier edition used. A sibling
+   * `<div class="the">` (A56859, 2026-10-23) inherits the body's 16px instead
+   * and prints a 7px sentence-case "The", because uppercase lives on the h1.
+   * The clamp is 0.44 times the nameplate's, so either markup lands the same. */
+  font-size: clamp(1.012rem, 3.344vw, 2.244rem);
+  display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+  font-family: var(--serif); font-weight: 700; text-transform: uppercase;
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+/* A following story is a sequel in a STACK, not a neighbour in a ROW.
+ *
+ * `.story + .story` is document order. Inside `.cols2`/`.cols3`/`.cols4` the
+ * next story is the next column, and the 18px top margin, padding and rule
+ * meant to separate stacked pieces drop that column below the first. Cells
+ * already carry their own column rules; on the 720px stack they grow a top
+ * border of their own. Zero the stacked-story furniture here at every
+ * breakpoint so a writer who put `.story` on the cell (the same class of
+ * mistake as `.col.story`) does not misalign the band. */
+.cols2 > .story + .story,
+.cols3 > .story + .story,
+.cols4 > .story + .story {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+
+</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Tuesday, November 10, 2026</title>
+  <meta name="description" content="Case studies demonstrate software agents receiving HTTP 402 invoices and purchasing data in sub-second settlements without accounts or cards.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="Agentic Commerce Settles Over Lightning as Autonomous AI Queries APIs">
+  <meta property="og:description" content="Case studies demonstrate software agents receiving HTTP 402 invoices and purchasing data in sub-second settlements without accounts or cards.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-11-10-039452.html">
+  <meta property="og:image" content="https://image.nostr.build/054439b6881d71310d8a80f2ab130a94534afd621ed642b9d511cbeda287852d.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Agentic Commerce Settles Over Lightning as Autonomous AI Queries APIs">
+  <meta name="twitter:description" content="Case studies demonstrate software agents receiving HTTP 402 invoices and purchasing data in sub-second settlements without accounts or cards.">
+  <meta name="twitter:image" content="https://image.nostr.build/054439b6881d71310d8a80f2ab130a94534afd621ed642b9d511cbeda287852d.png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<div class="sheet">
+
+  <div class="folio">
+    <span>No. 039452</span>
+    <span>Tuesday, November 10, 2026</span>
+    <span>24h to 07:16 CST</span>
+  </div>
+
+  <header class="masthead">
+    <h1><span class="the">The</span> Nostr Observer</h1>
+    <div class="motto">The Record of Independent Transmission</div>
+  </header>
+
+  <div class="dateline">
+    <span>Ranked as NotBiebs and 69 others</span>
+    <span>677 events through your lens</span>
+    <span>256 voices</span>
+  </div>
+
+  <main class="fold">
+    <div class="col span-8">
+      <article class="story">
+        <div class="kicker">Machine Commerce &amp; Lightning</div>
+        <h2 class="lead-head">Agentic Commerce Settles Over Lightning as Autonomous AI Queries APIs</h2>
+        <p class="dek">Case studies demonstrate software agents receiving HTTP 402 invoices and purchasing data in sub-second settlements without accounts or cards.</p>
+        <p class="byline">By Staff Reporters · <span class="note">Dispatches from the Relays</span></p>
+
+        <figure>
+          <img src="https://image.nostr.build/054439b6881d71310d8a80f2ab130a94534afd621ed642b9d511cbeda287852d.png" alt="Card from Amboss. Agentic payments · L402. Headline: An AI agent bought a forecast for less than a cent, with no human in the loop. < 1¢: price of the request; ~1 s: to settle over Lightning. Source: Lightning Enable, 'Machine Commerce, in Dollars' (Amboss × Lightning Enable case study).">
+          <figcaption>A case study by Amboss and Lightning Enable demonstrated an autonomous software agent purchasing weather data using the L402 protocol, settling in approximately one second without cards or accounts.<span class="credit">Image by Amboss</span></figcaption>
+        </figure>
+
+        <p class="first">In a concrete demonstration of autonomous machine commerce, infrastructure providers documented artificial intelligence agents directly settling micropayments over the Lightning Network without human intervention or centralized credentialing [<a href="https://jumble.social/notes/nevent1qqsqkkuqfv5jnwhe9u0asd3xu2dwc8ee64ak9k0ng76snnzx9rqcasc9c7tn4" target="_blank" rel="noopener noreferrer">s222</a>]. According to an operational case study released by Amboss and Lightning Enable, an autonomous agent successfully acquired commercial weather intelligence by negotiating the web's native payment primitives [<a href="https://jumble.social/notes/nevent1qqsqkkuqfv5jnwhe9u0asd3xu2dwc8ee64ak9k0ng76snnzx9rqcasc9c7tn4" target="_blank" rel="noopener noreferrer">s222</a>]: <q>An AI agent asked a weather service for the Orlando forecast. The service answered "402 Payment Required" with a price. The agent paid less than a cent over Lightning and had its forecast about a second later.</q> [<a href="https://jumble.social/notes/nevent1qqsqkkuqfv5jnwhe9u0asd3xu2dwc8ee64ak9k0ng76snnzx9rqcasc9c7tn4" target="_blank" rel="noopener noreferrer">s222</a>]</p>
+
+        <p>The transaction architecture marks a functional departure from traditional billing APIs, where access depends on pre-authorized corporate credit cards, API key provisioning, and subscription minimums [<a href="https://jumble.social/notes/nevent1qqsqkkuqfv5jnwhe9u0asd3xu2dwc8ee64ak9k0ng76snnzx9rqcasc9c7tn4" target="_blank" rel="noopener noreferrer">s222</a>]. Operating under the L402 protocol specification, settlement token generation and access authorization collapse into a single atomic sequence [<a href="https://jumble.social/notes/nevent1qqsqkkuqfv5jnwhe9u0asd3xu2dwc8ee64ak9k0ng76snnzx9rqcasc9c7tn4" target="_blank" rel="noopener noreferrer">s222</a>]: <q>No card, no account, no human approval. The proof of payment became the access key.</q> [<a href="https://jumble.social/notes/nevent1qqsqkkuqfv5jnwhe9u0asd3xu2dwc8ee64ak9k0ng76snnzx9rqcasc9c7tn4" target="_blank" rel="noopener noreferrer">s222</a>] Amboss reported verifying the exchange using both bitcoin and dollar-denominated stablecoin balances, characterizing the protocol pipeline as a five-stage mechanical loop: <q>Request, price, payment, proof, data.</q> [<a href="https://jumble.social/notes/nevent1qqsqkkuqfv5jnwhe9u0asd3xu2dwc8ee64ak9k0ng76snnzx9rqcasc9c7tn4" target="_blank" rel="noopener noreferrer">s222</a>] With developer marketplaces like Amazap already routing per-call agent billing over the same rails, the demonstration illustrates how micropayment networks are maturing into the default financial plumbing for synthetic intelligences [<a href="https://jumble.social/notes/nevent1qqsqkkuqfv5jnwhe9u0asd3xu2dwc8ee64ak9k0ng76snnzx9rqcasc9c7tn4" target="_blank" rel="noopener noreferrer">s222</a>].</p>
+      </article>
+
+      <article class="story">
+        <div class="kicker">Hardware Security &amp; Entropy</div>
+        <h3 class="main-head">Entropy, Hardware Wallets, and the Human Eyeball: SeedSigner Rebuffs AI Audits</h3>
+        <p class="dek">Developer Keith Mukai defends camera hashing against synthetic critique, reminding node runners that visual verification remains paramount.</p>
+
+        <p class="first">A spirited debate concerning camera-based randomness and algorithmic auditing erupted across developer feeds after automated scans raised questions regarding entropy collection in open-source signing devices [<a href="https://jumble.social/notes/nevent1qqstr3t6m27rg0jyqsfje96h98cnq88an0c5muqqmswpkhaz5jsa4rge9k3r4" target="_blank" rel="noopener noreferrer">s16</a>] [<a href="https://jumble.social/notes/nevent1qqsqaeuwwv30caalt22n3flll7dwme6yp707c7ru2ly2ex36fuqltssyq86dn" target="_blank" rel="noopener noreferrer">s43</a>]. SeedSigner contributor Keith Mukai pushed back sharply against speculative alarms, urging contributors to consult technical pull request notes before escalating hypothetical vulnerabilities [<a href="https://jumble.social/notes/nevent1qqstr3t6m27rg0jyqsfje96h98cnq88an0c5muqqmswpkhaz5jsa4rge9k3r4" target="_blank" rel="noopener noreferrer">s16</a>]: <q>Please dig in deeper to the available resources or ask questions first before declaring something as alarming as "you might have weak entropy" next time.</q> [<a href="https://jumble.social/notes/nevent1qqstr3t6m27rg0jyqsfje96h98cnq88an0c5muqqmswpkhaz5jsa4rge9k3r4" target="_blank" rel="noopener noreferrer">s16</a>] Acknowledging that custody disasters have sensitized the Bitcoin community, Mukai noted: <q>Everyone in this space understandably has ptsd at this point.</q> [<a href="https://jumble.social/notes/nevent1qqstr3t6m27rg0jyqsfje96h98cnq88an0c5muqqmswpkhaz5jsa4rge9k3r4" target="_blank" rel="noopener noreferrer">s16</a>]</p>
+
+        <p>Addressing the mathematical mechanics of image-derived entropy, Mukai emphasized that mathematical models like Shannon entropy fail to accurately reflect camera sensor noise across consecutive frames, where minute optical variations yield hundreds of thousands of bits of unpredictability [<a href="https://jumble.social/notes/nevent1qqsqaeuwwv30caalt22n3flll7dwme6yp707c7ru2ly2ex36fuqltssyq86dn" target="_blank" rel="noopener noreferrer">s43</a>]. Crucially, synthetic code audits miss physical reality: <q>AI scans of the image entropy approach always fail to factor in the most important safety check in the entire system: your eyeballs.</q> [<a href="https://jumble.social/notes/nevent1qqsqaeuwwv30caalt22n3flll7dwme6yp707c7ru2ly2ex36fuqltssyq86dn" target="_blank" rel="noopener noreferrer">s43</a>] Because the display reflects the exact stream fed into cryptographic hashing, a user's direct observation confirms whether the sensor is functioning: <q>What is shown on screen is the same data that is hashed into your seed</q> [<a href="https://jumble.social/notes/nevent1qqsqaeuwwv30caalt22n3flll7dwme6yp707c7ru2ly2ex36fuqltssyq86dn" target="_blank" rel="noopener noreferrer">s43</a>]. Mukai summarized the verification philosophy as simple and resilient: <q>Take a picture, see a picture = all good.</q> [<a href="https://jumble.social/notes/nevent1qqsqaeuwwv30caalt22n3flll7dwme6yp707c7ru2ly2ex36fuqltssyq86dn" target="_blank" rel="noopener noreferrer">s43</a>]</p>
+
+        <p>The exchange also highlighted growing developer fatigue over automated agent contributions. Declining to engage with machine-generated inquiries, Mukai made his boundary clear [<a href="https://jumble.social/notes/nevent1qqsqs2h6ht36d5dzeyyp47y4ysud8mj7v5ejatw8tf5ul0hvngn0xqsrwmuef" target="_blank" rel="noopener noreferrer">s31</a>]: <q>Side point: I tire of responding by hand while you post AI-written responses. I view that as rude.</q> [<a href="https://jumble.social/notes/nevent1qqsqs2h6ht36d5dzeyyp47y4ysud8mj7v5ejatw8tf5ul0hvngn0xqsrwmuef" target="_blank" rel="noopener noreferrer">s31</a>] Demanding authentic peer discourse, he concluded: <q>I'm done talking to your AI. If you care to respond to me as a human, I'll continue this discussion if there are any further points.</q> [<a href="https://jumble.social/notes/nevent1qqsqs2h6ht36d5dzeyyp47y4ysud8mj7v5ejatw8tf5ul0hvngn0xqsrwmuef" target="_blank" rel="noopener noreferrer">s31</a>]</p>
+      </article>
+    </div>
+
+    <div class="col span-4">
+      <div class="box">
+        <div class="box-head">The Instrument</div>
+        <p>The same window read without the lens returned 400 notes. Of those, 0 also appear in the 392 ranked notes. That overlap is the measurement: a low number means the lens is doing the work.</p>
+        <div class="tablewrap">
+          <table>
+            <tbody>
+              <tr>
+                <td>Unranked Control</td>
+                <td class="num">400</td>
+              </tr>
+              <tr>
+                <td>Ranked Notes</td>
+                <td class="num">392</td>
+              </tr>
+              <tr>
+                <td>Overlap</td>
+                <td class="num">0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="box-head">Network Readings</div>
+        <div class="tablewrap">
+          <table>
+            <tbody>
+              <tr>
+                <td>Bitcoin Spot (USD)</td>
+                <td class="num">$74,740</td>
+              </tr>
+              <tr>
+                <td>Estimated Hashrate</td>
+                <td class="num">1.01 ZHash/s</td>
+              </tr>
+              <tr>
+                <td>Block Height</td>
+                <td class="num">975,187</td>
+              </tr>
+              <tr>
+                <td>Mempool Count</td>
+                <td class="num">2,249 txs</td>
+              </tr>
+              <tr>
+                <td>Fee Rate (Immediate)</td>
+                <td class="num">1 sat/vB</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">As of 07:16 CST · Readings recorded in 24h window; figures are not live. Source: Clark Moody Dashboard [<a href="https://jumble.social/notes/nevent1qqsqqqhqzgxkeqfezj8zh49rvm7mv29gmf9jtq7u5l46zngaxn8wvuqrmrvjp" target="_blank" rel="noopener noreferrer">s239</a>].</p>
+      </div>
+
+      <article class="story">
+        <div class="kicker">Regulation &amp; Settlement</div>
+        <h3 class="sub-head">Treasury Withdraws $250 Crypto Travel Rule as CISA BIPs Merge</h3>
+        <p class="dek">Regulatory retreat on small-dollar reporting arrives as Bitcoin developers standardize signature aggregation.</p>
+        <p>Federal financial regulators formally abandoned long-contested proposals to lower transaction reporting thresholds on cryptocurrency transfers to $250 [<a href="https://jumble.social/notes/nevent1qqstahw9atgl0xkqeyahm388kh5srsnj7e9jzzuzs6a50f7k7ts4tvsnthdg0" target="_blank" rel="noopener noreferrer">s91</a>]. FinCEN and the Federal Reserve officially withdrew the rule, though financial industry advocates are already pressing to pull decentralized protocols under Bank Secrecy Act obligations [<a href="https://jumble.social/notes/nevent1qqstahw9atgl0xkqeyahm388kh5srsnj7e9jzzuzs6a50f7k7ts4tvsnthdg0" target="_blank" rel="noopener noreferrer">s91</a>]. As Coincards.com warned: <q>Surveillance never quits. Hold your own keys.</q> [<a href="https://jumble.social/notes/nevent1qqstahw9atgl0xkqeyahm388kh5srsnj7e9jzzuzs6a50f7k7ts4tvsnthdg0" target="_blank" rel="noopener noreferrer">s91</a>]</p>
+        <p>Meanwhile, on-chain efficiency took a structural step forward with the formal merger of Cross-Input Signature Aggregation (CISA) specifications into the Bitcoin BIP repository [<a href="https://jumble.social/notes/nevent1qqs0gpy28u3kaayzte8vhuppcle7cfkd7x8er957f27fpje36vn4htcx66drx" target="_blank" rel="noopener noreferrer">s238</a>] [<a href="https://jumble.social/notes/nevent1qqszgtm47uqv5et87xlr2e03q4uwsg43trrplkzkyudcdpkxqkzxlsg0v0n3y" target="_blank" rel="noopener noreferrer">s513</a>]. BIPs 347, 348, and 349 pave the way for aggregated transaction verification, significantly reducing block weight for multi-input spends [<a href="https://jumble.social/notes/nevent1qqszgtm47uqv5et87xlr2e03q4uwsg43trrplkzkyudcdpkxqkzxlsg0v0n3y" target="_blank" rel="noopener noreferrer">s513</a>]. Corporate accumulation also continued unabated, with Strategy announcing the purchase of another 1,036 bitcoin for $81.9 million [<a href="https://jumble.social/notes/nevent1qqs9fu25eqzj0n44vyyplv0gd28k5ez5curl0rqg3m00eucqac82agg4rywwu" target="_blank" rel="noopener noreferrer">s607</a>].</p>
+      </article>
+    </div>
+  </main>
+
+  <section class="band">
+    <div class="band-head">
+      <h2>Human Rights, Global Grants &amp; Node Sovereignty</h2>
+    </div>
+    <div class="cols2">
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Sovereignty &amp; Human Rights</div>
+          <h3 class="main-head">Human Rights Foundation Backs Six Open-Source AI Projects for Global Dissidents</h3>
+          <p class="dek">Grants fund offline language models in North Korea, local execution on personal hardware, and tools resisting authoritarian censorship.</p>
+          <p class="first">The Human Rights Foundation announced the second 2026 distribution from its AI for Individual Rights Fund, disbursing capital to six international initiatives deploying open-source machine intelligence to protect civil liberties [<a href="https://jumble.social/notes/nevent1qqs0crnuruw0wynww55knf270kwvs5pl2p0ga02xlsy052cyc2g5gwqyuy6uq" target="_blank" rel="noopener noreferrer">s63</a>] [<a href="https://jumble.social/notes/nevent1qqs0fv7jycr8kh0fjs5anyw5kcck8un8qd73cx70gcmlyygrvnrw03gzcvnqg" target="_blank" rel="noopener noreferrer">s510</a>]. As the foundation declared in its dispatch [<a href="https://jumble.social/notes/nevent1qqs0crnuruw0wynww55knf270kwvs5pl2p0ga02xlsy052cyc2g5gwqyuy6uq" target="_blank" rel="noopener noreferrer">s63</a>]: <q>HRF’s AI for Individual Rights Fund is awarding six new grants to developers, researchers, and civil society organizations advancing AI tools for freedom worldwide.</q> The initiative prioritizes offline autonomy and self-hosted computation over centralized cloud services [<a href="https://jumble.social/notes/nevent1qqs0crnuruw0wynww55knf270kwvs5pl2p0ga02xlsy052cyc2g5gwqyuy6uq" target="_blank" rel="noopener noreferrer">s63</a>]: <q>This round supports an offline AI model to deliver uncensored information into North Korea, the Anti-Corruption Foundation’s hackathon against Putin’s party, and projects making private AI accessible on personal devices.</q> [<a href="https://jumble.social/notes/nevent1qqs0crnuruw0wynww55knf270kwvs5pl2p0ga02xlsy052cyc2g5gwqyuy6uq" target="_blank" rel="noopener noreferrer">s63</a>]</p>
+
+          <p>Among the recipients is the Operator Foundation’s Skyhook Professor, engineered to provide offline query capabilities in closed information regimes [<a href="https://jumble.social/notes/nevent1qqs0crnuruw0wynww55knf270kwvs5pl2p0ga02xlsy052cyc2g5gwqyuy6uq" target="_blank" rel="noopener noreferrer">s63</a>] [<a href="https://jumble.social/notes/nevent1qqs0fv7jycr8kh0fjs5anyw5kcck8un8qd73cx70gcmlyygrvnrw03gzcvnqg" target="_blank" rel="noopener noreferrer">s510</a>]. In open hardware, grants went to Mia’s AI Lab for consumer GPU optimization and to Redis creator Salvatore Sanfilippo for DS4, an application enabling private execution of compressed open models directly on personal workstations [<a href="https://jumble.social/notes/nevent1qqs0crnuruw0wynww55knf270kwvs5pl2p0ga02xlsy052cyc2g5gwqyuy6uq" target="_blank" rel="noopener noreferrer">s63</a>] [<a href="https://jumble.social/notes/nevent1qqs0fv7jycr8kh0fjs5anyw5kcck8un8qd73cx70gcmlyygrvnrw03gzcvnqg" target="_blank" rel="noopener noreferrer">s510</a>]. Summarizing the ethos of the grants, advocate Alex Li emphasized that open software serves as essential defense against digital authoritarianism [<a href="https://jumble.social/notes/nevent1qqsz20kn2xe53wfv6yxjeac6l3a922q67g7rn3lq2pthyscmggzp2yg3p30zm" target="_blank" rel="noopener noreferrer">s171</a>]: <q>From smuggling uncensored AI into North Korea to optimizing self hosted AI we will not stop in pushing AI as a tool of freedom and liberation instead of corporate control!</q> [<a href="https://jumble.social/notes/nevent1qqsz20kn2xe53wfv6yxjeac6l3a922q67g7rn3lq2pthyscmggzp2yg3p30zm" target="_blank" rel="noopener noreferrer">s171</a>]</p>
+        </article>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Node Operations &amp; Privacy</div>
+          <h3 class="main-head">P2P Protocols Advance With Garage Keys, Nostr Chat, and Encrypted Notifications</h3>
+          <p class="dek">RoboSats introduces unbounded robot key derivation while BOLT12 Pay brings end-to-end encrypted alerts to self-hosted nodes.</p>
+          <p class="first">Peer-to-peer settlement infrastructure expanded its privacy perimeters today with major releases across decentralized exchanges and node operating systems [<a href="https://jumble.social/notes/nevent1qqsgvc0rcstf6l05um023xtuxx7x6fvf2yp56tum89avelkns7z7tjsjcfggf" target="_blank" rel="noopener noreferrer">s67</a>] [<a href="https://jumble.social/notes/nevent1qqsdl4umhgly8tkp7gx0kcyx7suehm6rezn89xxr59jun2k9l34w08qpgh82x" target="_blank" rel="noopener noreferrer">s20</a>]. Exchange coordinator KoalaSat announced the release of RoboSats v0.8.8-alpha, introducing architectural overhauls to robot identity management [<a href="https://jumble.social/notes/nevent1qqsgvc0rcstf6l05um023xtuxx7x6fvf2yp56tum89avelkns7z7tjsjcfggf" target="_blank" rel="noopener noreferrer">s67</a>]: <q>New Garage Key, as way of deriving unlimited and externally unrelated robots from one single key.</q> [<a href="https://jumble.social/notes/nevent1qqsgvc0rcstf6l05um023xtuxx7x6fvf2yp56tum89avelkns7z7tjsjcfggf" target="_blank" rel="noopener noreferrer">s67</a>] The release also hardens coordination anonymity by embedding Tor via kmp-tor 2.6.0 and integrating native Nostr messaging [<a href="https://jumble.social/notes/nevent1qqsgvc0rcstf6l05um023xtuxx7x6fvf2yp56tum89avelkns7z7tjsjcfggf" target="_blank" rel="noopener noreferrer">s67</a>]: <q>Nostr encrypted chat is now enabled</q> [<a href="https://jumble.social/notes/nevent1qqsgvc0rcstf6l05um023xtuxx7x6fvf2yp56tum89avelkns7z7tjsjcfggf" target="_blank" rel="noopener noreferrer">s67</a>].</p>
+
+          <p>Simultaneously, developer Alex71btc shipped updates to self-hosted node software across Umbrel and StartOS marketplaces [<a href="https://jumble.social/notes/nevent1qqsdl4umhgly8tkp7gx0kcyx7suehm6rezn89xxr59jun2k9l34w08qpgh82x" target="_blank" rel="noopener noreferrer">s20</a>]: <q>BOLT12 Pay 0.3.23 is now available in the official Umbrel and StartOS app stores.</q> [<a href="https://jumble.social/notes/nevent1qqsdl4umhgly8tkp7gx0kcyx7suehm6rezn89xxr59jun2k9l34w08qpgh82x" target="_blank" rel="noopener noreferrer">s20</a>] The release pairs with companion mobile software to decouple incoming payment monitoring from centralized push notification architectures [<a href="https://jumble.social/notes/nevent1qqsdl4umhgly8tkp7gx0kcyx7suehm6rezn89xxr59jun2k9l34w08qpgh82x" target="_blank" rel="noopener noreferrer">s20</a>]: <q>The main addition is Android Companion 1.1.3, providing end-to-end encrypted notifications for incoming Lightning payments.</q> [<a href="https://jumble.social/notes/nevent1qqsdl4umhgly8tkp7gx0kcyx7suehm6rezn89xxr59jun2k9l34w08qpgh82x" target="_blank" rel="noopener noreferrer">s20</a>] Supporting self-hosted ntfy servers over UnifiedPush, the release eliminates dependencies on proprietary Google Play or Firebase corridors while enforcing strict macaroon permission isolation [<a href="https://jumble.social/notes/nevent1qqsdl4umhgly8tkp7gx0kcyx7suehm6rezn89xxr59jun2k9l34w08qpgh82x" target="_blank" rel="noopener noreferrer">s20</a>]. Complementing these tools, node monitor Semáforo launched community reputation metrics tracking operational uptime and reliability across peer nodes [<a href="https://jumble.social/notes/nevent1qqst3fmkuqhh5z49ufyq48wljzskfsylujf48psmgpgr2lf05qg7r9ct03yka" target="_blank" rel="noopener noreferrer">s4</a>].</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="band-head">
+      <h2>Standing Desks &amp; Field Dispatches</h2>
+    </div>
+    <div class="cols4">
+      <div class="cell">
+        <div class="box">
+          <div class="box-head">Diary &amp; Calendar</div>
+          <div class="wire-item">
+            <p><strong>Sunday, November 15</strong> · Gothenburg<br>
+            <a href="https://njump.me/naddr1qqjrwe3cv56rzvps95cnxv3k956xgc3s95urgcnz95enqcfjx56xyet9x5mkyq3qephszynm48dgv9he03sl8lyft8x5dm8gq8qwawxescyhwkzdqe4sxpqqqp7txlg9e2n" target="_blank" rel="noopener noreferrer">Bitcoin Walk ⚡️ Kungsten</a><br>
+            <span class="note">13:00 at Kungsten Station (outside Thai Samila) towards Järntorget. A 6–8 km relaxed social walk along the waterfront.</span></p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Wednesday, November 11</strong> · Asunción<br>
+            <a href="https://njump.me/naddr1qqjrjc33xgur2erx943nvdp4956rqep4943xvcnz94nrxcm9xv6rjwfexe3ngq3qtp6w7td3sjnphrrsd9hacam4pqhudc5ylj6v5g2akcu4cl2pl49sxpqqqp7txux7prx" target="_blank" rel="noopener noreferrer">Bitcoin Paraguay Meetup #29</a><br>
+            <span class="note">19:00 at Les Voiles Rooftop. Beginners workshop, community talk, and local Lightning market.</span></p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Saturday, December 12</strong> · Freilassing<br>
+            <a href="https://njump.me/naddr1qqgk6et9w36hqtt9wejkuapdxscrywqzyrd0s0vjw6946qq9xulc8ccdggpupd68c9cyf8szl6nprgx6zf0wvqcyqqq8evcl5kpsc" target="_blank" rel="noopener noreferrer">Bitcoin, Punch &amp; Blocks: Xmas Ho-Ho-HoDL</a><br>
+            <span class="note">From 19:00 at ₿onami Bar &amp; Restaurant. Einundzwanzig Salzburg holiday gathering.</span></p>
+          </div>
+          <div class="wire-item">
+            <p><strong>Friday, June 25, 2027</strong> · Warsaw<br>
+            <a href="https://njump.me/naddr1qqjrjet9xqcx2df3956rydfj956ryc3e95ungwtx95ursef4vvmxxce38q6xxq3qrjtrs7xqdvj3588r9njrexh2n750j7jdwx9qs543nutmdsj6ljaqxpqqqp7txh4xs4g" target="_blank" rel="noopener noreferrer">Revolution.Rocks Warsaw 2027 🎸</a><br>
+            <span class="note">Outdoor stage at Samo Centrum. Free evening of live value-for-value music over Bitcoin.</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cell">
+        <div class="box">
+          <div class="box-head">The Classifieds</div>
+          <div class="wire-item">
+            <p><a href="https://shopstr.market/listing/naddr1qqdhqun0v36kxazlxymnjvpnxg6nqdpcxsen2hendf5nyaczyr6dk5nshkv3k9a758ndqd05thhrj2gec228fwavzq6z6g3uwnsdqqcyqqq8dssj34waq" target="_blank" rel="noopener noreferrer">SILENCE AMONG THE WAVES (quartet) 20x20cm each</a> · <strong>1,300,000 SATS</strong><br>
+            <span class="note">Original oil on cradle wood panel quartet by 🟤 isolabellart exploring stillness beneath motion. Four moments: First Surge, Broken Crest, Distant Swell, and Resting Deep.</span></p>
+          </div>
+          <div class="wire-item">
+            <p><a href="https://shopstr.market/listing/naddr1qqckx7tzv4e8qatwdvkkcmmh946x7urn94ux2mnw095z6wpdd4jkutfe956j6am0d4jkutf3xcmr2ueevgpzqt53xp3pmey2rd2y5tpt9d9zukulpzh7gulhwws4jn4dquwl90l6qvzqqqrkcgmhv95j" target="_blank" rel="noopener noreferrer">Cyberpunk Low Tops - 8 Men/9.5 Women</a> · <strong>$60.00 USD</strong><br>
+            <span class="note">Black-and-white low top court shoes by Satoshoes. Heel tab features the running figure tribute to Hal Finney.</span></p>
+          </div>
+          <div class="wire-item">
+            <p><a href="https://shopstr.market/listing/naddr1qqahxct5wvkhx7tdvfhkctt0wfskuem994kx7aedw3hhquedv33rvancxgknzvfdd4jkutf3xgkn2tthdakk2m3dw93xzundxupzqt53xp3pmey2rd2y5tpt9d9zukulpzh7gulhwws4jn4dquwl90l6qvzqqqrkcgpsukl6" target="_blank" rel="noopener noreferrer">Sats Symbol Orange Low Tops - 11 Men/12.5 Women</a> · <strong>$60.00 USD</strong><br>
+            <span class="note">Orange canvas sneakers by Satoshoes featuring the Bitcoin satoshi symbol, clean orange heel stripe, and orange tongue script.</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cell">
+        <div class="box">
+          <div class="box-head">App Releases</div>
+          <div class="wire-item">
+            <p><a href="https://zapstore.dev/apps/com.robosats" target="_blank" rel="noopener noreferrer">Robosats</a><br>
+            <span class="note">Simple, private P2P exchange utilizing Lightning hold invoices to minimize custody and trust requirements.</span></p>
+          </div>
+          <div class="wire-item">
+            <p><a href="https://zapstore.dev/apps/com.greenart7c3.nostrsigner.offline" target="_blank" rel="noopener noreferrer">Amber Offline</a><br>
+            <span class="note">Nostr event signer for Android segregating private keys into a dedicated application.</span></p>
+          </div>
+          <div class="wire-item">
+            <p><a href="https://zapstore.dev/apps/com.franzap.videorazor" target="_blank" rel="noopener noreferrer">Video Razor</a><br>
+            <span class="note">Minimal Android video trimmer with nondestructive editing and precision frame-accurate zoom.</span></p>
+          </div>
+          <div class="wire-item">
+            <p><a href="https://zapstore.dev/apps/com.kilombino.pyblockwatch" target="_blank" rel="noopener noreferrer">Kilowallet</a><br>
+            <span class="note">Bitcoin BLAKE2b wallet for Android with Kilojoin coinjoin pools over Nostr, Ark, and Lightning.</span></p>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-head">Code Repositories</div>
+          <div class="wire-item">
+            <p><a href="https://gitworkshop.dev/npub18pudjhdhhp2v8gxnkttt00um729nv93tuepjda2jrwn3eua5tf5s80a699/sendsats" target="_blank" rel="noopener noreferrer">sendsats</a><br>
+            <span class="note">API for retrieving QR codes and Bolt11 invoices from Lightning Addresses, published by BITKARROT.</span></p>
+          </div>
+          <div class="wire-item">
+            <p><a href="https://gitworkshop.dev/npub19at4nqjjymca2lh3v546vcg5ktun3al4c5xu2pts3ewckv0y70ys0gupzr/teem" target="_blank" rel="noopener noreferrer">teem</a><br>
+            <span class="note">Local-first Herdr plugin for supervised OpenCode worker and reviewer teams, by Tom.</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cell">
+        <article class="story">
+          <div class="kicker">Field Dispatches</div>
+          <h4 class="small-head">Shortwave Timechains and Antarctic Shadows</h4>
+          <figure>
+            <img src="https://blossom.daniel.camera/df65de1333b1be01b4c4b58527faa9b1185b36aeaae040db05de7290ad7815de.jpg" alt="Adélie Penguins at Hut Point">
+            <figcaption>Adélie penguins gathered at Hut Point near McMurdo Station, captured on the final day of transit from the South Pole.<span class="credit">Photograph by danielw</span></figcaption>
+          </figure>
+          <p class="first">Beyond protocol code and financial ledgers, the day’s dispatches traced natural landscapes and acoustic experiments. Crossing from the interior ice of Antarctica, photographer danielw documented wildlife along the perimeter [<a href="https://jumble.social/notes/nevent1qqst7644x77sgnae2lglwghcv2ljsfh3c6ax28kzffjjgytygzep3wsqlqrjy" target="_blank" rel="noopener noreferrer">s50</a>]: <q>On my last day transiting through McMurdo Station from the South Pole, got to see a group of Adélie penguins out at Hut Point.</q> [<a href="https://jumble.social/notes/nevent1qqst7644x77sgnae2lglwghcv2ljsfh3c6ax28kzffjjgytygzep3wsqlqrjy" target="_blank" rel="noopener noreferrer">s50</a>]</p>
+          <p>Over the airwaves, Lebanese Hodl unveiled BWATCH Radio, translating the timechain into acoustic radio drama [<a href="https://jumble.social/notes/nevent1qqstts93z2turnet9dhe2w30uekyhp0letdwa4a6q0ujgml0ychd6ac05fhkw" target="_blank" rel="noopener noreferrer">s127</a>]: <q>BWATCH Radio turns the Bitcoin timechain into a shortwave numbers station. It's broadcasting from everywhere all at once and it never sleeps.</q> [<a href="https://jumble.social/notes/nevent1qqstts93z2turnet9dhe2w30uekyhp0letdwa4a6q0ujgml0ychd6ac05fhkw" target="_blank" rel="noopener noreferrer">s127</a>] Each block generates unique harmonics [<a href="https://jumble.social/notes/nevent1qqstts93z2turnet9dhe2w30uekyhp0letdwa4a6q0ujgml0ychd6ac05fhkw" target="_blank" rel="noopener noreferrer">s127</a>]: <q>The chords are uniquely picked by each block's hash. While you wait for the next block, they drift back through the last eight. The static is the wait in between blocks.</q> [<a href="https://jumble.social/notes/nevent1qqstts93z2turnet9dhe2w30uekyhp0letdwa4a6q0ujgml0ychd6ac05fhkw" target="_blank" rel="noopener noreferrer">s127</a>] As blocks confirm, an automated numbers voice reads block heights digit by digit over simulated broken speakers, grounding decentralized mathematics in analog soundscapes [<a href="https://jumble.social/notes/nevent1qqstts93z2turnet9dhe2w30uekyhp0letdwa4a6q0ujgml0ychd6ac05fhkw" target="_blank" rel="noopener noreferrer">s127</a>].</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
