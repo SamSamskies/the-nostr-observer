@@ -293,7 +293,13 @@ th {
   font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
   text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
 }
-td.num { text-align: right; padding-right: 0; font-family: var(--mono); font-size: .78rem; }
+/* th.num must match td.num's alignment — headers with class="num" were left-
+ * aligned while values were right-aligned, so a five-column sidebar table
+ * looked like the numbers belonged under the wrong heads. padding-right: 0 on
+ * every num cell also left zero gap between adjacent figures, so "925.77" and
+ * "1,099.87" read as one smashed value. Left padding separates the columns. */
+th.num { text-align: right; padding-right: 0; padding-left: 14px; }
+td.num { text-align: right; padding-right: 0; padding-left: 14px; font-family: var(--mono); font-size: .78rem; }
 
 /* --- responsive ------------------------------------------------------- */
 
