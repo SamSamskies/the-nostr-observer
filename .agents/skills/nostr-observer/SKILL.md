@@ -114,6 +114,13 @@ note.
 - Use the supplied dateline in the folio and `<title>`; the code belongs in the
   folio only. Use the supplied window stamp, and the “As of” stamp on moving
   figures with a note that they are not live.
+- In any Market & Network / Conditions box, include **only** Bitcoin price,
+  fee, block-height, or network readings posted on the **day of the paper** (in
+  `writer.json`'s `date` / `timezone`, converting source UTC timestamps first).
+  Because the 24-hour window begins the previous morning, yesterday's Clark
+  Moody and dashboard-bot reports regularly sit in the corpus; never place
+  yesterday's readings under today's `As of` stamp. If no same-day readings
+  exist, omit the box.
 - Include the Open Graph and Twitter tags described in the brief. The final
   edition filename is in `run.json`; use it for `og:url`.
 - Quote verbatim in `<q>` or `<blockquote>`, with attribution. Elisions must
