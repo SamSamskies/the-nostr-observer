@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+<head>
+<style id="observer-house">
+/* GENERATED FILE - do not edit. Source: generator/src/main/resources/house.css
+   Regenerate: tools/sync-skill.sh */
+/* The Nostr Observer — house stylesheet.
+ *
+ * Tokens and primitives, not a layout. The generator composes the page out of
+ * these each morning; the point of the file is that it never has to reinvent a
+ * palette, a type scale, or the newsprint.
+ *
+ * THEME: one. The paper is cream stock, always. Following prefers-color-scheme
+ * turned the same edition into a night mode in some browsers and a newspaper
+ * in others. color-scheme: light keeps the chrome (scrollbars, form controls)
+ * on the same side. There is no dark theme. Do not add one.
+ */
+
+:root {
+  color-scheme: light;
+  --paper: #FAF8F3;
+  --paper-2: #F2EFE8;
+  --ink: #16121B;
+  --ink-2: #4C4553;
+  --ink-3: #6E6675;
+  --rule: #C8C1CC;
+  --rule-soft: #E0DAE2;
+  --accent: #57277F;
+  --spot: #9C2B24;
+  --reverse-bg: #16121B;
+  --reverse-ink: #F5F1EC;
+  --reverse-ink-2: #A79DB0;
+  --reverse-spot: #E38375;
+
+  --serif: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman", serif;
+  --body: Georgia, "Liberation Serif", "Times New Roman", Times, serif;
+  --util: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+/* An explicit background: the viewer paints its own ground behind the page, so
+ * a transparent body silently borrows the host's theme. */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* THE FOLIO GOES ON TOP, wherever the writer put it.
+ *
+ * A folio is the thin line of standing detail a newspaper sets ABOVE its
+ * nameplate -- volume and number, the date, the price. Printed below it
+ * instead, it stops being a folio and becomes a block of metadata standing
+ * between the reader and the first headline, and on a phone that block is
+ * eight lines deep and pushes the lead off the screen.
+ *
+ * The prompt asks for it on top, but placement is markup and the prompt is
+ * advice; one edition put it there and the next did not. `order: -1` settles
+ * it in the stylesheet, and costs nothing on an edition that already had it
+ * right. */
+.sheet { max-width: 1240px; margin: 0 auto; padding: 20px 22px 72px; display: flex; flex-direction: column; }
+.sheet > .folio { order: -1; }
+
+/* --- type ------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.kicker {
+  font-family: var(--util); font-size: .72rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.byline {
+  font-family: var(--util); font-size: .72rem; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dek { font-size: .95rem; line-height: 1.45; color: var(--ink-2); font-style: italic; }
+.note { font-size: .8rem; line-height: 1.45; color: var(--ink-3); font-style: italic; }
+
+.lead-head { font-size: clamp(1.9rem, 3.1vw, 2.7rem); }
+.main-head { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+.sub-head  { font-size: 1.28rem; }
+.small-head { font-size: 1.02rem; }
+
+/* --- masthead --------------------------------------------------------- */
+
+.masthead {
+  border-top: 5px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 18px 0 12px; text-align: center;
+}
+.masthead h1 {
+  font-size: clamp(2.3rem, 7.6vw, 5.1rem);
+  letter-spacing: .015em; text-transform: uppercase; line-height: .92;
+}
+.masthead .the {
+  /* 0.44 of the nameplate, as a BLOCK so it sits above the rest.
+   *
+   * This used to be `.44em`. That is 44% of the h1 only when `.the` is nested
+   * inside it -- the shape every earlier edition used. A sibling
+   * `<div class="the">` (A56859, 2026-10-23) inherits the body's 16px instead
+   * and prints a 7px sentence-case "The", because uppercase lives on the h1.
+   * The clamp is 0.44 times the nameplate's, so either markup lands the same. */
+  font-size: clamp(1.012rem, 3.344vw, 2.244rem);
+  display: block; letter-spacing: .42em;
+  margin-bottom: .28em; text-indent: .42em; color: var(--ink-2);
+  font-family: var(--serif); font-weight: 700; text-transform: uppercase;
+}
+.motto {
+  margin-top: 14px; font-family: var(--util); font-size: .7rem;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--ink-3);
+}
+/* Three columns, and the middle one is CENTRED on the page.
+ *
+ * `space-between` was the obvious way to set these rows and it is subtly the
+ * wrong one: it centres the middle span only when the two beside it happen to
+ * be the same width, so the date drifts left or right by whatever the window
+ * stamp and the voice count weigh that morning. A `1fr auto 1fr` grid pins it
+ * to the centre of the sheet, under the middle of the nameplate, whatever sits
+ * either side -- including nothing at all, which is the case for the folio's
+ * right-hand slot today. */
+.folio, .dateline {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 3px 12px; align-items: baseline;
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.folio > :nth-child(2), .dateline > :nth-child(2) { text-align: center; }
+.folio > :nth-child(3), .dateline > :nth-child(3) { text-align: right; }
+
+/* A row of two is centre-and-right, not left-and-centre.
+ *
+ * The folio's left slot is empty -- there is no volume number and no cover
+ * price -- so the row carries two spans where the grid expects three, and by
+ * source order they would land in columns one and two. Written this way, the
+ * markup stays free of an empty `<span>` whose only job is to push the next
+ * one along, and the date still sits under the middle of the nameplate. */
+.folio > :first-child:nth-last-child(2) { grid-column: 2; text-align: center; }
+.folio > :nth-child(2):nth-last-child(1) { grid-column: 3; text-align: right; }
+
+/* COLLAPSE WHEN IT MUST, AND NOT ONE PIXEL SOONER.
+ *
+ * These rows used to stack below 720px along with the columns, because that is
+ * where everything else on the page breaks. Measured, they had no need to: the
+ * dateline's three spans hold one line down to 528px and the folio's two down
+ * to 364px, so the shared breakpoint was stacking the dateline 190px early and
+ * the folio 350px early -- three lines of standing detail on a screen with room
+ * for one.
+ *
+ * So they get their own breakpoints, one each, set just under what they
+ * measure. The folio's is below any phone in circulation, which is the point:
+ * it is there for a 320px screen, not for a 390px one. Stacked, they centre --
+ * the same symmetry the nameplate has, with the centred span still centred.
+ */
+/* Below the fold, the outer tracks stop paying for each other.
+ *
+ * `1fr auto 1fr` centres exactly, and it does it by making the right-hand track
+ * as wide as the left -- so "234 voices", which needs 69px, reserves the 170px
+ * that "Ranked as Vitor Pamplona" needs beside it. That is a hundred wasted
+ * pixels, and it is why a row whose text measures 400px was breaking at 528.
+ *
+ * On a phone the page is one column and there is no nameplate centre to line up
+ * against pixel-for-pixel, so the tracks size to their contents and the middle
+ * span is centred in what is left. The row then holds one line to about 430px
+ * instead of 528. Above this the exact version is back. */
+@media (max-width: 720px) {
+  .dateline { grid-template-columns: auto 1fr auto; }
+}
+
+@media (max-width: 430px) {
+  .dateline { grid-template-columns: 1fr; text-align: center; }
+  .dateline > :nth-child(3) { text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .folio { grid-template-columns: 1fr; text-align: center; }
+  .folio > :first-child:nth-last-child(2), .folio > :nth-child(2):nth-last-child(1) {
+    grid-column: 1; text-align: center;
+  }
+}
+
+.folio { padding-bottom: 8px; }
+.dateline { border-bottom: 3px double var(--ink); padding: 7px 0; color: var(--ink-2); }
+
+/* --- columns ---------------------------------------------------------- */
+
+.fold { display: grid; grid-template-columns: repeat(12, 1fr); border-bottom: 3px double var(--ink); }
+.col { padding: 20px; border-left: 1px solid var(--rule); }
+.col:first-child { padding-left: 0; border-left: 0; }
+.col:last-child { padding-right: 0; }
+.col > * + * { margin-top: 18px; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.band { border-bottom: 1px solid var(--ink); padding: 22px 0 26px; }
+.band-head {
+  display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px;
+  border-bottom: 1px solid var(--ink); padding-bottom: 6px;
+}
+.band-head h2 { font-size: 1.05rem; letter-spacing: .2em; text-transform: uppercase; }
+.cols2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.cols4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { padding: 0 18px; border-left: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: 9px; }
+.cell:first-child { padding-left: 0; border-left: 0; }
+.cell:last-child { padding-right: 0; }
+
+/* --- stories ---------------------------------------------------------- */
+
+.story { display: flex; flex-direction: column; gap: 9px; }
+.story + .story { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule-soft); }
+/* A following story is a sequel in a STACK, not a neighbour in a ROW.
+ *
+ * `.story + .story` is document order. Inside `.cols2`/`.cols3`/`.cols4` the
+ * next story is the next column, and the 18px top margin, padding and rule
+ * meant to separate stacked pieces drop that column below the first. Cells
+ * already carry their own column rules; on the 720px stack they grow a top
+ * border of their own. Zero the stacked-story furniture here at every
+ * breakpoint so a writer who put `.story` on the cell (the same class of
+ * mistake as `.col.story`) does not misalign the band. */
+.cols2 > .story + .story,
+.cols3 > .story + .story,
+.cols4 > .story + .story {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.story p { font-size: .925rem; line-height: 1.52; hyphens: auto; }
+.story p.first::first-letter {
+  float: left; font-family: var(--serif); font-weight: 700; font-size: 3.1em;
+  line-height: .79; padding: .05em .09em 0 0; color: var(--accent);
+}
+
+/* --- art -------------------------------------------------------------- */
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+figure img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); background: var(--paper-2); }
+figcaption { font-style: italic; font-size: .82rem; line-height: 1.4; color: var(--ink-2); }
+figcaption .credit {
+  font-family: var(--util); font-style: normal; font-size: .7rem;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-top: 4px;
+}
+
+/* --- boxes ------------------------------------------------------------ */
+
+.box {
+  border: 1px solid var(--ink); padding: 14px 15px; background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.box-head {
+  font-family: var(--util); font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 7px;
+}
+.wire-item { padding: 11px 0; border-bottom: 1px dotted var(--rule); }
+.wire-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.wire-item p { font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+
+blockquote { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.24; }
+q { quotes: "“" "”"; }
+
+/* Reverse panel — for the one thing on the page that should stop the reader.
+ *
+ * IT IS DARK ON PURPOSE, which is why it gets its own accent. `--spot` is
+ * tuned against the PAGE's cream, so it is a deep red for newsprint — and
+ * printing that on the reverse panel's near-black put the kicker at 2.45:1,
+ * on every story that had one. Measured, not noticed: it reads as "small red
+ * caps" until you check it. */
+.reverse { background: var(--reverse-bg); color: var(--reverse-ink); padding: 26px; }
+.reverse h2, .reverse h3 { color: var(--reverse-ink); }
+.reverse .dek, .reverse .byline { color: var(--reverse-ink-2); }
+.reverse .kicker { color: var(--reverse-spot); }
+
+/* --- data ------------------------------------------------------------- */
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--rule); font-size: .83rem; }
+th {
+  font-family: var(--util); font-size: .7rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink);
+}
+/* th.num must match td.num's alignment — headers with class="num" were left-
+ * aligned while values were right-aligned, so a five-column sidebar table
+ * looked like the numbers belonged under the wrong heads. padding-right: 0 on
+ * every num cell also left zero gap between adjacent figures, so "925.77" and
+ * "1,099.87" read as one smashed value. Left padding separates the columns. */
+th.num { text-align: right; padding-right: 0; padding-left: 14px; }
+td.num { text-align: right; padding-right: 0; padding-left: 14px; font-family: var(--mono); font-size: .78rem; }
+
+/* --- responsive ------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .span-3, .span-4, .span-5 { grid-column: span 6; }
+  .cols4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .sheet { padding: 14px 15px 56px; }
+  .fold { display: flex; flex-direction: column; }
+  .col { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+  .col:last-child { border-bottom: 0; }
+  .cols2, .cols3, .cols4 { display: flex; flex-direction: column; }
+  .cell { padding: 16px 0; border-left: 0; border-top: 1px solid var(--rule-soft); }
+  .cell:first-child { border-top: 0; padding-top: 0; }
+  .reverse { padding: 20px 16px; }
+}
+
+</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Nostr Observer — Saturday, November 21, 2026</title>
+  <meta name="description" content="Anthropic’s post-IPO slide drags global tech shares into their worst week since 2020, pulling bitcoin under $58,000 and prompting a tongue-in-cheek reunion across Nostr.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="The Nostr Observer">
+  <meta property="og:title" content="AI Selloff Pulls Bitcoin Below $58,000 as the ‘58k Gang’ Reconvenes">
+  <meta property="og:description" content="Anthropic’s post-IPO slide drags global tech shares into their worst week since 2020, pulling bitcoin under $58,000 and prompting a tongue-in-cheek reunion across Nostr.">
+  <meta property="og:url" content="https://thenostrobserver.vercel.app/observer-2026-11-21-653741.html">
+  <meta property="og:image" content="https://blossom.primal.net/94e3ebd653fd96c5fc2c2b0bad574ace8e93e2a85bb89273e7bafbfc76762081.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI Selloff Pulls Bitcoin Below $58,000 as the ‘58k Gang’ Reconvenes">
+  <meta name="twitter:description" content="Anthropic’s post-IPO slide drags global tech shares into their worst week since 2020, pulling bitcoin under $58,000 and prompting a tongue-in-cheek reunion across Nostr.">
+  <meta name="twitter:image" content="https://blossom.primal.net/94e3ebd653fd96c5fc2c2b0bad574ace8e93e2a85bb89273e7bafbfc76762081.png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <style>
+    @media (max-width: 430px) {
+      .folio { grid-template-columns: 1fr; text-align: center; gap: 2px; }
+      .folio > :last-child { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <!-- restyle: Stack .folio below 430px to match .dateline and prevent 3-line wrapping at 390px phone width -->
+  <div class="sheet">
+    <div class="folio">
+      <span>No. 653741</span>
+      <span>Saturday, November 21, 2026</span>
+      <span>24h to 08:50 CST</span>
+    </div>
+
+    <header class="masthead">
+      <h1><span class="the">The</span> Nostr Observer</h1>
+      <p class="motto">All the signal fit to print</p>
+    </header>
+
+    <div class="dateline">
+      <span>Ranked as NotBiebs and 69 others</span>
+      <span>532 events through your lens</span>
+      <span>212 voices</span>
+    </div>
+
+    <main class="fold">
+      <div class="col span-6">
+        <article class="story">
+          <div class="kicker">Markets &amp; Conviction</div>
+          <h2 class="lead-head">AI Selloff Pulls Bitcoin Below $58,000 as the ‘58k Gang’ Reconvenes</h2>
+          <p class="dek">Anthropic’s post-IPO slide drags global tech shares into their worst week since 2020, pulling bitcoin under $58,000 and prompting a tongue-in-cheek reunion across Nostr.</p>
+          <p class="first">A record-setting Wall Street debut turned into a synchronized global unwind on Friday, dragging bitcoin below $60,000 for the first time since early July and briefly down to $57,655 [<a href="https://jumble.social/notes/nevent1qqs96wfhnw87rgep89stffgvcl7hqxfhuvfhrlcaydpzctjnjys9y0sqpt3r5" target="_blank" rel="noopener noreferrer">s504</a>, <a href="https://jumble.social/notes/nevent1qqst0d8wpnpxjszgypaxhk7cxpnzu33cvqx0gd8kl5js2ycrufctkjc7cesv8" target="_blank" rel="noopener noreferrer">s507</a>]. Anthropic, which priced its IPO at $83 and opened at $111.50 on Thursday before closing at $97.17, fell nearly 12 percent to roughly $86 in its first full session, pulling the Nasdaq Composite down about 5 percent and Nvidia down 12.5 percent to near $128 [<a href="https://jumble.social/notes/nevent1qqs96wfhnw87rgep89stffgvcl7hqxfhuvfhrlcaydpzctjnjys9y0sqpt3r5" target="_blank" rel="noopener noreferrer">s504</a>, <a href="https://jumble.social/notes/nevent1qqst0d8wpnpxjszgypaxhk7cxpnzu33cvqx0gd8kl5js2ycrufctkjc7cesv8" target="_blank" rel="noopener noreferrer">s507</a>].</p>
+          <p>Asian markets absorbed the brunt of the tech liquidation: MSCI Asia-Pacific ex-Japan lost roughly 8.3 to 8.5 percent for the week, its steepest drop since March 2020, while Taiwan sank roughly 16 to 17 percent [<a href="https://jumble.social/notes/nevent1qqs96wfhnw87rgep89stffgvcl7hqxfhuvfhrlcaydpzctjnjys9y0sqpt3r5" target="_blank" rel="noopener noreferrer">s504</a>]. Adding to sector jitters, Intuit slashed Credit Karma’s FY2027 growth outlook from 11–13 percent to 3–7 percent after consumers began using large language models instead of its referral site, while agreeing to sell Mailchimp to Bending Spoons for $3.68 billion [<a href="https://jumble.social/notes/nevent1qqs96wfhnw87rgep89stffgvcl7hqxfhuvfhrlcaydpzctjnjys9y0sqpt3r5" target="_blank" rel="noopener noreferrer">s504</a>, <a href="https://jumble.social/notes/nevent1qqsytukxy5huyura53temvyxdywshngqjdajhstflmyk0chw35wqjxgnzyfqw" target="_blank" rel="noopener noreferrer">s157</a>]. Capital.com analyst Kyle Rodda said <q>Anthropic's blockbuster IPO proved not enough to assuage the overall concern about the outlook for the AI trade and equities more broadly.</q> [<a href="https://jumble.social/notes/nevent1qqs96wfhnw87rgep89stffgvcl7hqxfhuvfhrlcaydpzctjnjys9y0sqpt3r5" target="_blank" rel="noopener noreferrer">s504</a>]</p>
+          <p>Bitcoin fell alongside risk assets, trading near $58,300 by Friday afternoon—more than 50 percent off its October 2025 peak above $126,000 and hovering just above its network-wide realized price, the average cost basis of all coins on chain [<a href="https://jumble.social/notes/nevent1qqst0d8wpnpxjszgypaxhk7cxpnzu33cvqx0gd8kl5js2ycrufctkjc7cesv8" target="_blank" rel="noopener noreferrer">s507</a>, <a href="https://jumble.social/notes/nevent1qqspxjhau07d3vsk8t4w60l48e3nqt3f29vgxp9sawayl40nljrddsgh6t924" target="_blank" rel="noopener noreferrer">s509</a>]. Roughly $1.53 billion in leveraged crypto positions were liquidated over 24 hours, including $1.4 billion in longs, as U.S. spot bitcoin ETF outflows reached $3.5 billion for November following BlackRock IBIT’s record $541.1 million Thursday exit [<a href="https://jumble.social/notes/nevent1qqst0d8wpnpxjszgypaxhk7cxpnzu33cvqx0gd8kl5js2ycrufctkjc7cesv8" target="_blank" rel="noopener noreferrer">s507</a>]. Miners with AI data-center exposure fared worst, with MARA Holdings and IREN both falling roughly 17 percent and CleanSpark dropping 16 percent, even as Treasury Secretary Scott Bessent urged the Federal Reserve not to pursue a half-point rate hike in December [<a href="https://jumble.social/notes/nevent1qqst0d8wpnpxjszgypaxhk7cxpnzu33cvqx0gd8kl5js2ycrufctkjc7cesv8" target="_blank" rel="noopener noreferrer">s507</a>, <a href="https://jumble.social/notes/nevent1qqsz4xl0t68fd9nrswaxy7xpjj8kftj92wqf5klaq3hs9k9k0eckdccj9tnhu" target="_blank" rel="noopener noreferrer">s510</a>].</p>
+          <p>Across Nostr, the drop drew dry gallows humor rather than panic, reviving the perennial <q>58k gang</q> chorus across dozens of timelines [<a href="https://jumble.social/notes/nevent1qqsw95etavhj4qry0n8ttjhka9m0ddthvrheww9pra9t0l8zfp3uztgzaln9w" target="_blank" rel="noopener noreferrer">s20</a>, <a href="https://jumble.social/notes/nevent1qqswc223g68w0uw8pjaaupnxse39jrjhw9t5xha0g333rx3f8fmactqpnygs9" target="_blank" rel="noopener noreferrer">s32</a>, <a href="https://jumble.social/notes/nevent1qqsqqqqfdszawauph9a6fa36h3dtdcmqndlnx00us0h4df54xh32hzg0lmtaj" target="_blank" rel="noopener noreferrer">s242</a>]. <q>Blast from the past, its like seeing an old friend again after all these years</q> wrote TheBitcoinManual [<a href="https://jumble.social/notes/nevent1qqsv0ptqwn9zd68t70y7tv0kfkwwwgtfdxrt594exkmftnm2gmdwzeqvqlg0y" target="_blank" rel="noopener noreferrer">s252</a>], while Clark Moody declared <q>58k gang undefeated</q> [<a href="https://jumble.social/notes/nevent1qqswc223g68w0uw8pjaaupnxse39jrjhw9t5xha0g333rx3f8fmactqpnygs9" target="_blank" rel="noopener noreferrer">s32</a>] and jamw joked about rotating out of ETFs and Strategy into Anthropic shares [<a href="https://jumble.social/notes/nevent1qqs2k67tkhv3uhp630tlf8x7mgvjdpr8ehcsmcwghdklw8ykcs7hp4sn0lfdq" target="_blank" rel="noopener noreferrer">s23</a>].</p>
+          <blockquote><p>Write down why you own Bitcoin, then ask what the last year actually damaged. If the only answer is the price, nothing you relied on has changed.</p></blockquote>
+          <p>That counsel came from Bitcoin Well in a Stoic essay weighing five-year price stagnation against Marcus Aurelius, Epictetus, and Vijay Boyapati’s thesis [<a href="https://jumble.social/notes/nevent1qqs0xjs6elwk82d9xz04nmf25g395nw9sndglnsumyqv0mh6g05745q9zys8t" target="_blank" rel="noopener noreferrer">s496</a>]. <q>The Stoics drew a firm line between what's in your control and what isn't. The price sits on the far side of it.</q> the company wrote, noting that neither the 21-million supply cap nor permissionless settlement had shifted [<a href="https://jumble.social/notes/nevent1qqs0xjs6elwk82d9xz04nmf25g395nw9sndglnsumyqv0mh6g05745q9zys8t" target="_blank" rel="noopener noreferrer">s496</a>]. Elsewhere in enforcement news, federal regulators froze assets and charged operators in Kokomo, Indiana, and Gilbert, Arizona, over an alleged $560 million Ponzi scheme that promised 6 percent monthly returns through purported AI-driven currency trading [<a href="https://jumble.social/notes/nevent1qqs0pu0hqwmyeajjmcvp4pldjktx4237jp6ag20vh2ce07puy5zfxwsexqjx2" target="_blank" rel="noopener noreferrer">s511</a>].</p>
+        </article>
+      </div>
+
+      <div class="col span-6">
+        <article class="story">
+          <div class="kicker">Geopolitics</div>
+          <h3 class="main-head">Trump, Xi, and Putin Sign Shenzhen ‘Declaration Toward Peace’</h3>
+          <p class="first">The leaders of the United States, China, and Russia met for roughly 90 minutes at Kylin Villa in Shenzhen on Thursday on the sidelines of APEC, issuing their first formal trilateral statement [<a href="https://jumble.social/notes/nevent1qqsqewr0zftckc8ftrukwwnu78ymq86jnumufmsf8ywe8tgytvxe48qpr8lqa" target="_blank" rel="noopener noreferrer">s502</a>]. The four-point document calls for United Nations reform, higher production and stable flows of refined petroleum, limits on International Criminal Court jurisdiction paired with state immunity protections, and dialogue to reduce nuclear risks [<a href="https://jumble.social/notes/nevent1qqsqewr0zftckc8ftrukwwnu78ymq86jnumufmsf8ywe8tgytvxe48qpr8lqa" target="_blank" rel="noopener noreferrer">s502</a>].</p>
+          <p>The communiqué carries no arms-control framework, implementation timetable, or mention of Ukraine or Iran, and its energy clause makes no reference to dollar-denominated settlement—a framing analysts said could widen non-dollar energy corridors and weaken the enforcement reach of Western sanctions [<a href="https://jumble.social/notes/nevent1qqsqewr0zftckc8ftrukwwnu78ymq86jnumufmsf8ywe8tgytvxe48qpr8lqa" target="_blank" rel="noopener noreferrer">s502</a>].</p>
+        </article>
+
+        <article class="story">
+          <div class="kicker">Protocol Security</div>
+          <h3 class="main-head">Researchers Publish 131-Page Analysis of Post-Quantum SHRINCS</h3>
+          <p class="first">Blockstream researcher Mikhail Kudinov and co-authors released a 131-page draft security analysis of SHRINCS, a hash-based post-quantum signature proposal combining a stateful FXMSS path (548–4,619 bytes) with a 5,777-byte stateless fallback, compared with 64-byte Schnorr signatures today [<a href="https://jumble.social/notes/nevent1qqs2cdx3k7zaf337asf8zf5czm7mkeuukzagd2enlwlk4egw6a8nfsgzn5ygt" target="_blank" rel="noopener noreferrer">s506</a>].</p>
+          <p>Because reusing a one-time stateful key would allow theft, Blockstream research director Jonas Nick warned wallets must auto-fallback safely and cautioned about block-space pressure: <q>And it’s not just the fee market, it’s also just fewer transactions fit into a block, meaning fewer people can use Bitcoin. And I think this changes the value proposition of Bitcoin.</q> [<a href="https://jumble.social/notes/nevent1qqs2cdx3k7zaf337asf8zf5czm7mkeuukzagd2enlwlk4egw6a8nfsgzn5ygt" target="_blank" rel="noopener noreferrer">s506</a>]</p>
+        </article>
+
+        <article class="story">
+          <div class="kicker">Node Operations</div>
+          <h3 class="main-head">Post-Attack Audit Uncovers Over-Broad LNbits Mount and Failing NVMe</h3>
+          <p class="first">After shutting down LNbits during the November 8 incident alert, Core Lightning operator A Rux spent a week auditing their Start9 node with Claude in the terminal and published the findings Saturday morning [<a href="https://jumble.social/notes/nevent1qqsdzf0aaqfzms5u92q8wruvezesvp8ngzg4gltev0hc7y3gwtu4axctzdkyg" target="_blank" rel="noopener noreferrer">s493</a>]. While logs showed no compromise on their own box, the review exposed that LNbits held broad access to node secrets—fixed in Start9 updates and LNbits 1.7.0 via restricted runes—and revealed an internal NVMe drive silently logging SMART failure after writing 568 TB against a 440 TB rating: <q>When something breaks, ask what else could have broken.</q> [<a href="https://jumble.social/notes/nevent1qqsdzf0aaqfzms5u92q8wruvezesvp8ngzg4gltev0hc7y3gwtu4axctzdkyg" target="_blank" rel="noopener noreferrer">s493</a>]</p>
+        </article>
+      </div>
+    </main>
+
+    <section class="band">
+      <div class="band-head">
+        <span>Dispatches &amp; Infrastructure</span>
+        <span>Payments · Privacy · Code &amp; Hardware</span>
+      </div>
+      <div class="cols3">
+        <div class="cell">
+          <article class="story">
+            <div class="kicker">Retail &amp; Settlement</div>
+            <h3 class="main-head">Coffee Shops Lead $13 Median Bitcoin Spend on Square</h3>
+            <p class="first">Block’s report on U.S. Square merchants from November 2025 through October 2026 found a median bitcoin checkout of roughly $13 and an average of $29, with food and drink sellers taking 72 percent of transactions [<a href="https://jumble.social/notes/nevent1qqs8hfc6upykg0qah82hj59454r77d6sntp5yakwzu7wu4pzx68756gmem3tn" target="_blank" rel="noopener noreferrer">s505</a>, <a href="https://jumble.social/notes/nevent1qqs8njsfhy2cu3xwjdl8md62z67zyqallj39089lun0e5zaznx3g44ql580mt" target="_blank" rel="noopener noreferrer">s508</a>]. Coffee shops and fast-food counters alone drew 62.6 percent of food-and-drink payments at a $9.10 median, while 56.6 percent of all payments—and 66 percent of dollar volume—arrived from external Lightning wallets rather than Cash App [<a href="https://jumble.social/notes/nevent1qqs8hfc6upykg0qah82hj59454r77d6sntp5yakwzu7wu4pzx68756gmem3tn" target="_blank" rel="noopener noreferrer">s505</a>, <a href="https://jumble.social/notes/nevent1qqs8njsfhy2cu3xwjdl8md62z67zyqallj39089lun0e5zaznx3g44ql580mt" target="_blank" rel="noopener noreferrer">s508</a>].</p>
+            <p>Block extended zero-fee merchant processing through December 2027 while pressing Congress for a de minimis capital-gains exemption: <q>We think tax policy should account for how people spend bitcoin as well as how they hold it,</q> the company stated [<a href="https://jumble.social/notes/nevent1qqs8njsfhy2cu3xwjdl8md62z67zyqallj39089lun0e5zaznx3g44ql580mt" target="_blank" rel="noopener noreferrer">s508</a>].</p>
+            <p>Elsewhere on Lightning, Amboss detailed how Taproot Assets v0.6 lets edge nodes convert currencies up front while middle hops route ordinary bitcoin: <q>Pay in one asset. Settle in another. One Lightning rail.</q> [<a href="https://jumble.social/notes/nevent1qqsvpzt4a2gru55pmnyerj2y3glglmyzvdl4mrtz3twv0tnm5f6l5hckrer0h" target="_blank" rel="noopener noreferrer">s231</a>] On exchange withdrawal checks, nick argued that travel-rule address proofs expose cold-storage multisig signers or xpubs, writing: <q>I think the proper approach to verifying you're paying the correct wallet is to move to signed silent payment addresses.</q> [<a href="https://jumble.social/notes/nevent1qqs8pjrdw4uc3ealyxqkm8hnn8danuhlj6n9rsfxrt7sf8zrea07ngcld0nts" target="_blank" rel="noopener noreferrer">s15</a>] Brisket countered that regulated exchanges are unlikely to support silent payments for few users when one extra self-transfer restores privacy [<a href="https://jumble.social/notes/nevent1qqsqqqqr8z3zgefz7x2e0a3jc3e5ucnmdvvhksl4vma4xydvs7lwwnqgqkfdp" target="_blank" rel="noopener noreferrer">s385</a>].</p>
+            <p>Meanwhile, Fedi advised members of federations upgrading to its new Manifold protocol to move funds between November 30 and December 15 [<a href="https://jumble.social/notes/nevent1qqsxyvweuxqf3hdhes0wae58tzjj37q2nfajxtr83uv6xglx3cu4nycxuavg6" target="_blank" rel="noopener noreferrer">s14</a>].</p>
+          </article>
+        </div>
+
+        <div class="cell">
+          <article class="story">
+            <div class="kicker">Energy &amp; Rights</div>
+            <h3 class="main-head">MIT Study Maps Data-Center Air Mortality to Rural Midwest</h3>
+            <p class="first">A peer-reviewed paper in <em>Environmental Research Letters</em> by MIT, UC Irvine, and Yale researchers estimated that U.S. data-center electricity demand caused roughly 650 modeled premature deaths in 2023—about 5.3 percent of U.S. power-related mortality, within a 559-to-740 confidence interval [<a href="https://jumble.social/notes/nevent1qqsfn62sce9sw9r4yre5h4m5uz3dq6whm86wh2djex0tad4u582x23g35aqdc" target="_blank" rel="noopener noreferrer">s503</a>].</p>
+            <p>While data centers cluster in northern Virginia and Texas, marginal grid dispatch from Ohio Valley coal and gas plants combines with agricultural ammonia downwind to raise per-capita mortality highest in Iowa, Nevada, South Dakota, and Kansas [<a href="https://jumble.social/notes/nevent1qqsfn62sce9sw9r4yre5h4m5uz3dq6whm86wh2djex0tad4u582x23g35aqdc" target="_blank" rel="noopener noreferrer">s503</a>]. Senior author Noelle Selin warned: <q>Even if you don't think you are affected because there is not a data center near you, think again.</q> [<a href="https://jumble.social/notes/nevent1qqsfn62sce9sw9r4yre5h4m5uz3dq6whm86wh2djex0tad4u582x23g35aqdc" target="_blank" rel="noopener noreferrer">s503</a>]</p>
+          </article>
+
+          <article class="story">
+            <div class="kicker">Surveillance &amp; Rights</div>
+            <h3 class="sub-head">Traffic Filters, Section 702, and Breach Fallout</h3>
+            <p class="first">HRF’s AI newsletter reported Russia’s Roskomnadzor spent 2.27 billion rubles (~$28 million) on an AI traffic-filtering system targeting websites and VPNs, alongside Zimbabwe’s expansion of automated traffic enforcement cameras, even as <code>llama.cpp</code> hit v1.0 for local inference [<a href="https://jumble.social/notes/nevent1qqsykz5pfx4r75k0d7n4ju32kuu32u9pyx5eyuwh7vazjj5pjza8sucj90v87" target="_blank" rel="noopener noreferrer">s492</a>]. The Electronic Frontier Foundation urged Congress not to attach Section 702 reauthorization to must-pass defense funding [<a href="https://jumble.social/notes/nevent1qqsdxuhequvl6ekc4mwrmqujplhk4c4w20wn9jrq6xver3l7hvexg8gnt0czz" target="_blank" rel="noopener noreferrer">s173</a>], while Coincards flagged Canada’s Bill C-22 over government access to private messages [<a href="https://jumble.social/notes/nevent1qqs8jnuyvcuswp8qvq5shnufjqa7v8nfej8arhzq9nq3tt6nk3ax55qp74dyg" target="_blank" rel="noopener noreferrer">s58</a>].</p>
+            <p>Elsewhere on the privacy front, Signal moved to block screenshots by default so OS-level AI agents cannot read messages [<a href="https://jumble.social/notes/nevent1qqsyp7mrjtrdkltjc9xhfgxcp56k845lms8lvw64mrcf585afnn7dugym9y23" target="_blank" rel="noopener noreferrer">s3</a>], and Base Bitcoin reported a second apparent breach at the FBI’s NCIC criminal database within months [<a href="https://jumble.social/notes/nevent1qqswqux6v7276yvaagq3a0ceymateycpyfu5suygeuyq8mjsu08te7s0tz59h" target="_blank" rel="noopener noreferrer">s39</a>].</p>
+          </article>
+        </div>
+
+        <div class="cell">
+          <figure>
+            <img src="https://blossom.primal.net/94e3ebd653fd96c5fc2c2b0bad574ace8e93e2a85bb89273e7bafbfc76762081.png" alt="Pentatonic audio-ecash visualization shared by erik for Hush Money">
+            <figcaption>Developer erik shared an audio-encoding illustration for Hush Money on magical.cash, which hides 17-byte Cashu tokens inside pentatonic chimes [<a href="https://jumble.social/notes/nevent1qqsx8tgyupl4yxf3vd9gh56px0a2c3dxmn9mtkf4p4nvrkzvjhcnlxgzrqg4f" target="_blank" rel="noopener noreferrer">s75</a>, <a href="https://jumble.social/notes/nevent1qqs8jqvg956sfys0uhzqc3ys49c5gkt4p3m4v8827jkh2usrsjyll2s6zlltn" target="_blank" rel="noopener noreferrer">s76</a>]. <span class="credit">Image: erik</span></figcaption>
+          </figure>
+
+          <article class="story">
+            <div class="kicker">Builders &amp; Releases</div>
+            <h3 class="main-head">Ecash Over Sound, Open Miners, and Nostr Compass #49</h3>
+            <p class="first">Developer erik launched Hush Money on magical.cash, encoding 17-byte Cashu ecash redemptions into laptop-played pentatonic tunes in E major that a phone microphone decodes into a Lightning or ecash wallet [<a href="https://jumble.social/notes/nevent1qqsdxcgqnjf7c2l86u62auseddc0j6x4xhgm2f6y2f8xnw7qshu0gzq0x2mfh" target="_blank" rel="noopener noreferrer">s71</a>, <a href="https://jumble.social/notes/nevent1qqsx8tgyupl4yxf3vd9gh56px0a2c3dxmn9mtkf4p4nvrkzvjhcnlxgzrqg4f" target="_blank" rel="noopener noreferrer">s75</a>, <a href="https://jumble.social/notes/nevent1qqs8jqvg956sfys0uhzqc3ys49c5gkt4p3m4v8827jkh2usrsjyll2s6zlltn" target="_blank" rel="noopener noreferrer">s76</a>]. Elsewhere, Canaan previewed MIT-licensed Avalon Nano 3S firmware and a Linux 6.6 SDK for the K230 RISC-V chip [<a href="https://jumble.social/notes/nevent1qqsx3gx209a8l6qlxf9tkfl6f8r5s0m3ldy8fjty4c6aylyyttgyx5c2nrewl" target="_blank" rel="noopener noreferrer">s328</a>], and arkinox published a 10-minute video walkthrough of cyberspace, a thermodynamics-regulated 3D world protocol [<a href="https://jumble.social/notes/nevent1qqs2svta699qt7f7uhp2ege8dm6aqcrywjkl528u4nsd32307v4tzrc0vvt57" target="_blank" rel="noopener noreferrer">s422</a>].</p>
+            <p>Nostr Compass #49 chronicled a security-heavy week across clients and libraries: Vector released Open Beta v0.5.2 with locked channels and faster joins [<a href="https://jumble.social/notes/nevent1qqstlreru7n4uxxa6tajrkcw008za8ktt0h3296hchl4550s29h2czckzpd3m" target="_blank" rel="noopener noreferrer">s494</a>, <a href="https://jumble.social/notes/nevent1qqswfsx8z4c46w4lc7edkf9lqvd3pr6tunyhr5j54q3m0wnymxnhs4s6n2z08" target="_blank" rel="noopener noreferrer">s495</a>], White Noise shipped Android 2026.11.17 on MarmotKit 0.17.0, ZEUS v13.2.5 added NWC replay guards, Amber posted 7.0.0 prereleases with a new CLI, and Applesauce bounded attachment downloads at 100 MiB [<a href="https://jumble.social/notes/nevent1qqstlreru7n4uxxa6tajrkcw008za8ktt0h3296hchl4550s29h2czckzpd3m" target="_blank" rel="noopener noreferrer">s494</a>].</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="band-head">
+        <span>Field, Craft &amp; Culture</span>
+        <span>Conferences · Workshops · Photography</span>
+      </div>
+      <div class="cols3">
+        <div class="cell">
+          <figure>
+            <img src="https://blossom.primal.net/32fe64abd95f8816271382a715213ea169e1edd9aa3fab7de9f1c1126672ed0c.jpg" alt="Alex Waltz, Aaron, and Martti on stage at Bitcoin Amsterdam">
+            <figcaption>Alex Waltz shared stage photographs from Bitcoin Amsterdam alongside Aaron and Martti [<a href="https://jumble.social/notes/nevent1qqsfcmd5g33dud5j2pd57a8ug8j9yf4yq8q3ysygl28xfk4c3l84x8cu7f3qc" target="_blank" rel="noopener noreferrer">s13</a>]. <span class="credit">Photo: Alex Waltz</span></figcaption>
+          </figure>
+
+          <article class="story">
+            <div class="kicker">Grassroots</div>
+            <h3 class="main-head">99 Communities Strong, and Amsterdam on Stage</h3>
+            <p class="first">My First Bitcoin reported reaching 99 grassroots education communities across 44 countries—up 13 since its previous impact report, with 59 more onboarding—and opened direct leaderboard-linked donations [<a href="https://jumble.social/notes/nevent1qqspg9x8yggpltvg86ukpjlrl5gp3pzyft702eufextyd2h9cvpte5gywpyze" target="_blank" rel="noopener noreferrer">s22</a>]. Meanwhile, Satlantis announced a 50 percent cost-subsidized cohort for communities adopting its unified events, newsletter, and bitcoin distribution toolkit [<a href="https://jumble.social/notes/nevent1qqsquxltwvtnq9wf0kl2wt4gm3fqr0wuh2y26emw57vvplf8r0ycmsc8yuy8c" target="_blank" rel="noopener noreferrer">s118</a>].</p>
+          </article>
+        </div>
+
+        <div class="cell">
+          <figure>
+            <img src="https://blossom.primal.net/dff85cbf3ebb60f6b5d7bcc171c01e1577549dd75d3e3c54bf4669622e2a7c24.jpg" alt="West Major apparel on the shelf at Millhand in Bozeman, Montana">
+            <figcaption>West Major goods on display at Millhand, a new Bozeman shop stocking USA-made brands [<a href="https://jumble.social/notes/nevent1qqsxf3vt3vkvxpvynshpk4awghtrc72npdj45yeujac5y4rsfed3e3g6kz6td" target="_blank" rel="noopener noreferrer">s205</a>]. <span class="credit">Photo: West Major</span></figcaption>
+          </figure>
+
+          <article class="story">
+            <div class="kicker">Craft &amp; Airwaves</div>
+            <h3 class="main-head">New Kilns, Bozeman Shelves, and Value-for-Value Radio</h3>
+            <p class="first">In Norway, bladesmith Gunnar Stødle fired up a new kiln while running a weekend custom knife auction [<a href="https://jumble.social/notes/nevent1qqsyd24uhrlm9ugkdcvwggas6t34lkm892vsrftgkceg7w889yvfkds26ujnu" target="_blank" rel="noopener noreferrer">s197</a>, <a href="https://jumble.social/notes/nevent1qqsydnhjc8k0zqy2uhm47j6kj0tz5fgmcapn5kq5j7wmk6emvemtq5qse0edq" target="_blank" rel="noopener noreferrer">s221</a>], and West Major celebrated its apparel landing on shelves at Millhand in Bozeman, Montana [<a href="https://jumble.social/notes/nevent1qqsxf3vt3vkvxpvynshpk4awghtrc72npdj45yeujac5y4rsfed3e3g6kz6td" target="_blank" rel="noopener noreferrer">s205</a>].</p>
+            <p>On the audio ledger, Noderunners Radio logged 378 tracks played—61 paid for by listeners [<a href="https://jumble.social/notes/nevent1qqs2aex9w8lw44cxjgj862gzz7adpeh0s20nc49mtgy82m3ww3js76qmzj86l" target="_blank" rel="noopener noreferrer">s26</a>]—while Fountain retired its legacy podcastindex value-block shim in favor of direct RSS value tags [<a href="https://jumble.social/notes/nevent1qqsquvawld5djvt20ln5847gek66vczwd725ynjj2xnkma4ys5798jssgzcv4" target="_blank" rel="noopener noreferrer">s67</a>]. Internet Archive marked nearly thirty years of Winamp and spotlighted the 1930 public-domain William Tell novel <em>Mountains Are Free</em> [<a href="https://jumble.social/notes/nevent1qqsyhhvg0ajhma4pt4uqukn8jrqg5xesrzkxcavv7yjprhrdfc2qj9cj9nagn" target="_blank" rel="noopener noreferrer">s327</a>, <a href="https://jumble.social/notes/nevent1qqsr9ezmkfc8uzxeyt72krpxmy9lnr4n50r2erj0d0lzxl46tmnrh9gd2x9wr" target="_blank" rel="noopener noreferrer">s350</a>].</p>
+          </article>
+        </div>
+
+        <div class="cell">
+          <figure>
+            <img src="https://blossom.daniel.camera/91c81e44cb3be5b7bf8c750b8059020ed47927bb63214e3fa3d1b8ebdac6b8ab.jpg" alt="Sunrise on the Canyon Rim">
+            <figcaption>Morning light over Texas Canyon near Bears Ears National Monument, captured October 18, 2026 [<a href="https://jumble.social/notes/nevent1qqstu6ft3aa29aaf7dfrq0lvg8j3w2ktk6jw4sfqhpppdvmqsxaax8sxnneea" target="_blank" rel="noopener noreferrer">s47</a>]. <span class="credit">Photo: danielw</span></figcaption>
+          </figure>
+
+          <article class="story">
+            <div class="kicker">Photography &amp; Notes</div>
+            <h3 class="main-head">Looking Down, Looking Back, and Bears Ears Dawn</h3>
+            <p class="first">NOICE featured two contemplative photo essays: Christer Björkman’s frames captured looking downward during low moods—later revealing quiet geometry [<a href="https://jumble.social/notes/nevent1qqs0nxe2w855haty8zdzvew8z322gh62n8j0a2s60ew8r9qjjswt8qcqxlzzq" target="_blank" rel="noopener noreferrer">s275</a>]—and Avishkar Jadon’s month-long return to Kochi and Kerala tracing childhood dreams of memory and identity [<a href="https://jumble.social/notes/nevent1qqsrgew27980pdkt8qaque9kewp479mtcy92azv4gkxagfl5p8whakqk96cvv" target="_blank" rel="noopener noreferrer">s304</a>].</p>
+            <p>Closer to home, woodMiner documented getting out solo on the Hudson River past Hook Mountain [<a href="https://jumble.social/notes/nevent1qqszpzsza5g3rt7vtadtlrftp4qsdp8wu4pakqxwpc3cns3tffqdppgc6ch5r" target="_blank" rel="noopener noreferrer">s179</a>], while Sofia Angel highlighted three passages on separating institutional credentials from first-principles reasoning [<a href="https://jumble.social/notes/nevent1qqs9qk5u7f5zw860232lg3rxwnh7tvvhdyfypehpmr76wycnzlrg4jq7pyzqp" target="_blank" rel="noopener noreferrer">s489</a>, <a href="https://jumble.social/notes/nevent1qqstgfd4fnsrt0suutcz677ctaa2p7mrz59hyga3s0jd4yzvq4sxzgsr8m0yq" target="_blank" rel="noopener noreferrer">s490</a>, <a href="https://jumble.social/notes/nevent1qqsv2wwkceg5vdz55xqq0maa3nu4rtm2ah9hev5dr3km2kpvv4ygl4q6vphkn" target="_blank" rel="noopener noreferrer">s491</a>].</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="band-head">
+        <span>Standing Wires &amp; The Instrument</span>
+        <span>Broadcasting · Calendar · Classifieds · Apps · Code</span>
+      </div>
+      <div class="cols4">
+        <div class="cell">
+          <article class="story">
+            <div class="kicker">Broadcasting</div>
+            <p class="note">Streams active when this edition went to press (start times UTC).</p>
+            <div class="wire-item"><strong><a href="https://zap.stream/naddr1qqrrwwfn8q6rzq3qrr3678k7ajms2sht0cqqeawy86sdd5ahn6akfj8zex9ng82zuh0sxpqqqpmxwrxyzzn" target="_blank" rel="noopener noreferrer">BG'S to rank 3. Testing Camera</a></strong> · Lou (03:57Z)</div>
+            <div class="wire-item"><strong><a href="https://zap.stream/naddr1qqjr2vehvyenvdtr94nrzetr956rgctr94skvvfs95eryep3x3snwve389nxyq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwrqz3al" target="_blank" rel="noopener noreferrer">NoGood Radio</a></strong> · zap.stream (04:23Z)</div>
+            <div class="wire-item"><strong><a href="https://zap.stream/naddr1qqjrxv3jvdskvefh943k2e3c956rjvpk95urgctx95mn2wtxxqerxdnzxscnqq3qeaz6dwsnvwkha5sn5puwwyxjgy26uusundrm684lg3vw4ma5c2jsxpqqqpmxwpmtv78" target="_blank" rel="noopener noreferrer">Cyberspace TV Live Stream</a></strong> · zap.stream (04:23Z)</div>
+            <div class="wire-item"><strong><a href="https://zap.stream/naddr1qqjrjdrzvf3rgde495exydt9956rwvnp95urywtz956kxctyv3jxgvrzvdjn2q3qsjf300tngygmqtfkpyd0vcglld2msksjxe9fsjduzn2pccqjl9wsxpqqqpmxw44r4z3" target="_blank" rel="noopener noreferrer">ScardustTV 24/7</a></strong> · Stream Road (04:23Z)</div>
+            <div class="wire-item"><strong><a href="https://zap.stream/naddr1qqjrgctxxu6rzcec94nxxdf4956xzepc95uk2wp395mkgetyx56nqc35xucrqq3qsjf300tngygmqtfkpyd0vcglld2msksjxe9fsjduzn2pccqjl9wsxpqqqpmxwufy6n0" target="_blank" rel="noopener noreferrer">The Road to ZamRock</a></strong> · Stream Road (04:23Z)</div>
+            <div class="wire-item"><strong><a href="https://zap.stream/naddr1qqxhgam9de68jmmwv5knydphqgsd7shq86yu8v4qt2y4klqvu3hqc88pq5vfymwdnh9gugp7f9xjf8qrqsqqqan8m3cqcq" target="_blank" rel="noopener noreferrer">3,476 games played on TWENTY ONE Esports</a></strong> · TWENTY ONE Esports (04:20Z)</div>
+            <div class="wire-item"><strong><a href="https://zap.stream/naddr1qq9rzdeex5erzvfnxveqygq8n4e8hm3asp0zgavgv84y6q5t9e4r0qzl3k69h7qyt0usqzvk2qpsgqqqwensw6jgu0" target="_blank" rel="noopener noreferrer">GTA CUCK SIM</a></strong> · tigs (21:48Z)</div>
+          </article>
+        </div>
+
+        <div class="cell">
+          <article class="story">
+            <div class="kicker">Diary &amp; Calendar</div>
+            <div class="wire-item"><strong><a href="https://njump.me/naddr1qqjrqep5xg6xyvnp943nvdtz956x2vrp95urxetz95enxdmrx5urwv3hxfjnqq3qs0mv35668yg7t4jk49zdltkezn0em0s3jpt2qn8mkneurnw2edwsxpqqqp7txhgn043" target="_blank" rel="noopener noreferrer">Bitcoin Walk</a></strong> · Saturday, Nov. 21, 10:00 Europe/Rome · Rocca di Monfalcone (Bitcoin Italia Network)</div>
+            <div class="wire-item"><strong><a href="https://njump.me/naddr1qqvrvctyxymnsdes89nr2v35vyer2vtpvsukgvehx5pzqejwqu87yhnkmh8054yjnsx7gtk26zqspy6s0cjdu33zqagumda2qvzqqqrukvxp2rzg" target="_blank" rel="noopener noreferrer">Sovereign Conference</a></strong> · Sunday, Nov. 22, 12:00 America/Asuncion (doors 13:30) · Espacio Mburucuya, Asunción, Paraguay (Club Orange)</div>
+            <div class="wire-item"><strong><a href="https://njump.me/naddr1qqgk6et9w36hqtt9wejkuapdxscrjdczyrd0s0vjw6946qq9xulc8ccdggpupd68c9cyf8szl6nprgx6zf0wvqcyqqq8evcl207uv" target="_blank" rel="noopener noreferrer">Pardubice a Hradec Králové - Meetup, BTC Liga</a></strong> · Thursday, Nov. 26, 17:00 Europe/Prague · Westie Coffee, Pardubice (Einundzwanzig Portal)</div>
+          </article>
+
+          <article class="story">
+            <div class="kicker">The Classifieds</div>
+            <div class="wire-item"><strong><a href="https://shopstr.market/listing/naddr1qqdhqun0v36kxazlxymnjdf38ymr2dejxqenjhm8wp6njcczyrp8mqs92shm2med6fdtws2nmpf9k4pw9p9yh3qzyzmsms75e6j06qcyqqq8dss852rdd" target="_blank" rel="noopener noreferrer">MeshMate One</a></strong> · 240,000 sats · TollGate-compatible WiFi router for Cashu payments; free pickup at Bitfest UK.</div>
+            <div class="wire-item"><strong><a href="https://shopstr.market/listing/naddr1qqkxc6tnw35kueed8y6xzdesvyunstfsxpjrytf5xqmnjtfev33n2tfjxsunwwps8pnrwetzxgpzphn4avwh5e38spagmlc0kvmulnccnelf479tvg5ldz8kv3cscvq5qvzqqqrkcgf4kh8q" target="_blank" rel="noopener noreferrer">bitfest booty</a></strong> · 0.00000000021 BTC · Jam offered by Yojimble.</div>
+            <div class="wire-item"><strong><a href="https://shopstr.market/listing/naddr1qqkxc6tnw35kueedvfsk2ef4vc6rstf5xyukxtf5v4jnqttzxvcrgtf5xccrzd3sxa3rsvpkxvpzptnmyrrlwv8qajj4u4969r26mkyamm235y4myn6vds3tgryfzwc6qvzqqqrkcg4k6sm0" target="_blank" rel="noopener noreferrer">4 candles</a></strong> · 0.00021 BTC · Novelty digital listing by HODL_overdrive ("not real btw").</div>
+          </article>
+        </div>
+
+        <div class="cell">
+          <article class="story">
+            <div class="kicker">App Releases</div>
+            <div class="wire-item"><strong><a href="https://zapstore.dev/apps/buzz.armada.app" target="_blank" rel="noopener noreferrer">Armada</a></strong> · Team Soapbox — Serverless E2EE Concord chat and voice communities.</div>
+            <div class="wire-item"><strong><a href="https://zapstore.dev/apps/club.paff.app" target="_blank" rel="noopener noreferrer">PAFF</a></strong> · Adam Soltys — BitTorrent-backed streaming player and live TV.</div>
+            <div class="wire-item"><strong><a href="https://zapstore.dev/apps/rocks.orchard.Orchard" target="_blank" rel="noopener noreferrer">Orchard</a></strong> · Geek — Permissionless Flatpak app store signed over Nostr.</div>
+            <div class="wire-item"><strong><a href="https://zapstore.dev/apps/io.vectorapp" target="_blank" rel="noopener noreferrer">Vector</a></strong> · JSKitty — Zero-metadata messenger with Tor and Concord support.</div>
+            <div class="wire-item"><strong><a href="https://zapstore.dev/apps/io.github.Letdown2491.satori" target="_blank" rel="noopener noreferrer">Satori</a></strong> · Geek — Native GPU-rendered Nostr client with local LMDB store.</div>
+            <div class="wire-item"><strong><a href="https://zapstore.dev/apps/com.roblosats" target="_blank" rel="noopener noreferrer">Roblosats</a></strong> — P2P bitcoin exchange fork on BLAKE2b with non-custodial Taproot escrow.</div>
+            <div class="wire-item"><strong><a href="https://zapstore.dev/apps/com.aetherfips.vpn" target="_blank" rel="noopener noreferrer">AetherFips</a></strong> · ⚡tephen — Experimental Android mesh node and VPN for FIPS.</div>
+          </article>
+        </div>
+
+        <div class="cell">
+          <article class="story">
+            <div class="kicker">Code Repositories</div>
+            <div class="wire-item"><strong><a href="https://gitworkshop.dev/npub10qdp2fc9ta6vraczxrcs8prqnv69fru2k6s2dj48gqjcylulmtjsg9arpj/shipwright" target="_blank" rel="noopener noreferrer">Shipwright</a></strong> (Team Soapbox) &amp; <strong><a href="https://gitworkshop.dev/npub1q3sle0kvfsehgsuexttt3ugjd8xdklxfwwkh559wxckmzddywnws6cd26p/shipwright" target="_blank" rel="noopener noreferrer">Shipwright</a></strong> (Alex Gleason) — Bug-to-ngit PR agent.</div>
+            <div class="wire-item"><strong><a href="https://gitworkshop.dev/npub1v25jqj332n630klwtqeqxgyrjl4alw4phmluhu2x6lcxzwy9m03suqexw3/sovereign-podcaster" target="_blank" rel="noopener noreferrer">sovereign-podcaster</a></strong> · Sjors Provoost — <em>Bitcoin, Explained</em> stack.</div>
+            <div class="wire-item"><strong><a href="https://gitworkshop.dev/npub1jy90jpcdl447ae3lp4924s65khdpvnttkg7fepmvmafycusyueksrvllx9/Story-Tool" target="_blank" rel="noopener noreferrer">Story Tool</a></strong>, <strong><a href="https://gitworkshop.dev/npub1jy90jpcdl447ae3lp4924s65khdpvnttkg7fepmvmafycusyueksrvllx9/suncalc" target="_blank" rel="noopener noreferrer">Suncalc</a></strong>, <strong><a href="https://gitworkshop.dev/npub1jy90jpcdl447ae3lp4924s65khdpvnttkg7fepmvmafycusyueksrvllx9/DWeb-Tool" target="_blank" rel="noopener noreferrer">DWeb-Tool</a></strong>, <strong><a href="https://gitworkshop.dev/npub1jy90jpcdl447ae3lp4924s65khdpvnttkg7fepmvmafycusyueksrvllx9/Feedstr" target="_blank" rel="noopener noreferrer">Feedstr</a></strong> · Nate.</div>
+          </article>
+
+          <div class="box">
+            <div class="box-head">The Instrument</div>
+            <p>The same 24-hour window read without the web-of-trust lens returned 400 notes. Of those, 1 appeared among the 391 ranked notes (rank &ge; 20).</p>
+            <p class="note">532 events across 14 desks and 212 voices via wss://search.brainstorm.world.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
