@@ -191,6 +191,17 @@ window, not live figures**. Without a stamp they look like a ticker.
 
 - Stamp the box with the same closing time and zone as the folio: `As of HH:MM`
   (add `UTC` only when the folio carried it), and say they are not live.
+- **Only include Bitcoin market and network readings from the day of the paper.**
+  The 24-hour window begins on yesterday's calendar date in the paper's
+  timezone, so dashboard-bot posts from yesterday morning or midday (such as
+  Clark Moody's Morning Coffee, Midday Mempool, or Mining Epoch reports) often
+  appear in the corpus. Never put yesterday's prices, fees, block heights, or
+  coinjoin totals inside a Market & Network or Conditions box under today's
+  `As of` stamp. Check each source's timestamp against the paper's local date
+  (or UTC date when running in UTC); if no readings from the day of the paper
+  exist, omit the market/network box altogether rather than printing stale
+  figures. (Yesterday's market moves still belong in dated news prose when
+  part of a story.)
 - Attribute the source when the digest names one (Clark Moody, a chart bot).
 - Do not park corpus-size or Instrument overlap stats under that stamp — those
   belong with The Instrument, not under a market table.

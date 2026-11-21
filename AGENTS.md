@@ -81,6 +81,15 @@ API key. A full run reads `ANTHROPIC_API_KEY` from the environment.
   pseudonyms or handles (e.g. `waxwing`, `fiatjaf`). The digest provides the
   name or handle from their profile. Writers must never substitute real-world
   legal names or deanonymize pseudonymous users.
+- **Market & Network boxes show only day-of-paper Bitcoin data.** Because the
+  24-hour window begins on yesterday's calendar date in the reader's timezone,
+  dashboard-bot posts from yesterday morning or midday (such as Clark Moody's
+  Morning Coffee, Midday Mempool, or Mining Epoch reports) frequently appear in
+  the corpus. Never print yesterday's Bitcoin prices, fees, block heights, or
+  coinjoin counts in a Market & Network / Conditions box under today's `As of`
+  stamp. Only include readings whose timestamp falls on the edition's local
+  calendar date (`writer.json` `date` / `timezone`), and omit the box altogether
+  when no same-day readings exist.
 
 ## Measured facts about the relays (2026-08-17 — re-measure, do not trust)
 
